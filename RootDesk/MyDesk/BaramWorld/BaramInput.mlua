@@ -7,6 +7,11 @@ script BaramInput extends Logic
     property boolean MovePending = false
     property number ReplyWait = 0
     property boolean FastWalk = true
+    -- 방금 서버에 보낸 걸음의 방향. 응답이 그 방향에 대한 것임을 알아야 한다.
+    property integer PendingDirection = -1
+    -- 서버가 돌려놨다고 확인해 준 방향. Facing 의 @Sync 가 도착하기 전까지
+    -- 이걸 대신 본다. -1 이면 모른다.
+    property integer TurnedTo = -1
     property boolean HearWhispers = true
     property boolean HearShouts = true
     property boolean AllowGroup = true
@@ -609,7 +614,15 @@ script BaramInput extends Logic
         if not isvalid(visual) then return end
         self.MovePending = true
         self.ReplyWait = 0
-        if self.FastWalk and not turnOnly and visual.Facing == direction * 3 then visual:PredictMove(direction) end
+        self.PendingDirection = direction
+        -- 방향을 꺾으면 서버가 '돌기만' 하고 결과 2 를 준다(원작 0x4D89C0).
+        -- 그때 바뀐 Facing 은 @Sync 라 한 박자 뒤에야 도착한다. 그동안 예측이
+        -- 안 걸려서 꺾은 뒤 첫 걸음이 왕복 두 번을 서서 기다렸다.
+        -- 서버가 이미 돌려놨다고 알려준 방향이면 Sync 를 기다리지 않고 예측한다.
+        if self.FastWalk and not turnOnly
+            and (visual.Facing == direction * 3 or self.TurnedTo == direction) then
+            visual:PredictMove(direction)
+        end
         _BaramWorld:Move(direction, turnOnly)
     end
 
@@ -618,8 +631,12 @@ script BaramInput extends Logic
         if not self.MovePending then return end
         self.MovePending = false
         if result == 1 then
+            self.TurnedTo = self.PendingDirection
             self.MoveWait = math.max(0, _BaramWorldData.WalkFrameSeconds * 4 - self.ReplyWait)
         else
+            -- 2 = 방향만 바꿨다. 0 = 막혔다.
+            -- 2 면 서버가 그 방향으로 돌려놓은 게 확실하니 다음 걸음은 바로 예측한다.
+            self.TurnedTo = (result == 2) and self.PendingDirection or -1
             self.MoveWait = _BaramWorldData.InputPollSeconds
             local player = _UserService.LocalPlayer
             if isvalid(player) then

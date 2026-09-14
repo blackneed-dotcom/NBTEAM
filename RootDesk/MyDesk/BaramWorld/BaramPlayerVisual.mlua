@@ -66,6 +66,20 @@ script BaramPlayerVisual extends Component
         if self._T.predicted ~= nil then
             self._T.predicted = nil
             self._T.path = {}
+            -- 예측을 접으면 기준 좌표도 서버 좌표로 되돌린다.
+            -- 안 그러면 _T.target 이 예측했던 칸에 남아서, 서버가 같은 칸을 알려줘도
+            -- "안 바뀌었다"로 보고 웨이포인트를 안 만든다. 그림은 칸 중간에 멈춰 서고,
+            -- 다음 걸음에서 거기서부터 대각선으로 미끄러진다.
+            -- 걸음 도중에 방향을 꺾으면(서버가 결과 2를 준다) 바로 이 경로를 탄다.
+            local here = self.Entity.TransformComponent.WorldPosition
+            if isvalid(self._T.visual) then
+                local shown = self._T.visual.TransformComponent.WorldPosition
+                if math.abs(shown.x - here.x) > 0.001 or math.abs(shown.y - here.y) > 0.001 then
+                    -- 칸 중간에 서 있으니 제 칸까지 마저 걸어가게 한다.
+                    table.insert(self._T.path, here)
+                end
+            end
+            self._T.target = here
         end
     end
 
@@ -78,17 +92,40 @@ script BaramPlayerVisual extends Component
         if self.Entity == _UserService.LocalPlayer then self.Entity.PlayerControllerComponent.Enable = false end
         if self._T.map ~= map then
             if isvalid(self._T.visual) then self._T.visual:Destroy() end
+            if isvalid(self._T.warm) then self._T.warm:Destroy() self._T.warm = nil end
             self._T.map = map
             self._T.visual = _SpawnService:SpawnByModelId("baramworldvisual", "BaramVisual_" .. self.Entity.Id, self.Entity.TransformComponent.WorldPosition, map)
             self._T.signature = ""
             self._T.target = self.Entity.TransformComponent.WorldPosition
             self._T.path = {}
             self._T.walkTime = 0
+            self._T.restTime = 0
             self._T.predicted = nil
+            -- 방향마다 첫 걸음이 미끄러지는 건 그 방향 스프라이트를 그때 처음
+            -- 받아오기 때문이다(GetBody 는 RUID 만 준다. 실제 로딩은 SpriteRUID 대입 때).
+            -- 몸/머리가 Facing + step 으로 4방향 x 3스텝 = 12장이라, 각 방향 첫 걸음마다
+            -- 3장을 새로 받느라 그림이 안 바뀌고 선 자세로 미끄러졌다.
+            -- 안 보이는 자리에 같은 모델을 하나 띄워 한 틱에 한 장씩 훑어 캐시에 올린다.
+            if self.Entity == _UserService.LocalPlayer then
+                self._T.warm = _SpawnService:SpawnByModelId("baramworldvisual", "BaramWarm_" .. self.Entity.Id, Vector3(0, 1000, 0), map)
+                self._T.warmFrame = 0
+            end
             log("[BaramPlayer] visual created on " .. map.Name)
         end
         local visual = self._T.visual
         if not isvalid(visual) then return end
+        -- 스프라이트 미리 받아두기. 12장을 다 훑으면 지운다.
+        if isvalid(self._T.warm) then
+            local f = self._T.warmFrame or 0
+            if f < 12 then
+                self._T.warm:GetChildByName("Body").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetBody(self.Gender, f)
+                self._T.warm:GetChildByName("Head").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetHead(self.Hair, f)
+                self._T.warmFrame = f + 1
+            else
+                self._T.warm:Destroy()
+                self._T.warm = nil
+            end
+        end
         local target = self.Entity.TransformComponent.WorldPosition
         local predicted = self._T.predicted
         if predicted ~= nil then
@@ -133,9 +170,22 @@ script BaramPlayerVisual extends Component
             end
         end
         visual.TransformComponent.WorldPosition = position
-        if moving then self._T.walkTime = self._T.walkTime + delta else self._T.walkTime = 0 end
+        -- 칸과 칸 사이에 한두 프레임 비는 건 걸음이 끊긴 게 아니다.
+        -- 여기서 walkTime 을 0 으로 되돌리면 다음 칸이 phase 0 부터 다시 시작하는데,
+        -- WalkFrames 의 0번이 서 있는 자세라서 걷는 자세가 씹히고 제자리걸음처럼 보인다.
+        -- 한 칸이 4프레임(320ms)뿐이라 한 프레임만 어긋나도 눈에 띈다.
+        local resting = self._T.restTime or 0
+        if moving then
+            self._T.walkTime = self._T.walkTime + delta
+            resting = 0
+        else
+            resting = resting + delta
+            if resting >= frameSeconds * 2 then self._T.walkTime = 0 end
+        end
+        self._T.restTime = resting
+        local walking = moving or resting < frameSeconds
         local phase = math.floor(self._T.walkTime / frameSeconds) % 4
-        local step = moving and _BaramWorldData.WalkFrames[phase + 1] or 0
+        local step = walking and _BaramWorldData.WalkFrames[phase + 1] or 0
         local bodyFrame = self.Facing + step
         local headFrame = bodyFrame
         local emotion = false
@@ -202,5 +252,6 @@ script BaramPlayerVisual extends Component
     @ExecSpace("ClientOnly")
     method void OnEndPlay()
         if isvalid(self._T.visual) then self._T.visual:Destroy() end
+        if isvalid(self._T.warm) then self._T.warm:Destroy() end
     end
 end
