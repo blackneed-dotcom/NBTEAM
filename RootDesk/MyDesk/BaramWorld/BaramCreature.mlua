@@ -15,6 +15,10 @@ script BaramCreature extends Component
     property string AggroUser = ""
     property number Wait = 1
     property number DeadWait = 0
+    -- 이름표가 글자 대신 검은 네모로 그려진다(폰트 Galmuri9 미적용 추정).
+    -- 26마리가 각각 1.0 x 0.2 짜리 검은 상자를 깔아서 화면을 다 가렸다.
+    -- 원인 잡을 때까지 꺼둔다. true 로 바꾸면 다시 나온다.
+    property boolean ShowLabel = false
 
     -- monster.dna 이미지 번호. 1=다람쥐(26) 2=토끼(22).
     method integer ImageId()
@@ -42,12 +46,17 @@ script BaramCreature extends Component
         local sprite = self.Entity:GetChildByName("Sprite")
         local label = self.Entity:GetChildByName("Label")
         local motion = _BaramCreatureData:Get(self:ImageId())
+        label.Visible = self.ShowLabel
         local direction = math.max(1, math.min(4, math.floor(self.Facing / 3) + 1))
 
         if self._T.ready ~= true then
             self._T.ready = true
             self._T.lastHp = self.Hp
             self._T.step = self.Step
+            -- KinematicbodyComponent 는 EnableShadow 가 기본 true 라 발밑에 타원을 깐다.
+            -- ShadowSize 가 0.7 x 0.3 월드유닛 = 2.9칸 x 1.25칸이라 다람쥐보다 3배 크게 나온다.
+            -- 플레이어는 이 컴포넌트가 없어서 그림자도 없었다.
+            self.Entity.KinematicbodyComponent.EnableShadow = false
         end
 
         -- Hp 가 줄어든 걸 보고 피격/사망을 시작한다. 서버가 따로 안 쏴도 되고,
@@ -71,12 +80,12 @@ script BaramCreature extends Component
             local frame = _BaramCreatureData.Frames[self:ImageId()][self.Facing + self.Step % 3 + 1]
             if self._T.frame ~= frame then sprite.SpriteRendererComponent.SpriteRUID = frame self._T.frame = frame end
             sprite.Visible = self.Hp > 0
-            label.TextRendererComponent.Text = self.Hp > 0 and ((self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)) or ""
+            if self.ShowLabel then label.TextRendererComponent.Text = self.Hp > 0 and ((self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)) or "" end
             return
         end
 
         if self.Hp <= 0 then
-            label.TextRendererComponent.Text = ""
+            if self.ShowLabel then label.TextRendererComponent.Text = "" end
             local age = self._T.motionAge or 0
             local hold = motion.deadHold or 1
             -- 원작은 사망 그림을 1초 보여주고 깜빡이다 사라진다. 그냥 없애면 뭘 잡았는지 안 보인다.
@@ -92,7 +101,7 @@ script BaramCreature extends Component
         end
 
         sprite.Visible = true
-        label.TextRendererComponent.Text = (self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)
+        if self.ShowLabel then label.TextRendererComponent.Text = (self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp) end
 
         local ruid = nil
         local playing = self._T.motion
