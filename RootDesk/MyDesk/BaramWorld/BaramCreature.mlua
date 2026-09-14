@@ -16,15 +16,123 @@ script BaramCreature extends Component
     property number Wait = 1
     property number DeadWait = 0
 
+    -- monster.dna 이미지 번호. 1=다람쥐(26) 2=토끼(22).
+    method integer ImageId()
+        return self.SourceId == 1 and 26 or 22
+    end
+
+    @ExecSpace("ServerOnly")
+    method void PlayAttack()
+        -- 피격과 사망은 Hp 가 @Sync 라 클라이언트가 알아서 본다.
+        -- 공격만 바뀌는 상태가 없어서 따로 알려줘야 한다.
+        if not isvalid(self.Entity.CurrentMap) then return end
+        self:ReceiveAttack(self.Entity.CurrentMap.Id)
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveAttack(string mapId)
+        if not isvalid(self.Entity.CurrentMap) or self.Entity.CurrentMap.Id ~= mapId then return end
+        if self.Hp <= 0 then return end
+        self._T.motion = "atk"
+        self._T.motionAge = 0
+    end
+
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
         local sprite = self.Entity:GetChildByName("Sprite")
-        local index = self.SourceId == 1 and 26 or 22
-        local frame = _BaramCreatureData.Frames[index][self.Facing + self.Step % 3 + 1]
-        if self._T.frame ~= frame then sprite.SpriteRendererComponent.SpriteRUID = frame self._T.frame = frame end
-        sprite.Visible = self.Hp > 0
         local label = self.Entity:GetChildByName("Label")
-        label.TextRendererComponent.Text = self.Hp > 0 and ((self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)) or ""
+        local motion = _BaramCreatureData:Get(self:ImageId())
+        local direction = math.max(1, math.min(4, math.floor(self.Facing / 3) + 1))
+
+        if self._T.ready ~= true then
+            self._T.ready = true
+            self._T.lastHp = self.Hp
+            self._T.step = self.Step
+        end
+
+        -- Hp 가 줄어든 걸 보고 피격/사망을 시작한다. 서버가 따로 안 쏴도 되고,
+        -- 늦게 들어온 클라이언트는 lastHp 가 현재값이라 죽은 몹을 다시 죽이지 않는다.
+        local last = self._T.lastHp
+        if self.Hp <= 0 and last > 0 then
+            self._T.motion = "dead"
+            self._T.motionAge = 0
+        elseif self.Hp > 0 and last > self.Hp then
+            self._T.motion = "hit"
+            self._T.motionAge = 0
+        elseif self.Hp > 0 and last <= 0 then
+            self._T.motion = nil
+            self._T.step = self.Step
+            self._T.walkAge = nil
+        end
+        self._T.lastHp = self.Hp
+
+        if motion == nil then
+            -- Motion 표에 없는 몹은 예전 12장 표로 그린다.
+            local frame = _BaramCreatureData.Frames[self:ImageId()][self.Facing + self.Step % 3 + 1]
+            if self._T.frame ~= frame then sprite.SpriteRendererComponent.SpriteRUID = frame self._T.frame = frame end
+            sprite.Visible = self.Hp > 0
+            label.TextRendererComponent.Text = self.Hp > 0 and ((self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)) or ""
+            return
+        end
+
+        if self.Hp <= 0 then
+            label.TextRendererComponent.Text = ""
+            local age = self._T.motionAge or 0
+            local hold = motion.deadHold or 1
+            -- 원작은 사망 그림을 1초 보여주고 깜빡이다 사라진다. 그냥 없애면 뭘 잡았는지 안 보인다.
+            if self._T.motion == "dead" and age < hold + 0.6 then
+                local dead = motion.dead ~= nil and motion.dead[1] or nil
+                if dead ~= nil and self._T.frame ~= dead then sprite.SpriteRendererComponent.SpriteRUID = dead self._T.frame = dead end
+                sprite.Visible = age < hold or math.floor((age - hold) / 0.1) % 2 == 0
+                self._T.motionAge = age + delta
+            else
+                sprite.Visible = false
+            end
+            return
+        end
+
+        sprite.Visible = true
+        label.TextRendererComponent.Text = (self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)
+
+        local ruid = nil
+        local playing = self._T.motion
+        if playing == "hit" or playing == "atk" then
+            local list = playing == "hit" and motion.hit or motion.atk
+            list = list ~= nil and list[direction] or nil
+            local span = playing == "hit" and (motion.hitStep or 0.7) or (motion.atkStep or 0.1)
+            local age = self._T.motionAge or 0
+            local index = math.floor(age / span) + 1
+            if list == nil or index > #list then
+                self._T.motion = nil
+            else
+                ruid = list[index]
+                self._T.motionAge = age + delta
+            end
+        end
+
+        if ruid == nil then
+            -- 서버가 한 칸 옮기면 Step 이 바뀐다. 그때부터 걷기 4장을 한 바퀴 돌리고
+            -- 끝나면 정지 자세로 돌아간다. 안 그러면 계속 걷는 자세로 서 있는다.
+            if self._T.step ~= self.Step then
+                self._T.step = self.Step
+                self._T.walkAge = 0
+            end
+            local walk = motion.walk ~= nil and motion.walk[direction] or nil
+            local span = motion.walkStep or 0.1
+            local walkAge = self._T.walkAge
+            if walk ~= nil and walkAge ~= nil and walkAge < span * #walk then
+                ruid = walk[math.floor(walkAge / span) + 1]
+                self._T.walkAge = walkAge + delta
+            else
+                self._T.walkAge = nil
+                ruid = motion.idle ~= nil and motion.idle[direction] or nil
+            end
+        end
+
+        if ruid ~= nil and self._T.frame ~= ruid then
+            sprite.SpriteRendererComponent.SpriteRUID = ruid
+            self._T.frame = ruid
+        end
     end
 
     @ExecSpace("ServerOnly")
