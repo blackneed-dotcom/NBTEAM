@@ -7,8 +7,13 @@ script BaramNotices extends Logic
         self._T.lines = {}
         self._T.offset = 0
         self._T.hover = false
+        self._T.rendered = {}
+        self._T.glyphs = {}
+        self._T.rows = {}
         local panel = self:Panel()
         if not isvalid(panel) then log_error("[BaramNotices] missing message panel") return end
+        self._T.panel = panel
+        for i = 1,5 do self._T.rows[i] = panel:GetChildByName("Line" .. tostring(i)) end
         self._T.enter = panel:ConnectEvent(UITouchEnterEvent, function(event) self._T.hover = true end)
         self._T.exit = panel:ConnectEvent(UITouchExitEvent, function(event) self._T.hover = false end)
         self._T.scroll = _InputService:ConnectEvent(MouseScrollEvent, function(event)
@@ -23,6 +28,7 @@ script BaramNotices extends Logic
     @ExecSpace("ClientOnly")
     method Entity Panel()
         -- UI is client-only; no RPC carries UI references.
+        if isvalid(self._T.panel) then return self._T.panel end
         return _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/NoticeHistory")
     end
 
@@ -55,14 +61,13 @@ script BaramNotices extends Logic
         if line ~= "" then table.insert(rows, line) end
         if #rows == 0 then return end
         table.insert(self._T.messages, rows)
-        while #self._T.messages > 200 do table.remove(self._T.messages, 1) end
-        self._T.lines = {}
-        for _, entry in ipairs(self._T.messages) do
-            for _, value in ipairs(entry) do table.insert(self._T.lines, value) end
+        for _, value in ipairs(rows) do table.insert(self._T.lines, value) end
+        while #self._T.messages > 200 do
+            local removed = table.remove(self._T.messages, 1)
+            for i = 1,#removed do table.remove(self._T.lines, 1) end
         end
         self._T.offset = 0
-        self:Refresh()
-        log("[BaramNotices] displayed entries=" .. tostring(#self._T.messages))
+        self._T.dirty = true
     end
 
     @ExecSpace("ClientOnly")
@@ -70,7 +75,13 @@ script BaramNotices extends Logic
         -- Scroll inside the notice area without moving the ordinary chat history.
         local total = #(self._T.lines or {})
         self._T.offset = math.max(0, math.min(math.max(0, total - 5), (self._T.offset or 0) + direction))
-        self:Refresh()
+        self._T.dirty = true
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Coalesce bursts to one refresh and leave unchanged glyphs untouched.
+        if self._T.dirty then self._T.dirty = false self:Refresh() end
     end
 
     @ExecSpace("ClientOnly")
@@ -80,11 +91,23 @@ script BaramNotices extends Logic
         if not isvalid(panel) then return end
         local lines = self._T.lines or {}
         local first = math.max(1, #lines - 4 - (self._T.offset or 0))
-        for i = 1, 5 do self:Draw(panel:GetChildByName("Line" .. tostring(i)), lines[first + i - 1] or "") end
+        for i = 1, 5 do self:Draw(self._T.rows[i], lines[first + i - 1] or "") end
     end
 
     @ExecSpace("ClientOnly")
     method void Draw(Entity field, string text)
+        if not isvalid(field) then return end
+        if self._T.rendered[field.Id] == text then return end
+        self._T.rendered[field.Id] = text
+        local cached = self._T.glyphs[field.Id]
+        if cached == nil then
+            cached = {}
+            for i = 1,32 do
+                local glyph = field:GetChildByName("Glyph" .. tostring(i))
+                cached[i] = {entity = glyph, atlas = glyph:GetChildByName("Atlas"), key = ""}
+            end
+            self._T.glyphs[field.Id] = cached
+        end
         -- Thirty-two atlas cells accommodate narrow ASCII as well as full-width Korean.
         local points = {}
         for _, cp in utf8.codes(text) do
@@ -95,17 +118,22 @@ script BaramNotices extends Logic
         end
         local x = 0
         for i = 1, 32 do
-            local glyph = field:GetChildByName("Glyph" .. tostring(i))
+            local saved = cached[i]
+            local glyph = saved.entity
             local cp = points[i]
-            glyph.Enable = cp ~= nil
+            if glyph.Enable ~= (cp ~= nil) then glyph.Enable = cp ~= nil end
             if cp ~= nil then
                 local width = self:Width(cp)
+                local key = tostring(cp) .. ":" .. tostring(x)
+                if saved.key ~= key then
+                saved.key = key
                 glyph.UITransformComponent.anchoredPosition = Vector2(x, 0)
                 glyph.UITransformComponent.RectSize = Vector2(width, 12)
-                local atlas = glyph:GetChildByName("Atlas")
+                local atlas = saved.atlas
                 local cell = cp % 16384
                 atlas.SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramProfile.FontPages[math.floor(cp / 16384) + 1])
                 atlas.UITransformComponent.anchoredPosition = Vector2(-(cell % 128) * 16, math.floor(cell / 128) * 16)
+                end
                 x = x + width
             end
         end

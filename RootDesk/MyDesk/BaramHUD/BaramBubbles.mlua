@@ -1,0 +1,163 @@
+@Logic
+script BaramBubbles extends Logic
+    property number Duration = 5
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Original reference: ui.png/ui2.png, white outline, dark translucent fill, EFT glyphs.
+        self._T.bubbles = {}
+        self._T.sequence = 0
+        self._T.canvas = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/Bubbles")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Show(string userId, string message, boolean shout)
+        -- No native MSW balloon skin or external font assets are used.
+        local player = _UserService:GetUserEntityByUserId(userId)
+        local localPlayer = _UserService.LocalPlayer
+        if not isvalid(player) or not isvalid(localPlayer) or not isvalid(player.CurrentMap) or player.CurrentMap ~= localPlayer.CurrentMap then return end
+        local canvas = self._T.canvas
+        if not isvalid(canvas) then return end
+        local old = self._T.bubbles[userId]
+        local lines = {}
+        local text = ""
+        local width = 0
+        local maximum = 0
+        for _, cp in utf8.codes(message) do
+            local advance = _BaramNotices:Width(cp)
+            if width + advance > 120 then
+                table.insert(lines, text) maximum = math.max(maximum, width) text = "" width = 0
+            end
+            text = text .. utf8.char(cp) width = width + advance
+        end
+        if text ~= "" then table.insert(lines, text) maximum = math.max(maximum, width) end
+        if #lines == 0 then return end
+        local entity = old ~= nil and old.entity or nil
+        local fresh = not isvalid(entity)
+        if fresh then
+            self._T.sequence = self._T.sequence + 1
+            entity = _SpawnService:SpawnByEntity(canvas:GetChildByName("Template"), "Speech_" .. tostring(self._T.sequence), Vector3.zero, canvas, true)
+        end
+        if not isvalid(entity) then return end
+        local bubble = fresh and {entity = entity, pixels = {}, rows = {}, texts = {}} or old
+        if fresh then
+            for i = 1,40 do
+                local pixel = entity:GetChildByName("Pixel" .. tostring(i))
+                bubble.pixels[i] = {entity = pixel, atlas = pixel:GetChildByName("Atlas")}
+            end
+            for i = 1,1 do
+                local row = entity:GetChildByName("Line" .. tostring(i))
+                _UILogic:SetSiblingIndex(row.UITransformComponent, 40)
+                local glyphs = {}
+                for n = 1,24 do glyphs[n] = row:GetChildByName("Glyph" .. tostring(n)):GetChildByName("Atlas") end
+                bubble.rows[i] = {entity = row, glyphs = glyphs}
+            end
+        end
+        local w = maximum + 8
+        local h = math.min(#lines, 12) * 12 + 8
+        entity.UITransformComponent.RectSize = Vector2(w, h)
+        -- Reuse an opaque pixel at (51,0) in the original EFT atlas, never a new asset.
+        local index = 0
+        local rect = function(x, y, width, height, color)
+            if width <= 0 or height <= 0 then return end
+            index = index + 1
+            local saved = bubble.pixels[index]
+            local pixel = saved.entity
+            pixel.UITransformComponent.anchoredPosition = Vector2(x, -y)
+            pixel.UITransformComponent.UIScale = Vector3(width, height, 1)
+            saved.atlas.SpriteGUIRendererComponent.Color = color
+            pixel.Enable = true
+        end
+        local dark = Color(0,0,0,0.65)
+        local white = Color.white
+        local mid = math.floor(w/2)
+        if fresh or bubble.width ~= w or bubble.height ~= h then
+        rect(1,2,w-2,h-4,dark)
+        rect(2,1,w-4,1,dark)
+        rect(2,h-2,w-4,1,dark)
+        rect(mid-4,h-1,9,1,dark)
+        rect(2,0,w-4,1,white)
+        rect(0,2,1,h-4,white)
+        rect(w-1,2,1,h-4,white)
+        rect(2,h-1,mid-6,1,white)
+        rect(mid+5,h-1,w-mid-7,1,white)
+        rect(1,1,1,1,white) rect(w-2,1,1,1,white)
+        rect(1,h-2,1,1,white) rect(w-2,h-2,1,1,white)
+        for i = 0,4 do
+            rect(mid-4+i,h+i,9-i*2,1,dark)
+            rect(mid-5+i,h+i,1,1,white)
+            rect(mid+5-i,h+i,1,1,white)
+        end
+        rect(mid,h+5,1,1,white)
+        for i = index+1,40 do bubble.pixels[i].entity.Enable = false end
+        end
+        for i = 1, math.max(#lines, #bubble.rows) do
+            if bubble.rows[i] == nil then
+                -- Allocate additional text rows only when a message actually wraps this far.
+                local template = canvas:GetChildByName("Template"):GetChildByName("Line1")
+                local row = _SpawnService:SpawnByEntity(template, "Line" .. tostring(i), Vector3.zero, entity, true)
+                row.UITransformComponent.anchoredPosition = Vector2(4, -(4 + (i-1)*12))
+                local glyphs = {}
+                for n = 1,24 do glyphs[n] = row:GetChildByName("Glyph" .. tostring(n)):GetChildByName("Atlas") end
+                bubble.rows[i] = {entity = row, glyphs = glyphs, colorSet = false}
+            end
+            local saved = bubble.rows[i]
+            local row = saved.entity
+            row.Enable = lines[i] ~= nil
+            if lines[i] ~= nil and bubble.texts[i] ~= lines[i] then
+                _BaramProfile:Draw(row, lines[i], true)
+                bubble.texts[i] = lines[i]
+            end
+            if fresh or bubble.shout ~= shout or saved.colorSet == false then
+                local color = shout and Color(1,1,0,1) or Color.white
+                for _, atlas in ipairs(saved.glyphs) do atlas.SpriteGUIRendererComponent.Color = color end
+                saved.colorSet = true
+            end
+        end
+        entity.Enable = true
+        bubble.player = player bubble.map = player.CurrentMap bubble.age = 0
+        bubble.width = w bubble.height = h bubble.shout = shout
+        self._T.bubbles[userId] = bubble
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Follow the smoothed display on every observer, not only the local player's actor.
+        local canvas = self._T.canvas
+        if not isvalid(canvas) then return end
+        local localPlayer = _UserService.LocalPlayer
+        for id, bubble in pairs(self._T.bubbles or {}) do
+            bubble.age = bubble.age + delta
+            local player = bubble.player
+            if not isvalid(bubble.entity) or not _BaramEntryFlow.InWorld or not isvalid(player) or not isvalid(localPlayer) or player.CurrentMap ~= bubble.map or localPlayer.CurrentMap ~= bubble.map then
+                if isvalid(bubble.entity) then bubble.entity:Destroy() end
+                self._T.bubbles[id] = nil
+            elseif bubble.age >= self.Duration then
+                -- Keep one disabled instance per connected speaker for the next message.
+                if bubble.entity.Enable then bubble.entity.Enable = false end
+            else
+                local position = player.TransformComponent.WorldPosition
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                if isvalid(visual) and isvalid(visual._T.visual) then position = visual._T.visual.TransformComponent.WorldPosition end
+                local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y + 0.4))
+                -- Frame stretches the original 640x480 client across the entire screen.
+                local point = Vector2(screen.x * 640 / _UILogic.ScreenWidth, (screen.y / _UILogic.ScreenHeight - 1) * 480)
+                local visible = point.x >= 16 and point.x <= 422 and point.y <= -20 and point.y >= -372
+                if bubble.entity.Enable ~= visible then bubble.entity.Enable = visible end
+                local x = math.max(16, math.min(422 - bubble.width, point.x - bubble.width / 2))
+                local y = math.min(-20, point.y + bubble.height + 5)
+                if bubble.x ~= x or bubble.y ~= y then
+                    bubble.entity.UITransformComponent.anchoredPosition = Vector2(x, y)
+                    bubble.x = x bubble.y = y
+                end
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release temporary UI clones on stop/disconnect.
+        for _, bubble in pairs(self._T.bubbles or {}) do if isvalid(bubble.entity) then bubble.entity:Destroy() end end
+        self._T.bubbles = {}
+    end
+end
