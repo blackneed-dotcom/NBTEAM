@@ -81,6 +81,8 @@ script BaramWorld extends Logic
             self._T.users[userId] = record
         end
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
+        if selected.nickname == "" then return false end
+        player.PlayerComponent.Nickname = selected.nickname
         record.player = player
         record.active = false
         if record.allowExchange == nil then record.allowExchange = true end

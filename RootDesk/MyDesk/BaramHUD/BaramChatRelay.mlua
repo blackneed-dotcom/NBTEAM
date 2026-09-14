@@ -78,12 +78,8 @@ script BaramChatRelay extends Logic
 
     @ExecSpace("Client")
     method void ReceiveNotice(string message)
-        -- Keep transport feedback inside the Baram chat history.
-        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
-        if not isvalid(root) then return end
-        ---@type BaramChatHistory
-        local history = root:GetComponent("script.BaramChatHistory")
-        if isvalid(history) then history:AppendMessage("안내", message) end
+        -- Route system feedback to the original notice box above the level display.
+        _BaramNotices:Append(message)
     end
 
     @ExecSpace("ServerOnly")

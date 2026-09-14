@@ -15,6 +15,7 @@ script BaramEntryFlow extends Logic
     property integer SelectedSlot = 1
     property table Characters = {"", "", ""}
     property table Levels = {0, 0, 0}
+    property boolean NamingExisting = false
 
     method void OnBeginPlay()
         if self:IsServer() then
@@ -53,6 +54,9 @@ script BaramEntryFlow extends Logic
         self:Bind("Login/Confirm", "enter")
         self:Bind("Login/Cancel", "cancel")
         self:Bind("Notice/Confirm", "dismiss")
+        self._T.nameSubmit = self:Find("Create/NameInput"):ConnectEvent(TextInputSubmitEvent, function(event)
+            if self.State == "create" then self:Action("create") end
+        end)
         self._T.key = _InputService:ConnectEvent(KeyDownEvent, function(event)
             if self.InWorld or self.Busy then return end
             if event.key == KeyboardKey.Escape then self:Action("cancel")
@@ -99,6 +103,29 @@ script BaramEntryFlow extends Logic
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
         if self.InWorld then return end
+        if self.State == "create" then
+            local inputEntity = self:Find("Create/NameInput")
+            local input = inputEntity.TextGUIRendererInputComponent
+            local bitmap = inputEntity:GetChildByName("Bitmap")
+            local focused = input.IsFocused
+            -- Native rendering owns IME composition and caret placement while editing.
+            -- Only committed, unfocused text is drawn with the original bitmap font.
+            if self._T.nameFocused ~= focused then
+                inputEntity.TextGUIRendererComponent.Font = "Default"
+                inputEntity.TextGUIRendererComponent.FontColor = Color(0, 0, 0, focused and 1 or 0)
+                bitmap.Enable = not focused
+                self._T.nameFocused = focused
+                self._T.nameDrawn = nil
+            end
+            if not focused then
+                local text = input.Text
+                if text == "" then text = "한글 2~6글자" end
+                if self._T.nameDrawn ~= text then
+                    _BaramProfile:Draw(bitmap, text, true)
+                    self._T.nameDrawn = text
+                end
+            end
+        end
         if self.Busy then
             self.RequestWait = self.RequestWait + delta
             if self.RequestWait >= 30 then
@@ -165,10 +192,12 @@ script BaramEntryFlow extends Logic
             elseif action == "new" then self:BeginCreation()
             elseif action == "enter" then
                 if self.Characters[self.SelectedSlot] == "" then self:Notice("아직 생성되지 않은 캐릭터입니다.\n처음하기를 눌러 만들어 주세요.") return end
+                if self:DecodeRecord(self.Characters[self.SelectedSlot]).nickname == "" then self:BeginNaming() return end
                 self.Busy = true
                 self:EnterCharacter(self.SelectedSlot)
             end
         elseif self.State == "create" then
+            if self.NamingExisting and action ~= "create" then return end
             if action == "male" then self.Gender = 0
             elseif action == "female" then self.Gender = 1
             elseif action == "nation0" then self.Nation = 0
@@ -178,9 +207,13 @@ script BaramEntryFlow extends Logic
             elseif action == "turn" then self.PreviewDirection = (self.PreviewDirection + 1) % 4
             elseif string.sub(action, 1, 5) == "totem" then self.Totem = tonumber(string.sub(action, 6)) or 0
             elseif action == "create" then
+                local input = self:Find("Create/NameInput").TextGUIRendererInputComponent
+                local nickname = input.Text
+                local error = _BaramNames:Validate(nickname)
+                if error ~= "" then self:SetText("Create/Status", error) return end
                 self.Busy = true
                 self:SetText("Create/Status", "캐릭터를 저장하고 있습니다...")
-                self:CreateCharacter(self.SelectedSlot, self.Gender, self.Nation, self.Totem, self.Hair)
+                self:CreateCharacter(self.SelectedSlot, self.Gender, self.Nation, self.Totem, self.Hair, nickname)
             end
             self:UpdateSelection()
         elseif action == "enter" and self.State == "login" then
@@ -197,8 +230,23 @@ script BaramEntryFlow extends Logic
         end
         if self.Characters[self.SelectedSlot] ~= "" then self:Notice("이미 생성된 캐릭터입니다.\n빈 슬롯을 선택해 주세요.") return end
         self.Gender = 0 self.Hair = 0 self.Nation = 0 self.Totem = 0 self.PreviewDirection = 2
+        self.NamingExisting = false
+        self:Find("Create/NameInput").TextGUIRendererInputComponent.Text = ""
         self:Show("create")
+        self:Find("Create/NameInput").TextGUIRendererInputComponent:ActivateInputField()
         self:SetText("Create/Status", tostring(self.SelectedSlot) .. "번 슬롯에 새 캐릭터를 만듭니다.")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginNaming()
+        -- Existing unnamed characters only gain a name; appearance and progression stay intact.
+        local saved = self:DecodeRecord(self.Characters[self.SelectedSlot])
+        self.Gender = saved.gender self.Hair = saved.hair self.Nation = saved.nation self.Totem = saved.totem
+        self.NamingExisting = true
+        self:Find("Create/NameInput").TextGUIRendererInputComponent.Text = ""
+        self:Show("create")
+        self:SetText("Create/Status", "기존 캐릭터의 이름을 정해 주세요. 외형과 진행 정보는 유지됩니다.")
+        self:Find("Create/NameInput").TextGUIRendererInputComponent:ActivateInputField()
     end
 
     @ExecSpace("ClientOnly")
@@ -208,14 +256,15 @@ script BaramEntryFlow extends Logic
             local path = "Select/Slot" .. tostring(i)
             local raw = self.Characters[i] or ""
             local occupied = raw ~= ""
-            self:SetText(path .. "/Label", occupied and ("닉네임 미정 : 레벨 [ " .. tostring(self.Levels[i]) .. " ]") or "빈 슬롯 · 처음하기")
+            local saved = self:DecodeRecord(raw)
+            local label = saved.nickname ~= "" and saved.nickname or "이름 설정 필요"
+            self:SetText(path .. "/Label", occupied and (label .. " : 레벨 [ " .. tostring(self.Levels[i]) .. " ]") or "빈 슬롯 · 처음하기")
             self:SetText(path .. "/Number", tostring(i))
             self:Find(path).SpriteGUIRendererComponent.Color = i == self.SelectedSlot and Color(0.42, 0.23, 0.08, 0.3) or Color(0, 0, 0, 0)
             self:Find(path .. "/Body").Enable = occupied
             self:Find(path .. "/Head").Enable = occupied
             self:Find(path .. "/Halo").Enable = occupied
             if occupied then
-                local saved = self:DecodeRecord(raw)
                 self:Find(path .. "/Body").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(saved.gender, 6))
                 self:Find(path .. "/Head").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetHead(saved.hair, 6))
             end
@@ -257,7 +306,8 @@ script BaramEntryFlow extends Logic
             self:SendSlots(userId)
             return
         end
-        self._T.busy[userId] = true
+        local loadTicket = {}
+        self._T.busy[userId] = loadTicket
         local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
         local keys = {}
         for i = 1, 3 do
@@ -276,6 +326,7 @@ script BaramEntryFlow extends Logic
                 pages:MoveToNextPageAndWait()
             end
         end
+        if self._T.busy[userId] ~= loadTicket or not isvalid(player) or _UserService:GetUserEntityByUserId(userId) ~= player then return end
         self._T.busy[userId] = nil
         if code ~= 0 then
             self:ReceiveSlots({"", "", ""}, {0, 0, 0}, false, userId)
@@ -309,39 +360,65 @@ script BaramEntryFlow extends Logic
     end
 
     @ExecSpace("Server")
-    method void CreateCharacter(integer slot, integer gender, integer nation, integer totem, integer hair)
+    method void CreateCharacter(integer slot, integer gender, integer nation, integer totem, integer hair, string nickname)
         -- Dispatch only with the authenticated caller ID.
-        self:CreateForUser(senderUserId, slot, gender, nation, totem, hair)
+        self:CreateForUser(senderUserId, slot, gender, nation, totem, hair, nickname)
     end
 
     @ExecSpace("ServerOnly")
-    method void CreateForUser(string userId, integer slot, integer gender, integer nation, integer totem, integer hair)
+    method void CreateForUser(string userId, integer slot, integer gender, integer nation, integer totem, integer hair, string nickname)
         -- Validate the cap and occupied slot on the server, including forged requests.
         if self._T.busy[userId] or self._T.records[userId] == nil then return end
         if slot < 1 or slot > 3 then self:CreationResult(false, "캐릭터는 최대 3개까지 생성할 수 있습니다.", userId) return end
         if gender < 0 or gender > 1 or nation < 0 or nation > 1 or totem < 0 or totem > 3 or hair < 0 or hair > 9 then self:CreationResult(false, "캐릭터 선택 정보를 확인해 주세요.", userId) return end
         local active = _BaramWorld:GetRecord(userId)
         if active ~= nil and active.active then return end
-        if self._T.records[userId][slot] ~= "" then
+        local nameError = _BaramNames:Validate(nickname)
+        if nameError ~= "" then self:CreationResult(false, nameError, userId) return end
+        local profiles = self._T.records[userId]
+        local levels = self._T.levels[userId]
+        local previous = profiles[slot]
+        if previous ~= "" and self:DecodeRecord(previous).nickname ~= "" then
             self:CreationResult(false, "이미 생성된 캐릭터입니다.", userId)
             log("[BaramSlots] duplicate creation blocked slot=" .. tostring(slot)) return
         end
         local player = _UserService:GetUserEntityByUserId(userId)
         if not isvalid(player) then return end
-        self._T.busy[userId] = true
-        local raw = "2:" .. tostring(gender) .. ":" .. tostring(nation) .. ":" .. tostring(totem) .. ":" .. tostring(hair)
+        if self._T.nameCooldown == nil then self._T.nameCooldown = {} end
+        if (self._T.nameCooldown[userId] or 0) > _BaramWorld.Clock then self:CreationResult(false, "잠시 후 다시 시도해 주세요.", userId) return end
+        self._T.nameCooldown[userId] = _BaramWorld.Clock + 3
+        if previous ~= "" then
+            local old = self:DecodeRecord(previous)
+            gender = old.gender nation = old.nation totem = old.totem hair = old.hair
+        end
+        local ticket = {}
+        self._T.busy[userId] = ticket
+        local raw = "3:" .. tostring(gender) .. ":" .. tostring(nation) .. ":" .. tostring(totem) .. ":" .. tostring(hair) .. ":" .. nickname
         local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
-        local code = storage:SetAndWait(self:SlotKey(self.StorageKey, slot), raw)
+        local ok, result = pcall(function()
+            local registry = _DataStorageService:GetGlobalDataStorage(_BaramNames.RegistryName)
+            local bootstrap = _DataStorageService:GetSortableDataStorage(_BaramNames.BootstrapName)
+            local owner = player.PlayerComponent.ProfileCode .. ":" .. tostring(slot)
+            local claim = _BaramNames:Register(registry, bootstrap, owner, nickname, raw)
+            if not claim.ok then return claim end
+            raw = claim.value
+            return _BaramNames:Persist(storage, self:SlotKey(self.StorageKey, slot), previous, raw)
+        end)
+        if self._T.busy[userId] ~= ticket then return end
         self._T.busy[userId] = nil
-        if code == 0 then
-            self._T.records[userId][slot] = raw
-            self._T.levels[userId][slot] = 1
+        if not isvalid(player) or _UserService:GetUserEntityByUserId(userId) ~= player or self._T.records[userId] ~= profiles then return end
+        if ok and result.ok then
+            profiles[slot] = raw
+            if previous == "" then levels[slot] = 1 end
             self:SendSlots(userId)
             self:CreationResult(true, "캐릭터가 생성되었습니다.\n선택 후 이어하기를 눌러 주세요.", userId)
-            log("[BaramSlots] created slot=" .. tostring(slot))
+            log("[BaramNames] character name saved slot=" .. tostring(slot))
         else
-            self:CreationResult(false, "저장하지 못했습니다. 다시 시도해 주세요.", userId)
-            log_warning("[BaramEntry] save failed code=" .. tostring(code))
+            local message = "저장 결과를 확인하지 못했습니다. 같은 이름으로 다시 시도해 주세요."
+            if ok and result.occupied then message = "이미 생성된 캐릭터입니다. 다시 접속해 주세요."
+            elseif ok and result.value ~= nil then message = "이미 존재하는 이름입니다." end
+            self:CreationResult(false, message, userId)
+            log_warning("[BaramNames] creation refused or uncertain; existing data preserved")
         end
     end
 
@@ -353,6 +430,7 @@ script BaramEntryFlow extends Logic
         local profiles = self._T.records[userId]
         local raw = profiles ~= nil and slot >= 1 and slot <= 3 and profiles[slot] or ""
         local success = raw ~= nil and raw ~= ""
+        if success and self:DecodeRecord(raw).nickname == "" then self:RequireName(slot, userId) return end
         if success then
             self._T.busy[userId] = true
             local ok, entered = pcall(function() return _BaramWorld:Enter(userId, raw, slot) end)
@@ -361,6 +439,14 @@ script BaramEntryFlow extends Logic
             if not ok then log_error("[BaramEntry] world entry failed: " .. tostring(entered)) end
         end
         self:EnterResult(success, userId)
+    end
+
+    @ExecSpace("Client")
+    method void RequireName(integer slot)
+        -- Server prevents bypassing the one-time naming screen for legacy characters.
+        self.Busy = false
+        self.SelectedSlot = slot
+        self:BeginNaming()
     end
 
     @ExecSpace("ServerOnly")
@@ -376,7 +462,7 @@ script BaramEntryFlow extends Logic
 
     @ExecSpace("Client")
     method void ReceiveSlots(table profiles, table levels, boolean success)
-        -- Only server-supplied levels are displayed; nicknames remain deferred.
+        -- Display only server-supplied character names and levels.
         self.Ready = success
         if not success then self:SetText("Loading/Text", "캐릭터를 불러오지 못했습니다. 다시 실행해 주세요.") return end
         self.Characters = profiles self.Levels = levels
@@ -385,12 +471,17 @@ script BaramEntryFlow extends Logic
     end
 
     method boolean IsValidRecord(string raw)
+        -- Version three appends a validated character name; legacy records remain readable.
+        if string.match(raw, "^3:[01]:[01]:[0-3]:[0-9]:") ~= nil then return _BaramNames:Validate(string.sub(raw, 11)) == "" end
         return string.match(raw, "^[01]:[01]:[0-3]$") ~= nil or string.match(raw, "^2:[01]:[01]:[0-3]:[0-9]$") ~= nil
     end
 
     method table DecodeRecord(string raw)
-        local offset = #raw == 9 and 2 or 0
+        -- Keep all old appearance formats intact when adding the name field.
+        local named = string.sub(raw, 1, 2) == "3:"
+        local offset = (#raw == 9 or named) and 2 or 0
         return {gender = tonumber(string.sub(raw, 1 + offset, 1 + offset)) or 0,
+            nickname = named and string.sub(raw, 11) or "",
             nation = tonumber(string.sub(raw, 3 + offset, 3 + offset)) or 0,
             totem = tonumber(string.sub(raw, 5 + offset, 5 + offset)) or 0,
             hair = offset == 2 and (tonumber(string.sub(raw, 9, 9)) or 0) or 0}
@@ -423,10 +514,13 @@ script BaramEntryFlow extends Logic
         self._T.records[event.UserId] = nil
         self._T.busy[event.UserId] = nil
         self._T.levels[event.UserId] = nil
+        if self._T.nameCooldown ~= nil then self._T.nameCooldown[event.UserId] = nil end
     end
 
     @ExecSpace("ClientOnly")
     method void OnEndPlay()
+        local nameInput = self:Find("Create/NameInput")
+        if isvalid(nameInput) and self._T.nameSubmit ~= nil then nameInput:DisconnectEvent(TextInputSubmitEvent, self._T.nameSubmit) end
         for _, item in ipairs(self._T.links or {}) do
             if isvalid(item.entity) then item.entity:DisconnectEvent(UITouchDownEvent, item.link) end
         end
