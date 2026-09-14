@@ -13,7 +13,26 @@ script BaramWorld extends Logic
         self._T.nextDrop = 0
         self._T.flush = 60
         self.Clock = 0
+        -- 사냥터 몹은 BaramHunting 이 젠한다. 그동안은 에디터에서 맵 엔티티에 손으로
+        -- 올려놨어야만 돌았고(코드 어디에도 AddComponent 가 없었다), 안 올라가 있으면
+        -- 315 에 몹이 한 마리도 안 나온다. 여기서 직접 붙인다.
+        self:EnsureHunting(315)
         log("[BaramWorld] server ready: original grids, inventory and persistence")
+    end
+
+    @ExecSpace("ServerOnly")
+    method void EnsureHunting(integer mapId)
+        local mapData = _BaramWorldData:Map(mapId)
+        if mapData == nil then return end
+        local map = _EntityService:GetEntityByPath("/maps/" .. mapData.name)
+        if not isvalid(map) then return end
+        ---@type BaramHunting
+        local hunting = map:GetComponent("script.BaramHunting")
+        if not isvalid(hunting) then hunting = map:AddComponent("BaramHunting") end
+        if not isvalid(hunting) then log_error("[BaramWorld] hunting attach failed on " .. mapData.name) return end
+        -- 런타임에 붙인 컴포넌트는 OnBeginPlay 가 이미 지나갔을 수 있어서 직접 부른다.
+        -- Prepare 는 두 번 불러도 한 번만 젠한다.
+        hunting:Prepare()
     end
 
     @ExecSpace("ServerOnly")
@@ -96,6 +115,8 @@ script BaramWorld extends Logic
         r.state.y = y
         r.nextMove = self.Clock + 0.25
         r.dialog = nil
+        -- 서버가 뜰 때 맵 엔티티가 아직 없었을 수도 있으니, 사냥터에 들어올 때 한 번 더 본다.
+        if mapId == 315 then self:EnsureHunting(mapId) end
         if player.CurrentMap ~= map then _TeleportService:TeleportToMapPosition(player, p, mapData.name)
         else player.PlayerComponent:SetPosition(p) end
         self:Changed(userId)
