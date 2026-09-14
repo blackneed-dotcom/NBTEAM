@@ -100,7 +100,7 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method boolean Blocked()
-        return self.Mode ~= "" or self.Pending ~= ""
+        return self.Mode ~= "" or self.Pending ~= "" or _BaramTrade.SessionId ~= ""
     end
 
     @ExecSpace("ClientOnly")
@@ -159,6 +159,7 @@ script BaramInput extends Logic
         if self.ActivePane ~= "inventory" then self.InventoryPage = 1 end
         self.ActivePane = "inventory"
         if not isvalid(self._T.inventory) then return end
+        _BaramProfile:Close()
         local infoPanel = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/CharacterInfo")
         if isvalid(infoPanel) then infoPanel.Enable = false end
         if isvalid(self._T.window) then self._T.window.Enable = false end
@@ -479,6 +480,7 @@ script BaramInput extends Logic
     @ExecSpace("ClientOnly")
     method void HandleKey(KeyboardKey key)
         -- Route inventory keys only after the title and chat input guards.
+        if _BaramTrade.SessionId ~= "" then _BaramTradeUI:Key(key) return end
         if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
         local shift = _InputService:IsKeyPressed(KeyboardKey.LeftShift) or _InputService:IsKeyPressed(KeyboardKey.RightShift)
         local ctrl = _InputService:IsKeyPressed(KeyboardKey.LeftControl) or _InputService:IsKeyPressed(KeyboardKey.RightControl)
@@ -571,15 +573,10 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.I then self:OpenInventory()
         elseif key == KeyboardKey.K then self:OpenSkills()
         elseif key == KeyboardKey.S then
-            local hud = _EntityService:GetEntityByPath("/ui/BaramHUD")
-            if isvalid(hud) then
-                ---@type BaramHUDController
-                local controller = hud:GetComponent("script.BaramHUDController")
-                if isvalid(controller) then controller:ToggleInfo() end
-            end
+            _BaramProfile:Select(_UserService.LocalPlayer)
         elseif key == KeyboardKey.U then self:BeginItem("use")
         elseif key == KeyboardKey.E and not shift then self:BeginItem("eat")
-        elseif key == KeyboardKey.E and shift then _BaramWorld:SetExchangeAllowed(not self.AllowExchange)
+        elseif key == KeyboardKey.E and shift then _BaramWorld:ToggleExchangeAllowed()
         elseif key == KeyboardKey.W then self:BeginItem(shift and "armor" or "equip")
         elseif key == KeyboardKey.T then
             if shift then
@@ -589,7 +586,16 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.C and not shift then self:BeginItem("swap")
         elseif key == KeyboardKey.X then self:BeginItem("inspect")
         elseif key == KeyboardKey.H then self:BeginItem(shift and "giveall" or "give")
-        elseif key == KeyboardKey.G and shift then self.AllowGroup = not self.AllowGroup self:Notice(self.AllowGroup and "그룹 허가" or "그룹 거부")
+        elseif key == KeyboardKey.G then
+            if shift then _BaramParty:ToggleAllowed()
+            else
+                local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+                if isvalid(root) then
+                    ---@type BaramChatHistory
+                    local chat = root:GetComponent("script.BaramChatHistory")
+                    if isvalid(chat) then chat:OpenGroupInput() end
+                end
+            end
         elseif key == KeyboardKey.Equals or key == KeyboardKey.Plus or (key == KeyboardKey.Z and shift) or (key == KeyboardKey.C and shift) then
             self:OpenSkills()
         elseif key == KeyboardKey.Q then self:BeginConfirmation("quit")

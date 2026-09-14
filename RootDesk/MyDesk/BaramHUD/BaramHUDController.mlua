@@ -2,6 +2,8 @@
 script BaramHUDController extends Component
     -- Shared presentation policy: original world pixels remain at 100 pixels/unit.
     -- 720 reference world pixels / 480 source UI pixels = camera zoom 150%.
+    -- Original map_db.txt names, keyed by the imported client map entity.
+    property table MapTitles = {["barambutcher"]="옥이네푸줏간",["barambuyeo"]="부여성",["baraminn"]="주막연실이네",["barambeginner"]="부여왕초보사냥1"}
     property number WorldZoomPercent = 150
     property Vector2 WorldScreenCenter = Vector2(0.2609375, 0.3625)
     -- Local prototype data, not saved character stats.
@@ -22,6 +24,9 @@ script BaramHUDController extends Component
     @ExecSpace("ClientOnly")
     method void OnBeginPlay()
         -- Resolve fixed UI references once.
+        self._T.mapTitle = self.Entity:GetChildByName("MapName", true)
+        self._T.mapTitleKey = nil
+        self:RefreshMapName()
         self._T.infoSignature = nil
         self._T.infoPanel = self.Entity:GetChildByName("CharacterInfo", true)
         self._T.infoButton = self.Entity:GetChildByName("InfoButton", true)
@@ -41,6 +46,24 @@ script BaramHUDController extends Component
         self._T.mpFill = self.Entity:GetChildByName("MpFill", true)
         self:RefreshDisplay()
         log("[BaramHUD] ready: source frame, bitmap digits, HP/MP/level/experience/gold")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshMapName()
+        -- Follow the local player map and draw its original client name only on change.
+        local title = self._T.mapTitle
+        if not isvalid(title) then return end
+        local player = _UserService.LocalPlayer
+        local currentMap = nil
+        if isvalid(player) then currentMap = player.CurrentMap end
+        local mapKey = ""
+        if isvalid(currentMap) then mapKey = string.lower(currentMap.Name) end
+        if mapKey == self._T.mapTitleKey then return end
+        local label = self.MapTitles[mapKey] or ""
+        if label == "" and isvalid(currentMap) then label = currentMap.Name end
+        title.TextGUIRendererComponent.Text = label
+        self._T.mapTitleKey = mapKey
+        log("[BaramMapName] map=" .. mapKey .. " title=" .. label)
     end
 
     @ExecSpace("ClientOnly")
@@ -112,6 +135,7 @@ script BaramHUDController extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        self:RefreshMapName()
         self:ApplyWorldPresentation()
         if isvalid(self._T.infoPanel) and self._T.infoPanel.Enable then self:RefreshInfo() end
         -- Update only when local values change.
@@ -149,6 +173,7 @@ script BaramHUDController extends Component
 
     @ExecSpace("ClientOnly")
     method void ToggleInfo()
+        if _BaramProfile:IsOpen() then _BaramProfile:Close() return end
         -- Select the status pane; repeated selection keeps it open.
         if not isvalid(self._T.infoPanel) then return end
         if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end

@@ -1,0 +1,595 @@
+{
+  "archive": "C:/Users/black/UI/bint.dat",
+  "sha256": "149b7968049f6e9c19ca762b0eed18043f9fe70f129b80a0ab83eceab9ff36b2",
+  "assets": [
+    {
+      "file": "userlook-0.png",
+      "source": "bint.dat/USERLOOK.EPF",
+      "width": 192,
+      "height": 288,
+      "left": 0,
+      "top": 0,
+      "frame": 0,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "2bdbd74b099240488bfd24774007c8eb"
+    },
+    {
+      "file": "selflok3-0.png",
+      "source": "bint.dat/SELFLOK3.EPF",
+      "width": 192,
+      "height": 288,
+      "left": 0,
+      "top": 0,
+      "frame": 0,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "0ae88f3ef57c492ab841874911b35e5e"
+    },
+    {
+      "file": "lookbtn-0.png",
+      "source": "bint.dat/LOOKBTN.EPF",
+      "width": 26,
+      "height": 26,
+      "left": 0,
+      "top": 0,
+      "frame": 0,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "lookbtn-1.png",
+      "source": "bint.dat/LOOKBTN.EPF",
+      "width": 26,
+      "height": 26,
+      "left": 0,
+      "top": 0,
+      "frame": 1,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "lookbtn-2.png",
+      "source": "bint.dat/LOOKBTN.EPF",
+      "width": 26,
+      "height": 26,
+      "left": 0,
+      "top": 0,
+      "frame": 2,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "lookbtn-3.png",
+      "source": "bint.dat/LOOKBTN.EPF",
+      "width": 26,
+      "height": 26,
+      "left": 0,
+      "top": 0,
+      "frame": 3,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "fd6663ce5da040e3b60faf1483e4da70"
+    },
+    {
+      "file": "lookbtn-4.png",
+      "source": "bint.dat/LOOKBTN.EPF",
+      "width": 26,
+      "height": 26,
+      "left": 0,
+      "top": 0,
+      "frame": 4,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "bafbc55602264393b8c45a2663290632"
+    },
+    {
+      "file": "lookbtn-5.png",
+      "source": "bint.dat/LOOKBTN.EPF",
+      "width": 26,
+      "height": 26,
+      "left": 0,
+      "top": 0,
+      "frame": 5,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-0.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 0,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "e67ebcd71ac847ca818b7cd64bee797e"
+    },
+    {
+      "file": "spellbut-1.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 1,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "922c0e04346649118a7aeaa2f0575b54"
+    },
+    {
+      "file": "spellbut-2.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 2,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "74806d9db63f4bc1a7dc8fdbc1c193a3"
+    },
+    {
+      "file": "spellbut-3.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 3,
+      "palette": "bint.dat/NPAL6.PAL",
+      "ruid": "c2da3fcf480343debca0350d61f9926f"
+    },
+    {
+      "file": "spellbut-4.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 4,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-5.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 5,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-6.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 6,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-7.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 7,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-8.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 8,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-9.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 9,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-10.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 8,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 10,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-11.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 11,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-12.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 12,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-13.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 13,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-14.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 8,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 14,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "spellbut-15.png",
+      "source": "bint.dat/SPELLBUT.EPF",
+      "width": 22,
+      "height": 18,
+      "left": 0,
+      "top": 0,
+      "frame": 15,
+      "palette": "bint.dat/NPAL6.PAL"
+    },
+    {
+      "file": "font-0.png",
+      "source": "bint.dat/BARAM00.EFT",
+      "width": 2048,
+      "height": 2048,
+      "left": 0,
+      "top": 0,
+      "page": 0,
+      "cellSize": 16,
+      "columns": 128,
+      "codepointStart": 0,
+      "ruid": "8dbe6b05e5a7497b8018f657504d5fa0"
+    },
+    {
+      "file": "font-1.png",
+      "source": "bint.dat/BARAM00.EFT",
+      "width": 2048,
+      "height": 2048,
+      "left": 0,
+      "top": 0,
+      "page": 1,
+      "cellSize": 16,
+      "columns": 128,
+      "codepointStart": 16384,
+      "ruid": "5af4b8c835d440a4bee488975c20f0a8"
+    },
+    {
+      "file": "font-2.png",
+      "source": "bint.dat/BARAM00.EFT",
+      "width": 2048,
+      "height": 2048,
+      "left": 0,
+      "top": 0,
+      "page": 2,
+      "cellSize": 16,
+      "columns": 128,
+      "codepointStart": 32768,
+      "ruid": "c5f8ba086ea7441583a72f1bd2b9f2f0"
+    },
+    {
+      "file": "font-3.png",
+      "source": "bint.dat/BARAM00.EFT",
+      "width": 2048,
+      "height": 2048,
+      "left": 0,
+      "top": 0,
+      "page": 3,
+      "cellSize": 16,
+      "columns": 128,
+      "codepointStart": 49152,
+      "ruid": "ef1a9134d2924e5aa803868fa6b077f3"
+    }
+  ],
+  "reused": [
+    {
+      "name": "body-0-6",
+      "source": "char.dat/BODY.EPF",
+      "palette": "char.dat/BODY.PAL",
+      "frame": 6,
+      "file": "Docs/BaramAppearance/Assets/body-0-6.png",
+      "ruid": "c64b25f16d014f5284f06b2ed46e7052",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "body-1-6",
+      "source": "char.dat/BODY.EPF",
+      "palette": "char.dat/BODY.PAL",
+      "frame": 110,
+      "file": "Docs/BaramAppearance/Assets/body-1-6.png",
+      "ruid": "5a0e3745d4f24769af2558adfcf52378",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-0-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 6,
+      "file": "Docs/BaramAppearance/Assets/head-0-6.png",
+      "ruid": "3d16bf20f98748b8a7a2fb67ad1256c4",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-1-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 106,
+      "file": "Docs/BaramAppearance/Assets/head-1-6.png",
+      "ruid": "b254a7f33d4d4041bbc28fa442fe7174",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-2-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 206,
+      "file": "Docs/BaramAppearance/Assets/head-2-6.png",
+      "ruid": "368df95b9ccf48f08476ea29a8ea26cd",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-3-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 306,
+      "file": "Docs/BaramAppearance/Assets/head-3-6.png",
+      "ruid": "16f9bfd585f34ab49faad428b1bb568a",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-4-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 406,
+      "file": "Docs/BaramAppearance/Assets/head-4-6.png",
+      "ruid": "68e17bac3eda4a479a68d4304201d64f",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-5-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 506,
+      "file": "Docs/BaramAppearance/Assets/head-5-6.png",
+      "ruid": "c1784502e7b5424e97a90ae6a7ca476d",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-6-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 606,
+      "file": "Docs/BaramAppearance/Assets/head-6-6.png",
+      "ruid": "c67518162cf246a6a9323eec42b2ac99",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-7-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 706,
+      "file": "Docs/BaramAppearance/Assets/head-7-6.png",
+      "ruid": "5dfee0c94aa441d794c9bf5269805857",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-8-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 806,
+      "file": "Docs/BaramAppearance/Assets/head-8-6.png",
+      "ruid": "907822864a0b4d568ebe902fad23289e",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "head-9-6",
+      "source": "char.dat/Head.EPF",
+      "palette": "char.dat/Head.PAL",
+      "frame": 906,
+      "file": "Docs/BaramAppearance/Assets/head-9-6.png",
+      "ruid": "ddcfbd4ccee342eab23820168ba4b841",
+      "width": 48,
+      "height": 72,
+      "origin": [
+        24,
+        60
+      ]
+    },
+    {
+      "name": "equipped-item-17",
+      "source": "MISC.DAT/item.epf",
+      "palette": "MISC.DAT/item.pal",
+      "frame": 2,
+      "file": "Docs/BaramSource/Assets/item17.png",
+      "ruid": "53fbd0a9bed24c72b53ac3def57d85ac",
+      "width": 48,
+      "height": 48,
+      "origin": [
+        24,
+        36
+      ]
+    },
+    {
+      "name": "existing-HUD-info-button",
+      "source": "ui1.png",
+      "intermediate": "RootDesk/MyDesk/BaramHUD/Source/ui1-422x15.png",
+      "crop": [
+        300,
+        0,
+        20,
+        15
+      ],
+      "file": "RootDesk/MyDesk/BaramHUD/Converted/info-icon.png",
+      "ruid": "230e51d8c4f0448c97024131a81500cd",
+      "verification": "Exact pixel match with existing original-reference toolbar crop; existing resource unchanged."
+    }
+  ],
+  "sourceRoot": "C:/Users/black/UI/",
+  "clientEvidence": {
+    "binary": "winbaram.exe",
+    "draw": "0x4D72A0",
+    "rectangles": "0x4D7EA0",
+    "font": "0x434645",
+    "buttons": "BARAM.DAT/STR.RES entries 198,199 (zero based)",
+    "cppSourceAvailable": false
+  },
+  "layout": {
+    "nativeCanvas": [
+      640,
+      480
+    ],
+    "window": [
+      434,
+      12,
+      192,
+      288
+    ],
+    "canvasScale": [
+      3,
+      2.25
+    ],
+    "fontColor": [
+      228,
+      204,
+      147
+    ],
+    "fontCell": [
+      12,
+      12
+    ],
+    "fields": {
+      "clan": [
+        174,
+        36
+      ],
+      "clanTitle": [
+        174,
+        53
+      ],
+      "title": [
+        174,
+        70
+      ],
+      "className": [
+        94,
+        91
+      ],
+      "name": [
+        174,
+        91
+      ]
+    },
+    "equipmentAnchor": [
+      35,
+      123
+    ],
+    "portraitCanvas": [
+      72,
+      112,
+      48,
+      72
+    ],
+    "portraitAdjustment": "User requested 10px downward, then 2px further downward (12 native pixels total)",
+    "nameColor": [
+      0,
+      0,
+      0
+    ],
+    "weaponText": {
+      "position": [
+        22,
+        194
+      ],
+      "size": [
+        152,
+        12
+      ],
+      "alignment": "left",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "format": "w 무기: {equipped item name}",
+      "labelEvidence": "User explicitly supplied w 무기: format",
+      "nameSource": "item_db.txt via BaramWorldData.Items"
+    }
+  }
+}

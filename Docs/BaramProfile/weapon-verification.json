@@ -1,0 +1,677 @@
+{
+  "status": "ok",
+  "kind": "normal",
+  "count": 35,
+  "logs": [
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramChatRelay] same-map server relay ready",
+      "stackTrace": [
+        {
+          "methodName": "BaramChatRelay.OnBeginPlay",
+          "methodLineNum": 4,
+          "codeBlockFileId": "44c29832-c95a-4ccf-9d4a-2a08b357eb53"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramWorld] server ready: original grids, inventory and persistence",
+      "stackTrace": [
+        {
+          "methodName": "BaramWorld.OnBeginPlay",
+          "methodLineNum": 7,
+          "codeBlockFileId": "277a89b1-17c4-4e7f-a033-3fc98606b2fb"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramEntry] screen=loading",
+      "stackTrace": [
+        {
+          "methodName": "BaramEntryFlow.Show",
+          "methodLineNum": 10,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        },
+        {
+          "methodName": "BaramEntryFlow.OnBeginPlay",
+          "methodLineNum": 17,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramKeys] original STR.RES key dispatcher ready",
+      "stackTrace": [
+        {
+          "methodName": "BaramInput.OnBeginPlay",
+          "methodLineNum": 65,
+          "codeBlockFileId": "e27cd493-2ce1-4d25-aafe-91a9a487ab12"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramMove] original walk: 80ms x 4, frames 0/1/0/2; smooth display ready",
+      "stackTrace": [
+        {
+          "methodName": "BaramInput.OnBeginPlay",
+          "methodLineNum": 66,
+          "codeBlockFileId": "e27cd493-2ce1-4d25-aafe-91a9a487ab12"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramProfile] ready",
+      "stackTrace": [
+        {
+          "methodName": "BaramProfile.OnBeginPlay",
+          "methodLineNum": 13,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramAppearance] world=0:0",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.ShowFrame",
+          "methodLineNum": 9,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        },
+        {
+          "methodName": "BaramMinimalController.OnBeginPlay",
+          "methodLineNum": 14,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] begin: original body and head layers, test speed=1.2, interval=0.12",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnBeginPlay",
+          "methodLineNum": 15,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramStats] level-1 attributes: strength=1 dexterity=1 intelligence=1",
+      "stackTrace": [
+        {
+          "methodName": "BaramCharacterStats.OnBeginPlay",
+          "methodLineNum": 3,
+          "codeBlockFileId": "0c4f5f56-d5d6-4622-95db-fbe061b74f75"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "eb7e3df1-f128-4077-8048-553fbd192076",
+      "message": "[BaramMapName] map=baramminimaltest title=BaramMinimalTest",
+      "stackTrace": [
+        {
+          "methodName": "BaramHUDController.RefreshMapName",
+          "methodLineNum": 14,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        },
+        {
+          "methodName": "BaramHUDController.OnBeginPlay",
+          "methodLineNum": 4,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "eb7e3df1-f128-4077-8048-553fbd192076",
+      "message": "[BaramHUD] ready: source frame, bitmap digits, HP/MP/level/experience/gold",
+      "stackTrace": [
+        {
+          "methodName": "BaramHUDController.OnBeginPlay",
+          "methodLineNum": 23,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "98de0c75-5e3f-4bf4-a930-b43ba4a38dcd",
+      "message": "[BaramChat] custom input ready: Enter=open/send, Escape=cancel",
+      "stackTrace": [
+        {
+          "methodName": "BaramChatHistory.OnBeginPlay",
+          "methodLineNum": 38,
+          "codeBlockFileId": "acb8816d-9496-47c3-806e-371df198a78d"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramStats] HUD attributes=1:1:1",
+      "stackTrace": [
+        {
+          "methodName": "BaramCharacterStats.OnUpdate",
+          "methodLineNum": 14,
+          "codeBlockFileId": "0c4f5f56-d5d6-4622-95db-fbe061b74f75"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramCamera] follow enabled: actor world position, no smoothing",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 22,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] ready: arrow keys; test map only",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 29,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "eb7e3df1-f128-4077-8048-553fbd192076",
+      "message": "[BaramViewport] camera=TestCamera zoom=150.0",
+      "stackTrace": [
+        {
+          "methodName": "BaramHUDController.ApplyWorldPresentation",
+          "methodLineNum": 11,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        },
+        {
+          "methodName": "BaramHUDController.OnUpdate",
+          "methodLineNum": 2,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramEntry] original screens loaded",
+      "stackTrace": [
+        {
+          "methodName": "BaramEntryFlow.OnBeginPlay",
+          "methodLineNum": 59,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramSlots] loaded three slots; legacy slot one preserved",
+      "stackTrace": [
+        {
+          "methodName": "BaramEntryFlow.LoadForUser",
+          "methodLineNum": 56,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        },
+        {
+          "methodName": "BaramEntryFlow.LoadCharacter",
+          "methodLineNum": 1,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramEntry] screen=title",
+      "stackTrace": [
+        {
+          "methodName": "BaramEntryFlow.Show",
+          "methodLineNum": 10,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        },
+        {
+          "methodName": "BaramEntryFlow.OnUpdate",
+          "methodLineNum": 15,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramWorld] map=14 cell=39,113",
+      "stackTrace": [
+        {
+          "methodName": "BaramWorld.Place",
+          "methodLineNum": 16,
+          "codeBlockFileId": "277a89b1-17c4-4e7f-a033-3fc98606b2fb"
+        },
+        {
+          "methodName": "BaramWorld.Enter",
+          "methodLineNum": 41,
+          "codeBlockFileId": "277a89b1-17c4-4e7f-a033-3fc98606b2fb"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramWorld] entered slot=1 level=1 map=14",
+      "stackTrace": [
+        {
+          "methodName": "BaramWorld.Enter",
+          "methodLineNum": 43,
+          "codeBlockFileId": "277a89b1-17c4-4e7f-a033-3fc98606b2fb"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "cd7659d6-2616-472f-8b9e-ac394516151d",
+      "message": "[BaramPlayer] visual created on BaramMinimalTest",
+      "stackTrace": [
+        {
+          "methodName": "BaramPlayerVisual.OnUpdate",
+          "methodLineNum": 17,
+          "codeBlockFileId": "69778b49-da9c-4088-bf89-72ba25d5e85a"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramEntry] entered saved world / first start Buyeo",
+      "stackTrace": [
+        {
+          "methodName": "BaramEntryFlow.EnterResult",
+          "methodLineNum": 8,
+          "codeBlockFileId": "90ce7f26-69bb-4db2-b3aa-d5584556a0c4"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "98de0c75-5e3f-4bf4-a930-b43ba4a38dcd",
+      "message": "[BaramChat] input closed",
+      "stackTrace": [
+        {
+          "methodName": "BaramChatHistory.CloseInput",
+          "methodLineNum": 11,
+          "codeBlockFileId": "acb8816d-9496-47c3-806e-371df198a78d"
+        },
+        {
+          "methodName": "BaramChatHistory.OnUpdate",
+          "methodLineNum": 7,
+          "codeBlockFileId": "acb8816d-9496-47c3-806e-371df198a78d"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "cd7659d6-2616-472f-8b9e-ac394516151d",
+      "message": "[BaramPlayer] visual created on barambuyeo",
+      "stackTrace": [
+        {
+          "methodName": "BaramPlayerVisual.OnUpdate",
+          "methodLineNum": 17,
+          "codeBlockFileId": "69778b49-da9c-4088-bf89-72ba25d5e85a"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "eb7e3df1-f128-4077-8048-553fbd192076",
+      "message": "[BaramMapName] map=barambuyeo title=부여성",
+      "stackTrace": [
+        {
+          "methodName": "BaramHUDController.RefreshMapName",
+          "methodLineNum": 14,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        },
+        {
+          "methodName": "BaramHUDController.OnUpdate",
+          "methodLineNum": 1,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "eb7e3df1-f128-4077-8048-553fbd192076",
+      "message": "[BaramViewport] camera=TestCamera zoom=150.0",
+      "stackTrace": [
+        {
+          "methodName": "BaramHUDController.ApplyWorldPresentation",
+          "methodLineNum": 11,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        },
+        {
+          "methodName": "BaramHUDController.OnUpdate",
+          "methodLineNum": 2,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramInventoryUI] closed",
+      "stackTrace": [
+        {
+          "methodName": "BaramInput.Close",
+          "methodLineNum": 10,
+          "codeBlockFileId": "e27cd493-2ce1-4d25-aafe-91a9a487ab12"
+        },
+        {
+          "methodName": "BaramProfile.Select",
+          "methodLineNum": 13,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        },
+        {
+          "methodName": "BaramProfile.OnUpdate",
+          "methodLineNum": 7,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramProfile] selected 20372100004685557",
+      "stackTrace": [
+        {
+          "methodName": "BaramProfile.Select",
+          "methodLineNum": 17,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        },
+        {
+          "methodName": "BaramProfile.OnUpdate",
+          "methodLineNum": 7,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramProfile] opened own profile on login",
+      "stackTrace": [
+        {
+          "methodName": "BaramProfile.OnUpdate",
+          "methodLineNum": 9,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:34",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramProfile] data name=나몽 equipment=0",
+      "stackTrace": [
+        {
+          "methodName": "BaramProfile.Receive",
+          "methodLineNum": 18,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[WeaponProfileVerify] black name and w weapon row PASS value=",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 0,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:19:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[WeaponProfileVerify] equip=0",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 0,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:20:16",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "98de0c75-5e3f-4bf4-a930-b43ba4a38dcd",
+      "message": "[BaramChat] input closed",
+      "stackTrace": [
+        {
+          "methodName": "BaramChatHistory.CloseInput",
+          "methodLineNum": 11,
+          "codeBlockFileId": "acb8816d-9496-47c3-806e-371df198a78d"
+        },
+        {
+          "methodName": "BaramChatHistory.OnEndPlay",
+          "methodLineNum": 7,
+          "codeBlockFileId": "acb8816d-9496-47c3-806e-371df198a78d"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T18:20:16",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramProfile] closed 20372100004685557",
+      "stackTrace": [
+        {
+          "methodName": "BaramProfile.Close",
+          "methodLineNum": 1,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        },
+        {
+          "methodName": "BaramProfile.OnEndPlay",
+          "methodLineNum": 1,
+          "codeBlockFileId": "a104476a-30b1-4a10-8848-1303d30553a5"
+        }
+      ]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ script BaramChatHistory extends Component
     property Entity InputHint = "7167aa09-90fe-429c-9c3b-18f984296d09"
     property TextGUIRendererInputComponent InputField = "a1681a6c-9872-4bdd-a295-0eecab1cb7bd"
     property string CommandPrompt = ""
+    property string InputPurpose = ""
     @ExecSpace("ClientOnly")
     method void OnBeginPlay()
         -- Connect the custom input while preserving the five existing history rows.
@@ -26,6 +27,8 @@ script BaramChatHistory extends Component
         self.InputHint.Enable = true
         self.InputField.Text = ""
         self.CommandPrompt = ""
+        self.InputPurpose = ""
+        self._T.defaultPlaceholder = self.InputField.PlaceHolder
         self._T.defaultHint = self.InputHint.TextGUIRendererComponent.Text
         self._T.defaultHintColor = self.InputHint.TextGUIRendererComponent.FontColor
         self._T.defaultHintSize = self.InputHint.TextGUIRendererComponent.FontSize
@@ -81,8 +84,22 @@ script BaramChatHistory extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void OpenGroupInput()
+        -- Original G command accepts a name; entering one's own name leaves the group.
+        if not _BaramEntryFlow.InWorld or _BaramChatRelay:IsInputBlocked() then return end
+        self:OpenInput()
+        if not _BaramChatRelay.IsEditing then return end
+        self.InputPurpose = "group"
+        self.InputField.PlaceHolder = "그룹할 사람 이름"
+        _BaramInput:Notice("그룹할 사람의 이름을 입력하세요. 자기 이름을 입력하면 탈퇴합니다.")
+        log("[BaramParty] name entry opened")
+    end
+
+    @ExecSpace("ClientOnly")
     method void CloseInput()
         -- Disabling the input releases focus; suppress the closing key briefly.
+        self.InputPurpose = ""
+        if isvalid(self.InputField) then self.InputField.PlaceHolder = self._T.defaultPlaceholder or "" end
         _BaramChatRelay.IsEditing = false
         _BaramChatRelay.InputBlockSeconds = 0.15
         self._T.closePending = false
@@ -101,8 +118,14 @@ script BaramChatHistory extends Component
         if not _BaramChatRelay.IsEditing or self._T.focusPending then return end
         local text = string.gsub(message or "", "%c", " ")
         text = string.match(text, "^%s*(.-)%s*$") or ""
+        local purpose = self.InputPurpose
         self:CloseInput()
         if text == "" then return end
+        if purpose == "group" then
+            _BaramParty:RequestName(text)
+            log("[BaramParty] name entry submitted")
+            return
+        end
         log("[BaramChat] submit bytes=" .. tostring(#text))
         _BaramChatRelay:RequestMessage(text)
     end

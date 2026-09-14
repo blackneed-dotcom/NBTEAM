@@ -32,6 +32,8 @@ script BaramChatRelay extends Logic
         -- Resolve identity on the server and deliver to the same map instance only.
         local player = _UserService:GetUserEntityByUserId(senderUserId)
         if not isvalid(player) or not isvalid(player.CurrentMap) then return end
+        local record = _BaramWorld:GetRecord(senderUserId)
+        if record == nil or not record.active then return end
         if message == nil or #message > 480 then return end
         local length = utf8.len(message)
         if length == nil or length > 120 then return end
@@ -51,8 +53,11 @@ script BaramChatRelay extends Logic
         local count = 0
         for _, recipient in ipairs(users) do
             if isvalid(recipient) and recipient.CurrentMap == map then
-                self:ReceiveMessage(map.Id, player.PlayerComponent.Nickname, text, recipient.PlayerComponent.UserId)
-                count = count + 1
+                local other = _BaramWorld:GetRecord(recipient.PlayerComponent.UserId)
+                if other ~= nil and other.active then
+                    self:ReceiveMessage(map.Id, player.PlayerComponent.Nickname, text, recipient.PlayerComponent.UserId)
+                    count = count + 1
+                end
             end
         end
         log("[BaramChatRelay] delivered recipients=" .. tostring(count) .. " bytes=" .. tostring(#text))
@@ -61,6 +66,7 @@ script BaramChatRelay extends Logic
     @ExecSpace("Client")
     method void ReceiveMessage(string mapId, string nickname, string message)
         -- Ignore delayed messages after a map change; display plain text only.
+        if not _BaramEntryFlow.InWorld then return end
         local player = _UserService.LocalPlayer
         if not isvalid(player) or not isvalid(player.CurrentMap) or player.CurrentMap.Id ~= mapId then return end
         local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")

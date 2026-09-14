@@ -1,0 +1,251 @@
+@Logic
+script BaramTradeUI extends Logic
+    property Entity Modal = "876954f1-69a0-4567-8d75-262647f2d1ed"
+    property string Page = ""
+    property string NumberText = ""
+    property string NumberPurpose = ""
+    property integer InventoryOffset = 0
+    property integer OwnOffset = 0
+    property integer PeerOffset = 0
+    property table Selected = {}
+    property table Queue = {}
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Bind the original dialog hit rectangles; use the existing bitmap font.
+        self._T.links = {}
+        _BaramTrade.SessionId = ""
+        _BaramTrade.View = {}
+        self:Close()
+        if not isvalid(self.Modal) then log_error("[BaramTradeUI] missing modal") return end
+        for _, path in ipairs({"Main/OK", "Main/Add", "Main/Cancel", "Main/OwnGoldHit", "Main/OwnUp", "Main/OwnDown", "Main/PeerUp", "Main/PeerDown", "AddBlock/Window/OK", "AddBlock/Window/Cancel", "AddBlock/Window/Up", "AddBlock/Window/Down", "NumberBlock/Window/OK", "NumberBlock/Window/Cancel"}) do
+            local action = path
+            local entity = self:Find(path)
+            local link = entity:ConnectEvent(UITouchDownEvent, function() self:Action(action) end)
+            table.insert(self._T.links, {entity = entity, link = link})
+        end
+        for i = 1, 11 do
+            local index = i
+            local entity = self:Find("AddBlock/Window/Row" .. tostring(i))
+            local link = entity:ConnectEvent(UITouchDownEvent, function() self:SelectRow(index) end)
+            table.insert(self._T.links, {entity = entity, link = link})
+        end
+        log("[BaramTradeUI] original dialogs bound")
+    end
+
+    @ExecSpace("ClientOnly")
+    method Entity Find(string path)
+        -- Resolve descendants without caching map-bound references across transitions.
+        local entity = self.Modal
+        for part in string.gmatch(path, "[^/]+") do
+            if not isvalid(entity) then return nil end
+            entity = entity:GetChildByName(part)
+        end
+        return entity
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Text(string path, string value)
+        -- No platform font substitutions: all visible letters use BARAM00.EFT.
+        _BaramProfile:Draw(self:Find(path), value, true)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Render(table view)
+        -- Keep local scrolling/input while refreshing the authoritative offered items.
+        if not isvalid(self.Modal) then return end
+        if not self.Modal.Enable then
+            _BaramInput:Close()
+            _BaramProfile:Close()
+            self.Page = "main"
+            self.OwnOffset = 0
+            self.PeerOffset = 0
+            self.InventoryOffset = 0
+            self.Selected = {}
+            self.Modal.Enable = true
+            log("[BaramTradeUI] opened")
+        end
+        self:Text("Main/OwnName", view.ownName .. (view.own.confirmed and " [확인]" or ""))
+        self:Text("Main/PeerName", view.peerName .. (view.peer.confirmed and " [확인]" or ""))
+        self:Text("Main/OwnGold", tostring(view.own.gold))
+        self:Text("Main/PeerGold", tostring(view.peer.gold))
+        self:Rows("Main/OwnRow", view.own.items, self.OwnOffset)
+        self:Rows("Main/PeerRow", view.peer.items, self.PeerOffset)
+        self:Text("Main/Status", view.busy and "저장 결과 확인 중" or "")
+        if view.busy then self.Page = "main" end
+        self:RefreshPage()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Rows(string prefix, table entries, integer offset)
+        -- Eleven complete 12-pixel rows fit the original list; arrows reveal row twelve.
+        for i = 1, 11 do
+            local entry = entries[offset + i]
+            local text = ""
+            if entry ~= nil then
+                local data = _BaramWorldData:Item(entry.item.id)
+                text = data.name .. " " .. tostring(entry.count)
+            end
+            self:Text(prefix .. tostring(i), text)
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method table Available()
+        -- Hide already-reserved quantities and equipped/nontradeable items.
+        local view = _BaramTrade.View
+        local result = {}
+        if view.inventory == nil then return result end
+        for slot = 1, 52 do
+            local item = view.inventory[tostring(slot)]
+            if item ~= nil and slot ~= view.equip then
+                local data = _BaramWorldData:Item(item.id)
+                local remaining = item.count
+                for _, entry in ipairs(view.own.items) do if entry.slot == slot then remaining = remaining - entry.count end end
+                if data ~= nil and data.dropAllowed == 1 and remaining > 0 then table.insert(result, {slot = slot, item = item, count = remaining}) end
+            end
+        end
+        return result
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshPage()
+        -- Subdialog-wide hit blockers stop clicks from reaching the main dialog.
+        self:Find("AddBlock").Enable = self.Page == "add"
+        self:Find("NumberBlock").Enable = self.Page == "number"
+        if self.Page == "add" then
+            local list = self:Available()
+            self.InventoryOffset = math.max(0, math.min(math.max(0, #list - 11), self.InventoryOffset))
+            for i = 1, 11 do
+                local entry = list[self.InventoryOffset + i]
+                local value = ""
+                if entry ~= nil then
+                    value = (self.Selected[entry.slot] and "* " or "  ") .. _BaramWorldData:Item(entry.item.id).name .. " " .. tostring(entry.count)
+                end
+                self:Text("AddBlock/Window/Row" .. tostring(i) .. "/Text", value)
+            end
+        elseif self.Page == "number" then
+            self:Text("NumberBlock/Window/Title", self.NumberPurpose == "gold" and "교환할 금전" or "교환할 아이템 개수")
+            self:Text("NumberBlock/Window/Value", self.NumberText .. "_")
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SelectRow(integer index)
+        -- The original Add dialog allows selecting several inventory rows.
+        if self.Page ~= "add" or _BaramTrade.View.busy then return end
+        local entry = self:Available()[self.InventoryOffset + index]
+        if entry == nil then return end
+        self.Selected[entry.slot] = not self.Selected[entry.slot]
+        self:RefreshPage()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Action(string action)
+        -- Route all actions through authenticated server RPCs using this session id.
+        if _BaramTrade.SessionId == "" then return end
+        if action == "Main/Cancel" then _BaramTrade:Cancel(_BaramTrade.SessionId) return end
+        if _BaramTrade.View.busy then return end
+        if action == "Main/OK" then _BaramTrade:Confirm(_BaramTrade.SessionId, _BaramTrade.View.revision)
+        elseif action == "Main/Add" then self.Page = "add" self.Selected = {} self:RefreshPage()
+        elseif action == "Main/OwnGoldHit" then
+            self.NumberPurpose = "gold" self.NumberText = tostring(_BaramTrade.View.own.gold) self.Page = "number" self:RefreshPage()
+        elseif action == "Main/OwnUp" or action == "Main/OwnDown" then
+            self.OwnOffset = math.max(0, math.min(math.max(0, #_BaramTrade.View.own.items - 11), self.OwnOffset + (action == "Main/OwnUp" and -1 or 1)))
+            self:Render(_BaramTrade.View)
+        elseif action == "Main/PeerUp" or action == "Main/PeerDown" then
+            self.PeerOffset = math.max(0, math.min(math.max(0, #_BaramTrade.View.peer.items - 11), self.PeerOffset + (action == "Main/PeerUp" and -1 or 1)))
+            self:Render(_BaramTrade.View)
+        elseif action == "AddBlock/Window/Up" or action == "AddBlock/Window/Down" then
+            self.InventoryOffset = self.InventoryOffset + (action == "AddBlock/Window/Up" and -1 or 1) self:RefreshPage()
+        elseif action == "AddBlock/Window/Cancel" or action == "NumberBlock/Window/Cancel" then
+            self.Queue = {} self.Page = "main" self:RefreshPage()
+        elseif action == "AddBlock/Window/OK" then
+            self.Queue = {}
+            for _, entry in ipairs(self:Available()) do if self.Selected[entry.slot] then table.insert(self.Queue, entry) end end
+            self:NextItem()
+        elseif action == "NumberBlock/Window/OK" then self:SubmitNumber() end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void NextItem()
+        -- Ask for stack quantities with original DLGEXC3, one selected item at a time.
+        local entry = self.Queue[1]
+        if entry == nil then self.Page = "main" self:RefreshPage() return end
+        if entry.count == 1 then
+            _BaramTrade:Add(_BaramTrade.SessionId, entry.slot, 1)
+            table.remove(self.Queue, 1)
+            self:NextItem()
+            return
+        end
+        self.NumberPurpose = "item"
+        self.NumberText = "1"
+        self.Page = "number"
+        self:RefreshPage()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SubmitNumber()
+        -- Validate the text locally for feedback; the server repeats every check.
+        local amount = tonumber(self.NumberText)
+        if amount == nil or amount < 0 or amount ~= math.floor(amount) then return end
+        if self.NumberPurpose == "gold" then
+            if amount > _BaramTrade.View.gold then _BaramInput:Notice("금전이 부족합니다.") return end
+            _BaramTrade:Money(_BaramTrade.SessionId, amount)
+            self.Page = "main"
+            self:RefreshPage()
+        else
+            local entry = self.Queue[1]
+            if entry == nil or amount < 1 or amount > entry.count or amount > 255 then return end
+            _BaramTrade:Add(_BaramTrade.SessionId, entry.slot, amount)
+            table.remove(self.Queue, 1)
+            self:NextItem()
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Key(KeyboardKey key)
+        -- Numeric entry draws original glyphs instead of substituting an OS font.
+        if key == KeyboardKey.Escape then
+            if self.Page == "main" then _BaramTrade:Cancel(_BaramTrade.SessionId)
+            else self.Page = "main" self.Queue = {} self:RefreshPage() end
+            return
+        end
+        if _BaramTrade.View.busy then return end
+        if self.Page == "number" then
+            if key == KeyboardKey.Return or key == KeyboardKey.KeypadEnter then self:SubmitNumber() return end
+            if key == KeyboardKey.Backspace then self.NumberText = string.sub(self.NumberText, 1, math.max(0, #self.NumberText - 1))
+            else
+                for digit = 0, 9 do
+                    if key == KeyboardKey.CastFrom("Alpha" .. tostring(digit)) or key == KeyboardKey.CastFrom("Keypad" .. tostring(digit)) then
+                        if #self.NumberText < 10 then self.NumberText = (self.NumberText == "0" and "" or self.NumberText) .. tostring(digit) end
+                        break
+                    end
+                end
+            end
+            self:RefreshPage()
+        elseif key == KeyboardKey.Return then
+            self:Action(self.Page == "add" and "AddBlock/Window/OK" or "Main/OK")
+        elseif self.Page == "add" and (key == KeyboardKey.UpArrow or key == KeyboardKey.DownArrow) then
+            self:Action(key == KeyboardKey.UpArrow and "AddBlock/Window/Up" or "AddBlock/Window/Down")
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Close()
+        -- Hide the whole modal and discard only local, unsubmitted selections.
+        if isvalid(self.Modal) then self.Modal.Enable = false end
+        self.Page = ""
+        self.Queue = {}
+        self.Selected = {}
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release every input subscription on stop/reload.
+        self:Close()
+        for _, link in ipairs(self._T.links or {}) do
+            if isvalid(link.entity) then link.entity:DisconnectEvent(UITouchDownEvent, link.link) end
+        end
+    end
+end
