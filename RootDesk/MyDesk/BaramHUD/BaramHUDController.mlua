@@ -50,7 +50,25 @@ script BaramHUDController extends Component
         self._T.jobSignature = nil
         self:SetJob(_BaramWorld.LocalState.jobId or 0, _BaramWorld.LocalState.jobRank or 0)
         self:RefreshDisplay()
+        self:SetCoordinates(_BaramWorld.LocalState.x or 0, _BaramWorld.LocalState.y or 0)
         log("[BaramHUD] ready: source frame, bitmap digits, HP/MP/level/experience/gold")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetCoordinates(integer x, integer y)
+        -- winbaram 4E6CBF: %04u/%04u, 9x11 bank 2; slash is baked into USERSTAT.
+        local text = string.format("%04d/%04d", x, y)
+        if self._T.coordinates == text then return end
+        local row = self._T.coordinateRow
+        if not isvalid(row) then row = self.Entity:GetChildByName("RowCoordinates", true) self._T.coordinateRow = row end
+        if not isvalid(row) then return end
+        for i = 1, 9 do
+            local glyph = row:GetChildByName("Digit" .. tostring(i))
+            local digit = tonumber(string.sub(text, i, i))
+            glyph.Enable = digit ~= nil
+            if digit ~= nil then glyph.SpriteGUIRendererComponent.ImageRUID = DataRef(self.DigitRuids[digit + 1]) end
+        end
+        self._T.coordinates = text
     end
 
     @ExecSpace("ClientOnly")

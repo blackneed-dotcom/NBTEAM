@@ -1,0 +1,12 @@
+@Component
+script BaramNpcTouch extends Component
+    @ExecSpace("ClientOnly")
+    @EventSender("Self")
+    handler HandleTouch(TouchEvent event)
+        -- World touch routes to the server; UI clicks never select a NPC behind it.
+        if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing or _InputService:IsPointerOverUI() then return end
+        if _BaramInput:Blocked() then return end
+        local npcId = tonumber(string.match(self.Entity.Name, "^Npc(%d+)$"))
+        if npcId ~= nil then _BaramNpcServices:Open(npcId) end
+    end
+end

@@ -93,6 +93,36 @@ script BaramPlayerVisual extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void OnMapEnter(Entity map)
+        -- Select the destination camera before display spawning or texture preparation.
+        self:PrepareCamera(map)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void PrepareCamera(Entity map)
+        -- Camera setup is map-scoped; following the bodyless visual stays per-frame.
+        if self.Entity ~= _UserService.LocalPlayer or not isvalid(map) then return end
+        if self._T.cameraMap ~= map or not isvalid(self._T.camera) then
+            self._T.camera = map:GetChildByName("TestCamera")
+            self._T.cameraMap = map
+        end
+        local camera = self._T.camera
+        if not isvalid(camera) then return end
+        local current = _CameraService:GetCurrentCameraComponent()
+        if current == camera.CameraComponent then return end
+        local p = self.Entity.TransformComponent.WorldPosition
+        camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
+        camera.CameraComponent.Damping = Vector2(0, 0)
+        camera.CameraComponent.DeadZone = Vector2(0, 0)
+        camera.CameraComponent.SoftZone = Vector2(0, 0)
+        local blend = _CameraService.TransitionBlendTime
+        _CameraService.TransitionBlendTime = 0
+        _CameraService:SwitchCameraTo(camera.CameraComponent)
+        _CameraService.TransitionBlendTime = blend
+        log("[BaramMap] camera ready map=" .. map.Name)
+    end
+
+    @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
         -- All observers release the display when this player returns to the title.
         if not self.Active then
@@ -102,9 +132,10 @@ script BaramPlayerVisual extends Component
         end
         local map = self.Entity.CurrentMap
         if not isvalid(map) then return end
-        self.Entity.Visible = true
-        self.Entity.AvatarRendererComponent.Enable = false
-        if self.Entity == _UserService.LocalPlayer then self.Entity.PlayerControllerComponent.Enable = false end
+        self:PrepareCamera(map)
+        if not self.Entity.Visible then self.Entity.Visible = true end
+        if self.Entity.AvatarRendererComponent.Enable then self.Entity.AvatarRendererComponent.Enable = false end
+        if self.Entity == _UserService.LocalPlayer and self.Entity.PlayerControllerComponent.Enable then self.Entity.PlayerControllerComponent.Enable = false end
         if self._T.map ~= map then
             self:ReleaseProfileTouch()
             if isvalid(self._T.visual) then self._T.visual:Destroy() end
@@ -123,7 +154,8 @@ script BaramPlayerVisual extends Component
             -- 몸/머리가 Facing + step 으로 4방향 x 3스텝 = 12장이라, 각 방향 첫 걸음마다
             -- 3장을 새로 받느라 그림이 안 바뀌고 선 자세로 미끄러졌다.
             -- 안 보이는 자리에 같은 모델을 하나 띄워 한 틱에 한 장씩 훑어 캐시에 올린다.
-            if self.Entity == _UserService.LocalPlayer then
+            local warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
+            if self.Entity == _UserService.LocalPlayer and self._T.warmKey ~= warmKey then
                 self._T.warm = _SpawnService:SpawnByModelId("baramworldvisual", "BaramWarm_" .. self.Entity.Id, Vector3(0, 1000, 0), map)
                 self._T.warmFrame = 0
             end
@@ -141,6 +173,7 @@ script BaramPlayerVisual extends Component
             else
                 self._T.warm:Destroy()
                 self._T.warm = nil
+                self._T.warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
             end
         end
         local target = self.Entity.TransformComponent.WorldPosition
@@ -266,14 +299,10 @@ script BaramPlayerVisual extends Component
             if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " emotion=" .. tostring(emotion)) end
         end
         if self.Entity == _UserService.LocalPlayer and _BaramEntryFlow.InWorld and _BaramInput.MapScroll then
-            local camera = map:GetChildByName("TestCamera")
+            local camera = self._T.camera
             if isvalid(camera) then
                 local p = position
                 camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
-                camera.CameraComponent.Damping = Vector2(0, 0)
-                camera.CameraComponent.DeadZone = Vector2(0, 0)
-                camera.CameraComponent.SoftZone = Vector2(0, 0)
-                if _CameraService:GetCurrentCameraComponent() ~= camera.CameraComponent then _CameraService:SwitchCameraTo(camera.CameraComponent) end
             end
         end
     end
@@ -315,6 +344,8 @@ script BaramPlayerVisual extends Component
         self._T.visual = nil
         self._T.warm = nil
         self._T.map = nil
+        self._T.camera = nil
+        self._T.cameraMap = nil
         self._T.path = {}
         self._T.predicted = nil
         self._T.action = 0

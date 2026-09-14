@@ -43,11 +43,53 @@ script BaramCreature extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
-        local sprite = self.Entity:GetChildByName("Sprite")
-        local label = self.Entity:GetChildByName("Label")
-        local motion = _BaramCreatureData:Get(self:ImageId())
-        label.Visible = self.ShowLabel
+        -- Cache the presentation children; authoritative grid, AI and hitbox are unchanged.
+        if not isvalid(self._T.sprite) then
+            local source = self.Entity:GetChildByName("Sprite")
+            self._T.label = self.Entity:GetChildByName("Label")
+            if not isvalid(source) or not isvalid(self.Entity.CurrentMap) then return end
+            self._T.spriteOffset = source.TransformComponent.Position
+            -- A child still jumps with its synced parent before the next update.
+            -- Clone only its original renderer under the map, as with player visuals.
+            self._T.sprite = _SpawnService:SpawnByEntity(source, "CreatureVisual_" .. self.Entity.Id, source.TransformComponent.WorldPosition, self.Entity.CurrentMap)
+            if not isvalid(self._T.sprite) then return end
+            source.Visible = false
+        end
+        local sprite = self._T.sprite
+        local label = self._T.label
+        local imageId = self:ImageId()
+        if self._T.imageId ~= imageId then
+            self._T.imageId = imageId
+            self._T.motionData = _BaramCreatureData:Get(imageId)
+        end
+        local motion = self._T.motionData
+        if isvalid(label) and label.Visible ~= self.ShowLabel then label.Visible = self.ShowLabel end
         local direction = math.max(1, math.min(4, math.floor(self.Facing / 3) + 1))
+        local root = self.Entity.TransformComponent.WorldPosition
+        local offset = self._T.spriteOffset
+        local target = Vector3(root.x + offset.x, root.y + offset.y, root.z + offset.z)
+        local shown = self._T.shown or target
+        local lastTarget = self._T.renderTarget or target
+        local changed = target.x ~= lastTarget.x or target.y ~= lastTarget.y
+        if changed then
+            local dx, dy = target.x - lastTarget.x, target.y - lastTarget.y
+            if self.Hp <= 0 or (self._T.lastHp or self.Hp) <= 0 or dx * dx + dy * dy > 0.0577 then
+                shown = target
+            end
+            self._T.renderTarget = target
+        end
+        local dx, dy = target.x - shown.x, target.y - shown.y
+        local distance = math.sqrt(dx * dx + dy * dy)
+        if distance > 0 then
+            local walk = motion ~= nil and motion.walk ~= nil and motion.walk[direction] or nil
+            local duration = motion ~= nil and (motion.walkStep or 0.1) * (walk ~= nil and #walk or 4) or 0.4
+            local step = math.min(distance, math.max(0, delta) * 0.24 / duration)
+            shown = Vector3(shown.x + dx * step / distance, shown.y + dy * step / distance, target.z)
+        end
+        self._T.shown = shown
+        self._T.renderTarget = target
+        local actual = sprite.TransformComponent.WorldPosition
+        if actual.x ~= shown.x or actual.y ~= shown.y then sprite.TransformComponent.WorldPosition = shown end
 
         if self._T.ready ~= true then
             self._T.ready = true
@@ -160,5 +202,12 @@ script BaramCreature extends Component
             _BaramWorld:Killed(player.UserId, self.SourceId, self.GridX, self.GridY)
         end
         log("[BaramCombat] hit mob=" .. tostring(self.SourceId) .. " hp=" .. tostring(self.Hp))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release the map-local visual without changing the server monster lifetime.
+        if isvalid(self._T.sprite) then self._T.sprite:Destroy() end
+        self._T.sprite = nil
     end
 end

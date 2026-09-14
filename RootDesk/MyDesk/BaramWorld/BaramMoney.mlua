@@ -1,0 +1,101 @@
+@Logic
+script BaramMoney extends Logic
+    property string Amount = ""
+    property integer Cursor = 0
+
+    method integer ParseAmount(string text)
+        -- Original input buffer is 15 characters; reject signs, exponent, fractions and overflow.
+        if #text == 0 or #text > 15 or string.find(text, "[^0-9]") ~= nil then return 0 end
+        local value = tonumber(text)
+        if value == nil or value <= 0 or value > 4294967295 then return 0 end
+        return value
+    end
+
+    method table FloorArt(integer amount)
+        -- map.exe 4291A0; item_db 60000/60003/60004/60005, item.epf frames 22/73/72/71.
+        -- Original palette 0. Cropped-frame center retains the EPF signed left/top offsets.
+        if amount == 1 then return {ruid = "68ebb12c9a254661a67cc28139704fc9", dx = 0, dy = 0} end
+        if amount < 100 then return {ruid = "869efcd622bf453aa2462ba8e5e1eade", dx = 0, dy = -0.005} end
+        if amount < 1000 then return {ruid = "374bb61b932e4771a8ffc1e82c04a247", dx = 0, dy = 0} end
+        return {ruid = "2536ce22c1e546ada979af8f42cf0517", dx = 0.005, dy = 0}
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginAmount()
+        -- winbaram 4E09C0: lowercase d followed by backslash, slash or dollar.
+        _BaramInput.Mode = "money"
+        _BaramInput.Pending = ""
+        self.Amount = ""
+        self.Cursor = 0
+        self:DrawCommand("얼마를 놓겠습니까?")
+        log("[BaramMoney] amount input opened")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Key(KeyboardKey key)
+        -- Original numeric editor: digits, Backspace, left/right, Return and Escape.
+        if key == KeyboardKey.Escape then _BaramInput:EndCommand() return end
+        if key == KeyboardKey.Return or key == KeyboardKey.KeypadEnter then
+            local amount = self.Amount
+            _BaramInput:EndCommand()
+            _BaramWorld:DropGold(amount)
+            return
+        end
+        if key == KeyboardKey.LeftArrow then self.Cursor = math.max(0, self.Cursor - 1)
+        elseif key == KeyboardKey.RightArrow then self.Cursor = math.min(#self.Amount, self.Cursor + 1)
+        elseif key == KeyboardKey.Backspace then
+            if self.Cursor > 0 then
+                self.Amount = string.sub(self.Amount, 1, self.Cursor - 1) .. string.sub(self.Amount, self.Cursor + 1)
+                self.Cursor = self.Cursor - 1
+            end
+        else
+            local shift = _InputService:IsKeyPressed(KeyboardKey.LeftShift) or _InputService:IsKeyPressed(KeyboardKey.RightShift)
+            for i = 0, 9 do
+                if (not shift and key == KeyboardKey.CastFrom("Alpha" .. tostring(i))) or key == KeyboardKey.CastFrom("Keypad" .. tostring(i)) then
+                    if #self.Amount < 15 then
+                        self.Amount = string.sub(self.Amount, 1, self.Cursor) .. tostring(i) .. string.sub(self.Amount, self.Cursor + 1)
+                        self.Cursor = self.Cursor + 1
+                    end
+                    break
+                end
+            end
+        end
+        self:DrawCommand("얼마를 놓겠습니까?" .. self.Amount)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void DrawCommand(string text)
+        -- Reuse the existing BARAM00.EFT glyph renderer, no native or external font.
+        local line = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/MoneyCommand")
+        if not isvalid(line) then log_error("[BaramMoney] missing command line") return end
+        self._T.line = line
+        local hint = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ChatHint")
+        local entry = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ChatEntry")
+        if isvalid(hint) then hint.Enable = false end
+        if isvalid(entry) then entry.Enable = false end
+        line.Enable = true
+        local chunks = {"", "", ""}
+        local widths = {0, 0, 0}
+        local n = 0
+        for _, cp in utf8.codes(text) do
+            local index = math.floor(n / 32) + 1
+            if index > 3 then break end
+            chunks[index] = chunks[index] .. utf8.char(cp)
+            widths[index] = widths[index] + _BaramNotices:Width(cp)
+            n = n + 1
+        end
+        local x = 0
+        for i = 1, 3 do
+            local field = line:GetChildByName("Part" .. tostring(i))
+            field.UITransformComponent.anchoredPosition = Vector2(x, 0)
+            _BaramNotices:Draw(field, chunks[i])
+            x = x + widths[i]
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void CloseCommand()
+        -- The shared input controller restores the normal chat hint after hiding this overlay.
+        if isvalid(self._T.line) then self._T.line.Enable = false end
+    end
+end

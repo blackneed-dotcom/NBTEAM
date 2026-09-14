@@ -131,6 +131,7 @@ script BaramWorld extends Logic
 
     method boolean ValidState(table s)
         if s == nil or s.version ~= 1 or type(s.items) ~= "table" then return false end
+        if not _BaramNpcServices:ValidBank(s) then return false end
         if not _BaramJobs:ValidState(s) then return false end
         for _, name in ipairs({"map", "x", "y", "hp", "mp", "maxHp", "maxMp", "level", "exp", "gold", "equip", "guide"}) do
             if type(s[name]) ~= "number" or s[name] ~= math.floor(s[name]) or s[name] < 0 then return false end
@@ -162,7 +163,8 @@ script BaramWorld extends Logic
         r.state.map = mapId
         r.state.x = x
         r.state.y = y
-        r.nextMove = self.Clock + 0.25
+        -- Preserve an in-flight walk cooldown, but never add an entry-only delay.
+        r.nextMove = math.max(self.Clock, r.nextMove or 0)
         r.dialog = nil
         -- 서버가 뜰 때 맵 엔티티가 아직 없었을 수도 있으니, 사냥터에 들어올 때 한 번 더 본다.
         if mapId == 315 then self:EnsureHunting(mapId) end
@@ -254,9 +256,10 @@ script BaramWorld extends Logic
         local hud = root:GetComponent("script.BaramHUDController")
         local s = self.LocalState
         hud:SetJob(s.jobId or 0, s.jobRank or 0)
-        hud:SetVitals(s.hp, s.maxHp, s.mp, s.maxMp, s.level)
         hud.Gold = s.gold
         hud.Experience = s.exp
+        hud:SetVitals(s.hp, s.maxHp, s.mp, s.maxMp, s.level)
+        hud:SetCoordinates(s.x, s.y)
     end
 
     @ExecSpace("ServerOnly")
@@ -460,6 +463,95 @@ script BaramWorld extends Logic
     end
 
     @ExecSpace("Server")
+    method void DropGold(string amountText)
+        -- The caller cannot select an owner, position, balance or floor identifier.
+        self:DropGoldChecked(senderUserId, amountText)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean ChangeGold(string userId, integer delta)
+        -- Server integration point; shares the existing character save and snapshot.
+        local r = self:GetRecord(userId)
+        if r == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil then return false end
+        if not self:ApplyGold(r.state, delta) then return false end
+        if delta ~= 0 then self:Changed(userId) self:Snapshot(userId) end
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean ApplyGold(table state, number delta)
+        -- Original uint32 money field; reject rather than wrap or silently clamp.
+        if type(state.gold) ~= "number" or state.gold < 0 or state.gold > 4294967295 or state.gold ~= math.floor(state.gold) then return false end
+        if delta ~= delta or delta < -4294967295 or delta > 4294967295 or delta ~= math.floor(delta) then return false end
+        local value = state.gold + delta
+        if value < 0 or value > 4294967295 then return false end
+        state.gold = value
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean DropGoldChecked(string userId, string amountText)
+        -- winbaram 4E0BD0 / map 408E38: decimal input, funds check, 100 million/drop.
+        local r = self:GetRecord(userId)
+        if r == nil or not r.active or r.leaving or r.state.hp <= 0 or r.tradeBusy or r.trade ~= nil or r.saving or self.Clock < r.nextAction then return false end
+        r.nextAction = self.Clock + 0.15
+        local amount = _BaramMoney:ParseAmount(amountText)
+        if amount <= 0 then log("[BaramMoney] rejected invalid amount") return false end
+        if amount > r.state.gold then self:Notice(userId, "돈이 부족합니다.") return false end
+        if amount > 100000000 then self:Notice(userId, "한번에 1억까지만 버릴 수 있습니다.") return false end
+        local mapData = _BaramWorldData:Map(r.state.map)
+        local map = mapData ~= nil and _EntityService:GetEntityByPath("/maps/" .. mapData.name) or nil
+        if not isvalid(map) then return false end
+        local drop = {map = r.state.map, x = r.state.x, y = r.state.y, gold = amount, expires = self.Clock + 1850}
+        -- Freeze all existing inventory/trade mutators while persisting the debit.
+        -- A floor claim is never published before the sender's debit is durable.
+        r.tradeBusy = true
+        if not self:ApplyGold(r.state, -amount) then r.tradeBusy = false return false end
+        self:Changed(userId)
+        local ok, saved = pcall(function() return self:SaveRecord(r) end)
+        if not ok then r.saving = false log_error("[BaramMoney] debit save exception: " .. tostring(saved)) end
+        if not ok or not saved then
+            self:ApplyGold(r.state, amount)
+            self:Changed(userId)
+            r.tradeBusy = false
+            self:Snapshot(userId)
+            _BaramTrade:DrainDeferred(userId)
+            log_warning("[BaramMoney] no floor published: debit save not confirmed")
+            return false
+        end
+        self._T.nextDrop = self._T.nextDrop + 1
+        local key = self._T.nextDrop
+        local spawned, failure = pcall(function() self:ShowDrop(drop) end)
+        if not spawned or not isvalid(drop.entity) then
+            if isvalid(drop.entity) then drop.entity:Destroy() end
+            self:ApplyGold(r.state, amount)
+            self:Changed(userId)
+            r.tradeBusy = false
+            self:Flush(userId)
+            self:Snapshot(userId)
+            _BaramTrade:DrainDeferred(userId)
+            log_error("[BaramMoney] floor spawn failed; refund retained: " .. tostring(failure))
+            return false
+        end
+        -- map.exe 41C0C1 merges identical money images on the same cell without resetting age.
+        local merged = false
+        for _, existing in pairs(self._T.drops) do
+            if existing.gold ~= nil and existing.art == drop.art and existing.map == drop.map and existing.x == drop.x and existing.y == drop.y and existing.expires > self.Clock and existing.gold + amount <= 4294967295 then
+                existing.gold = existing.gold + amount
+                merged = true
+                break
+            end
+        end
+        if merged then drop.entity:Destroy() else self._T.drops[key] = drop end
+        r.tradeBusy = false
+        self:Snapshot(userId)
+        self:Notice(userId, "돈을 버렸습니다.")
+        _BaramTrade:DrainDeferred(userId)
+        log("[BaramMoney] dropped key=" .. tostring(key) .. " amount=" .. tostring(amount) .. " balance=" .. tostring(r.state.gold))
+        return true
+    end
+
+    @ExecSpace("Server")
     method void Pickup(boolean all)
         local userId = senderUserId
         local r = self._T.users[userId]
@@ -468,20 +560,21 @@ script BaramWorld extends Logic
         r.nextAction = self.Clock + 0.15
         local s = r.state
         local count = 0
+        local blocked = false
         for key, drop in pairs(self._T.drops) do
             if drop.map == s.map and drop.x == s.x and drop.y == s.y and drop.expires > self.Clock then
                 local result = self:ClaimDrop(s, self._T.drops, key)
-                if result < 0 then self:Notice(userId, "소지품이 가득 찼습니다.") break end
+                if result < 0 then self:Notice(userId, result == -2 and "더 이상 돈을 가질 수 없습니다." or "소지품이 가득 찼습니다.") blocked = true break end
                 if result > 0 then
                     self:Changed(userId)
-                    if isvalid(drop.entity) then drop.entity:Destroy() end
+                    if self._T.drops[key] == nil and isvalid(drop.entity) then drop.entity:Destroy() end
                     count = count + 1
                     if not all then break end
                 end
             end
         end
         if count > 0 then self:Changed(userId) self:Snapshot(userId) self:PlayUserAction(userId, 4, 0.3) end
-        self:Notice(userId, count > 0 and "물건을 주웠습니다." or "발밑에 주울 물건이 없습니다.")
+        if not blocked then self:Notice(userId, count > 0 and "물건을 주웠습니다." or "발밑에 주울 물건이 없습니다.") end
         log("[BaramInventory] pickup=" .. tostring(count))
     end
 
@@ -491,6 +584,15 @@ script BaramWorld extends Logic
         local drop = drops[key]
         if drop == nil or drop.map ~= state.map or drop.x ~= state.x or drop.y ~= state.y or drop.expires <= self.Clock then return 0 end
         drops[key] = nil
+        if drop.gold ~= nil then
+            -- No yield between claim and credit; a second request cannot see this claim.
+            local amount = math.min(drop.gold, 4294967295 - state.gold)
+            if amount <= 0 or not self:ApplyGold(state, amount) then drops[key] = drop return -2 end
+            drop.gold = drop.gold - amount
+            if drop.gold > 0 then drops[key] = drop end
+            log("[BaramMoney] picked key=" .. tostring(key) .. " amount=" .. tostring(amount) .. " remaining=" .. tostring(drop.gold) .. " balance=" .. tostring(state.gold))
+            return 1
+        end
         if not self:AddItem(state, drop.id, drop.count, drop.durability) then
             drops[key] = drop
             return -1
@@ -556,8 +658,7 @@ script BaramWorld extends Logic
         if r == nil or not r.active or r.state.hp <= 0 then return end
         for _, npc in ipairs(self.Npcs) do
             if npc.map == r.state.map and math.abs(npc.x - r.state.x) + math.abs(npc.y - r.state.y) <= 2 then
-                r.dialog = npc.id
-                self:Dialog(npc.name, "안녕하세요. 어떻게 오셨나요?\n\nB: 물건 사기\nS: 물건 팔기", userId)
+                _BaramNpcServices:OpenFor(userId, npc.id)
                 log("[BaramNPC] conversation=" .. tostring(npc.id))
                 return
             end
@@ -598,7 +699,7 @@ script BaramWorld extends Logic
             local data = _BaramWorldData:Item(id)
             if s.gold < data.price then self:Notice(userId, "금전이 부족합니다.") return end
             if not self:AddItem(s, id, 1, -1) then self:Notice(userId, "소지품이 가득 찼습니다.") return end
-            s.gold = s.gold - data.price
+            self:ApplyGold(s, -data.price)
             self:Notice(userId, data.name .. " 구입")
         elseif action == "sell" then
             local item = s.items[tostring(choice)]
@@ -607,7 +708,7 @@ script BaramWorld extends Logic
             for _, id in ipairs(stock) do if item.id == id then allowed = true end end
             if not allowed then self:Notice(userId, "이 상점에서는 사지 않는 물건입니다.") return end
             local data = _BaramWorldData:Item(item.id)
-            s.gold = math.min(4294967295, s.gold + math.floor(data.price / 2))
+            if not self:ApplyGold(s, math.floor(data.price / 2)) then self:Notice(userId, "더 이상 돈을 가질 수 없습니다.") return end
             self:RemoveItem(s, choice, 1)
             self:Notice(userId, data.name .. " 판매")
         else return end
@@ -770,10 +871,27 @@ script BaramWorld extends Logic
 
     @ExecSpace("ServerOnly")
     method void ShowDrop(table drop)
+        -- Money uses losslessly extracted MISC.DAT/item.epf, never a text label.
         local map = _EntityService:GetEntityByPath("/maps/" .. _BaramWorldData:Map(drop.map).name)
+        if not isvalid(map) then return end
         local p = _BaramWorldData:Position(drop.x, drop.y)
-        drop.entity = _SpawnService:SpawnByModelId("baramgroundlabel", "Drop_" .. tostring(self._T.nextDrop), p, map)
-        if isvalid(drop.entity) then drop.entity.TextRendererComponent.Text = _BaramWorldData:Item(drop.id).name .. " " .. tostring(drop.count) end
+        if drop.gold ~= nil then
+            local art = _BaramMoney:FloorArt(drop.gold)
+            drop.art = art.ruid
+            p = Vector3(p.x + art.dx, p.y + art.dy, p.z)
+            drop.entity = _SpawnService:SpawnByModelId("baramgroundmoney", "Money_" .. tostring(self._T.nextDrop), p, map)
+            if isvalid(drop.entity) then drop.entity.SpriteRendererComponent.SpriteRUID = art.ruid end
+            return
+        end
+        local art = _BaramInput.InventoryImages[tostring(drop.id)]
+        if art == nil or art.ruid == nil or art.ruid == "" then
+            log_warning("[BaramDrop] original image missing item=" .. tostring(drop.id))
+            return
+        end
+        -- Reuse the bodyless floor renderer; item ownership and pickup stay server-side.
+        drop.art = art.ruid
+        drop.entity = _SpawnService:SpawnByModelId("baramgroundmoney", "Drop_" .. tostring(self._T.nextDrop), p, map)
+        if isvalid(drop.entity) then drop.entity.SpriteRendererComponent.SpriteRUID = art.ruid end
     end
 
     @ExecSpace("ServerOnly")

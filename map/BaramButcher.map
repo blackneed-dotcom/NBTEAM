@@ -1350,7 +1350,7 @@
       {
         "id": "33e27619-119b-4926-8531-38cc85bfe742",
         "path": "/maps/barambutcher/Npc11",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TouchReceiveComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TouchReceiveComponent,script.BaramNpcTouch",
         "jsonString": {
           "name": "Npc11",
           "path": "/maps/barambutcher/Npc11",
@@ -1410,6 +1410,10 @@
                 "x": 0.3,
                 "y": 0.55
               }
+            },
+            {
+              "Enable": true,
+              "@type": "script.BaramNpcTouch"
             }
           ],
           "@version": 1,

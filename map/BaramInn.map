@@ -1350,7 +1350,7 @@
       {
         "id": "4e8e2b7f-c642-4635-9448-35f28f381ac0",
         "path": "/maps/baraminn/Npc8",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TouchReceiveComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TouchReceiveComponent,script.BaramNpcTouch",
         "jsonString": {
           "name": "Npc8",
           "path": "/maps/baraminn/Npc8",
@@ -1410,6 +1410,10 @@
                 "x": 0.3,
                 "y": 0.55
               }
+            },
+            {
+              "Enable": true,
+              "@type": "script.BaramNpcTouch"
             }
           ],
           "@version": 1,
