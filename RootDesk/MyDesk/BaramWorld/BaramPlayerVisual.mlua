@@ -9,6 +9,25 @@ script BaramPlayerVisual extends Component
     @Sync
     property integer Step = 0
 
+    @ExecSpace("ServerOnly")
+    method void PlayAction(integer action, number frameSeconds)
+        -- Authoritative gameplay starts the motion on every observing client.
+        if action < 1 or action > 24 then return end
+        if not isvalid(self.Entity.CurrentMap) then return end
+        self:ReceiveAction(action, math.floor(self.Facing / 3), frameSeconds, self.Entity.CurrentMap.Id)
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveAction(integer action, integer direction, number frameSeconds, string mapId)
+        if not isvalid(self.Entity.CurrentMap) or self.Entity.CurrentMap.Id ~= mapId then return end
+        self._T.action = action
+        self._T.actionDirection = math.max(0, math.min(3, direction))
+        self._T.actionAge = 0
+        self._T.actionInterval = math.max(0.03, math.min(2, frameSeconds))
+        self._T.actionMap = self.Entity.CurrentMap
+        log("[BaramMotion] begin action=" .. tostring(action) .. " direction=" .. tostring(direction))
+    end
+
     @ExecSpace("ClientOnly")
     method void PredictMove(integer direction)
         local s = _BaramWorld.LocalState
@@ -117,12 +136,55 @@ script BaramPlayerVisual extends Component
         if moving then self._T.walkTime = self._T.walkTime + delta else self._T.walkTime = 0 end
         local phase = math.floor(self._T.walkTime / frameSeconds) % 4
         local step = moving and _BaramWorldData.WalkFrames[phase + 1] or 0
-        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(self.Facing) .. ":" .. tostring(step)
+        local bodyFrame = self.Facing + step
+        local headFrame = bodyFrame
+        local emotion = false
+        local action = self._T.action or 0
+        if action > 0 then
+            local count = (action == 1 or action == 2) and 2 or (action == 22 and 4 or 1)
+            if self._T.actionMap ~= map or self._T.actionAge >= self._T.actionInterval * count then
+                self._T.action = 0
+                log("[BaramMotion] end action=" .. tostring(action))
+            else
+                local frame = math.min(count - 1, math.floor(self._T.actionAge / self._T.actionInterval))
+                local direction = self._T.actionDirection
+                -- winbaram 0x4474CC action switch; 0x4843A0 frame counts.
+                if action == 1 or action == 2 then bodyFrame = 24 + direction * 2 + frame
+                elseif action == 3 then bodyFrame = 64 + direction * 2
+                elseif action == 4 or action == 5 then bodyFrame = 76 + direction
+                elseif action == 6 then bodyFrame = 72 + direction
+                elseif action == 7 or action == 8 then bodyFrame = 92
+                elseif action == 9 then bodyFrame = 96 + direction
+                elseif action == 10 then bodyFrame = 93
+                elseif action == 20 then bodyFrame = 95
+                elseif action == 22 then bodyFrame = 100 + frame
+                elseif action == 24 then bodyFrame = 96 + direction
+                else bodyFrame = direction * 3 end
+                headFrame = bodyFrame
+                if action >= 11 then
+                    emotion = true
+                    if action == 22 then headFrame = 11 + frame
+                    elseif action == 23 then headFrame = 15
+                    elseif action == 24 then headFrame = 16 + direction
+                    else headFrame = action - 11 end
+                end
+                self._T.actionAge = self._T.actionAge + delta
+            end
+        end
+        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(bodyFrame) .. ":" .. tostring(headFrame) .. ":" .. tostring(emotion)
         if signature ~= self._T.signature then
-            local frame = self.Facing + step
-            visual:GetChildByName("Body").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetBody(self.Gender, frame)
-            visual:GetChildByName("Head").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetHead(self.Hair, frame)
+            local body = visual:GetChildByName("Body").SpriteRendererComponent
+            local head = visual:GetChildByName("Head").SpriteRendererComponent
+            body.SpriteRUID = _BaramAppearance:GetBody(self.Gender, bodyFrame)
+            head.SpriteRUID = emotion and _BaramAppearance:GetEmotion(self.Hair, headFrame) or _BaramAppearance:GetHead(self.Hair, headFrame)
+            local lower = math.min(body.OrderInLayer, head.OrderInLayer)
+            local upper = math.max(lower + 1, math.max(body.OrderInLayer, head.OrderInLayer))
+            local order = _BaramAppearance:GetDrawOrder(bodyFrame)
+            local bodyAbove = (string.find(order, "b") or 1) > (string.find(order, "h") or 2)
+            body.OrderInLayer = bodyAbove and upper or lower
+            head.OrderInLayer = bodyAbove and lower or upper
             self._T.signature = signature
+            if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " emotion=" .. tostring(emotion)) end
         end
         if self.Entity == _UserService.LocalPlayer and _BaramEntryFlow.InWorld and _BaramInput.MapScroll then
             local camera = map:GetChildByName("TestCamera")

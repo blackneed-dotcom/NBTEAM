@@ -17,15 +17,22 @@ script BaramWorld extends Logic
     end
 
     @ExecSpace("ServerOnly")
-    method boolean Enter(string userId, string appearance)
+    method boolean Enter(string userId, string appearance, integer slot)
+        -- Each slot owns a separate save key; slot one keeps the original key.
+        if slot < 1 or slot > 3 then return false end
         if self._T.loading[userId] then return false end
         local player = _UserService:GetUserEntityByUserId(userId)
         if not isvalid(player) or not _BaramEntryFlow:IsValidRecord(appearance) then return false end
         local record = self._T.users[userId]
+        if record ~= nil and (record.slot or 1) ~= slot then
+            if record.active or not self:Flush(userId) then return false end
+            record = nil
+        end
         if record == nil then
             self._T.loading[userId] = true
             local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
-            local code, raw = storage:GetAndWait(self.StorageKey)
+            local key = _BaramEntryFlow:SlotKey(self.StorageKey, slot)
+            local code, raw = storage:GetAndWait(key)
             self._T.loading[userId] = nil
             if code ~= 0 and code ~= 1000002 then self:Notice(userId, "진행 정보를 불러오지 못했습니다.") return false end
             local state = nil
@@ -36,7 +43,7 @@ script BaramWorld extends Logic
             else
                 state = {version = 1, map = 14, x = 34, y = 122, hp = 100, mp = 80, maxHp = 100, maxMp = 80, level = 1, exp = 0, gold = 0, items = {kind = "inventory"}, equip = 0, guide = 0}
             end
-            record = {state = state, storage = storage, dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
+            record = {state = state, storage = storage, slot = slot, key = key, dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
             self._T.users[userId] = record
         end
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
@@ -53,7 +60,7 @@ script BaramWorld extends Logic
         player.PlayerComponent.PVPMode = false
         self:Place(userId, record.state.map, record.state.x, record.state.y)
         self:Snapshot(userId)
-        log("[BaramWorld] entered map=" .. tostring(record.state.map))
+        log("[BaramWorld] entered slot=" .. tostring(slot) .. " level=" .. tostring(record.state.level) .. " map=" .. tostring(record.state.map))
         return true
     end
 
@@ -326,6 +333,7 @@ script BaramWorld extends Logic
             self:ShowDrop(self._T.drops[self._T.nextDrop])
             self:RemoveItem(s, slot, count)
             self:Notice(userId, data.name .. " " .. tostring(count) .. "개를 내려놓았습니다.")
+            if action == "throw" then self:PlayUserAction(userId, 2, 0.15) end
         else return end
         self:Changed(userId)
         self:Snapshot(userId)
@@ -349,7 +357,7 @@ script BaramWorld extends Logic
                 if not all then break end
             end
         end
-        if count > 0 then self:Changed(userId) self:Snapshot(userId) end
+        if count > 0 then self:Changed(userId) self:Snapshot(userId) self:PlayUserAction(userId, 4, 0.3) end
         self:Notice(userId, count > 0 and "물건을 주웠습니다." or "발밑에 주울 물건이 없습니다.")
         log("[BaramInventory] pickup=" .. tostring(count))
     end
@@ -363,7 +371,7 @@ script BaramWorld extends Logic
         r.saving = true
         local revision = r.revision
         local raw = _HttpService:JSONEncode(r.state)
-        local code = r.storage:SetAndWait(self.StorageKey, raw)
+        local code = r.storage:SetAndWait(r.key or self.StorageKey, raw)
         r.saving = false
         if code == 0 then
             if r.revision == revision then r.dirty = false end
@@ -484,6 +492,7 @@ script BaramWorld extends Logic
     method void LeaveToTitle()
         if not self:Flush(senderUserId) then self:Notice(senderUserId, "저장 중입니다. 잠시 후 다시 시도해 주세요.") return end
         self._T.users[senderUserId].active = false
+        _BaramEntryFlow:SendSlots(senderUserId)
         self:ReturnToTitle(senderUserId)
     end
 
@@ -517,6 +526,7 @@ script BaramWorld extends Logic
             equipped.durability = equipped.durability - 1
             self:Changed(userId)
         end
+        visual:PlayAction(1, 0.15)
         attack:Swing(r.state.x + dx[index], r.state.y + dy[index], damage)
         self:Snapshot(userId)
         log("[BaramCombat] swing damage=" .. tostring(damage))
@@ -528,10 +538,30 @@ script BaramWorld extends Logic
     end
 
     @ExecSpace("ServerOnly")
+    method void PlayUserAction(string userId, integer action, number frameSeconds)
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if isvalid(visual) then visual:PlayAction(action, frameSeconds) end
+    end
+
+    @ExecSpace("Server")
+    method void ExpressEmotion(integer choice)
+        local r = self._T.users[senderUserId]
+        if r == nil or not r.active or r.state.hp <= 0 or choice < 1 or choice > 16 or self.Clock < r.nextAction then return end
+        r.nextAction = self.Clock + 0.5
+        -- STR.RES a-p; client 0x4DF130 sends ordinary and special expression codes.
+        local actions = {11,12,13,14,15,16,17,18,19,20,21,22,7,10,23,24}
+        self:PlayUserAction(senderUserId, actions[choice], choice == 12 and 0.15 or 0.6)
+    end
+
+    @ExecSpace("ServerOnly")
     method void Damage(string userId, integer amount)
         local r = self._T.users[userId]
         if r == nil or r.state.hp <= 0 then return end
         r.state.hp = math.max(0, r.state.hp - amount)
+        self:PlayUserAction(userId, 9, 0.15)
         if r.state.hp == 0 then
             r.state.hp = 1
             self:Place(userId, 14, 34, 122)

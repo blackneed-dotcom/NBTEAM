@@ -12,23 +12,34 @@ script BaramEntryFlow extends Logic
     property integer Totem = 0
     property integer PreviewDirection = 2
     property string StorageKey = "BaramCharacterV1"
+    property integer SelectedSlot = 1
+    property table Characters = {"", "", ""}
+    property table Levels = {0, 0, 0}
 
     method void OnBeginPlay()
         if self:IsServer() then
             self._T.records = {}
             self._T.busy = {}
+            self._T.levels = {}
             return
         end
         self.InWorld = false
         self.Ready = false
         self.Busy = false
         self.RequestWait = 0
+        self.SelectedSlot = 1
+        self.Characters = {"", "", ""}
+        self.Levels = {0, 0, 0}
         self._T.requested = false
         self._T.links = {}
         self._T.assetsReady = false
         self:Show("loading")
         self:Bind("Title/New", "new")
         self:Bind("Title/Continue", "continue")
+        for i = 1, 3 do self:Bind("Select/Slot" .. tostring(i), "slot" .. tostring(i)) end
+        self:Bind("Select/New", "new")
+        self:Bind("Select/Continue", "enter")
+        self:Bind("Select/Cancel", "cancel")
         self:Bind("Create/Confirm", "create")
         self:Bind("Create/Cancel", "cancel")
         self:Bind("Create/Male", "male")
@@ -47,7 +58,10 @@ script BaramEntryFlow extends Logic
             if event.key == KeyboardKey.Escape then self:Action("cancel")
             elseif event.key == KeyboardKey.Return then
                 if self.State == "notice" then self:Action("dismiss")
-                elseif self.State == "login" then self:Action("enter") end
+                elseif self.State == "login" or self.State == "select" then self:Action("enter") end
+            elseif self.State == "select" then
+                if event.key == KeyboardKey.UpArrow then self:Action("slot" .. tostring((self.SelectedSlot + 1) % 3 + 1))
+                elseif event.key == KeyboardKey.DownArrow then self:Action("slot" .. tostring(self.SelectedSlot % 3 + 1)) end
             end
         end)
         local ruids = {"191bdff54c3148f08786f62683615493", "7a341bdc07eb43a68fb4aa4f17788cc0", "55ff75c1bf944e63830d342ba731f529"}
@@ -104,18 +118,21 @@ script BaramEntryFlow extends Logic
     @ExecSpace("ClientOnly")
     method void Show(string state)
         self.State = state
-        for _, name in ipairs({"Title", "Create", "Login", "Loading", "Notice"}) do
+        for _, name in ipairs({"Title", "Create", "Login", "Select", "Loading", "Notice"}) do
             local entity = self:Find(name)
-            if isvalid(entity) then entity.Enable = string.lower(name) == state or (name == "Title" and (state == "login" or state == "notice")) end
+            if isvalid(entity) then entity.Enable = string.lower(name) == state or (name == "Title" and (state == "login" or state == "select" or state == "notice")) end
         end
         local hud = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame")
         if isvalid(hud) then hud.Enable = self.InWorld end
         if state == "create" then self:UpdateSelection() end
+        if state == "select" then self:UpdateSlots() end
         log("[BaramEntry] screen=" .. state)
     end
 
     @ExecSpace("ClientOnly")
     method void Notice(string message)
+        -- Remember the screen so dismissing an occupied-slot warning keeps the selection.
+        if self.State ~= "notice" then self._T.noticeReturn = self.State end
         self:SetText("Notice/Text", message)
         self:Show("notice")
     end
@@ -124,6 +141,8 @@ script BaramEntryFlow extends Logic
     method void Action(string action)
         if self.Busy or self.InWorld or not self.Ready then return end
         if action == "cancel" or action == "dismiss" then
+            if self.State == "notice" then self:Show(self._T.noticeReturn or "title") return end
+            if self.State == "create" or self.State == "login" then self:Show("select") return end
             if self._T.savedSelection ~= nil then
                 self.Gender = self._T.savedSelection.gender
                 self.Hair = self._T.savedSelection.hair
@@ -134,29 +153,78 @@ script BaramEntryFlow extends Logic
             return
         end
         if action == "new" and self.State == "title" then
-            self:Show("create")
-            self:SetText("Create/Status", self.HasCharacter and "저장된 캐릭터의 외형을 변경합니다." or "")
+            self:Show("select")
+            if self.HasCharacter then self:Notice("이미 생성된 캐릭터가 있습니다.\n빈 슬롯을 선택해 처음하기를 눌러 주세요.")
+            else self:BeginCreation() end
         elseif action == "continue" and self.State == "title" then
-            if self.HasCharacter then self:Show("login") else self:Notice("먼저 처음하기에서 캐릭터를 만들어 주세요.") end
+            self:Show("select")
+        elseif self.State == "select" then
+            if string.sub(action, 1, 4) == "slot" then
+                local slot = tonumber(string.sub(action, 5)) or 0
+                if slot >= 1 and slot <= 3 then self.SelectedSlot = slot self:UpdateSlots() end
+            elseif action == "new" then self:BeginCreation()
+            elseif action == "enter" then
+                if self.Characters[self.SelectedSlot] == "" then self:Notice("아직 생성되지 않은 캐릭터입니다.\n처음하기를 눌러 만들어 주세요.") return end
+                self.Busy = true
+                self:EnterCharacter(self.SelectedSlot)
+            end
         elseif self.State == "create" then
             if action == "male" then self.Gender = 0
             elseif action == "female" then self.Gender = 1
-            elseif action == "nation0" and not self.HasCharacter then self.Nation = 0
-            elseif action == "nation1" and not self.HasCharacter then self.Nation = 1
+            elseif action == "nation0" then self.Nation = 0
+            elseif action == "nation1" then self.Nation = 1
             elseif action == "left" then self.Hair = (self.Hair + 9) % 10
             elseif action == "right" then self.Hair = (self.Hair + 1) % 10
             elseif action == "turn" then self.PreviewDirection = (self.PreviewDirection + 1) % 4
-            elseif string.sub(action, 1, 5) == "totem" and not self.HasCharacter then self.Totem = tonumber(string.sub(action, 6)) or 0
+            elseif string.sub(action, 1, 5) == "totem" then self.Totem = tonumber(string.sub(action, 6)) or 0
             elseif action == "create" then
                 self.Busy = true
                 self:SetText("Create/Status", "캐릭터를 저장하고 있습니다...")
-                self:CreateCharacter(self.Gender, self.Nation, self.Totem, self.Hair)
+                self:CreateCharacter(self.SelectedSlot, self.Gender, self.Nation, self.Totem, self.Hair)
             end
             self:UpdateSelection()
         elseif action == "enter" and self.State == "login" then
             self.Busy = true
-            self:EnterCharacter()
+            self:EnterCharacter(self.SelectedSlot)
         end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginCreation()
+        -- Creation only targets an empty slot; existing characters are never edited here.
+        if self.Characters[1] ~= "" and self.Characters[2] ~= "" and self.Characters[3] ~= "" then
+            self:Notice("이미 생성된 캐릭터입니다.\n캐릭터는 최대 3개까지 생성할 수 있습니다.") return
+        end
+        if self.Characters[self.SelectedSlot] ~= "" then self:Notice("이미 생성된 캐릭터입니다.\n빈 슬롯을 선택해 주세요.") return end
+        self.Gender = 0 self.Hair = 0 self.Nation = 0 self.Totem = 0 self.PreviewDirection = 2
+        self:Show("create")
+        self:SetText("Create/Status", tostring(self.SelectedSlot) .. "번 슬롯에 새 캐릭터를 만듭니다.")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void UpdateSlots()
+        -- Render each saved appearance with its actual persisted or in-session level.
+        for i = 1, 3 do
+            local path = "Select/Slot" .. tostring(i)
+            local raw = self.Characters[i] or ""
+            local occupied = raw ~= ""
+            self:SetText(path .. "/Label", occupied and ("닉네임 미정 : 레벨 [ " .. tostring(self.Levels[i]) .. " ]") or "빈 슬롯 · 처음하기")
+            self:SetText(path .. "/Number", tostring(i))
+            self:Find(path).SpriteGUIRendererComponent.Color = i == self.SelectedSlot and Color(0.42, 0.23, 0.08, 0.3) or Color(0, 0, 0, 0)
+            self:Find(path .. "/Body").Enable = occupied
+            self:Find(path .. "/Head").Enable = occupied
+            if occupied then
+                local saved = self:DecodeRecord(raw)
+                self:Find(path .. "/Body").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(saved.gender, 6))
+                self:Find(path .. "/Head").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetHead(saved.hair, 6))
+            end
+        end
+        log("[BaramSlots] selected=" .. tostring(self.SelectedSlot) .. " level=" .. tostring(self.Levels[self.SelectedSlot]))
+    end
+
+    method string SlotKey(string baseKey, integer slot)
+        -- Slot one retains the legacy key, preserving existing character and world saves.
+        return slot == 1 and baseKey or (baseKey .. "_" .. tostring(slot))
     end
 
     @ExecSpace("ClientOnly")
@@ -185,58 +253,91 @@ script BaramEntryFlow extends Logic
         local player = _UserService:GetUserEntityByUserId(userId)
         if not isvalid(player) then return end
         if self._T.records[userId] ~= nil then
-            self:ReceiveRecord(self._T.records[userId], true, userId)
+            self:SendSlots(userId)
             return
         end
         self._T.busy[userId] = true
         local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
-        local code, raw = storage:GetAndWait(self.StorageKey)
+        local keys = {}
+        for i = 1, 3 do
+            table.insert(keys, self:SlotKey(self.StorageKey, i))
+            table.insert(keys, self:SlotKey(_BaramWorld.StorageKey, i))
+        end
+        local code, pages = storage:BatchGetAndWait(keys)
+        local loaded = {}
+        if code == 0 then
+            while true do
+                local rows = pages:GetCurrentPageDatas()
+                if rows ~= nil then for _, row in ipairs(rows) do loaded[row.KeyInfo.Key] = row.Value end end
+                if pages.IsLastPage then break end
+                code = pages:LoadNextPageAndWait()
+                if code ~= 0 then break end
+                pages:MoveToNextPageAndWait()
+            end
+        end
         self._T.busy[userId] = nil
-        if code ~= 0 and code ~= 1000002 then
-            self:ReceiveRecord("", false, userId)
+        if code ~= 0 then
+            self:ReceiveSlots({"", "", ""}, {0, 0, 0}, false, userId)
             log_warning("[BaramEntry] load failed code=" .. tostring(code))
             return
         end
-        raw = raw or ""
-        if raw ~= "" and not self:IsValidRecord(raw) then
-            self:ReceiveRecord("", false, userId)
-            log_warning("[BaramEntry] invalid saved profile; preserved without overwriting")
-            return
+        local profiles = {"", "", ""}
+        local levels = {0, 0, 0}
+        for i = 1, 3 do
+            local raw = loaded[self:SlotKey(self.StorageKey, i)] or ""
+            local world = loaded[self:SlotKey(_BaramWorld.StorageKey, i)] or ""
+            if (raw ~= "" and not self:IsValidRecord(raw)) or (raw == "" and world ~= "") then
+                self:ReceiveSlots(profiles, levels, false, userId)
+                log_warning("[BaramSlots] invalid profile; all original keys preserved") return
+            end
+            profiles[i] = raw
+            levels[i] = raw ~= "" and 1 or 0
+            if world ~= "" then
+                local ok, state = pcall(function() return _HttpService:JSONDecode(world) end)
+                if not ok or not _BaramWorld:ValidState(state) then
+                    self:ReceiveSlots(profiles, levels, false, userId)
+                    log_warning("[BaramSlots] invalid world save; original keys preserved") return
+                end
+                levels[i] = state.level
+            end
         end
-        self._T.records[userId] = raw
-        self:ReceiveRecord(raw, true, userId)
-        log("[BaramEntry] profile loaded, created=" .. tostring(raw ~= ""))
+        self._T.records[userId] = profiles
+        self._T.levels[userId] = levels
+        self:SendSlots(userId)
+        log("[BaramSlots] loaded three slots; legacy slot one preserved")
     end
 
     @ExecSpace("Server")
-    method void CreateCharacter(integer gender, integer nation, integer totem, integer hair)
-        local userId = senderUserId
+    method void CreateCharacter(integer slot, integer gender, integer nation, integer totem, integer hair)
+        -- Dispatch only with the authenticated caller ID.
+        self:CreateForUser(senderUserId, slot, gender, nation, totem, hair)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void CreateForUser(string userId, integer slot, integer gender, integer nation, integer totem, integer hair)
+        -- Validate the cap and occupied slot on the server, including forged requests.
         if self._T.busy[userId] or self._T.records[userId] == nil then return end
-        if gender < 0 or gender > 1 or nation < 0 or nation > 1 or totem < 0 or totem > 3 or hair < 0 or hair > 9 then return end
+        if slot < 1 or slot > 3 then self:CreationResult(false, "캐릭터는 최대 3개까지 생성할 수 있습니다.", userId) return end
+        if gender < 0 or gender > 1 or nation < 0 or nation > 1 or totem < 0 or totem > 3 or hair < 0 or hair > 9 then self:CreationResult(false, "캐릭터 선택 정보를 확인해 주세요.", userId) return end
+        local active = _BaramWorld:GetRecord(userId)
+        if active ~= nil and active.active then return end
+        if self._T.records[userId][slot] ~= "" then
+            self:CreationResult(false, "이미 생성된 캐릭터입니다.", userId)
+            log("[BaramSlots] duplicate creation blocked slot=" .. tostring(slot)) return
+        end
         local player = _UserService:GetUserEntityByUserId(userId)
         if not isvalid(player) then return end
         self._T.busy[userId] = true
-        local previous = self._T.records[userId]
-        if previous ~= "" then
-            local saved = self:DecodeRecord(previous)
-            nation = saved.nation
-            totem = saved.totem
-        end
         local raw = "2:" .. tostring(gender) .. ":" .. tostring(nation) .. ":" .. tostring(totem) .. ":" .. tostring(hair)
-        if raw == previous then
-            self._T.busy[userId] = nil
-            self:ReceiveRecord(raw, true, userId)
-            self:CreationResult(true, "이어하기를 눌러 주세요.", userId)
-            return
-        end
         local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
-        local code = storage:SetAndWait(self.StorageKey, raw)
+        local code = storage:SetAndWait(self:SlotKey(self.StorageKey, slot), raw)
         self._T.busy[userId] = nil
         if code == 0 then
-            self._T.records[userId] = raw
-            self:ReceiveRecord(raw, true, userId)
-            self:CreationResult(true, "이어하기를 눌러 주세요.", userId)
-            log("[BaramEntry] character saved")
+            self._T.records[userId][slot] = raw
+            self._T.levels[userId][slot] = 1
+            self:SendSlots(userId)
+            self:CreationResult(true, "캐릭터가 생성되었습니다.\n선택 후 이어하기를 눌러 주세요.", userId)
+            log("[BaramSlots] created slot=" .. tostring(slot))
         else
             self:CreationResult(false, "저장하지 못했습니다. 다시 시도해 주세요.", userId)
             log_warning("[BaramEntry] save failed code=" .. tostring(code))
@@ -244,31 +345,42 @@ script BaramEntryFlow extends Logic
     end
 
     @ExecSpace("Server")
-    method void EnterCharacter()
+    method void EnterCharacter(integer slot)
+        -- Enter only a server-owned occupied slot.
         local userId = senderUserId
-        local raw = self._T.records[userId]
+        if self._T.busy[userId] then return end
+        local profiles = self._T.records[userId]
+        local raw = profiles ~= nil and slot >= 1 and slot <= 3 and profiles[slot] or ""
         local success = raw ~= nil and raw ~= ""
         if success then
-            local ok, entered = pcall(function() return _BaramWorld:Enter(userId, raw) end)
+            self._T.busy[userId] = true
+            local ok, entered = pcall(function() return _BaramWorld:Enter(userId, raw, slot) end)
+            self._T.busy[userId] = nil
             success = ok and entered == true
             if not ok then log_error("[BaramEntry] world entry failed: " .. tostring(entered)) end
         end
         self:EnterResult(success, userId)
     end
 
+    @ExecSpace("ServerOnly")
+    method void SendSlots(string userId)
+        -- Prefer the live character level after saving/returning to the title.
+        local profiles = self._T.records[userId]
+        local levels = self._T.levels[userId]
+        if profiles == nil or levels == nil then return end
+        local current = _BaramWorld:GetRecord(userId)
+        if current ~= nil then levels[current.slot or 1] = current.state.level end
+        self:ReceiveSlots(profiles, levels, true, userId)
+    end
+
     @ExecSpace("Client")
-    method void ReceiveRecord(string raw, boolean success)
+    method void ReceiveSlots(table profiles, table levels, boolean success)
+        -- Only server-supplied levels are displayed; nicknames remain deferred.
         self.Ready = success
-        self.HasCharacter = raw ~= ""
         if not success then self:SetText("Loading/Text", "캐릭터를 불러오지 못했습니다. 다시 실행해 주세요.") return end
-        if self.HasCharacter then
-            local saved = self:DecodeRecord(raw)
-            self.Gender = saved.gender
-            self.Nation = saved.nation
-            self.Totem = saved.totem
-            self.Hair = saved.hair
-        end
-        self._T.savedSelection = {gender = self.Gender, nation = self.Nation, totem = self.Totem, hair = self.Hair}
+        self.Characters = profiles self.Levels = levels
+        self.HasCharacter = profiles[1] ~= "" or profiles[2] ~= "" or profiles[3] ~= ""
+        if self.State == "select" then self:UpdateSlots() end
     end
 
     method boolean IsValidRecord(string raw)
@@ -287,7 +399,9 @@ script BaramEntryFlow extends Logic
     method void CreationResult(boolean success, string message)
         self.Busy = false
         self:SetText("Create/Status", "")
-        if success then self:Notice(message) else self:SetText("Create/Status", message) end
+        if success then self:Show("select") self:Notice(message)
+        elseif self.State == "create" then self:SetText("Create/Status", message)
+        else self:Notice(message) end
     end
 
     @ExecSpace("Client")
@@ -307,6 +421,7 @@ script BaramEntryFlow extends Logic
     handler HandleUserLeave(UserLeaveEvent event)
         self._T.records[event.UserId] = nil
         self._T.busy[event.UserId] = nil
+        self._T.levels[event.UserId] = nil
     end
 
     @ExecSpace("ClientOnly")

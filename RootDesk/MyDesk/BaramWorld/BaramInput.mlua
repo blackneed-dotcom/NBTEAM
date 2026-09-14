@@ -105,6 +105,7 @@ script BaramInput extends Logic
         self.Pending = ""
         self.FirstSlot = 0
         self.InventoryTipSeconds = 0
+        self:SetCommandPrompt("")
         if isvalid(self._T.window) then self._T.window.Enable = false end
         if isvalid(self._T.inventory) then self._T.inventory.Enable = false end
         log("[BaramInventoryUI] closed")
@@ -144,6 +145,7 @@ script BaramInput extends Logic
         self.Mode = ""
         self.Pending = ""
         self.FirstSlot = 0
+        self:SetCommandPrompt("")
         self._T.inventory.Enable = true
         self:RefreshInventory()
         log("[BaramInventoryUI] opened")
@@ -251,36 +253,115 @@ script BaramInput extends Logic
     end
 
     @ExecSpace("ClientOnly")
-    method void BeginItem(string command)
-        self.Pending = command
-        self.Mode = "inventory"
+    method void SetCommandPrompt(string prompt)
+        -- Send local command text to the existing chat entry hint, never to other players.
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+        if not isvalid(root) then return end
+        ---@type BaramChatHistory
+        local chat = root:GetComponent("script.BaramChatHistory")
+        if isvalid(chat) then chat:SetCommandPrompt(prompt) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void EndCommand()
+        -- Release command selection while keeping the inventory/status pane open.
+        self.Mode = ""
+        self.Pending = ""
         self.FirstSlot = 0
-        local labels = {use = "사용할 물건", eat = "먹을 물건", equip = "무장할 무기", armor = "입을 갑옷", unequip = "벗을 장비", drop = "버릴 물건", dropall = "다 버릴 물건", throw = "던질 물건", swap = "자리 바꿀 물건", inspect = "검사할 물건", sell = "팔 물건", give = "줄 물건", giveall = "다 줄 물건"}
-        self:Show(labels[command] or command, self:InventoryText(), "a~z / Shift+A~Z: 선택   Esc: 취소")
+        self:SetCommandPrompt("")
+        _BaramChatRelay.InputBlockSeconds = 0.15
+        log("[BaramCommand] selection ended")
+    end
+
+    @ExecSpace("ClientOnly")
+    method string InventoryChoices()
+        -- winbaram 0x4D9140: occupied runs of four or more use first-last notation.
+        local items = _BaramWorld.LocalState.items or {}
+        local parts = {}
+        local first = 0
+        for slot = 1, _BaramWorldData.InventoryCapacity + 1 do
+            local occupied = slot <= _BaramWorldData.InventoryCapacity and items[tostring(slot)] ~= nil
+            if occupied and first == 0 then first = slot end
+            if not occupied and first > 0 then
+                if slot - first > 3 then
+                    table.insert(parts, _BaramWorldData:InventoryLetter(first) .. "-" .. _BaramWorldData:InventoryLetter(slot - 1))
+                else
+                    for index = first, slot - 1 do table.insert(parts, _BaramWorldData:InventoryLetter(index)) end
+                end
+                first = 0
+            end
+        end
+        return table.concat(parts, "")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ShowCommandChoices()
+        -- The question-mark key reveals the bag without cancelling the pending command.
+        if not isvalid(self._T.inventory) then return end
+        local panel = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/CharacterInfo")
+        if isvalid(panel) then panel.Enable = false end
+        self._T.inventory.Enable = true
+        self:RefreshInventory()
+        log("[BaramCommand] choices pending=" .. self.Pending)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginConfirmation(string mode)
+        -- STR.RES lines 4 and 36: one-line Y/N questions for quit and save.
+        self.Mode = mode
+        self.Pending = ""
+        if isvalid(self._T.window) then self._T.window.Enable = false end
+        self:SetCommandPrompt(mode == "quit" and "정말 끝냅니까? (Y/N) " or "개인정보를 서버에 저장 할까요? (Y/N) ")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginItem(string command)
+        -- STR.RES item questions share the native chat command line.
+        self.Pending = command
+        self.Mode = "command"
+        self.FirstSlot = 0
+        if isvalid(self._T.window) then self._T.window.Enable = false end
+        local labels = {use = "사용할 물건", eat = "먹을 물건", equip = "무장할 무기", armor = "입을 갑옷", drop = "버릴 물건", dropall = "다 버릴 물건", throw = "던질/쏠 물건", inspect = "검사할 물건", sell = "팔 물건", give = "줄 물건", giveall = "다 줄 물건"}
+        if command == "swap" then self:SetCommandPrompt("자리 바꿀 아이템[a-z,a-z ?] ")
+        elseif command == "unequip" then self:SetCommandPrompt("벗을 갑옷/무기? (w ?) ")
+        else self:SetCommandPrompt((labels[command] or command) .. "? [" .. self:InventoryChoices() .. " ?] ") end
         log("[BaramKeys] awaiting " .. command)
     end
 
     @ExecSpace("ClientOnly")
     method void SelectSlot(integer slot)
+        -- Select locally, leaving the server responsible for the actual item mutation.
         local command = self.Pending
+        local items = _BaramWorld.LocalState.items or {}
+        if items[tostring(slot)] == nil and not (command == "swap" and self.FirstSlot > 0) then
+            self:Notice("그 칸은 비어 있습니다.")
+            return
+        end
         if command == "swap" and self.FirstSlot == 0 then
             self.FirstSlot = slot
-            self:Show("바꿀 두 번째 물건", self:InventoryText(), "a~z / Shift+A~Z: 두 번째 칸   Esc: 취소")
+            self:SetCommandPrompt("자리 바꿀 아이템[" .. _BaramWorldData:InventoryLetter(slot) .. ",a-z ?] ")
             return
         end
         if command == "inspect" then
             local item = _BaramWorld.LocalState.items[tostring(slot)]
             if item == nil then self:Notice("그 칸은 비어 있습니다.") return end
             local data = _BaramWorldData:Item(item.id)
-            self.Pending = ""
-            self.Mode = "inspect"
-            self:Show(data.name, data.description .. "\n\n" .. string.gsub(data.tooltip, "\\n", "\n") .. "\n내구도 " .. tostring(item.durability) .. " / " .. tostring(data.durability), "Esc: 닫기")
+            self:EndCommand()
+            self:ShowCommandChoices()
+            for index, itemSlot in ipairs(self._T.inventorySlots or {}) do
+                if itemSlot == slot then
+                    self.InventoryPage = math.floor((index - 1) / 15) + 1
+                    self:RefreshInventory()
+                    self:InspectInventoryRow((index - 1) % 15 + 1)
+                    break
+                end
+            end
             return
         end
         if command == "sell" then _BaramWorld:Shop("sell", slot)
         elseif command == "swap" then _BaramWorld:ItemAction(command, self.FirstSlot, slot)
         else _BaramWorld:ItemAction(command, slot, 0) end
-        self:Close()
+        self:EndCommand()
     end
 
     @ExecSpace("ClientOnly")
@@ -300,10 +381,18 @@ script BaramInput extends Logic
         local shift = _InputService:IsKeyPressed(KeyboardKey.LeftShift) or _InputService:IsKeyPressed(KeyboardKey.RightShift)
         local ctrl = _InputService:IsKeyPressed(KeyboardKey.LeftControl) or _InputService:IsKeyPressed(KeyboardKey.RightControl)
         local alt = _InputService:IsKeyPressed(KeyboardKey.LeftAlt) or _InputService:IsKeyPressed(KeyboardKey.RightAlt)
-        if key == KeyboardKey.Escape then self:Close() return end
+        if key == KeyboardKey.Escape then
+            if self.Mode == "command" or self.Mode == "quit" or self.Mode == "save" then self:EndCommand()
+            else self:Close() end
+            return
+        end
         if self.Mode == "help" and (key == KeyboardKey.LeftArrow or key == KeyboardKey.RightArrow) then self.HelpPage = 3 - self.HelpPage self:Help() return end
-        if self.Mode == "quit" then
-            if key == KeyboardKey.Y then _BaramWorld:LeaveToTitle() elseif key == KeyboardKey.N then self:Close() end
+        if self.Mode == "quit" or self.Mode == "save" then
+            if key == KeyboardKey.Y then
+                local action = self.Mode
+                self:EndCommand()
+                if action == "quit" then _BaramWorld:LeaveToTitle() else _BaramWorld:Save() end
+            elseif key == KeyboardKey.N then self:EndCommand() end
             return
         end
         if self.Mode == "shop" then
@@ -317,13 +406,37 @@ script BaramInput extends Logic
         for i = 1, 26 do if key == KeyboardKey.CastFrom(string.upper(string.char(96 + i))) then slot = i break end end
         if slot > 0 and shift then slot = slot + 26 end
         if self.Pending ~= "" then
+            if self.Pending == "emotion" then
+                if key == KeyboardKey.Question or (key == KeyboardKey.Slash and shift) then
+                    self:Notice("a: 캬캬캬  b: 엉엉  c: 창피~  d: 윙크")
+                    self:Notice("e: 하품  f: 쿨쿨  g: 으앗!  h: 우씨")
+                    self:Notice("i: 메롱  j: 으쓱~  k: 픽~  l: 춤추기")
+                    self:Notice("m: 안녕하세요?  n: 승리~~  o: 썰렁~~  p: 키스")
+                else
+                    local choice = slot > 26 and slot - 26 or slot
+                    if choice >= 1 and choice <= 16 then
+                        self:EndCommand()
+                        _BaramWorld:ExpressEmotion(choice)
+                    end
+                end
+                return
+            end
+            if key == KeyboardKey.Question or (key == KeyboardKey.Slash and shift) then self:ShowCommandChoices() return end
+            if self.Pending == "unequip" then
+                if key == KeyboardKey.W and not shift then
+                    local equipped = _BaramWorld.LocalState.equip or 0
+                    if equipped > 0 then self:SelectSlot(equipped)
+                    else self:Notice("벗을 장비가 없습니다.") self:EndCommand() end
+                end
+                return
+            end
             if slot > 0 then self:SelectSlot(slot) end
             return
         end
         if key == KeyboardKey.F1 or key == KeyboardKey.Question or (key == KeyboardKey.Slash and shift) then self:Help() return end
         if alt then
-            if key == KeyboardKey.S then _BaramWorld:Save()
-            elseif key == KeyboardKey.X then self.Mode = "quit" self:Show("정말 끝냅니까?", "진행 정보를 저장한 뒤 제목 화면으로 돌아갑니다.", "Y: 예   N / Esc: 아니오")
+            if key == KeyboardKey.S then self:BeginConfirmation("save")
+            elseif key == KeyboardKey.X then self:BeginConfirmation("quit")
             elseif key == KeyboardKey.T then self.Transparent = not self.Transparent self:Notice(self.Transparent and "건물을 투명하게 표시합니다." or "건물 표시를 복원했습니다.") end
             return
         end
@@ -346,6 +459,10 @@ script BaramInput extends Logic
             if key == KeyboardKey.PageDown then self:ChangeInventoryPage(1) return end
         end
         if key == KeyboardKey.A or key == KeyboardKey.Space then _BaramWorld:Attack()
+        elseif key == KeyboardKey.Colon or (key == KeyboardKey.Semicolon and shift) then
+            self.Mode = "command"
+            self.Pending = "emotion"
+            self:SetCommandPrompt("표현할 감정 [a-p ? ] ")
         elseif key == KeyboardKey.Semicolon and not shift then _BaramWorld:Interact()
         elseif key == KeyboardKey.O then _BaramWorld:OpenDoor()
         elseif key == KeyboardKey.Comma or key == KeyboardKey.Less then _BaramWorld:Pickup(shift or key == KeyboardKey.Less)
@@ -363,8 +480,7 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.W then self:BeginItem(shift and "armor" or "equip")
         elseif key == KeyboardKey.T then
             if shift then
-                local equip = _BaramWorld.LocalState.equip or 0
-                if equip > 0 then _BaramWorld:ItemAction("unequip", equip, 0) else self:Notice("벗을 장비가 없습니다.") end
+                self:BeginItem("unequip")
             else self:BeginItem("throw") end
         elseif key == KeyboardKey.D then self:BeginItem(shift and "dropall" or "drop")
         elseif key == KeyboardKey.C and not shift then self:BeginItem("swap")
@@ -373,7 +489,7 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.G and shift then self.AllowGroup = not self.AllowGroup self:Notice(self.AllowGroup and "그룹 허가" or "그룹 거부")
         elseif key == KeyboardKey.Equals or key == KeyboardKey.Plus or (key == KeyboardKey.Z and shift) or (key == KeyboardKey.C and shift) then
             self.Mode = "spells" self:Show("아는 주문", "아직 배운 주문이 없습니다.", "Esc: 닫기")
-        elseif key == KeyboardKey.Q then self.Mode = "quit" self:Show("정말 끝냅니까?", "진행 정보를 저장한 뒤 제목 화면으로 돌아갑니다.", "Y: 예   N / Esc: 아니오")
+        elseif key == KeyboardKey.Q then self:BeginConfirmation("quit")
         elseif key == KeyboardKey.Quote then
             local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
             ---@type BaramChatHistory

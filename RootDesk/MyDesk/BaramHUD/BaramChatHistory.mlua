@@ -4,6 +4,7 @@ script BaramChatHistory extends Component
     property Entity InputPanel = "d7a5a326-6213-4e9d-a5a9-ba7ccc3f4863"
     property Entity InputHint = "7167aa09-90fe-429c-9c3b-18f984296d09"
     property TextGUIRendererInputComponent InputField = "a1681a6c-9872-4bdd-a295-0eecab1cb7bd"
+    property string CommandPrompt = ""
     @ExecSpace("ClientOnly")
     method void OnBeginPlay()
         -- Connect the custom input while preserving the five existing history rows.
@@ -24,6 +25,10 @@ script BaramChatHistory extends Component
         self.InputPanel.Enable = false
         self.InputHint.Enable = true
         self.InputField.Text = ""
+        self.CommandPrompt = ""
+        self._T.defaultHint = self.InputHint.TextGUIRendererComponent.Text
+        self._T.defaultHintColor = self.InputHint.TextGUIRendererComponent.FontColor
+        self._T.defaultHintSize = self.InputHint.TextGUIRendererComponent.FontSize
         _BaramChatRelay.IsEditing = false
         self._T.keySubscription = _InputService:ConnectEvent(KeyDownEvent, function(evt)
             if evt.key == KeyboardKey.Return or evt.key == KeyboardKey.KeypadEnter then
@@ -43,9 +48,28 @@ script BaramChatHistory extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void SetCommandPrompt(string prompt)
+        -- Native command questions use the chat input line, without chat focus or network transmission.
+        self.CommandPrompt = prompt
+        if not isvalid(self.InputHint) then return end
+        local text = self.InputHint.TextGUIRendererComponent
+        text.Text = prompt ~= "" and prompt or (self._T.defaultHint or "Enter 키를 눌러 대화하세요")
+        if prompt ~= "" and isvalid(self.InputField) then
+            local speech = self.InputField.Entity.TextGUIRendererComponent
+            text.FontSize = speech.FontSize
+            text.FontColor = Color.white
+        else
+            text.FontSize = self._T.defaultHintSize or text.FontSize
+            text.FontColor = self._T.defaultHintColor or text.FontColor
+        end
+        self.InputHint.Enable = not _BaramChatRelay.IsEditing
+        if prompt ~= "" then log("[BaramCommand] prompt=" .. prompt) end
+    end
+
+    @ExecSpace("ClientOnly")
     method void OpenInput()
         -- Block gameplay immediately and focus only after the opening key is released.
-        if not isvalid(self.InputField) then return end
+        if not isvalid(self.InputField) or _BaramInput:Blocked() then return end
         _BaramChatRelay.IsEditing = true
         self._T.closePending = false
         self._T.focusPending = true
@@ -67,6 +91,7 @@ script BaramChatHistory extends Component
         if isvalid(self.InputPanel) then self.InputPanel.Enable = false end
         if isvalid(self.InputHint) then self.InputHint.Enable = true end
         if isvalid(self.InputField) then self.InputField.Text = "" end
+        self:SetCommandPrompt(self.CommandPrompt)
         log("[BaramChat] input closed")
     end
 
