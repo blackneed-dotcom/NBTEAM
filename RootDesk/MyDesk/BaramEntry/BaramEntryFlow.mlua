@@ -213,6 +213,7 @@ script BaramEntryFlow extends Logic
             self:Find(path).SpriteGUIRendererComponent.Color = i == self.SelectedSlot and Color(0.42, 0.23, 0.08, 0.3) or Color(0, 0, 0, 0)
             self:Find(path .. "/Body").Enable = occupied
             self:Find(path .. "/Head").Enable = occupied
+            self:Find(path .. "/Halo").Enable = occupied
             if occupied then
                 local saved = self:DecodeRecord(raw)
                 self:Find(path .. "/Body").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(saved.gender, 6))
