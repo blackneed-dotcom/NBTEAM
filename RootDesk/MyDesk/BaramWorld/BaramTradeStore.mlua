@@ -1,0 +1,83 @@
+@Logic
+script BaramTradeStore extends Logic
+    property string LedgerName = "BaramTradeDecisionsV1"
+
+    @ExecSpace("ServerOnly")
+    method table Copy(table value)
+        -- Copy nested inventory data without retaining references to live records.
+        return _HttpService:JSONDecode(_HttpService:JSONEncode(value))
+    end
+
+    @ExecSpace("ServerOnly")
+    method string Decision(any ledger, string transactionId, boolean commit)
+        -- One compare-and-swap decision governs both users; unknown results stay locked.
+        local code, value = ledger:GetAndWait(transactionId)
+        if code ~= 0 then return "unknown" end
+        if value == "preparing" then
+            local nextValue = commit and "committed" or "aborted"
+            local changed = ledger:UpdateAndWait(transactionId, "preparing", nextValue)
+            if changed == 0 then return nextValue end
+            code, value = ledger:GetAndWait(transactionId)
+            if code ~= 0 then return "unknown" end
+        end
+        if value == "committed" or value == "aborted" then return value end
+        return "unknown"
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Prepare(table record, string transactionId, table after)
+        -- Save the current state and its pending result in the same atomic value.
+        if not _BaramWorld:ValidState(after) then return false end
+        local pending = self:Copy(record.state)
+        pending.pendingTrade = {version = 1, id = transactionId, after = after}
+        local raw = _HttpService:JSONEncode(pending)
+        if #raw > 40000 or record.savedRaw == nil or record.savedRaw == "" then return false end
+        local code = record.storage:UpdateAndWait(record.key, record.savedRaw, raw)
+        if code == 0 then record.savedRaw = raw return true end
+        log_warning("[BaramTradeStore] prepare uncertain code=" .. tostring(code))
+        return false
+    end
+
+    @ExecSpace("ServerOnly")
+    method table Resolve(any storage, string key, any ledger)
+        -- Recover before exposing a character; CAS prevents stale recovery overwrites.
+        local code, raw = storage:GetAndWait(key)
+        if code == 1000002 then return {ok = true, raw = "", missing = true} end
+        if code ~= 0 then return {ok = false} end
+        if raw == nil or raw == "" then return {ok = true, raw = "", missing = true} end
+        local parsedOk, state = pcall(function() return _HttpService:JSONDecode(raw) end)
+        if not parsedOk or type(state) ~= "table" or not _BaramWorld:ValidState(state) then return {ok = false} end
+        local pending = state.pendingTrade
+        if pending == nil then return {ok = true, raw = raw, state = state} end
+        if type(pending) ~= "table" or pending.version ~= 1 or type(pending.id) ~= "string" or #pending.id ~= 32 then return {ok = false} end
+        if type(pending.after) ~= "table" or pending.after.pendingTrade ~= nil or not _BaramWorld:ValidState(pending.after) then return {ok = false} end
+        local decision = self:Decision(ledger, pending.id, false)
+        if decision == "unknown" then return {ok = false} end
+        if decision == "committed" then state = pending.after else state.pendingTrade = nil end
+        local finished = _HttpService:JSONEncode(state)
+        local saved = storage:UpdateAndWait(key, raw, finished)
+        if saved ~= 0 then
+            -- A timeout may have applied. Only an exact read-back proves this finish.
+            local readCode, current = storage:GetAndWait(key)
+            if readCode ~= 0 or current ~= finished then return {ok = false} end
+        end
+        log("[BaramTradeStore] recovered " .. decision)
+        return {ok = true, raw = finished, state = state, decision = decision}
+    end
+
+    @ExecSpace("ServerOnly")
+    method string Commit(table transaction, table a, table b, table afterA, table afterB)
+        -- Call only with both records frozen and no earlier save in flight.
+        local ledger = transaction.ledger
+        if ledger == nil then ledger = _DataStorageService:GetGlobalDataStorage(self.LedgerName) transaction.ledger = ledger end
+        local created = ledger:SetAndWait(transaction.id, "preparing")
+        if created ~= 0 then
+            -- No user prepare has started, so failure cannot transfer any inventory.
+            return "aborted"
+        end
+        local preparedA = self:Prepare(a, transaction.id, afterA)
+        local preparedB = false
+        if preparedA and not transaction.cancelRequested then preparedB = self:Prepare(b, transaction.id, afterB) end
+        return self:Decision(ledger, transaction.id, preparedA and preparedB and not transaction.cancelRequested)
+    end
+end

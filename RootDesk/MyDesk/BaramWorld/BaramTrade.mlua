@@ -1,0 +1,323 @@
+@Logic
+script BaramTrade extends Logic
+    property string SessionId = ""
+    property table View = {}
+
+    @ExecSpace("ServerOnly")
+    method void OnBeginPlay()
+        -- Sessions are transient; committed decisions and pending saves are durable.
+        log("[BaramTrade] ready: 12 offers, four-cell start range, durable recovery")
+    end
+
+    @ExecSpace("Server")
+    method void Request(string otherId)
+        -- Derive the initiating player from the authenticated RPC sender.
+        local a = _BaramWorld:GetRecord(senderUserId)
+        local b = _BaramWorld:GetRecord(otherId)
+        if a == nil or b == nil or not a.active or not b.active or senderUserId == otherId then return end
+        if _BaramWorld.Clock < (a.nextTrade or 0) then return end
+        a.nextTrade = _BaramWorld.Clock + 3
+        if a.allowExchange == false then _BaramWorld:Notice(senderUserId, "교환 거부 상태입니다.") return end
+        if b.allowExchange == false then _BaramWorld:Notice(senderUserId, "상대방은 교환 거부 중입니다.") return end
+        if a.trade ~= nil or b.trade ~= nil or a.tradeBusy or b.tradeBusy or a.saving or b.saving then
+            _BaramWorld:Notice(senderUserId, "이미 교환 또는 저장 중입니다.") return
+        end
+        local player = _UserService:GetUserEntityByUserId(senderUserId)
+        local target = _UserService:GetUserEntityByUserId(otherId)
+        if not isvalid(player) or not isvalid(target) or player.CurrentMap ~= target.CurrentMap then return end
+        if a.state.hp <= 0 or b.state.hp <= 0 or a.state.map ~= b.state.map then return end
+        if math.abs(a.state.x - b.state.x) > 4 or math.abs(a.state.y - b.state.y) > 4 then
+            _BaramWorld:Notice(senderUserId, "교환할 상대방이 너무 멀리 있습니다.") return
+        end
+        local t = {id = _UtilLogic:NewGuid(), a = senderUserId, b = otherId, revision = 0, offers = {}}
+        t.offers[t.a] = {items = {}, gold = 0, confirmed = false}
+        t.offers[t.b] = {items = {}, gold = 0, confirmed = false}
+        a.trade = t
+        b.trade = t
+        a.dialog = nil
+        b.dialog = nil
+        self:Publish(t)
+        log("[BaramTrade] opened")
+    end
+
+    @ExecSpace("ServerOnly")
+    method table Current(string userId, string sessionId)
+        -- Reject stale windows, detached players and requests during persistence.
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or not r.active or r.trade == nil or r.trade.id ~= sessionId then return nil end
+        if r.trade.persisting or r.trade.recovery then return nil end
+        return r.trade
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Mutable(table t, string userId)
+        -- Original server cancels when the already-confirmed user edits their offer.
+        if t.offers[userId].confirmed then self:CancelFor(userId, "교환이 취소되었습니다.") return false end
+        return true
+    end
+
+    @ExecSpace("Server")
+    method void Add(string sessionId, integer slot, integer count)
+        -- Reserve only server-owned, unequipped, tradeable items without removing them.
+        local t = self:Current(senderUserId, sessionId)
+        if t == nil or not self:Mutable(t, senderUserId) then return end
+        local r = _BaramWorld:GetRecord(senderUserId)
+        if slot < 1 or slot > 52 or count < 1 then return end
+        local item = r.state.items[tostring(slot)]
+        local data = item ~= nil and _BaramWorldData:Item(item.id) or nil
+        if data == nil or data.dropAllowed ~= 1 or r.state.equip == slot then
+            _BaramWorld:Notice(senderUserId, "교환이 불가능한 아이템입니다.") return
+        end
+        local offer = t.offers[senderUserId]
+        local existing = nil
+        for _, entry in ipairs(offer.items) do if entry.slot == slot then existing = entry end end
+        local total = count + (existing ~= nil and existing.count or 0)
+        if total > item.count or total > math.max(1, data.maxCount) then return end
+        if existing == nil then
+            if #offer.items >= 12 then _BaramWorld:Notice(senderUserId, "교환창이 꽉 찼습니다.") return end
+            table.insert(offer.items, {slot = slot, count = count, item = _BaramTradeStore:Copy(item)})
+        else existing.count = total end
+        t.revision = t.revision + 1
+        self:Publish(t)
+        log("[BaramTrade] item reserved slot=" .. tostring(slot) .. " count=" .. tostring(count))
+    end
+
+    @ExecSpace("Server")
+    method void Money(string sessionId, integer amount)
+        -- Never trust a client balance or permit negative/overflow currency offers.
+        local t = self:Current(senderUserId, sessionId)
+        if t == nil or not self:Mutable(t, senderUserId) then return end
+        local r = _BaramWorld:GetRecord(senderUserId)
+        if amount < 0 or amount > r.state.gold or amount > 4294967295 then return end
+        if t.offers[senderUserId].gold == amount then return end
+        t.offers[senderUserId].gold = amount
+        t.revision = t.revision + 1
+        self:Publish(t)
+    end
+
+    @ExecSpace("Server")
+    method void Confirm(string sessionId, integer revision)
+        -- Both players must confirm the exact currently displayed offer revision.
+        local t = self:Current(senderUserId, sessionId)
+        if t == nil then return end
+        local offer = t.offers[senderUserId]
+        if offer.confirmed then self:CancelFor(senderUserId, "교환이 취소되었습니다.") return end
+        if revision ~= t.revision then self:Publish(t) return end
+        offer.confirmed = true
+        offer.confirmedRevision = revision
+        local a = t.offers[t.a]
+        local b = t.offers[t.b]
+        if a.confirmed and b.confirmed then
+            -- A changed offer cannot be accepted using an earlier confirmation.
+            if a.confirmedRevision ~= revision or b.confirmedRevision ~= revision then
+                self:CancelFor(senderUserId, "제시 내용이 변경되어 교환이 취소되었습니다.") return
+            end
+            self:Finish(t)
+        else self:Publish(t) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method table Take(table state, table offer)
+        -- Validate ownership again, remove offers on a copy, preserve item metadata.
+        local result = _BaramTradeStore:Copy(state)
+        for _, entry in ipairs(offer.items) do
+            local item = result.items[tostring(entry.slot)]
+            if item == nil or entry.slot == state.equip or item.count < entry.count or entry.count < 1 then return nil end
+            if _HttpService:JSONEncode(item) ~= _HttpService:JSONEncode(entry.item) then return nil end
+            _BaramWorld:RemoveItem(result, entry.slot, entry.count)
+        end
+        return result
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Put(table state, table offer)
+        -- Original stack types merge only up to their item limit; no silent splitting.
+        for _, entry in ipairs(offer.items) do
+            local incoming = entry.item
+            local data = _BaramWorldData:Item(incoming.id)
+            if data == nil or data.dropAllowed ~= 1 then return false end
+            local destination = 0
+            local stackable = data.type >= 7 and data.type ~= 10
+            if stackable then
+                for slot = 1, 52 do
+                    local item = state.items[tostring(slot)]
+                    if item ~= nil and item.id == incoming.id then
+                        if item.count + entry.count > math.max(1, data.maxCount) then return false end
+                        item.count = item.count + entry.count
+                        destination = -1
+                        break
+                    end
+                end
+            end
+            if destination == 0 then
+                for slot = 1, 52 do if state.items[tostring(slot)] == nil then destination = slot break end end
+                if destination == 0 then return false end
+                local copy = _BaramTradeStore:Copy(incoming)
+                copy.count = entry.count
+                state.items[tostring(destination)] = copy
+            end
+        end
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method table Results(table stateA, table stateB, table offerA, table offerB)
+        -- Pure transfer calculation; failure never mutates either live inventory.
+        if offerA.gold < 0 or offerB.gold < 0 or offerA.gold ~= math.floor(offerA.gold) or offerB.gold ~= math.floor(offerB.gold) then return nil end
+        if offerA.gold > stateA.gold or offerB.gold > stateB.gold then return nil end
+        if stateA.gold + offerB.gold > 4294967295 or stateB.gold + offerA.gold > 4294967295 then return nil end
+        local a = self:Take(stateA, offerA)
+        local b = self:Take(stateB, offerB)
+        if a == nil or b == nil then return nil end
+        if not self:Put(a, offerB) or not self:Put(b, offerA) then return nil end
+        a.gold = a.gold - offerA.gold + offerB.gold
+        b.gold = b.gold - offerB.gold + offerA.gold
+        if not _BaramWorld:ValidState(a) or not _BaramWorld:ValidState(b) then return nil end
+        return {a = a, b = b}
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Finish(table t)
+        -- Freeze before any yielding storage operation; duplicate confirm cannot enter.
+        local a = _BaramWorld:GetRecord(t.a)
+        local b = _BaramWorld:GetRecord(t.b)
+        if a == nil or b == nil or not a.active or not b.active or a.saving or b.saving then self:CancelFor(t.a, "저장 중이므로 교환이 취소되었습니다.") return end
+        local result = self:Results(a.state, b.state, t.offers[t.a], t.offers[t.b])
+        if result == nil then self:CancelFor(t.a, "교환에 실패하였습니다. 금전, 아이템 개수와 소지품을 확인해 주세요.") return end
+        t.persisting = true
+        a.tradeBusy = true
+        b.tradeBusy = true
+        self:Publish(t)
+        -- Establish real baseline keys for first-time characters before CAS prepare.
+        local savedA = _BaramWorld:FlushForTrade(t.a)
+        local savedB = savedA and _BaramWorld:FlushForTrade(t.b)
+        if not savedA or not savedB or t.cancelRequested then
+            t.persisting = false
+            a.tradeBusy = false
+            b.tradeBusy = false
+            self:CancelFor(t.a, "저장하지 못해 교환이 취소되었습니다.")
+            self:DrainDeferred(t.a)
+            self:DrainDeferred(t.b)
+            return
+        end
+        t.decision = _BaramTradeStore:Commit(t, a, b, result.a, result.b)
+        t.persisting = false
+        t.recovery = true
+        self:Recover(t)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Recover(table t)
+        -- Unknown storage outcomes remain frozen; a user action/relogin retries safely.
+        if t.persisting then return end
+        local a = _BaramWorld:GetRecord(t.a)
+        local b = _BaramWorld:GetRecord(t.b)
+        if a == nil or b == nil then return end
+        t.persisting = true
+        local ledger = t.ledger or _DataStorageService:GetGlobalDataStorage(_BaramTradeStore.LedgerName)
+        if t.decision == "unknown" then t.decision = _BaramTradeStore:Decision(ledger, t.id, false) end
+        if t.decision == "unknown" then
+            t.persisting = false
+            self:Publish(t)
+            _BaramWorld:Notice(t.a, "교환 저장 확인 중입니다. 취소 버튼으로 다시 확인할 수 있습니다.")
+            _BaramWorld:Notice(t.b, "교환 저장 확인 중입니다. 취소 버튼으로 다시 확인할 수 있습니다.")
+            return
+        end
+        local resolvedA = _BaramTradeStore:Resolve(a.storage, a.key, ledger)
+        local resolvedB = _BaramTradeStore:Resolve(b.storage, b.key, ledger)
+        t.persisting = false
+        if not resolvedA.ok or not resolvedB.ok or resolvedA.state == nil or resolvedB.state == nil then
+            self:Publish(t)
+            _BaramWorld:Notice(t.a, "교환 저장 확인 중입니다. 취소 버튼으로 다시 확인할 수 있습니다.")
+            _BaramWorld:Notice(t.b, "교환 저장 확인 중입니다. 취소 버튼으로 다시 확인할 수 있습니다.")
+            return
+        end
+        a.state = resolvedA.state
+        a.savedRaw = resolvedA.raw
+        b.state = resolvedB.state
+        b.savedRaw = resolvedB.raw
+        a.dirty = false
+        b.dirty = false
+        a.tradeBusy = false
+        b.tradeBusy = false
+        t.recovery = false
+        self:CancelFor(t.a, t.decision == "committed" and "교환에 성공하였습니다." or "교환이 취소되었습니다.")
+        _BaramWorld:Snapshot(t.a)
+        _BaramWorld:Snapshot(t.b)
+        for _, userId in ipairs({t.a, t.b}) do
+            self:DrainDeferred(userId)
+        end
+        log("[BaramTrade] durable outcome=" .. t.decision)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void DrainDeferred(string userId)
+        -- Replay queued combat on every unlock, including failed baseline saves.
+        local record = _BaramWorld:GetRecord(userId)
+        if record == nil or record.tradeBusy then return end
+        local damage = record.deferredDamage or 0
+        local kills = record.deferredKills or {}
+        record.deferredDamage = nil
+        record.deferredKills = nil
+        if damage > 0 and record.active then _BaramWorld:Damage(userId, damage) end
+        for _, kill in ipairs(kills) do _BaramWorld:Killed(userId, kill.kind, kill.x, kill.y) end
+    end
+
+    @ExecSpace("Server")
+    method void Cancel(string sessionId)
+        -- Cancel only the caller's current session; a committed decision is irreversible.
+        local r = _BaramWorld:GetRecord(senderUserId)
+        if r == nil or r.trade == nil or r.trade.id ~= sessionId then return end
+        if r.trade.recovery then self:Recover(r.trade) else self:CancelFor(senderUserId, "교환이 취소되었습니다.") end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void CancelFor(string userId, string message)
+        -- Reservation cancellation returns everything implicitly: nothing was removed.
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or r.trade == nil then return end
+        local t = r.trade
+        if t.persisting or t.recovery then t.cancelRequested = true return end
+        for _, ownerId in ipairs({t.a, t.b}) do
+            local owner = _BaramWorld:GetRecord(ownerId)
+            if owner ~= nil and owner.trade == t then owner.trade = nil end
+            self:Closed(t.id, ownerId)
+            _BaramWorld:Notice(ownerId, message)
+        end
+        log("[BaramTrade] closed")
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Publish(table t)
+        -- Each client gets only offered peer items, never the peer's full inventory.
+        for _, ownerId in ipairs({t.a, t.b}) do
+            local otherId = ownerId == t.a and t.b or t.a
+            local own = _BaramWorld:GetRecord(ownerId)
+            local player = _UserService:GetUserEntityByUserId(ownerId)
+            local peer = _UserService:GetUserEntityByUserId(otherId)
+            if own ~= nil and isvalid(player) and isvalid(peer) then
+                local view = {id = t.id, revision = t.revision, busy = t.persisting or t.recovery or false,
+                    ownName = player.PlayerComponent.Nickname, peerName = peer.PlayerComponent.Nickname,
+                    own = t.offers[ownerId], peer = t.offers[otherId], inventory = own.state.items, equip = own.state.equip, gold = own.state.gold}
+                self:Received(view, ownerId)
+            end
+        end
+    end
+
+    @ExecSpace("Client")
+    method void Received(table view)
+        -- Present the server snapshot through the original-resource trade window.
+        self.SessionId = view.id
+        self.View = view
+        _BaramTradeUI:Render(view)
+    end
+
+    @ExecSpace("Client")
+    method void Closed(string sessionId)
+        -- Ignore delayed close packets for an earlier window.
+        if self.SessionId ~= sessionId then return end
+        self.SessionId = ""
+        self.View = {}
+        _BaramTradeUI:Close()
+    end
+end

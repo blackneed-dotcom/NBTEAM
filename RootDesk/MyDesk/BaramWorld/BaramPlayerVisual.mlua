@@ -91,10 +91,12 @@ script BaramPlayerVisual extends Component
         self.Entity.AvatarRendererComponent.Enable = false
         if self.Entity == _UserService.LocalPlayer then self.Entity.PlayerControllerComponent.Enable = false end
         if self._T.map ~= map then
+            self:ReleaseProfileTouch()
             if isvalid(self._T.visual) then self._T.visual:Destroy() end
             if isvalid(self._T.warm) then self._T.warm:Destroy() self._T.warm = nil end
             self._T.map = map
             self._T.visual = _SpawnService:SpawnByModelId("baramworldvisual", "BaramVisual_" .. self.Entity.Id, self.Entity.TransformComponent.WorldPosition, map)
+            self:BindProfileTouch()
             self._T.signature = ""
             self._T.target = self.Entity.TransformComponent.WorldPosition
             self._T.path = {}
@@ -249,8 +251,37 @@ script BaramPlayerVisual extends Component
         end
     end
 
+
+    @ExecSpace("ClientOnly")
+    method void BindProfileTouch()
+        if not isvalid(self._T.visual) then return end
+        self._T.profileLinks = {}
+        for _, name in ipairs({"Body", "Head"}) do
+            local part = self._T.visual:GetChildByName(name)
+            if isvalid(part) then
+                ---@type TouchReceiveComponent
+                local receiver = part:AddComponent("TouchReceiveComponent")
+                receiver.AutoFitToSize = true
+                receiver.RelayEventToBehind = false
+                local handle = part:ConnectEvent(TouchEvent, function(event)
+                    if event.TouchId == 1 and not _InputService:IsPointerOverUI() then _BaramProfile:Select(self.Entity) end
+                end)
+                table.insert(self._T.profileLinks, {entity = part, handle = handle})
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ReleaseProfileTouch()
+        for _, link in ipairs(self._T.profileLinks or {}) do
+            if isvalid(link.entity) then link.entity:DisconnectEvent(TouchEvent, link.handle) end
+        end
+        self._T.profileLinks = nil
+    end
+
     @ExecSpace("ClientOnly")
     method void OnEndPlay()
+        self:ReleaseProfileTouch()
         if isvalid(self._T.visual) then self._T.visual:Destroy() end
         if isvalid(self._T.warm) then self._T.warm:Destroy() end
     end

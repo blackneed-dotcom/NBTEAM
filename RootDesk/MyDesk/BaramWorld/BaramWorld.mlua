@@ -24,6 +24,10 @@ script BaramWorld extends Logic
         local player = _UserService:GetUserEntityByUserId(userId)
         if not isvalid(player) or not _BaramEntryFlow:IsValidRecord(appearance) then return false end
         local record = self._T.users[userId]
+        if record ~= nil and record.tradeBusy then
+            if record.trade ~= nil and record.trade.recovery then _BaramTrade:Recover(record.trade) end
+            if record.tradeBusy then self:Notice(userId, "교환 저장 결과를 확인 중입니다.") return false end
+        end
         if record ~= nil and (record.slot or 1) ~= slot then
             if record.active or not self:Flush(userId) then return false end
             record = nil
@@ -32,9 +36,10 @@ script BaramWorld extends Logic
             self._T.loading[userId] = true
             local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
             local key = _BaramEntryFlow:SlotKey(self.StorageKey, slot)
-            local code, raw = storage:GetAndWait(key)
+            local recovered = _BaramTradeStore:Resolve(storage, key, _DataStorageService:GetGlobalDataStorage(_BaramTradeStore.LedgerName))
+            local raw = recovered.raw
             self._T.loading[userId] = nil
-            if code ~= 0 and code ~= 1000002 then self:Notice(userId, "진행 정보를 불러오지 못했습니다.") return false end
+            if not recovered.ok then self:Notice(userId, "진행 정보 또는 교환 저장 결과를 확인하지 못했습니다. 기존 데이터는 보존했습니다.") return false end
             local state = nil
             if raw ~= nil and raw ~= "" then
                 local ok, parsed = pcall(function() return _HttpService:JSONDecode(raw) end)
@@ -43,13 +48,16 @@ script BaramWorld extends Logic
             else
                 state = {version = 1, map = 14, x = 34, y = 122, hp = 100, mp = 80, maxHp = 100, maxMp = 80, level = 1, exp = 0, gold = 0, items = {kind = "inventory"}, equip = 0, guide = 0}
             end
-            record = {state = state, storage = storage, slot = slot, key = key, dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
+            record = {state = state, storage = storage, slot = slot, key = key, savedRaw = raw or "", dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
             self._T.users[userId] = record
         end
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
         record.active = true
         if record.allowExchange == nil then record.allowExchange = true end
         self:ExchangeSetting(record.allowExchange, userId)
+        if record.allowGroup == nil then record.allowGroup = true end
+        _BaramParty:ReceiveAllowed(record.allowGroup, userId)
+        if record.party == nil then _BaramParty:ReceiveMembers({}, userId) end
         ---@type BaramPlayerVisual
         local visual = player:GetComponent("script.BaramPlayerVisual")
         if not isvalid(visual) then visual = player:AddComponent("BaramPlayerVisual") end
@@ -70,13 +78,13 @@ script BaramWorld extends Logic
             if type(s[name]) ~= "number" or s[name] ~= math.floor(s[name]) or s[name] < 0 then return false end
         end
         if _BaramWorldData:Map(s.map) == nil or not _BaramWorldData:Walkable(s.map, s.x, s.y) or s.level < 1 or s.level > 99 then return false end
-        if s.hp > s.maxHp or s.mp > s.maxMp or s.gold > 2000000000 then return false end
+        if s.hp > s.maxHp or s.mp > s.maxMp or s.gold > 4294967295 then return false end
         for key, item in pairs(s.items) do
             if key ~= "kind" then
             local slot = tonumber(key)
             if slot == nil or slot < 1 or slot > _BaramWorldData.InventoryCapacity or slot ~= math.floor(slot) or type(item) ~= "table" then return false end
             local data = _BaramWorldData:Item(item.id or -1)
-            if data == nil or type(item.count) ~= "number" or item.count < 1 or item.count > math.max(1, data.maxCount) then return false end
+            if data == nil or type(item.count) ~= "number" or item.count ~= math.floor(item.count) or item.count < 1 or item.count > math.max(1, data.maxCount) then return false end
             end
         end
         return s.equip == 0 or s.items[tostring(s.equip)] ~= nil
@@ -88,6 +96,8 @@ script BaramWorld extends Logic
         local mapData = _BaramWorldData:Map(mapId)
         local player = _UserService:GetUserEntityByUserId(userId)
         if r == nil or mapData == nil or not isvalid(player) then return end
+        if r.tradeBusy then return end
+        if r.trade ~= nil then _BaramTrade:CancelFor(userId, "이동하여 교환이 취소되었습니다.") end
         local map = _EntityService:GetEntityByPath("/maps/" .. mapData.name)
         if not isvalid(map) then log_error("[BaramWorld] missing map " .. mapData.name) return end
         local p = _BaramWorldData:Position(x, y)
@@ -118,6 +128,8 @@ script BaramWorld extends Logic
     method integer MoveChecked(string userId, integer direction, boolean turnOnly)
         local r = self._T.users[userId]
         if r == nil or not r.active or direction < 0 or direction > 3 or self.Clock < r.nextMove or r.state.hp <= 0 then return 0 end
+        if r.tradeBusy then return 0 end
+        if r.trade ~= nil then _BaramTrade:CancelFor(userId, "이동하여 교환이 취소되었습니다.") end
         local player = _UserService:GetUserEntityByUserId(userId)
         if not isvalid(player) then return 0 end
         ---@type BaramPlayerVisual
@@ -233,11 +245,24 @@ script BaramWorld extends Logic
     @ExecSpace("Server")
     method void SetExchangeAllowed(boolean allowed)
         -- Keep item-receiving permission authoritative on the server.
+        self:ApplyExchangeAllowed(senderUserId, allowed)
+    end
+
+    @ExecSpace("Server")
+    method void ToggleExchangeAllowed()
+        -- Flip server state so rapid clicks do not reuse a stale client value.
         local r = self._T.users[senderUserId]
+        if r ~= nil and r.active then self:ApplyExchangeAllowed(senderUserId, r.allowExchange == false) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ApplyExchangeAllowed(string userId, boolean allowed)
+        -- Share the setting between keyboard and original profile buttons.
+        local r = self._T.users[userId]
         if r == nil or not r.active then return end
         r.allowExchange = allowed
-        self:ExchangeSetting(allowed, senderUserId)
-        self:Notice(senderUserId, allowed and "교환 허가" or "교환 거부")
+        self:ExchangeSetting(allowed, userId)
+        self:Notice(userId, allowed and "교환가능    : ON" or "교환가능    : OFF")
         log("[BaramExchange] allowed=" .. tostring(allowed))
     end
 
@@ -245,6 +270,11 @@ script BaramWorld extends Logic
     method void ExchangeSetting(boolean allowed)
         -- Reflect the server-confirmed setting in the keyboard controller.
         _BaramInput.AllowExchange = allowed
+        local player = _UserService.LocalPlayer
+        if isvalid(player) and _BaramProfile.SelectedUser == player.PlayerComponent.UserId then
+            _BaramProfile.ExchangeAllowed = allowed
+            _BaramProfile:RefreshButtons()
+        end
     end
 
     @ExecSpace("ServerOnly")
@@ -274,6 +304,7 @@ script BaramWorld extends Logic
         local userId = senderUserId
         local r = self._T.users[userId]
         if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or slot < 1 or slot > _BaramWorldData.InventoryCapacity then return end
+        if r.trade ~= nil or r.tradeBusy then self:Notice(userId, "교환 중에는 소지품을 변경할 수 없습니다.") return end
         r.nextAction = self.Clock + 0.15
         local s = r.state
         local item = s.items[tostring(slot)]
@@ -283,6 +314,7 @@ script BaramWorld extends Logic
             local targetId = self:FrontUser(userId)
             local target = self._T.users[targetId]
             if target == nil or target.allowExchange == false or r.allowExchange == false then self:Notice(userId, "앞에 물건을 받을 사람이 없습니다.") return end
+            if target.trade ~= nil or target.tradeBusy then self:Notice(userId, "상대방이 교환 중입니다.") return end
             if s.equip == slot then self:Notice(userId, "장비를 먼저 벗어 주세요.") return end
             local count = action == "giveall" and item.count or 1
             if not self:AddItem(target.state, item.id, count, item.durability) then self:Notice(userId, "상대방의 소지품이 가득 찼습니다.") return end
@@ -345,6 +377,7 @@ script BaramWorld extends Logic
         local userId = senderUserId
         local r = self._T.users[userId]
         if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction then return end
+        if r.trade ~= nil or r.tradeBusy then return end
         r.nextAction = self.Clock + 0.15
         local s = r.state
         local count = 0
@@ -364,16 +397,38 @@ script BaramWorld extends Logic
 
     @ExecSpace("ServerOnly")
     method boolean Flush(string userId)
+        -- Ordinary saves must never overwrite a pending trade envelope.
         local r = self._T.users[userId]
-        if r == nil then return false end
+        if r == nil or r.tradeBusy then return false end
+        return self:SaveRecord(r)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean FlushForTrade(string userId)
+        -- The trade coordinator alone may establish its frozen baseline.
+        local r = self._T.users[userId]
+        if r == nil or not r.tradeBusy or r.trade == nil or not r.trade.persisting then return false end
+        return self:SaveRecord(r)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean SaveRecord(table r)
+        -- CAS blocks an old server/save from overwriting a newer durable state.
         if r.saving then return false end
         if not r.dirty then return true end
         r.saving = true
         local revision = r.revision
         local raw = _HttpService:JSONEncode(r.state)
-        local code = r.storage:SetAndWait(r.key or self.StorageKey, raw)
+        local code = 0
+        if r.savedRaw == nil or r.savedRaw == "" then code = r.storage:SetAndWait(r.key or self.StorageKey, raw)
+        else code = r.storage:UpdateAndWait(r.key or self.StorageKey, r.savedRaw, raw) end
+        if code ~= 0 then
+            local readCode, current = r.storage:GetAndWait(r.key or self.StorageKey)
+            if readCode == 0 and current == raw then code = 0 end
+        end
         r.saving = false
         if code == 0 then
+            r.savedRaw = raw
             if r.revision == revision then r.dirty = false end
             log("[BaramSave] saved revision=" .. tostring(revision))
             return true
@@ -384,6 +439,9 @@ script BaramWorld extends Logic
 
     @ExecSpace("Server")
     method void Save()
+        -- Saving also offers an explicit recovery retry without a polling loop.
+        local r = self._T.users[senderUserId]
+        if r ~= nil and r.trade ~= nil and r.trade.recovery then _BaramTrade:Recover(r.trade) return end
         local ok = self:Flush(senderUserId)
         self:Notice(senderUserId, ok and "진행 정보를 저장했습니다." or "저장하지 못했습니다. 잠시 후 다시 시도해 주세요.")
     end
@@ -416,6 +474,7 @@ script BaramWorld extends Logic
         local userId = senderUserId
         local r = self._T.users[userId]
         if r == nil or not r.active or r.state.hp <= 0 or r.dialog == nil or self.Clock < r.nextAction then return end
+        if r.trade ~= nil or r.tradeBusy then return end
         local npc = nil
         for _, n in ipairs(self.Npcs) do if n.id == r.dialog then npc = n end end
         if npc == nil or npc.map ~= r.state.map or math.abs(npc.x - r.state.x) + math.abs(npc.y - r.state.y) > 2 then return end
@@ -445,7 +504,7 @@ script BaramWorld extends Logic
             for _, id in ipairs(stock) do if item.id == id then allowed = true end end
             if not allowed then self:Notice(userId, "이 상점에서는 사지 않는 물건입니다.") return end
             local data = _BaramWorldData:Item(item.id)
-            s.gold = math.min(2000000000, s.gold + math.floor(data.price / 2))
+            s.gold = math.min(4294967295, s.gold + math.floor(data.price / 2))
             self:RemoveItem(s, choice, 1)
             self:Notice(userId, data.name .. " 판매")
         else return end
@@ -490,7 +549,10 @@ script BaramWorld extends Logic
 
     @ExecSpace("Server")
     method void LeaveToTitle()
+        -- Cancel reservations before leaving, but never interrupt an uncertain commit.
+        _BaramTrade:CancelFor(senderUserId, "교환이 취소되었습니다.")
         if not self:Flush(senderUserId) then self:Notice(senderUserId, "저장 중입니다. 잠시 후 다시 시도해 주세요.") return end
+        _BaramParty:LeaveFor(senderUserId)
         self._T.users[senderUserId].active = false
         _BaramEntryFlow:SendSlots(senderUserId)
         self:ReturnToTitle(senderUserId)
@@ -510,6 +572,7 @@ script BaramWorld extends Logic
         local r = self._T.users[userId]
         local player = _UserService:GetUserEntityByUserId(userId)
         if r == nil or not r.active or not isvalid(player) or r.state.hp <= 0 or self.Clock < (r.nextAttack or 0) then return end
+        if r.trade ~= nil or r.tradeBusy then return end
         r.nextAttack = self.Clock + 0.5
         ---@type BaramPlayerVisual
         local visual = player:GetComponent("script.BaramPlayerVisual")
@@ -560,6 +623,8 @@ script BaramWorld extends Logic
     method void Damage(string userId, integer amount)
         local r = self._T.users[userId]
         if r == nil or r.state.hp <= 0 then return end
+        if r.tradeBusy then r.deferredDamage = (r.deferredDamage or 0) + amount return end
+        if r.trade ~= nil then _BaramTrade:CancelFor(userId, "공격받아 교환이 취소되었습니다.") end
         r.state.hp = math.max(0, r.state.hp - amount)
         self:PlayUserAction(userId, 9, 0.15)
         if r.state.hp == 0 then
@@ -591,6 +656,11 @@ script BaramWorld extends Logic
     method void Killed(string userId, integer kind, integer x, integer y)
         local r = self._T.users[userId]
         if r == nil then return end
+        if r.tradeBusy then
+            r.deferredKills = r.deferredKills or {}
+            table.insert(r.deferredKills, {kind = kind, x = x, y = y})
+            return
+        end
         r.state.exp = r.state.exp + (kind == 1 and 10 or 5)
         local oldLevel = r.state.level
         local exp = _BaramLevelData.SourceExperience[0]
@@ -616,7 +686,10 @@ script BaramWorld extends Logic
         self._T.flush = self._T.flush - delta
         if self._T.flush <= 0 then
             self._T.flush = 60
-            for userId, r in pairs(self._T.users) do if r.dirty then self:Flush(userId) end end
+            for userId, r in pairs(self._T.users) do
+                if r.dirty and not r.tradeBusy then self:Flush(userId) end
+                if not r.active and not r.dirty and not r.tradeBusy and not r.saving then self._T.users[userId] = nil end
+            end
             for key, drop in pairs(self._T.drops) do if drop.expires <= self.Clock then
                 if isvalid(drop.entity) then drop.entity:Destroy() end
                 self._T.drops[key] = nil
@@ -627,8 +700,12 @@ script BaramWorld extends Logic
     @ExecSpace("ServerOnly")
     @EventSender("Service", "UserService")
     handler HandleLeave(UserLeaveEvent event)
-        self:Flush(event.UserId)
-        self._T.users[event.UserId] = nil
+        -- Retain uncertain trade/save records; do not discard recovery information.
+        _BaramParty:LeaveFor(event.UserId)
+        local r = self._T.users[event.UserId]
+        if r ~= nil then r.active = false end
+        _BaramTrade:CancelFor(event.UserId, "상대방이 접속을 종료하여 교환이 취소되었습니다.")
+        if self:Flush(event.UserId) then self._T.users[event.UserId] = nil end
         self._T.loading[event.UserId] = nil
     end
 end

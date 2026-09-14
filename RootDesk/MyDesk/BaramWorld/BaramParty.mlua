@@ -1,0 +1,177 @@
+@Logic
+script BaramParty extends Logic
+    property table Members = {}
+
+    @ExecSpace("ServerOnly")
+    method void OnBeginPlay()
+        -- Parties belong to the world session, not to a saved character slot.
+        log("[BaramParty] ready: original 12 members, leader control, automatic succession")
+    end
+
+    @ExecSpace("Server")
+    method void ToggleAllowed()
+        -- Toggle on the server so rapid clicks cannot reuse stale client state.
+        local r = _BaramWorld:GetRecord(senderUserId)
+        if r == nil or not r.active then return end
+        self:SetAllowedFor(senderUserId, r.allowGroup == false)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void SetAllowedFor(string userId, boolean allowed)
+        -- Permission is the original bit 0x08; OFF does not dissolve an existing party.
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or not r.active then return end
+        r.allowGroup = allowed
+        self:ReceiveAllowed(allowed, userId)
+        _BaramWorld:Notice(userId, allowed and "그룹허가    : ON" or "그룹허가    : OFF")
+        log("[BaramParty] permission=" .. tostring(allowed))
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveAllowed(boolean allowed)
+        -- Keep keyboard and own profile permissions on one authoritative value.
+        _BaramInput.AllowGroup = allowed
+        local player = _UserService.LocalPlayer
+        if isvalid(player) and _BaramProfile.SelectedUser == player.PlayerComponent.UserId then
+            _BaramProfile.GroupAllowed = allowed
+            _BaramProfile:RefreshButtons()
+        end
+    end
+
+    @ExecSpace("Server")
+    method void Request(string otherId)
+        -- Only the authenticated caller can issue a membership action.
+        self:Act(senderUserId, otherId)
+    end
+
+    @ExecSpace("Server")
+    method void RequestName(string nickname)
+        -- map.exe 0x426800 searches the caller's current map by character name.
+        if nickname == nil or #nickname > 48 or utf8.len(nickname) == nil then return end
+        local bytes = 0
+        for _, cp in utf8.codes(nickname) do bytes = bytes + (cp < 128 and 1 or 2) end
+        if bytes == 0 or bytes > 16 then return end
+        local player = _UserService:GetUserEntityByUserId(senderUserId)
+        if not isvalid(player) or not isvalid(player.CurrentMap) then return end
+        local found = ""
+        for _, other in ipairs(_UserService:GetUsersByMapComponent(player.CurrentMap.MapComponent) or {}) do
+            if isvalid(other) and other.PlayerComponent.Nickname == nickname then
+                if found ~= "" then _BaramWorld:Notice(senderUserId, "같은 이름의 사용자를 구분할 수 없습니다.") return end
+                found = other.PlayerComponent.UserId
+            end
+        end
+        if found == "" then _BaramWorld:Notice(senderUserId, "그런 사람은 없습니다.") return end
+        self:Act(senderUserId, found)
+    end
+
+    @ExecSpace("ServerOnly")
+    method string Rule(string userId, string otherId, table own, table other)
+        -- Original 0x426800/0x426B10: self leaves; only leader adds/removes; max 12.
+        if own == nil or other == nil or not own.active or not other.active then return "missing" end
+        local group = own.party
+        if group ~= nil then
+            if userId == otherId then return "leave" end
+            if group.members[1] ~= userId then return "leader" end
+            if other.party == group then return "remove" end
+            if other.party ~= nil then return "already" end
+            if other.allowGroup == false then return "refused" end
+            if #group.members >= 12 then return "full" end
+            return "add"
+        end
+        if userId == otherId then return "self" end
+        if other.party ~= nil then return "already" end
+        if own.allowGroup == false or other.allowGroup == false then return "refused" end
+        return "create"
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Act(string userId, string otherId)
+        -- Validate live identities and map before applying the original membership rule.
+        local a = _BaramWorld:GetRecord(userId)
+        local b = _BaramWorld:GetRecord(otherId)
+        local player = _UserService:GetUserEntityByUserId(userId)
+        local target = _UserService:GetUserEntityByUserId(otherId)
+        if not isvalid(player) or not isvalid(target) or not isvalid(player.CurrentMap) or player.CurrentMap ~= target.CurrentMap then return end
+        local rule = self:Rule(userId, otherId, a, b)
+        if rule == "leave" or rule == "remove" then self:LeaveFor(otherId) return end
+        if rule == "create" then
+            local group = {members = {userId, otherId}}
+            a.party = group
+            b.party = group
+            self:Broadcast(group, player.PlayerComponent.Nickname .. "님과 " .. target.PlayerComponent.Nickname .. "님이 그룹을 만들었습니다.")
+            self:Publish(group)
+        elseif rule == "add" then
+            b.party = a.party
+            table.insert(a.party.members, otherId)
+            self:Broadcast(a.party, target.PlayerComponent.Nickname .. "님이 그룹에 참가했습니다.")
+            self:Publish(a.party)
+        else
+            local messages = {missing = "그런 사람은 없습니다.", leader = "그룹장만 그룹원을 추가하거나 제외할 수 있습니다.", already = "이미 그룹에 속해 있습니다.", refused = "그룹을 허가하지 않았습니다.", full = "그룹 인원이 너무 많습니다.", self = "그룹에 속해 있지 않습니다."}
+            _BaramWorld:Notice(userId, messages[rule] or "그룹을 구성할 수 없습니다.")
+        end
+        log("[BaramParty] action=" .. rule)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void RemoveMember(table group, string userId)
+        -- 0x426DAB compacts slots; the first remaining member becomes leader.
+        for index, memberId in ipairs(group.members) do
+            if memberId == userId then table.remove(group.members, index) return end
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void LeaveFor(string userId)
+        -- Disconnect/title exit and explicit self-name requests share the same cleanup.
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or r.party == nil then return end
+        local group = r.party
+        local wasLeader = group.members[1] == userId
+        r.party = nil
+        self:RemoveMember(group, userId)
+        self:ReceiveMembers({}, userId)
+        _BaramWorld:Notice(userId, "그룹에서 탈퇴했습니다.")
+        if #group.members < 2 then
+            for _, remainingId in ipairs(group.members) do
+                local remaining = _BaramWorld:GetRecord(remainingId)
+                if remaining ~= nil and remaining.party == group then remaining.party = nil end
+                self:ReceiveMembers({}, remainingId)
+                _BaramWorld:Notice(remainingId, "그룹이 해체되었습니다.")
+            end
+            group.members = {}
+            log("[BaramParty] dissolved")
+            return
+        end
+        if wasLeader then
+            local nextLeader = _UserService:GetUserEntityByUserId(group.members[1])
+            if isvalid(nextLeader) then self:Broadcast(group, nextLeader.PlayerComponent.Nickname .. "님이 그룹장이 되었습니다.") end
+        end
+        self:Publish(group)
+        log("[BaramParty] left; members=" .. tostring(#group.members) .. " succession=" .. tostring(wasLeader))
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Broadcast(table group, string message)
+        -- Deliver membership changes only to this party.
+        for _, memberId in ipairs(group.members) do _BaramWorld:Notice(memberId, message) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Publish(table group)
+        -- Send only names and user ids; inventory, currency and saves remain private.
+        local members = {}
+        for _, userId in ipairs(group.members) do
+            local player = _UserService:GetUserEntityByUserId(userId)
+            if isvalid(player) then table.insert(members, {userId = userId, name = player.PlayerComponent.Nickname}) end
+        end
+        for _, userId in ipairs(group.members) do self:ReceiveMembers(members, userId) end
+        log("[BaramParty] published members=" .. tostring(#members))
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveMembers(table members)
+        -- Retain the authoritative roster for group controls and future group presentation.
+        self.Members = members
+        log("[BaramParty] client members=" .. tostring(#members))
+    end
+end

@@ -1,0 +1,18 @@
+const fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib'),crypto=require('node:crypto');
+const root=path.resolve(__dirname,'../..'),out=path.join(__dirname,'Assets');
+const b=fs.readFileSync(path.join(root,'bint.dat')),entries=[];
+for(let i=0;i<b.readUInt32LE(0);i++){let p=4+i*17;entries.push({name:b.subarray(p+4,p+17).toString('ascii').split('\0')[0],offset:b.readUInt32LE(p)});}
+function entry(name){let i=entries.findIndex(e=>e.name.toLowerCase()===name.toLowerCase());if(i<0)throw Error(name);return b.subarray(entries[i].offset,entries[i+1]?.offset??b.length);}
+function crc(b){let c=0xffffffff;for(let x of b){c^=x;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^0xffffffff)>>>0;}
+function chunk(n,b){let a=Buffer.from(n),o=Buffer.alloc(b.length+12);o.writeUInt32BE(b.length);a.copy(o,4);b.copy(o,8);o.writeUInt32BE(crc(Buffer.concat([a,b])),b.length+8);return o;}
+function png(w,h,rgba){let hd=Buffer.alloc(13);hd.writeUInt32BE(w);hd.writeUInt32BE(h,4);hd[8]=8;hd[9]=6;let rows=Buffer.alloc(h*(w*4+1));for(let y=0;y<h;y++)rgba.copy(rows,y*(w*4+1)+1,y*w*4,(y+1)*w*4);return Buffer.concat([Buffer.from('89504e470d0a1a0a','hex'),chunk('IHDR',hd),chunk('IDAT',zlib.deflateSync(rows)),chunk('IEND',Buffer.alloc(0))]);}
+function frame(name,index=0,palette='NPAL6.PAL'){let e=entry(name),pal=entry(palette),p=12+e.readUInt32LE(8)+index*16,top=e.readInt16LE(p),left=e.readInt16LE(p+2),h=e.readInt16LE(p+4)-top,w=e.readInt16LE(p+6)-left,start=e.readUInt32LE(p+8),end=e.readUInt32LE(p+12);if(w*h!==end-start)throw Error(name+' not raw');let rgba=Buffer.alloc(w*h*4);let colors=32+pal.readUInt32LE(24)*2;for(let i=0;i<w*h;i++){let n=e[12+start+i];pal.copy(rgba,i*4,colors+n*4,colors+n*4+3);rgba[i*4+3]=n?255:0;}return{w,h,top,left,rgba};}
+const manifest={archive:'C:/Users/black/UI/bint.dat',sha256:crypto.createHash('sha256').update(b).digest('hex'),assets:[]};
+function save(name,f,source,extra={}){let file=name+'.png';fs.writeFileSync(path.join(out,file),png(f.w,f.h,f.rgba));manifest.assets.push({file,source,width:f.w,height:f.h,left:f.left??0,top:f.top??0,...extra});}
+function run(){fs.mkdirSync(out,{recursive:true});for(let name of ['USERLOOK.EPF','SELFLOK3.EPF','LOOKBTN.EPF','SPELLBUT.EPF']){let e=entry(name);for(let i=0;i<e.readUInt16LE(0);i++){let f=frame(name,i);save(name.replace('.EPF','').toLowerCase()+'-'+i,f,'bint.dat/'+name,{frame:i,palette:'bint.dat/NPAL6.PAL'});}}
+let font=entry('BARAM00.EFT'),widths=Array(65536).fill('0'),pages=Array.from({length:4},()=>Buffer.alloc(2048*2048*4)),types={};
+for(let cp=0;cp<65536;cp++){let off=font.readUInt32LE(4+cp*4);if(!off)continue;let advance=font.readInt16LE(off),top=font.readInt16LE(off+2),left=font.readInt16LE(off+4),bottom=font.readInt16LE(off+6),right=font.readInt16LE(off+8),cursor=off+14; widths[cp]=advance===6?'6':'C';let page=cp>>>14,cell=cp&16383,x0=(cell%128)*16,y0=Math.floor(cell/128)*16;
+for(let y=top;y<bottom;y++){let x=left;while(font[cursor]){let n=font[cursor++],count=n&31,t=n>>>5;types[t]=(types[t]||0)+count;for(let k=0;k<count;k++,x++){if(x<left||x>=right)throw Error('font RLE bounds');if(t){let p=((y0+y)*2048+x0+x)*4;pages[page].set([255,255,255,255],p);}}}cursor++;if(x!==right)throw Error('font RLE width '+cp);}}
+for(let i=0;i<4;i++)save('font-'+i,{w:2048,h:2048,rgba:pages[i]},'bint.dat/BARAM00.EFT',{page:i,cellSize:16,columns:128,codepointStart:i*16384});
+fs.writeFileSync(path.join(__dirname,'font-widths.json'),JSON.stringify(Array.from({length:256},(_,i)=>widths.slice(i*256,(i+1)*256).join(''))));fs.writeFileSync(path.join(__dirname,'manifest.json'),JSON.stringify(manifest,null,2));console.log({assets:manifest.assets.length,fontRunTypes:types});}
+if(require.main===module)run();module.exports={entry,frame,png,run};
