@@ -4,6 +4,7 @@ script BaramInput extends Logic
     property string Pending = ""
     property integer FirstSlot = 0
     property number MoveWait = 0
+    property number AttackWait = 0
     property boolean MovePending = false
     property number ReplyWait = 0
     property boolean FastWalk = true
@@ -562,7 +563,8 @@ script BaramInput extends Logic
             if key == KeyboardKey.PageUp then self:ChangeInventoryPage(-1) return end
             if key == KeyboardKey.PageDown then self:ChangeInventoryPage(1) return end
         end
-        if key == KeyboardKey.A or key == KeyboardKey.Space then _BaramWorld:Attack()
+        if key == KeyboardKey.A or key == KeyboardKey.Space then
+            -- 공격은 아래 OnUpdate 폴링에서 처리한다. 여기서 또 쏘면 첫 타가 두 번 나간다.
         elseif key == KeyboardKey.Colon or (key == KeyboardKey.Semicolon and shift) then
             self.Mode = "command"
             self.Pending = "emotion"
@@ -636,6 +638,12 @@ script BaramInput extends Logic
     method void MoveResult(integer result)
         if not self.MovePending then return end
         self.MovePending = false
+        -- 한 칸이 0.32초(WalkFrameSeconds*4)인데 왕복이 그보다 길면 그만큼 걸음이 밀린다.
+        -- 끊김이 지연 때문인지 아닌지 눈으로 보려고 남긴다.
+        local budget = _BaramWorldData.WalkFrameSeconds * 4
+        if self.ReplyWait > budget then
+            log("[BaramInput] 느린 응답 " .. tostring(math.floor(self.ReplyWait * 1000)) .. "ms (한 칸 " .. tostring(math.floor(budget * 1000)) .. "ms)")
+        end
         if result == 1 then
             self.TurnedTo = self.PendingDirection
             self.MoveWait = math.max(0, _BaramWorldData.WalkFrameSeconds * 4 - self.ReplyWait)
@@ -663,6 +671,15 @@ script BaramInput extends Logic
                 self.InventoryTipSeconds = math.max(0, self.InventoryTipSeconds - delta)
                 if self.InventoryTipSeconds == 0 then self._T.inventoryWindow:GetChildByName("Tooltip").Enable = false end
             end
+        end
+        -- 공격도 방향키처럼 눌린 상태를 매 틱 본다. 예전엔 키 down 이벤트에만 걸려 있어서
+        -- 스페이스를 꾹 눌러도 한 번만 나갔다. 서버가 0.5초 쿨(r.nextAttack)을 들고 있으니
+        -- 같은 간격으로 맞춰 보낸다. 걸음 응답을 기다리는 중에도 공격은 되게 위쪽에 둔다.
+        self.AttackWait = math.max(0, self.AttackWait - delta)
+        if self.Mode == "" and self.AttackWait <= 0 and not _BaramChatRelay:IsInputBlocked()
+            and (_InputService:IsKeyPressed(KeyboardKey.Space) or _InputService:IsKeyPressed(KeyboardKey.A)) then
+            self.AttackWait = 0.5
+            _BaramWorld:Attack()
         end
         self.MoveWait = math.max(0, self.MoveWait - delta)
         if self.MovePending then
