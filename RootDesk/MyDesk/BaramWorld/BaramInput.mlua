@@ -17,6 +17,8 @@ script BaramInput extends Logic
     property any KeyLink = nil
     property any CloseLink = nil
     property integer InventoryPage = 1
+    property string ActivePane = "inventory"
+    property table SkillSlots = {}
     property boolean InventoryIcons = false
     property number InventoryTipSeconds = 0
     property table InventoryImages = { ["17"] = {ruid = "2fce5dbc5fd44099bc1b8e91cf9913eb", width = 24, height = 24}, ["2200"] = {ruid = "53773753a7b44c27a08b3c63f83a8aca", width = 17, height = 23}, ["3014"] = {ruid = "a292a51da7404fe68a4c8b220df9cd3c", width = 6, height = 5}, ["3018"] = {ruid = "9f7b6aae847146c3b95068e10c18ff75", width = 18, height = 11} }
@@ -33,6 +35,7 @@ script BaramInput extends Logic
         self._T.inventoryLinks = {}
         self._T.inventoryRows = {}
         self.InventoryPage = 1
+        self.ActivePane = "inventory"
         self.InventoryIcons = false
         self.InventoryTipSeconds = 0
         local inventoryButton = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/InventoryButton")
@@ -44,6 +47,16 @@ script BaramInput extends Logic
                 log("[BaramInventoryUI] opened by HUD icon")
             end)
             table.insert(self._T.inventoryLinks, {entity = inventoryButton, link = link})
+        end
+        local skillButton = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/SkillButton")
+        if isvalid(skillButton) then
+            local link = skillButton:ConnectEvent(UITouchDownEvent, function(event)
+                if event.TouchId ~= -1 and event.TouchId <= 0 then return end
+                if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
+                self:OpenSkills()
+                log("[BaramSkillsUI] opened by HUD icon")
+            end)
+            table.insert(self._T.inventoryLinks, {entity = skillButton, link = link})
         end
         if isvalid(self._T.inventory) then
             self._T.inventory.Enable = false
@@ -138,6 +151,8 @@ script BaramInput extends Logic
     @ExecSpace("ClientOnly")
     method void OpenInventory()
         -- Select the inventory pane without locking chat, movement or actions.
+        if self.ActivePane ~= "inventory" then self.InventoryPage = 1 end
+        self.ActivePane = "inventory"
         if not isvalid(self._T.inventory) then return end
         local infoPanel = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/CharacterInfo")
         if isvalid(infoPanel) then infoPanel.Enable = false end
@@ -152,10 +167,39 @@ script BaramInput extends Logic
     end
 
     @ExecSpace("ClientOnly")
+    method void OpenSkills()
+        -- winbaram 0x4ADEB0: SPELLINV.EPF, not the ITEMINV inventory skin.
+        if not isvalid(self._T.inventory) then return end
+        self:OpenInventory()
+        self.ActivePane = "skills"
+        self.InventoryPage = 1
+        self:RefreshInventory()
+        log("[BaramSkillsUI] original SPELLINV opened")
+    end
+
+    @ExecSpace("ClientOnly")
     method void RefreshInventory()
         -- winbaram 0x450C90: scan 52 slots, skip empty entries, draw 15 per page.
         local window = self._T.inventoryWindow
         if not isvalid(window) then return end
+        if self.ActivePane == "skills" then
+            self:RefreshSkills()
+            return
+        end
+        window.SpriteGUIRendererComponent.ImageRUID = DataRef("5825d1fe60ce4816886d8103fde0f972")
+        for _, target in ipairs({window, window:GetChildByName("PreviousDisabled"), window:GetChildByName("NextDisabled")}) do
+            target.PixelGUIRendererComponent.Enable = false
+            target.SpriteGUIRendererComponent.Enable = true
+        end
+        window:GetChildByName("Previous").UITransformComponent.anchoredPosition = Vector2(59, -259)
+        window:GetChildByName("Next").UITransformComponent.anchoredPosition = Vector2(112, -259)
+        window:GetChildByName("PreviousDisabled").UITransformComponent.anchoredPosition = Vector2(59, -259)
+        window:GetChildByName("NextDisabled").UITransformComponent.anchoredPosition = Vector2(112, -259)
+        window:GetChildByName("PreviousDisabled").SpriteGUIRendererComponent.ImageRUID = DataRef("80bbab6caa444c07b96ef0b6ffd7a8b9")
+        window:GetChildByName("NextDisabled").SpriteGUIRendererComponent.ImageRUID = DataRef("159c443f6a824eb8aa5cdf7a9ab5ffcb")
+        for _, control in ipairs({"Previous", "Next", "ListMode", "IconMode"}) do
+            window:GetChildByName(control).Enable = true
+        end
         local state = _BaramWorld.LocalState
         local items = state.items or {}
         local slots = {}
@@ -177,6 +221,9 @@ script BaramInput extends Logic
                 local letter = row:GetChildByName("Letter")
                 local label = row:GetChildByName("Label")
                 local icon = row:GetChildByName("Icon")
+                label.UITransformComponent.anchoredPosition = Vector2(30, 0)
+                label.UITransformComponent.RectSize = Vector2(100, 13)
+                label.TextGUIRendererComponent.FontColor = Color.FromHexCode("#EBDF8F")
                 letter.Enable = not self.InventoryIcons
                 label.Enable = not self.InventoryIcons
                 letter.TextGUIRendererComponent.Text = _BaramWorldData:InventoryLetter(slot) .. ": "
@@ -212,6 +259,51 @@ script BaramInput extends Logic
     end
 
     @ExecSpace("ClientOnly")
+    method void RefreshSkills()
+        -- 0x4ADEB0 / 0x4AE2E2: 52 slots, 13 occupied rows/page, 13-pixel spacing.
+        local window = self._T.inventoryWindow
+        local slots = {}
+        for i = 1, 52 do
+            if self.SkillSlots[tostring(i)] ~= nil then table.insert(slots, i) end
+        end
+        self._T.inventorySlots = slots
+        self._T.inventoryPages = math.max(1, math.ceil(#slots / 13))
+        self.InventoryPage = math.max(1, math.min(self.InventoryPage, self._T.inventoryPages))
+        _BaramOriginalSkillArt:Draw(window, "background")
+        _BaramOriginalSkillArt:Draw(window:GetChildByName("PreviousDisabled"), "previous")
+        _BaramOriginalSkillArt:Draw(window:GetChildByName("NextDisabled"), "next")
+        window:GetChildByName("Tooltip").Enable = false
+        self.InventoryTipSeconds = 0
+        for i = 1, 15 do
+            local row = self._T.inventoryRows[i]
+            local slot = i <= 13 and slots[(self.InventoryPage - 1) * 13 + i] or nil
+            row.Enable = slot ~= nil
+            if slot ~= nil then
+                row.UITransformComponent.anchoredPosition = Vector2(22, -51 - (i - 1) * 13)
+                row.UITransformComponent.RectSize = Vector2(148, 13)
+                row:GetChildByName("Icon").Enable = false
+                row:GetChildByName("Letter").Enable = false
+                local label = row:GetChildByName("Label")
+                label.Enable = true
+                label.UITransformComponent.anchoredPosition = Vector2(13, 0)
+                label.UITransformComponent.RectSize = Vector2(135, 13)
+                label.TextGUIRendererComponent.FontColor = Color.black
+                label.TextGUIRendererComponent.Text = _BaramWorldData:InventoryLetter(slot) .. ": " .. self.SkillSlots[tostring(slot)].name
+            end
+        end
+        for _, control in ipairs({"ListMode", "IconMode", "ListSelected", "IconSelected"}) do window:GetChildByName(control).Enable = false end
+        for _, control in ipairs({"Previous", "Next"}) do window:GetChildByName(control).Enable = true end
+        window:GetChildByName("Previous").UITransformComponent.anchoredPosition = Vector2(14, -221)
+        window:GetChildByName("Next").UITransformComponent.anchoredPosition = Vector2(157, -221)
+        window:GetChildByName("PreviousDisabled").UITransformComponent.anchoredPosition = Vector2(14, -221)
+        window:GetChildByName("NextDisabled").UITransformComponent.anchoredPosition = Vector2(157, -221)
+        window:GetChildByName("PreviousDisabled").Enable = self.InventoryPage == 1
+        window:GetChildByName("NextDisabled").Enable = self.InventoryPage == self._T.inventoryPages
+        self._T.inventoryState = _BaramWorld.LocalState
+        log("[BaramSkillsUI] original rows=13 occupied=" .. tostring(#slots) .. " page=" .. tostring(self.InventoryPage))
+    end
+
+    @ExecSpace("ClientOnly")
     method void ChangeInventoryPage(integer direction)
         -- Clamp at the first/last occupied page, as in 0x451500.
         if not isvalid(self._T.inventory) or not self._T.inventory.Enable then return end
@@ -230,6 +322,7 @@ script BaramInput extends Logic
     @ExecSpace("ClientOnly")
     method void InspectInventoryRow(integer rowIndex)
         -- The original 0x1C click requests a description without closing the bag.
+        if self.ActivePane ~= "inventory" then return end
         if not isvalid(self._T.inventory) or not self._T.inventory.Enable then return end
         local slot = (self._T.inventorySlots or {})[(self.InventoryPage - 1) * 15 + rowIndex]
         if slot == nil then return end
@@ -298,6 +391,8 @@ script BaramInput extends Logic
     method void ShowCommandChoices()
         -- The question-mark key reveals the bag without cancelling the pending command.
         if not isvalid(self._T.inventory) then return end
+        if self.ActivePane ~= "inventory" then self.InventoryPage = 1 end
+        self.ActivePane = "inventory"
         local panel = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/CharacterInfo")
         if isvalid(panel) then panel.Enable = false end
         self._T.inventory.Enable = true
@@ -366,6 +461,8 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void Help()
+        -- Include the requested K shortcut alongside the original spell aliases.
+        self:Notice("K: 스킬창   I: 소지품   S: 자기 상태")
         self.Mode = "help"
         local pages = {
             "방향키: 이동 / Shift+방향키: 방향 전환\nA: 공격   ;: 바로 앞 보기 / NPC 대화\nO: 앞 출입구 열기   ,: 줍기   Shift+,: 모두 줍기\nI: 소지품   S: 자기 상태   X→a~z: 물건 검사\nU→a~z / Ctrl+a~z: 사용   E→a~z: 먹기\nW→a~z: 무기   Shift+W→a~z: 갑옷\nShift+T: 장비 벗기\nD→a~z: 하나 버리기   Shift+D→a~z: 전부 버리기\nT→a~z: 던지기   C→a~z→a~z: 칸 바꾸기\nEnter / ': 채팅   Shift+1: 외치기\nAlt+S: 저장   Q / Alt+X: 제목 화면\n? / F1: 도움말",
@@ -467,6 +564,7 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.O then _BaramWorld:OpenDoor()
         elseif key == KeyboardKey.Comma or key == KeyboardKey.Less then _BaramWorld:Pickup(shift or key == KeyboardKey.Less)
         elseif key == KeyboardKey.I then self:OpenInventory()
+        elseif key == KeyboardKey.K then self:OpenSkills()
         elseif key == KeyboardKey.S then
             local hud = _EntityService:GetEntityByPath("/ui/BaramHUD")
             if isvalid(hud) then
@@ -488,7 +586,7 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.H then self:BeginItem(shift and "giveall" or "give")
         elseif key == KeyboardKey.G and shift then self.AllowGroup = not self.AllowGroup self:Notice(self.AllowGroup and "그룹 허가" or "그룹 거부")
         elseif key == KeyboardKey.Equals or key == KeyboardKey.Plus or (key == KeyboardKey.Z and shift) or (key == KeyboardKey.C and shift) then
-            self.Mode = "spells" self:Show("아는 주문", "아직 배운 주문이 없습니다.", "Esc: 닫기")
+            self:OpenSkills()
         elseif key == KeyboardKey.Q then self:BeginConfirmation("quit")
         elseif key == KeyboardKey.Quote then
             local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")

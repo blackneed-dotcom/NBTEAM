@@ -212,7 +212,7 @@
       {
         "id": "e5c5e6e8-2dbd-4f55-aafa-e6201707462a",
         "path": "/ui/BaramInventory/Frame/Window",
-        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.PixelGUIRendererComponent",
         "jsonString": {
           "name": "Window",
           "path": "/ui/BaramInventory/Frame/Window",
@@ -355,6 +355,14 @@
               "RaycastTarget": true,
               "Type": 0,
               "Enable": true
+            },
+            {
+              "@type": "MOD.Core.PixelGUIRendererComponent",
+              "OverrideSorting": false,
+              "RaycastTarget": false,
+              "Height": 288,
+              "Width": 192,
+              "Enable": false
             }
           ],
           "@version": 1
@@ -11423,7 +11431,7 @@
       {
         "id": "6b26e9cf-2c69-4c27-8b71-b9aed45c5cac",
         "path": "/ui/BaramInventory/Frame/Window/PreviousDisabled",
-        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.PixelGUIRendererComponent",
         "jsonString": {
           "name": "PreviousDisabled",
           "path": "/ui/BaramInventory/Frame/Window/PreviousDisabled",
@@ -11566,6 +11574,14 @@
               "RaycastTarget": false,
               "Type": 0,
               "Enable": true
+            },
+            {
+              "@type": "MOD.Core.PixelGUIRendererComponent",
+              "OverrideSorting": false,
+              "RaycastTarget": false,
+              "Height": 18,
+              "Width": 22,
+              "Enable": false
             }
           ],
           "@version": 1
@@ -11574,7 +11590,7 @@
       {
         "id": "be6b9b2e-ef82-4482-b9fc-609dab0327d4",
         "path": "/ui/BaramInventory/Frame/Window/NextDisabled",
-        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.PixelGUIRendererComponent",
         "jsonString": {
           "name": "NextDisabled",
           "path": "/ui/BaramInventory/Frame/Window/NextDisabled",
@@ -11717,6 +11733,14 @@
               "RaycastTarget": false,
               "Type": 0,
               "Enable": true
+            },
+            {
+              "@type": "MOD.Core.PixelGUIRendererComponent",
+              "OverrideSorting": false,
+              "RaycastTarget": false,
+              "Height": 18,
+              "Width": 22,
+              "Enable": false
             }
           ],
           "@version": 1
