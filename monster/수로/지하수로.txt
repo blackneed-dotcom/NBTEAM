@@ -1,0 +1,107 @@
+@독랑각	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 75, rand(270000, 300000), 0, "독랑각", "-1";
+}
+
+@거륵주독	{
+	set @id, objid();
+	set @target_id, get_mobtarget(@id);
+	if(rand(1, 10) <= 1)
+	{
+		if(@target_id > 0)
+		{
+			if(istype(@target_id) == 1)
+			{
+				set @target_sd, id2sd(@target_id);
+				say @id, 0, get_mobname(@id) + ": 그르르..";
+				if(spellaethered(@target_sd, name2spellid("거륵주독")) == 0 && spellaethered(@target_sd, name2spellid("록란주")) == 0)
+				{
+					spellaether @target_sd, name2spellid("거륵주독"), 5;
+					message @target_sd, 3, get_mobname(@id) + "이 거륵주독을 가합니다.";
+				}
+			}
+		}
+	}
+
+}
+
+@거륵주독지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("거륵주독")) == 0) { spelluncast @sd, name2spellid("거륵주독"); end; }
+
+	set @hp, get_hp(@sd)-(get_maxhp(@sd)/100*3);
+	if(@hp <= 0) { set_hp @sd, 1; }
+	else { set_hp @sd, @hp; }
+
+	showgage @id;
+	effect @id, 84;
+}
+
+@금촉	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 78, rand(350000, 380000), 0, "금촉", "-1";
+}
+
+@비루수	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 76, rand(400000, 450000), 0, "비루수", "-1";
+}
+
+@록란조	{	
+	set @id, objid();
+	set @target_id, get_mobtarget(@id);
+	if(rand(1, 10) <= 1)
+	{
+		if(@target_id > 0)
+		{
+			if(istype(@target_id) == 1)
+			{
+				set @target_sd, id2sd(@target_id);
+				if(spellaethered(@target_sd, name2spellid("거륵주독")) == 0 && spellaethered(@target_sd, name2spellid("록란주")) == 0)
+				{
+					spellaether @target_sd, name2spellid("록란조"), 10;
+					message @target_sd, 3, get_mobname(@id) + "이 록란조를 가합니다.";
+				}
+			}
+		}
+	}
+
+}
+
+@록란조지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("록란조")) == 0) { spelluncast @sd, name2spellid("록란조"); end; }
+
+	set @hp, get_hp(@sd)-(get_maxhp(@sd)/100*3);
+	if(@hp <= 0) { set_hp @sd, 1; }
+	else { set_hp @sd, @hp; }
+
+	showgage @id;
+	effect @id, 79;
+}
+
+@옥화	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 74, rand(480000, 500000), 0, "옥화", "-1";
+}
+
+@녹운멸생	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 183, rand(1000000, 1100000), 0, "녹운멸생", 8, "녹!";
+}
+
+@흑운멸생	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 183, rand(1600000, 1700000), 0, "흑운멸생", 8, "흑!";
+}
+
+@수로몬스터	{
+	callfunc "DROPITEM", objid(), 30, 5, name2itemid("호박"), 1;
+	callfunc "DROPITEM", objid(), 30, 5, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("엽전"), rand(2, 99);
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("은전"), rand(100, 999);
+}
+
+@수로보스	{
+	callfunc "DROPITEM2", objid(), 1, 1, name2itemid("금덩어리"), 50000;
+	callfunc "DROPITEM", objid(), 30, 5, name2itemid("호박"), 1;
+	callfunc "DROPITEM", objid(), 30, 5, name2itemid("진호박"), 1;
+}

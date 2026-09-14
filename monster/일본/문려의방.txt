@@ -1,0 +1,23 @@
+@시오	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("연갈호박"), 1;
+}
+
+@주오	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("연자호박"), 1;
+}
+
+@맹오	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("연청호박"), 1;
+}
+
+@달오	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("연녹호박"), 1;
+}
+
+@문위	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("불의수정"), 1;
+}
+
+@문위마법	{
+	callfunc "Monster_Target_Attack", objid(), 10, 3, -1, 405, 124, rand(1000, 1500), 0, "죽시";
+}

@@ -1,0 +1,5127 @@
+{
+  "generatedAt": "2026-09-13T21:35:56.046Z",
+  "tables": [
+    {
+      "file": "map_db.txt",
+      "bytes": 233363,
+      "sha256": "82b3ef0a46424605e101be32b3e6bf3d73f0dfa50d9f2ea1789eb5c307eee5b8",
+      "parsedRows": 6447,
+      "rejectedNumericRows": [
+        {
+          "line": 610,
+          "columns": 1
+        }
+      ],
+      "duplicates": []
+    },
+    {
+      "file": "npc_db.txt",
+      "bytes": 6814,
+      "sha256": "ff055e7d24f7f469070644d1691107550606c6447223bfb7d0d9e673db6d8c7c",
+      "parsedRows": 332,
+      "rejectedNumericRows": [],
+      "duplicates": []
+    },
+    {
+      "file": "npcspawn.txt",
+      "bytes": 29021,
+      "sha256": "547818424e321bd74b876b2a95d24d7a57a64998fad6b56d8747940e887f363b",
+      "parsedRows": 1029,
+      "rejectedNumericRows": [
+        {
+          "line": 84,
+          "columns": 4
+        },
+        {
+          "line": 85,
+          "columns": 4
+        }
+      ],
+      "duplicates": []
+    },
+    {
+      "file": "mob_db.txt",
+      "bytes": 63655,
+      "sha256": "1b476a0b39e5fe1dadbecc44e43b5bd4b60c0a0ca2844192512cbc3c1f6080e0",
+      "parsedRows": 903,
+      "rejectedNumericRows": [
+        {
+          "line": 274,
+          "columns": 14
+        }
+      ],
+      "duplicates": []
+    },
+    {
+      "file": "mobspawn.txt",
+      "bytes": 348802,
+      "sha256": "aa0e55fd975816e9ff3edc771c4c8f48835877ccf55afe4b0a59c765d8f6b0a0",
+      "parsedRows": 12355,
+      "rejectedNumericRows": [
+        {
+          "line": 339,
+          "columns": 7
+        },
+        {
+          "line": 5514,
+          "columns": 7
+        },
+        {
+          "line": 6729,
+          "columns": 7
+        },
+        {
+          "line": 11941,
+          "columns": 7
+        }
+      ],
+      "duplicates": []
+    },
+    {
+      "file": "item_db.txt",
+      "bytes": 293567,
+      "sha256": "8fbafc16739a13ad68174beaa4bd95d3fe287720d553e06247fb1680e8cc10ae",
+      "parsedRows": 1957,
+      "rejectedNumericRows": [
+        {
+          "line": 609,
+          "columns": 26
+        },
+        {
+          "line": 1946,
+          "columns": 25
+        }
+      ],
+      "duplicates": []
+    }
+  ],
+  "scriptFileCount": 454,
+  "scriptSymbolCandidates": 5681,
+  "mapAssets": [
+    {
+      "file": "barammap/Ba000000.cmp",
+      "sha256": "8af1851b90e8ae9eebbe34dd18195e04f950c28bd0034cfa105c6446e267e9aa",
+      "width": 3,
+      "height": 3,
+      "bytesPerCell": 6,
+      "decompressedBytes": 54
+    },
+    {
+      "file": "barammap/Ba000001.cmp",
+      "sha256": "1b61a7c94a8ddd4ef62fcafa516e38b0c0295523e5932e82b2f73892f422f36b",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000002.cmp",
+      "sha256": "3919d093d2fcaeb152f592a628a34f92aa4eeb15a6dcf801f3b8354c6d2da247",
+      "width": 10,
+      "height": 10,
+      "bytesPerCell": 6,
+      "decompressedBytes": 600
+    },
+    {
+      "file": "barammap/Ba000004.cmp",
+      "sha256": "a0b71ae439d4d45970010e63cf92c2d1f28b373bed327581945755f4ee76190a",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba000007.cmp",
+      "sha256": "e6e5407cc11752d2a57109941225d620f33dd0c519e0f17297ab46eaf78b00a0",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba000008.cmp",
+      "sha256": "4555f8914c1c4fb887bde9d529fc881787ca598337bfcfc940ca7ec2d2065334",
+      "width": 18,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2592
+    },
+    {
+      "file": "barammap/Ba000010.cmp",
+      "sha256": "4555f8914c1c4fb887bde9d529fc881787ca598337bfcfc940ca7ec2d2065334",
+      "width": 18,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2592
+    },
+    {
+      "file": "barammap/Ba000011.cmp",
+      "sha256": "4555f8914c1c4fb887bde9d529fc881787ca598337bfcfc940ca7ec2d2065334",
+      "width": 18,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2592
+    },
+    {
+      "file": "barammap/Ba000012.cmp",
+      "sha256": "7b361889d2c89ce2b4a05f19374225d647389f87c62cf348fcaf3e86d5ecda64",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba000014.cmp",
+      "sha256": "8979d805a6e8f0dc7271217e5eb061f9fab5d346f4729fa4282c032a2df11dac",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba000015.cmp",
+      "sha256": "79732e58d09a044d90524bbba8a3e24daf7abb2929a52b987621d80060320b0e",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba000016.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba000017.cmp",
+      "sha256": "79732e58d09a044d90524bbba8a3e24daf7abb2929a52b987621d80060320b0e",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba000018.cmp",
+      "sha256": "656d10164009566f28246ada6123f2f979d57977f46cb89f91446ea9de80b129",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba000019.cmp",
+      "sha256": "656d10164009566f28246ada6123f2f979d57977f46cb89f91446ea9de80b129",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba000020.cmp",
+      "sha256": "44d572163c7af1eb4f6ffbba4cab2b388b844095571f290233e6025bb295b6a2",
+      "width": 18,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba000021.cmp",
+      "sha256": "44ecfa77338f58e54b3e1073d448d103a8f5f961f4ddbd173183e3dceebbb12b",
+      "width": 18,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba000022.cmp",
+      "sha256": "efcf0e70b9babc6f318290ec3331e975bacd42305f3ef75f0c10420c44b1bec8",
+      "width": 220,
+      "height": 220,
+      "bytesPerCell": 6,
+      "decompressedBytes": 290400
+    },
+    {
+      "file": "barammap/Ba000041.cmp",
+      "sha256": "b6eec00a3bdb45efc937bd0524e906f3f56525a935d04571d9c4b70c30fdfcf4",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000042.cmp",
+      "sha256": "a6fb228be4c5886e3f4cdec51174c230aeecae028d3fce33b205865d200965df",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000043.cmp",
+      "sha256": "cabc625d9c0141355da0f43052291221b49f66509ece8716f2115b54aea9a27e",
+      "width": 10,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1800
+    },
+    {
+      "file": "barammap/Ba000044.cmp",
+      "sha256": "7ecd90e49e30aa51a5182a52e8d0d07019d0acd09ac867bafb57226031fa3eb1",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000045.cmp",
+      "sha256": "acd05451b0ff2947735efc8990eee83f5d89295054888e0fee6f371e2881b92d",
+      "width": 24,
+      "height": 18,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2592
+    },
+    {
+      "file": "barammap/Ba000046.cmp",
+      "sha256": "670d983a767e9db12a4fa603758c908c0c0ddc81a81b3def7e8496b8ea4ceba8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000047.cmp",
+      "sha256": "04147ad94012ad6a079a9e43fde31a4fdf93fc1394c5655832d1cdd549434400",
+      "width": 20,
+      "height": 26,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3120
+    },
+    {
+      "file": "barammap/Ba000061.cmp",
+      "sha256": "6b39f789f6d72710d6380c3ebf6f164e0b1e066dbdeaf236479ebb881bdbca07",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000062.cmp",
+      "sha256": "c501f5d1be57c75b2a3298af8eb15c2599d3bf886b6af8a597ecb13bdd8b8e4b",
+      "width": 15,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba000063.cmp",
+      "sha256": "45068e2e7ee3d13221199a557aca9e392ada2a966d9367de2387bd2225014a1b",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000064.cmp",
+      "sha256": "acb1e5e155ce7c1afe243d765d10a1fb09efa74515ed97cc0bb45a268abb8ad3",
+      "width": 30,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba000065.cmp",
+      "sha256": "cf36e087522e0e671a361803a077101f327d15f3c802fd8a81c2b9953620c6ba",
+      "width": 25,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3000
+    },
+    {
+      "file": "barammap/Ba000066.cmp",
+      "sha256": "d1305a33e52d32245b2920fec8f671a8d08395c98c2e28bf87b9f77c6e42fd08",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000067.cmp",
+      "sha256": "eee45fc1e7464a6678eb292c89304ef66ca004d2d733c65fe999dd8842eaf253",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000068.cmp",
+      "sha256": "db581e21ad7bca468d651782f500f88008605d4322590809ed64e05feb04526d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000069.cmp",
+      "sha256": "0f78cde6cc9f769cebd7fcb7f6534a836c3777304921b23e3fdad6e2047624c6",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba000070.cmp",
+      "sha256": "4d278eb6c6c33716521349446a47b73d15013a062110a312ba5f580e9aa41714",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba000081.cmp",
+      "sha256": "4e16b8b2ef684dd9c9f494bb2ad21c218cf5d6b7794238ccd29c054488f11d10",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000102.cmp",
+      "sha256": "18bffe587300928cd125dfd341c799e3146a275d973e193b73f21766311f76fb",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000103.cmp",
+      "sha256": "a8e956d88150772ca0bcb8bf4abf2b1cef1091b36f854a5267e1949e1026a013",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba000104.cmp",
+      "sha256": "bb033fe9b2fc11c189cdb0d1b887b7c7600e8472f4af8e8f48d07aab9cb468e1",
+      "width": 20,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3000
+    },
+    {
+      "file": "barammap/Ba000105.cmp",
+      "sha256": "359415ad8fe422d43cf4c8b7d824a1cafc9a8a7f9d6c3801f3534a8db629bd23",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000106.cmp",
+      "sha256": "c895c76c2e44d4f3dd190bc8fcd5aabbeeea6a8224b72873f78fc58c55d47582",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba000107.cmp",
+      "sha256": "3558ed7e2ed7d7f59ac55cb8e4a4a287bf4501dd1d820e40692863e2d3dc4fec",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000108.cmp",
+      "sha256": "2a83f6c537c616485c4afa1d127573fb7f8cdbe9a2177232b2f60864252a867f",
+      "width": 20,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba000109.cmp",
+      "sha256": "424df69577b50370f548b81fdab1c35552a7b8a2d67f4e4aff346c8e5273aae6",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000110.cmp",
+      "sha256": "35c8c277fbb6903825e096347784fbca4ec1873f82741e31bae347dd08de0987",
+      "width": 26,
+      "height": 26,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4056
+    },
+    {
+      "file": "barammap/Ba000139.cmp",
+      "sha256": "5b95edcedb99601f83c8300ffceb6cd654d6be62527e46142c099ec669693f52",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000176.cmp",
+      "sha256": "5713d53aeb06dc0f8a8d4ea112d441fd5542e0e9a8e8764bd1f723ae77c53189",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000213.cmp",
+      "sha256": "813ee7228747dcc83396c8cd850d6de9eee13b7dee3da22e528089d413c40ae9",
+      "width": 32,
+      "height": 32,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6144
+    },
+    {
+      "file": "barammap/Ba000214.cmp",
+      "sha256": "87e1af4776d7fe59c756e2b39cd46558043df6052bbfdbc1f164b37082a4ee9c",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000215.cmp",
+      "sha256": "b8cc6eaf96ae7b8fc89e0e0684a302db7b123ceebd478f252338ff75587b762c",
+      "width": 30,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba000216.cmp",
+      "sha256": "7707ad5854adfa05b5acc0f6f485e8d4018d4f5e110fec50357c71a35a5022f7",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000217.cmp",
+      "sha256": "0a4df9dbe53a3d02e874319e708472d7d071c625ace0ca875fdf7b2393442eb0",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba000218.cmp",
+      "sha256": "d47e749ee5220419133288f4a35765585a408db05aad4211df5c5890613b2398",
+      "width": 28,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4032
+    },
+    {
+      "file": "barammap/Ba000219.cmp",
+      "sha256": "768d594225a1fc5214b07966e79a06c3876e72c9cc03a00338ce53f9e81b51c1",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000242.cmp",
+      "sha256": "cc31176404d0d426899c7e03b2da450986d18f465c8b8b7ba3fb154b3e6292c6",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000243.cmp",
+      "sha256": "fe1177ea0c42b4c07c08044a322bafb25a8b5b4d6e460a8d13fc7f8ac1e39fae",
+      "width": 25,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba000244.cmp",
+      "sha256": "86204dbaf5bf0f80be670f6242be3a5485d89dbd909d88a1a864f41ecb4f70b9",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000245.cmp",
+      "sha256": "bc446c9f6039e49445d3e547982458164660a09097e8ade5cab89017c13baa3e",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba000246.cmp",
+      "sha256": "fc3bfbba35de4538ea003f6167932ba34918a6ac7255421ac2e06bdfe52c6cb2",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000247.cmp",
+      "sha256": "6133629fe49f529c13a751be1363749aed1d13ca69408d43b953839733459848",
+      "width": 25,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba000248.cmp",
+      "sha256": "e164060519a52ba6dce58e45fc59612edac1f30837a4cdcb65dd173048abb69e",
+      "width": 18,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba000249.cmp",
+      "sha256": "d52b7613e39d79c8bf48a27100ee46dbdd539a635f7cf22a076823949a71ce3c",
+      "width": 25,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba000250.cmp",
+      "sha256": "e745a0735aba6292b3bbfdfb3d5fed975d3cb503b242cb4fea84c6fba656c485",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba000279.cmp",
+      "sha256": "605e087e11d8a1b770105860f181d4c058e94e1137f99d87e8c35caf2854dfb2",
+      "width": 32,
+      "height": 32,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6144
+    },
+    {
+      "file": "barammap/Ba000280.cmp",
+      "sha256": "40759a1ada2067b18fe5981d16eb1c1fd1744f0dcee7bbb3eb0c29328fd9d41b",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000281.cmp",
+      "sha256": "8bfb30c39d146ab4708a113a6ed5f905b0a07e2d8e6c339813ef35ebaea9e8b8",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000282.cmp",
+      "sha256": "43044ce5cfd131792e64db6fdd7ba7a5eac9acebb7cba7f7d94b9ff2ec60cc34",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000283.cmp",
+      "sha256": "77e1e5f44bb12dabc52aa950ce8baebfc2ea04ba9d88ce9abe238ef39bb03d91",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000284.cmp",
+      "sha256": "aa2ab6490be91f356771ddaf96957cfff9df86e15dbaf60f6c4fcaf2ec40c94c",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000285.cmp",
+      "sha256": "e800cb6fb09fc68fa4903557df91de14b7d486d6b33dbb1891e053cb55169c52",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000315.cmp",
+      "sha256": "b85c258bc4d6c1e77b9f8ad06b6524717b6a51f5888369d2acb37a212d5ae6d8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000316.cmp",
+      "sha256": "b85c258bc4d6c1e77b9f8ad06b6524717b6a51f5888369d2acb37a212d5ae6d8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000317.cmp",
+      "sha256": "c286fa52446563cd0013ca9107133292e66081795993f173f981b91ec7564553",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000318.cmp",
+      "sha256": "35aa29527a43bde158d5ffb0c814a211a1c486826ea4b8511fd7b55bdf955a9a",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000319.cmp",
+      "sha256": "b85c258bc4d6c1e77b9f8ad06b6524717b6a51f5888369d2acb37a212d5ae6d8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000608.cmp",
+      "sha256": "c269e5f20fa80fadb6c9e5c53b48498103ca4b6fc470369a511ea7563b5772fb",
+      "width": 20,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2640
+    },
+    {
+      "file": "barammap/Ba000609.cmp",
+      "sha256": "fbde75b929a11f491b6e8a0e5e125a36a65c9357bcbb1458c08f31b743badd67",
+      "width": 16,
+      "height": 16,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1536
+    },
+    {
+      "file": "barammap/Ba000610.cmp",
+      "sha256": "4418db87b8cc454fc7dfbb68f61f4a9abf60f1718a653ffcb10e94dd9fe1a38a",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba000611.cmp",
+      "sha256": "471fc107b662a66ce6dbe26ff75bc12221fe35e5f56fc3b1bded041382ac22ff",
+      "width": 33,
+      "height": 33,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6534
+    },
+    {
+      "file": "barammap/Ba000621.cmp",
+      "sha256": "769fc8bd3a07729c126cc26a8d7f50dbd25502818326f6bb190d3040fa33f0de",
+      "width": 23,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3174
+    },
+    {
+      "file": "barammap/Ba000622.cmp",
+      "sha256": "1ec042e8256513b369b3dccc59900bb6bc046fa615482abfd1f881a9ff479038",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000623.cmp",
+      "sha256": "03e837207493b21d849e9c30bf9090e707fd8fd9ab64a46c9c5e92b0cd2c1369",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000632.cmp",
+      "sha256": "e1d69c0286a02097cded7b0e7a065de34df18f9ed3c3409767f829001a6578a0",
+      "width": 60,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 21600
+    },
+    {
+      "file": "barammap/Ba000643.cmp",
+      "sha256": "5094e1c75886208f0ac54bf072ca24270a03a585bb40c5cb438e7ff8e51bc856",
+      "width": 24,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3456
+    },
+    {
+      "file": "barammap/Ba000644.cmp",
+      "sha256": "26a00901704dc5097f0855f169c8e6e878bdf475f370e9e0a432d64b63c6d87a",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000645.cmp",
+      "sha256": "044c3e896aa87d449d85647435b60ebc9b3da485c381ede189cd05ca312895a5",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000646.cmp",
+      "sha256": "6f2a6e8f5f0ad281432b99a9c1b765f54d089a1857a8e6a0f76dfa0e07881ea3",
+      "width": 24,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3456
+    },
+    {
+      "file": "barammap/Ba000648.cmp",
+      "sha256": "e23e6c266bb49bb6fe347e9ed2769134ca009cea1a660f18e7c20bde946a096d",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000649.cmp",
+      "sha256": "ceb0bb137836a3acd1b0987b76c5dcda259e5601e48b51ee3257fd53988ce536",
+      "width": 24,
+      "height": 24,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3456
+    },
+    {
+      "file": "barammap/Ba000650.cmp",
+      "sha256": "83f9927eecda24e44855e1a2987a880833d143dd26cc43bc7faebf4133a33b76",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000651.cmp",
+      "sha256": "22a70672ec7b82edcd279536be7081b694e2b6988c35aff753e1d62a3153e238",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba000652.cmp",
+      "sha256": "dcdcb1acf7463fb2d7f6994252e7963d783bf7a2bcd0b0661e412e3a0e7b540b",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000653.cmp",
+      "sha256": "963ac911580c85af3aa6bbd788339b2383a9d21f1e449437030e0fb8fb23f6f3",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba000654.cmp",
+      "sha256": "91e2589b054eeaa624112a83ff3b2c759e8d08dfeff40237286da574a5c37681",
+      "width": 43,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 10320
+    },
+    {
+      "file": "barammap/Ba000655.cmp",
+      "sha256": "5190df56259883cd739be35d69d11e09d6e7be6ffe94bc91516a0d98f7a876a7",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000656.cmp",
+      "sha256": "6adf6750124f1e186d41ad1af36218acd94df4433117206207a59e048e8e0a52",
+      "width": 55,
+      "height": 55,
+      "bytesPerCell": 6,
+      "decompressedBytes": 18150
+    },
+    {
+      "file": "barammap/Ba000657.cmp",
+      "sha256": "0fc02d3552ea242d18460a0be658ea51979524d360703e71fa86ebae317ddfc1",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba000658.cmp",
+      "sha256": "5e98289855a53c5dd99389c762b0668585eb209b6b4857c641f49e9f953578d5",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba000659.cmp",
+      "sha256": "2f27babbee74d92fd1467a76333e839676ec7af22336cfee240085e850e310c5",
+      "width": 20,
+      "height": 80,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba000660.cmp",
+      "sha256": "7978b418d18e07eb8c618dee797d72ff9647216ce36dc789b24e34cc30c38131",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba000661.cmp",
+      "sha256": "0029de735f0e8db2312e0f39da5f7b93096342db694f02ea9c9d4e9688e71629",
+      "width": 100,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 24000
+    },
+    {
+      "file": "barammap/Ba000664.cmp",
+      "sha256": "41da83d359e237078cb892723c84cf90528fdd0c1e53a536fb1b2bb503272c07",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba000668.cmp",
+      "sha256": "398f92981bba798998f6c5a27804528319094635815621091e841d0428324eac",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba000670.cmp",
+      "sha256": "30c0b13f27100583b995323270b97d865c48fa106da10f4e197a310bd22f374f",
+      "width": 40,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba000671.cmp",
+      "sha256": "0ea89c3093ec040c8cccecf566f45b5fb4a0fa0939939802a78befa9b2fcf22a",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba000674.cmp",
+      "sha256": "2a98fe928694ddcaa2f15ca02348aebb95bb96987789e820283ea7e3d37eb3af",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000675.cmp",
+      "sha256": "7e061be29ef712b97b1fce96aa6c791f049b4c487eb66876657fa4c44c44edad",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000676.cmp",
+      "sha256": "84d4517b6700371f49964b757a63ba9defead17390d8a38723cf1666313ec887",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000677.cmp",
+      "sha256": "79acf003371c45072798cac7474e86bf9774b97dea447c13c22fbfbb605061ab",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000678.cmp",
+      "sha256": "d342fe6a4965adaf242e64ffbb245e987b1d18dc9b72e0e4cabfa25f9d9d4017",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000679.cmp",
+      "sha256": "6f0ac21bb8fb9f65af28c0598e3e8342815eae556c599ecb095826b4fe4f6b61",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000680.cmp",
+      "sha256": "da54b7a719244a4d8112f6c4b6f7b20cfc1e6c65af387d81813f1233c811d95e",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000681.cmp",
+      "sha256": "c4682a4340e4ac3acb7915ed51deff1b2395699fb4c5d0db0f60c1c634c4de51",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000690.cmp",
+      "sha256": "7876c770f0a979a7a0132bf9c2d9dc9a909894ba2905483c64b6e0703acceb29",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000691.cmp",
+      "sha256": "79acf003371c45072798cac7474e86bf9774b97dea447c13c22fbfbb605061ab",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000692.cmp",
+      "sha256": "5b1c4001fd406c65aac7d636c51116789a728e3a43ab6b527126db9217c26ba4",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000693.cmp",
+      "sha256": "b4bdd9e10046b60c17d52269bdf7ed363a29f04612e5592fc1014ecaa49fbcd0",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000694.cmp",
+      "sha256": "da54b7a719244a4d8112f6c4b6f7b20cfc1e6c65af387d81813f1233c811d95e",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000695.cmp",
+      "sha256": "168daa86b62665105335d82b25cf534cb3a3bb5388630f821d781abaf815abc9",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000696.cmp",
+      "sha256": "78d463b6bac8c6ccfcabe21f84ea8bc5599fba340d6b3f1b7e685c5d2902bb7e",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000748.cmp",
+      "sha256": "aa63d09952b652db6e6c987e07d42dfff48017de02ec997e7ded1d7db6ce12ab",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000784.cmp",
+      "sha256": "db6a08b9ae4ae30cad64f62967a63ae1c90e5716dab1b68be2b2aaab3eaef72c",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000792.cmp",
+      "sha256": "421ff062aa6a96f284d4a4a6006a7c98629d89709ae6bdea3b35ced2dae4ba99",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000820.cmp",
+      "sha256": "064d4bb8982d2b1b9ee8ec08235260b2e2935e0bb4fc1875551149be36aa65cb",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000835.cmp",
+      "sha256": "6c403df929988c72d6fe6f5bd8737edab49b7014a29915c82df7089fd711cc50",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba000856.cmp",
+      "sha256": "5b9a58385a15f3868ad3f9153137b341349486a0712c37a83c61b50b1f077d27",
+      "width": 100,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 18000
+    },
+    {
+      "file": "barammap/Ba000862.cmp",
+      "sha256": "1a30dd8e42a9ac15017d2adcc333ce4473abc7f0f70abb1611578750f8e93939",
+      "width": 250,
+      "height": 250,
+      "bytesPerCell": 6,
+      "decompressedBytes": 375000
+    },
+    {
+      "file": "barammap/Ba000887.cmp",
+      "sha256": "d71a8ea4606d55b41fc3d3303fd7cfa3876a7845c9d77138213bd3c69ae57877",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba000889.cmp",
+      "sha256": "56a17ae0e2ff93bb500f6948f90553737b005af9d57c019b952ed75cfede03b2",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba000906.cmp",
+      "sha256": "dd34154269c2d8852c53f163c1e6bb2d122942069c1d7ebe17a889d2f9838537",
+      "width": 50,
+      "height": 200,
+      "bytesPerCell": 6,
+      "decompressedBytes": 60000
+    },
+    {
+      "file": "barammap/Ba000927.cmp",
+      "sha256": "47d53cfe9589a13568bf54d8807b9b8185fd9094ccf4bfe84cccdef05385c1c6",
+      "width": 200,
+      "height": 200,
+      "bytesPerCell": 6,
+      "decompressedBytes": 240000
+    },
+    {
+      "file": "barammap/Ba000976.cmp",
+      "sha256": "781e844776d90918cdc1e13d823b8068d7de43c80314516e73ed83a34d74b1c4",
+      "width": 60,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 14400
+    },
+    {
+      "file": "barammap/Ba000984.cmp",
+      "sha256": "dccca9a1e85d928ce2a5ec12599d595c129d28edb9f9ebe473d69f41ef6d673c",
+      "width": 60,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 18000
+    },
+    {
+      "file": "barammap/Ba000985.cmp",
+      "sha256": "659ddcf6000678e1a08cf524de4b852de2641ecc8228a4689a65e52160f39f74",
+      "width": 60,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 18000
+    },
+    {
+      "file": "barammap/Ba001022.cmp",
+      "sha256": "95b67d9801e85684123b40dfef23434862db4b76065a282e5f8ec69f055cdc9e",
+      "width": 30,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba001028.cmp",
+      "sha256": "392dcb38a06f389ed1cd0206144feba418b911f1d387e39ce7bb689b014ccfb5",
+      "width": 30,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba001034.cmp",
+      "sha256": "3d18edf5d718d2afbaab2e1a20f47b4d984cccd7ce9c29b17ad5dbf5f9acac25",
+      "width": 30,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba001279.cmp",
+      "sha256": "2ade3b982abf431a9bbd26483d7cefb3ff66e29e1ce7361cb07531db0d7c9fab",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001280.cmp",
+      "sha256": "81a6551a4ffb1024574d2869b80f6e47116d77e132224c81ac56aa69403ed29a",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001373.cmp",
+      "sha256": "4f396e6a7f9a665188e8f3884ecc5e6dcb5d61daa94b520d2e8d750e7879cc87",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001374.cmp",
+      "sha256": "b4015751f879f43ce841b781b86842eea9449d5c351c4702a71dd3dd24300e90",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001375.cmp",
+      "sha256": "e589a24059ecb5fddb313e28376d5ec55082cbf3638dfbfd671e5821c37c2f5b",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001376.cmp",
+      "sha256": "d40b6d8196374c872359ee84d4c7d2ff3ffd1546106a09096890bdae0520c3d9",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001377.cmp",
+      "sha256": "a7ddb84bce100c5fd1cb013902e18df95da43b63d856d321564614b3796c06dc",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001378.cmp",
+      "sha256": "224701521ddb0b94e40d0720fe65dd3e79910da1ae8ba7f07b4c13ad680e9ad1",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001379.cmp",
+      "sha256": "a6b91c1f943056ae384206e23bd85b604d7e5dc12e01f564a898549774af9a67",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001383.cmp",
+      "sha256": "5899a4da3a2c272354a5e8277fd7cf44257e0ff751c3ba8fb4da78e616abdf57",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001475.cmp",
+      "sha256": "8745b25575b1e3766f979dc4cd57250057349acc6603875e26b3b91a5b8584cd",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001476.cmp",
+      "sha256": "8b40875559342db277b69c0d1f7d56ab61974b44127ac5a1c7b9cb4c319f4a4f",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001478.cmp",
+      "sha256": "4d98d623e726ccd24970853e6d5bff689a5471bc6dfe19bc6aea477d840b3472",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001479.cmp",
+      "sha256": "938e1326a007c62f16b3c41467305c98e021c303d4a4302a345e64f28421ea7b",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001480.cmp",
+      "sha256": "78b55fe8c23c9c2529b3163c4d0812e10d209e59856ec1f29fad122ab990cfad",
+      "width": 29,
+      "height": 29,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5046
+    },
+    {
+      "file": "barammap/Ba001489.cmp",
+      "sha256": "b6f6a08b9fb9543c9c62fe90c2d2432d9e2e2160ea49521ec3e095668fa889b8",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001490.cmp",
+      "sha256": "48c424743a6ff8dcbe9c0f2afd0e4c36f1dcd4bb10444ae722a090aa16995979",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001491.cmp",
+      "sha256": "5505c31b98f0831480edc486cdd090b2d4f850aabb3c02624befca9b62ba02ff",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001492.cmp",
+      "sha256": "f2edc35b7e5dedd2705fd1324b1810342eb97e106aad86ad75c9ae8eb2637ae5",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba001493.cmp",
+      "sha256": "6fb493b20482973213ea264f71f2028f384a5abdac82c584f3e49fb3ca292f22",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001494.cmp",
+      "sha256": "dd5eb97df1717fdb3fc0ab473f1f5296ff80375707f9647cc3dfbaf604f5a071",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001495.cmp",
+      "sha256": "8f528986d04bc85de80321674f2568adf779cba18967775032ea04315ddb94ee",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001496.cmp",
+      "sha256": "aadf72a15cb621f74f7248327b591b18a30a624634c3c67d7dc8fe43fc0fa4a6",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001497.cmp",
+      "sha256": "bf139116977606e0daa7b4933ff792ac71b9c28aff7a1a6df00bc1858950bde4",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001498.cmp",
+      "sha256": "be571f1b16c0d33f122080876dd99a77b518fa54ef9ed3b68ba97d01035883df",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001499.cmp",
+      "sha256": "e5c062a8c9687f4c4bf8f34140babafe581508f174d224d40fcd18ec583abefd",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba001500.cmp",
+      "sha256": "2f184f6acee7d70d3b17759c1e80d6c80976ceabb9913564587c19fd5b670917",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba001501.cmp",
+      "sha256": "2cb601d191b7bcac5d613528cdcf7a5fe45bf647994d86a995c5d51adf9a9a1c",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001502.cmp",
+      "sha256": "39bfedb821fd7a5da49f3dc3a8ed60774e184a4fd713f3d17b3a22bf27302219",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001511.cmp",
+      "sha256": "4456a6b18494d98405ff59df255507e05b8131cc5569fdc664e0d6ff5a849f11",
+      "width": 18,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1512
+    },
+    {
+      "file": "barammap/Ba001512.cmp",
+      "sha256": "0d86f683fa0f2b8d11eb8723dfcb4ab304f5520e0f2e55339c3eee9a7042a217",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001513.cmp",
+      "sha256": "d5f02fafc68eabd519eef27aa09a4630306aaf392b2e83f61e6ada4decfa1b16",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001514.cmp",
+      "sha256": "a38a0132aa12b729c91d41756999bce86cb3ca245270049af8a0508c70c08ce6",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001515.cmp",
+      "sha256": "13b545010009064426caf5240b95a635696b52cf2b1199c2fdc056bea6c67a30",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001516.cmp",
+      "sha256": "6c1e55344c0bc4dd496c749a7b4394b79574fac00fc7aa7646471eee58204ae5",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001517.cmp",
+      "sha256": "92144e0a1ee79bf1b1bc00b990a4d54b700f5aa4622c8709d4f06b1ad8cbee73",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001518.cmp",
+      "sha256": "fe6b51b3fbe2183e42f5c3376c7fd478358b44c4e14673c31743649ff6964299",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001554.cmp",
+      "sha256": "d2736c673e93ce0218a1ccc5d8f7bfef0987ad92b8c02cbdc6078a5432bb238b",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001555.cmp",
+      "sha256": "01a4a60c1a582299e7596bcfa7beebb3c9831f98a19015c854e3c0b5e14f7445",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001556.cmp",
+      "sha256": "7963a79b44837a04e6ab64c9e927ef3f516c76a3ec2d8a24b7d0b2d1c660d013",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001557.cmp",
+      "sha256": "65d09e8d20c4b2024045fd227a4909ccb8757880ae5c09f4f03fa2c89d312f5d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001558.cmp",
+      "sha256": "c65f83ed3ad86cdd045451c6a3d11c7bc38fe9435d94c89319cee5eaa0412e0d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001559.cmp",
+      "sha256": "3ea95144d6199483a2431f79d697a5c27e21d18d63b9e353a81caf9ca4cd7d06",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001560.cmp",
+      "sha256": "348055466a58bc2fed5597f4eefc102facb9ce7c6de5bc3b7479a21b2202b41a",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001561.cmp",
+      "sha256": "e136329a30d02ea0840e36924870c069777693de4345d00b1b72e9fc638c8bbc",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001562.cmp",
+      "sha256": "8e1cb047df5f6a16649af94293c5537064339dacc314459afb49869315a0f385",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba001563.cmp",
+      "sha256": "fa41f90e6d8ab34c71bc70d5bd9e750d0ae74aecc00491246dea37ee32fd4269",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba001564.cmp",
+      "sha256": "9ebf7837d0917f1f24814c9365622602c4f2dbb628e31dc690ff44c1692b7e13",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001565.cmp",
+      "sha256": "cf361a111084af51d24b4f22514455887bdd7fb6008967dbc4b1dac95d581d90",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001566.cmp",
+      "sha256": "6e0ba84481b838b4ec923b48f30f93e556c006a1638e86195158010277b0e482",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001567.cmp",
+      "sha256": "3f46f16da244df9d84941e91ba0977d3e0bbe77bf8fd416d2f856d4a5e7a7ef3",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001568.cmp",
+      "sha256": "bbbefc2331725e08a0263e70d8ef56e17d404742ba4f264d66176bac00000f8b",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001569.cmp",
+      "sha256": "2408ea4ef10010187124c8477e526a2321a31c84276594a9b10fced1a1c2b963",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001570.cmp",
+      "sha256": "a4e58792c88c0bf0de51481d2f8ec66e22148b665b98493e41c5be442c2377d4",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001571.cmp",
+      "sha256": "43f675d955c56ef600df0e90acc59568b6cc8df2e858972848862e0a4afde4de",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba001572.cmp",
+      "sha256": "c1c051a639902a88a5a38819ca8ee44a9f38ae1b7fb4f3bccbea99fdb045c33b",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba001575.cmp",
+      "sha256": "ba47fdab69bdc870056c591d745fa6103ffe13c4dd420b1a6fa57a495e29dc18",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001576.cmp",
+      "sha256": "11f0ed88c0b23448556bece0f00e4a400971c2a0a30f8bf1121994e70528b5c8",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001577.cmp",
+      "sha256": "208156c15232bbd4adeb13184730620c7c5c546ad8f89f0076697e28c517983f",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001578.cmp",
+      "sha256": "9dd2003163bd662e9b0d2a4d2c63b09735a48f42b6fe5f55e4da2258f410f5e3",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001579.cmp",
+      "sha256": "ffc198da83ace123512c5d50b24ba1bc2d5892e75394266a91176041b779a229",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001580.cmp",
+      "sha256": "da1d6ea3e153ca1f6e2e28f00c962f352dd1a7d4134dea018bd9d4445bd9f369",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001581.cmp",
+      "sha256": "4dfcc857374f3adc7d5777cb259739388e39c5680cf5af837609c69e75039477",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001582.cmp",
+      "sha256": "7eb08f5ce66efb4ee7b885f9458ec70afb7f2496ba9d2c9ff6115e6e206e699b",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001583.cmp",
+      "sha256": "153ae1a3493c269e8f9bdef1711becad3d89702b255898f23d90c6490c9c9280",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba001584.cmp",
+      "sha256": "be30bdede917e4f8b49a5f495924b911cbe19268062fe1c78b581c69aa9e12eb",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba001585.cmp",
+      "sha256": "e29bd91ebb85c3bda4033fd028ed5413885946737179bdbd09b01d1ee356b422",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001586.cmp",
+      "sha256": "bab4fb993a51d926481095f010503e138cb075672afa00cb5a28c1ce92f80927",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001587.cmp",
+      "sha256": "124d22bfb4c4bdf65c6ca5dab1b9df9f9399845ae6fe554aeb5bdc5f0be830a4",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001588.cmp",
+      "sha256": "a7e71ff5cc410862b9cd544b6aed05009520c8b580ce9ea9cba4d170cd973ef3",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001589.cmp",
+      "sha256": "a00226a4b77ef1d57da588fd6961f8b863154d055a262319d9bae1de2209d7cd",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001590.cmp",
+      "sha256": "06eecc0dd7fda360a71a9c097c719eae61c8334048fe12cb581a30538dd0ef19",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001591.cmp",
+      "sha256": "607797455786f025ff32dc94aaafb59e4a84724b7a6a9cd2c68f88e53edbcd01",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001606.cmp",
+      "sha256": "73a8d39613592fe04868715030042853a014c54a15c0a96eb296bbb3e48a4dde",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba001607.cmp",
+      "sha256": "508c4bd440392d525c237eeea5de7a9c59890e137bb30d0f79456ff6a34a55b4",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba001648.cmp",
+      "sha256": "6be3731fca1630185f8f6afbb68de5f5fb11bf2efe6756c50d82b7c810a86226",
+      "width": 150,
+      "height": 150,
+      "bytesPerCell": 6,
+      "decompressedBytes": 135000
+    },
+    {
+      "file": "barammap/Ba001649.cmp",
+      "sha256": "eda572af9977dff7c92cb8cfe01f2c82f9c5d97eacf673fe23f516b61a0eac60",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba001686.cmp",
+      "sha256": "fcfae2c6342e87c075f5593df3f4f503a61cc4a6a5d5398c39f0297150e067d1",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba001698.cmp",
+      "sha256": "92145ebc5f3bee07441117b6df60f88b4b657c6b0fd425f758d8e5a1dd156a48",
+      "width": 200,
+      "height": 200,
+      "bytesPerCell": 6,
+      "decompressedBytes": 240000
+    },
+    {
+      "file": "barammap/Ba001735.cmp",
+      "sha256": "a6ac81bdc984505e83e5530d88ab038f586e5fd1c17872a7a542004910793ce5",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba001748.cmp",
+      "sha256": "3093a9b6995eb295809a0a375931ab026876853fcba69b8849aae1bc0cd1c7ca",
+      "width": 21,
+      "height": 27,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3402
+    },
+    {
+      "file": "barammap/Ba001763.cmp",
+      "sha256": "e9c7d7011f08da8d35ead072f1a2fd522c4a887adb4d10b7ca4d8b409a02b7ba",
+      "width": 220,
+      "height": 220,
+      "bytesPerCell": 6,
+      "decompressedBytes": 290400
+    },
+    {
+      "file": "barammap/Ba001766.cmp",
+      "sha256": "163616c45145c82296925114aa2749c0a0a0cc11a106992d3a9a44479bfb7d5d",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba001822.cmp",
+      "sha256": "92067b8e22bc5ab67c80b52015d990837a6fd0a7c42488c0e627c1db11702830",
+      "width": 250,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 45000
+    },
+    {
+      "file": "barammap/Ba001835.cmp",
+      "sha256": "a0b71ae439d4d45970010e63cf92c2d1f28b373bed327581945755f4ee76190a",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba001836.cmp",
+      "sha256": "3e999e3d1204c03aa3af16f484006ef3b621d8bf1292a22eb317dc018dbcdb56",
+      "width": 200,
+      "height": 200,
+      "bytesPerCell": 6,
+      "decompressedBytes": 240000
+    },
+    {
+      "file": "barammap/Ba001844.cmp",
+      "sha256": "ce1c075f48741de6708f3ce148ce47c3dfca1ee19b6a430fdc721bd584ea973e",
+      "width": 45,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5940
+    },
+    {
+      "file": "barammap/Ba001867.cmp",
+      "sha256": "9f46568b71dedd67a935337305176df96203b88739e187b4c46f62c7e5345b0e",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001868.cmp",
+      "sha256": "f5e6fb1de5e95e50b7fef4ffcb3cfd3c0a54e42e0ed37b31d121b6ea16f85953",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001869.cmp",
+      "sha256": "0976a39063f1a98b6676353873c4e33588b97f82092e4312758ce58568947a97",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001870.cmp",
+      "sha256": "32e5265c83822e2d43a9c5fbdedd5c69a447b96ef5866f7a4b1f7c3dac612d1f",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001873.cmp",
+      "sha256": "0a1f9490656d045a6e729bfda203d83e0b3f41b0c3042879b70c69ee3bb44a5c",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001874.cmp",
+      "sha256": "a70a41935bb0d2b040c4f04d08f09a008e7cb5384142fc0d3f1e851890bcd909",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba001875.cmp",
+      "sha256": "c64914c1bdc5a50f10c61c115d9c562884235007ebe7eb6d2c85ba46c5117ac1",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001876.cmp",
+      "sha256": "8cdf2b3e0314c2a9642b3340e8ac75e24a0fc0213a155ff6185d3da7b0f53568",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001887.cmp",
+      "sha256": "3fb10b36dfae1473401fb5ea013de0ba4c980857e858e72572f81e2a3a40a395",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001888.cmp",
+      "sha256": "59f4d9021462993ee5387bc4596681fb2d5bffb188072b3966e0cf38092d4e46",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001902.cmp",
+      "sha256": "2fa01107841ddadf4062b9650050d67e83fe7cf5457f1753a500fbb29fb9e6b6",
+      "width": 105,
+      "height": 115,
+      "bytesPerCell": 6,
+      "decompressedBytes": 72450
+    },
+    {
+      "file": "barammap/Ba001913.cmp",
+      "sha256": "1baea0af0af6d4ec01799b9d47f27eded368f01afd9b2990bf9ebc78ed6df307",
+      "width": 120,
+      "height": 70,
+      "bytesPerCell": 6,
+      "decompressedBytes": 50400
+    },
+    {
+      "file": "barammap/Ba001916.cmp",
+      "sha256": "b5e3dbea6b084b3a8c675c63d436b3c50f76c2736cb802f27ba48f58e62c9f1d",
+      "width": 64,
+      "height": 48,
+      "bytesPerCell": 6,
+      "decompressedBytes": 18432
+    },
+    {
+      "file": "barammap/Ba001947.cmp",
+      "sha256": "4190ab73c305f5f3d1b24dcb9a78058adc295713278f2a595f2dcd79928110bf",
+      "width": 18,
+      "height": 16,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1728
+    },
+    {
+      "file": "barammap/Ba001952.cmp",
+      "sha256": "dc23cc53b5d35253e821b41c34ba9258c6e5cd7a0f576b8793f56498ef9d2952",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba001953.cmp",
+      "sha256": "d7e11f174fa5d696fe69b4b57641428f12ad7e2dcca33c81d65bd09ce5561707",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001954.cmp",
+      "sha256": "0161c011d870b8e640e8e2b1dcd69e0bf9f6dd3e02e163a2a6c1d2466a5558c7",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001955.cmp",
+      "sha256": "9d7bfae08b6e0be222c0a77be7581ab7f1fa6b02357f9613c284138a0fa49e3d",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001956.cmp",
+      "sha256": "90c56ae1e80eba910831ed988dfea92b354102b775da031ac3b5619b0b43644d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001957.cmp",
+      "sha256": "f0ca644306b234abe8a294ee1241f544f87602d1652909890a2ecb07f93e541b",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001958.cmp",
+      "sha256": "dc316557e1cf771a7932107d5f5f374d3e61c8ae8e218cd8c84ce99252d6cae1",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001959.cmp",
+      "sha256": "77134c8c4e25541187f51d357a23336bb9dd24c2a6acfe9b510aecfaf639bcb3",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001960.cmp",
+      "sha256": "0c39e255f295d5840750b803f97830128ff57c6ca8bac4f8747d0f4d71ded48a",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001961.cmp",
+      "sha256": "e83c51007bd61db5275d119b34d52fbbd350573c18a77e1fddf57e38f81043cc",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001962.cmp",
+      "sha256": "caa0eb9493544379e10dce9e0cef61c4d995522b806672d0d26ef0a5e9377f80",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001963.cmp",
+      "sha256": "af3424e14238ddd6fa02aba21eb6d1a5fc6ab2a507b4cf27332238ef99442c16",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba001964.cmp",
+      "sha256": "9adefb8da46cddeddd83bdc7ecfbfecab479f1859edcbc6289826aaed3d97bb2",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001966.cmp",
+      "sha256": "4596715bd73dc8c39bcbefafb6febbee58b84184098157423b9c429937f8615a",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba001967.cmp",
+      "sha256": "608f568fa6577030f35252b13c520cd12a0704fba6571722b378f2cbabc7021e",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba001968.cmp",
+      "sha256": "bab17d74750085a259e3384af6965f744c59103c8a59f3d43ce17926d0836ed1",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001969.cmp",
+      "sha256": "de2d50278322c5ff5862218eb63d9e4100029ec1359c27729a99b4e2014ab950",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001970.cmp",
+      "sha256": "c36fd8668bca32cd5d5d054825774c2feb417bba7d014ffb3befb5bc3e42bde3",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001971.cmp",
+      "sha256": "eb9d13743a95f76927b6b5b4e501e7583c6e7e48cc52d579aac467c6faf9a5e6",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001972.cmp",
+      "sha256": "6114de1a31f195dbb2ceca6c2bf792e490742f8102dcdbcb3f55429410e5d9cd",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001973.cmp",
+      "sha256": "9809dee0d16ee05ed814ff327ca0c11e2845a0655d3aa456cb14d8a278da0945",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001974.cmp",
+      "sha256": "cb49a0a1a22849f8db1f7bba56224ad6c2e8ceaa89f3d91bfe9667d36791d486",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001975.cmp",
+      "sha256": "9e32c0a6c7ce12136f3fb86583925957613a9235573dc7817cc09b03b0dede46",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001976.cmp",
+      "sha256": "b2e4bdc9976b50e35480a4f4c505d24ba6630eab5c32799df064fc35050115ca",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001977.cmp",
+      "sha256": "03372f7bc1426946a6e73e9bf7722ebcac8c476cc1e8124bcad465ec7788702d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001978.cmp",
+      "sha256": "8a9993ba674821ba5193ba878dd2b93e184811d94557e9adde8cbfde35162670",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001979.cmp",
+      "sha256": "7e593839b205b72120b3d79b884abc805ff9be902b4432a34465fc476eea59f7",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001980.cmp",
+      "sha256": "3f8c45ee5ca1dcf5b0a210cdef24c762d3c5f0f19376f2f1500dcce3f82e9557",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001981.cmp",
+      "sha256": "aae85a79575baff67a64c63fbb334c5c9df1669afbbe4f90a14ccc82c9c26ffc",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001982.cmp",
+      "sha256": "0039f881ca0c2679cd09f4632e92b6143d2d87071a53d28b310f56db50235611",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001983.cmp",
+      "sha256": "9a7cc137078c312eaba54b4284bb282f6cae70e1936d78ec1070ad84980e30d3",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001984.cmp",
+      "sha256": "6cc3ad30ec1f355a2d86e5a54990fdc18893af36b284c484413edbc5bb022a20",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001985.cmp",
+      "sha256": "68ed1ba2776044c414b1115960d566a7ce390a3d4027836679933a2ded885722",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba001987.cmp",
+      "sha256": "b3b7dc4a5409cb550cfd439a56204de6a9eaa3cb0134faf4b2acee78d92c31d4",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001988.cmp",
+      "sha256": "2bcfe3be4825e755942ae91321688c0e8811ccb07deceaf887c22395fc5b940a",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001989.cmp",
+      "sha256": "091a6e4d0e7e1d3ebdd4892c6bc7da5bd4d6aa7686c300660a6e77af67c952fe",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001990.cmp",
+      "sha256": "5680da9625d7e8619f87ac905e19b7af9dea2cb7098b8b218fbb915901879abe",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001991.cmp",
+      "sha256": "38449c4df7bf200e35ac0980636cd200f7579ae462db259c23a31230adbffff1",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001992.cmp",
+      "sha256": "5d27094bed3240d410357f0ced1fe9df180b293a5723713b3348b8544ba0ff0c",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001993.cmp",
+      "sha256": "da77c5b9de3119ceeb0c17c8290df8743fc3414706a37956aa524ecb9d5676a6",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba001994.cmp",
+      "sha256": "ae46ad055be181563917302dd89ebf6b289325f322ed50061242a4f473be79a0",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba001995.cmp",
+      "sha256": "b669a15a04b4e113da2e15e957bf4af45e9c352d8eacdb7c370b0bdd08d44979",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba001997.cmp",
+      "sha256": "c54c2648bc4c65cfe3aa84282114919a8d30be170d9098d3ab80a1b0d6288314",
+      "width": 41,
+      "height": 48,
+      "bytesPerCell": 6,
+      "decompressedBytes": 11808
+    },
+    {
+      "file": "barammap/Ba001998.cmp",
+      "sha256": "65f4e22d238b864b702ae37e0abdf0b5dc85c4805b911c3013a3818dded287b8",
+      "width": 29,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6960
+    },
+    {
+      "file": "barammap/Ba001999.cmp",
+      "sha256": "2c25629fc342541b8a968f080476910c7807efffe18bc8f2d5b282ab54af0062",
+      "width": 150,
+      "height": 150,
+      "bytesPerCell": 6,
+      "decompressedBytes": 135000
+    },
+    {
+      "file": "barammap/Ba002000.cmp",
+      "sha256": "fb2ca91578115c88f3d28dc9fbd407d6cf5759e19e700d10acb20258076b6230",
+      "width": 41,
+      "height": 48,
+      "bytesPerCell": 6,
+      "decompressedBytes": 11808
+    },
+    {
+      "file": "barammap/Ba002001.cmp",
+      "sha256": "2ad20062b73f6b448a3afc3206b3697d6be5c3b673a8f5f8b79bff3b808f50eb",
+      "width": 29,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6960
+    },
+    {
+      "file": "barammap/Ba002002.cmp",
+      "sha256": "e3d6a60d8b359de117fa6602d252783e729aca51a53948de6c7b81edc9a6872e",
+      "width": 150,
+      "height": 150,
+      "bytesPerCell": 6,
+      "decompressedBytes": 135000
+    },
+    {
+      "file": "barammap/Ba002003.cmp",
+      "sha256": "02aefb24a3b1844ae5b09109748c49dda2760a766d440aed2737ff3be1bce652",
+      "width": 41,
+      "height": 48,
+      "bytesPerCell": 6,
+      "decompressedBytes": 11808
+    },
+    {
+      "file": "barammap/Ba002004.cmp",
+      "sha256": "d0d1937d5e93b9f683a545c9ed596c65809c434b8ebe7482f5ca11ba0a5c6392",
+      "width": 29,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6960
+    },
+    {
+      "file": "barammap/Ba002006.cmp",
+      "sha256": "181de5780e1397a7a236dcce9998d2d04e4453461b1ca99c2a1d2119c0cf33a2",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002007.cmp",
+      "sha256": "36d9ff7664206a3a03f2cbdf50c9ae60f4229aca950e6324b4e8f73960bd5e3a",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002008.cmp",
+      "sha256": "b94bb97e9e50c45b7e39b1680c6cce51f5239be4aa8922c5b13a9a2a1d4723a8",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002009.cmp",
+      "sha256": "4341fc9c386fe8eb159d16e0d8ef8b18d973d7b1ba4c92fc080eaa14638d3e62",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002010.cmp",
+      "sha256": "51263ca5fb8d52fc8d87b0ada79e5e65e80b4d2b4d35787d2c8f5f88851e1763",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba002045.cmp",
+      "sha256": "936294be89add248db3373ccde4cd0bf04d8bcffa45673a4ea73a281b249b04d",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba002046.cmp",
+      "sha256": "82cd02d8e90906839c3ea47a5c4b41430fea54e368a7179cf920742f91692102",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba002190.cmp",
+      "sha256": "5748426b45c759120fd0f6ad47d9eda19bded7beca754419b1ad6aa690d17b74",
+      "width": 19,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5700
+    },
+    {
+      "file": "barammap/Ba002230.cmp",
+      "sha256": "5911d56ab1850cc9acb087a468c4810021d56e96804e9b70981ddf0de7577a23",
+      "width": 60,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba002231.cmp",
+      "sha256": "6eb0df34a7da76755ff489f525fa57e74bcf174ad86591e2f688229483d7eeeb",
+      "width": 40,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4080
+    },
+    {
+      "file": "barammap/Ba002232.cmp",
+      "sha256": "65e944d50abba4298230f82f47fa52f698d9c778ba4810ac8b486d1b277634a2",
+      "width": 30,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3060
+    },
+    {
+      "file": "barammap/Ba002235.cmp",
+      "sha256": "f82ca6defd9f853407a314774eef083ed937c6cd8e14a7093caa2baca2054d2a",
+      "width": 30,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3060
+    },
+    {
+      "file": "barammap/Ba002238.cmp",
+      "sha256": "b53534685031f0a347a5dc9200104f733df9f2ad3ccf78d02e310893078118bf",
+      "width": 60,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6120
+    },
+    {
+      "file": "barammap/Ba002239.cmp",
+      "sha256": "dae7ca7a28b6f7f812610ef1bf05506c5ab26762bb9d16a9112432d497507e60",
+      "width": 22,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2904
+    },
+    {
+      "file": "barammap/Ba002242.cmp",
+      "sha256": "3c6508a892d7f2ca3bed9cfb1b9caa0b0bf70d3d37a4e05b4c728d0f19595ecf",
+      "width": 32,
+      "height": 32,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6144
+    },
+    {
+      "file": "barammap/Ba002244.cmp",
+      "sha256": "1108f2a4aed04469aee48a9e01c8d0348ac7622d01c78232cd1a082d59fde923",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba002245.cmp",
+      "sha256": "b9539c743e6ed2ec2f4726d1b767947228d290dbeb5a5de3016eba11ec20b1c5",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba002246.cmp",
+      "sha256": "fbbb54a3b41180746d9e44b7b376e791b6b1a53dda0fff10ad6075fa97442bad",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba002247.cmp",
+      "sha256": "a4e41b10e9d10defd7e69a423b09e11868f36fea488bba26f778a20696f5ca60",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba002262.cmp",
+      "sha256": "f43e4af1eff6c283746084127e6f0accddac7548f2b25864e7d40afd62a0846d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002263.cmp",
+      "sha256": "9c206b7100be02fc70ff034de862f178aee7e20026bd98533313157b521c9bdf",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba002367.cmp",
+      "sha256": "6de88564e7722f4fffd6f11487680d2c28a7b96b97ec0b2fac1baf2fb2a1a558",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002385.cmp",
+      "sha256": "bad06483c264b0ab31d2c8f485db1f176b8570c21ad848cfbcee7a0ee6a0a125",
+      "width": 31,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4092
+    },
+    {
+      "file": "barammap/Ba002390.cmp",
+      "sha256": "abf0071af39d162563a386285cc8909d812c9f27586f690fda24ecc70ad707f7",
+      "width": 30,
+      "height": 11,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1980
+    },
+    {
+      "file": "barammap/Ba002393.cmp",
+      "sha256": "6867d9964285b76fbfa8bbface1a818e56597e04cf0fd9a6989ed6054110b6b0",
+      "width": 48,
+      "height": 44,
+      "bytesPerCell": 6,
+      "decompressedBytes": 12672
+    },
+    {
+      "file": "barammap/Ba002399.cmp",
+      "sha256": "868b46584d61be93f99ef7b548fab969cace857cf548b91afa49c6e443e23f3e",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002533.cmp",
+      "sha256": "8ad55d1bca6fd0fc79d399bda1b6671850b7946980d62c5d24103131c4b09711",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba002951.cmp",
+      "sha256": "252ce60a824ddf381d0a1abc8d674fdd0ba62370436a4bdc20c4f913298f2bb2",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba002952.cmp",
+      "sha256": "6dbf7276eda26436042f3dfabf298b9a9590ecd23272c307a0d2101778a9a799",
+      "width": 72,
+      "height": 72,
+      "bytesPerCell": 6,
+      "decompressedBytes": 31104
+    },
+    {
+      "file": "barammap/Ba002959.cmp",
+      "sha256": "42231b4a062a572918e3410d274c79be0a270f91413123a513d858bd00f683d9",
+      "width": 16,
+      "height": 16,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1536
+    },
+    {
+      "file": "barammap/Ba003039.cmp",
+      "sha256": "a53e2b18bb0c2b7f263bafdcdf7707d0712d2ed848e4ac729e60760e8dbc9513",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba003068.cmp",
+      "sha256": "62aeb1fc6ff0010c09daf90ae316120f46128e051ab13801e0c1f6841d658c58",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba003069.cmp",
+      "sha256": "225be18f52f8f52864f9412e6495c7e08d90e5bea327b98bedd486aac650722f",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba003070.cmp",
+      "sha256": "1ffde3d44a8f5c58d71bf1e5e556a699ec6b1fd0869d2eb9148bf49a1bcedb3c",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba003071.cmp",
+      "sha256": "2f02935d198bc932f3252e63c4c10653fc46fed631f4b3bb0879a4dafc306a84",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba003072.cmp",
+      "sha256": "3642c74b0969358d28d65bd2095394d7a9e501bc172ddb85605235b59f8fcfda",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba003073.cmp",
+      "sha256": "f6e5c68b30e0acd490ce22434f406a4763ecaaf2c97cdb6e4eeba53832fb5e32",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba003074.cmp",
+      "sha256": "90f4dab4d0222af70c7bce6681b5e56f58c63ea28f2c99eb8779118b952c5cd9",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba003075.cmp",
+      "sha256": "9551f28a6ab26b8e61bb0f3648b21fde952c120e0cc02b51e9404fec9329f20d",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba003076.cmp",
+      "sha256": "f229b76d2787a635b2c1d970e8d8e48f7ae9d136eb91d0369de65f74ba5e87b9",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba003077.cmp",
+      "sha256": "30a66b8f407ae21055109b59c9a0e942fb5e4113eae50c0de356e466c5683688",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba003078.cmp",
+      "sha256": "4897c50170b2f1ee30597d5481fa4fcc03d8084570d4b20b7bd980ef1bd3a247",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba003079.cmp",
+      "sha256": "c93dd4ff04a514d63f125d726d24da92c491dc79aa11308339dcc483becd7be9",
+      "width": 31,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3720
+    },
+    {
+      "file": "barammap/Ba003176.cmp",
+      "sha256": "44688e847bb8dc8429d549f0cdcbec7ac103de99bdbe31a238c6460cf175b4b3",
+      "width": 220,
+      "height": 220,
+      "bytesPerCell": 6,
+      "decompressedBytes": 290400
+    },
+    {
+      "file": "barammap/Ba003178.cmp",
+      "sha256": "5bddb9f710fa849d2d78631829330176dabf67a55511ac91e1c98fae50cfdb60",
+      "width": 220,
+      "height": 220,
+      "bytesPerCell": 6,
+      "decompressedBytes": 290400
+    },
+    {
+      "file": "barammap/Ba003180.cmp",
+      "sha256": "4d9d356c8eb6a6115b306828d307a7509738843eb0e4be64c19beb7eff60a465",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba003181.cmp",
+      "sha256": "4d9d356c8eb6a6115b306828d307a7509738843eb0e4be64c19beb7eff60a465",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba003190.cmp",
+      "sha256": "26a305bf5a4072b26ada1602ff82850861b3a08cbe2bf5c0f74d42be2db78d45",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba003191.cmp",
+      "sha256": "26a305bf5a4072b26ada1602ff82850861b3a08cbe2bf5c0f74d42be2db78d45",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba003199.cmp",
+      "sha256": "110067a32880f35bff1817983c037ccf7d6cd9630d0307ff3fd89ac1dc29fcae",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003200.cmp",
+      "sha256": "c70137cbbcdbddbc4b733a3dbb97c2c0e3bbc740868a8202cdb1bec7679779a4",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003201.cmp",
+      "sha256": "1078917d36e6f597f3ac2e29b8b77af0c0c8707f8ca1b5bf8a05c68850c971e0",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003202.cmp",
+      "sha256": "d2db71513d0795703090bbea7ab2e2dec2848814fcaa11821c3e09e2821c2a4d",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003203.cmp",
+      "sha256": "ca762027af31d366e1b857ac498f4ffc42a9073efcfa0644c014a5b2502b6243",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003204.cmp",
+      "sha256": "b25907331e4cff475df8add8ae673144d1a92ed65707343cdf73ba2402dae87b",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003205.cmp",
+      "sha256": "46c07f8144e74fcfc2e794e266f588e9dbff91ff591374e85f78a067f0f849a4",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba003207.cmp",
+      "sha256": "c67916a0211c260bc8c2db9189cb93e0a8651e72b2993cac578ed6d99736dd0f",
+      "width": 146,
+      "height": 156,
+      "bytesPerCell": 6,
+      "decompressedBytes": 136656
+    },
+    {
+      "file": "barammap/Ba004001.cmp",
+      "sha256": "0a9790c76df209671a156512cd34149adc43442a87b36f4ebad1de852c20ea73",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004145.cmp",
+      "sha256": "35aa29527a43bde158d5ffb0c814a211a1c486826ea4b8511fd7b55bdf955a9a",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004276.cmp",
+      "sha256": "b85c258bc4d6c1e77b9f8ad06b6524717b6a51f5888369d2acb37a212d5ae6d8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004407.cmp",
+      "sha256": "bc22d6b6f846ffdb069d929e22a08afbb2e571c9dca1f03afb0e834e83531efd",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004538.cmp",
+      "sha256": "cc7ad4ba7c4f03a3ab18b1f5b17f537d5c308c1eb8fd7e11a7608c87f970da73",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004669.cmp",
+      "sha256": "b85c258bc4d6c1e77b9f8ad06b6524717b6a51f5888369d2acb37a212d5ae6d8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004670.cmp",
+      "sha256": "c286fa52446563cd0013ca9107133292e66081795993f173f981b91ec7564553",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004671.cmp",
+      "sha256": "7c785bbe78449d1686043bb3fab5f205c51c408daf4af28ab5cafb8a8588894b",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004800.cmp",
+      "sha256": "cc7ad4ba7c4f03a3ab18b1f5b17f537d5c308c1eb8fd7e11a7608c87f970da73",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba004931.cmp",
+      "sha256": "7c785bbe78449d1686043bb3fab5f205c51c408daf4af28ab5cafb8a8588894b",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba005062.cmp",
+      "sha256": "cc7ad4ba7c4f03a3ab18b1f5b17f537d5c308c1eb8fd7e11a7608c87f970da73",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba005500.cmp",
+      "sha256": "0f4a66fa6aff2702c27e05f3e42b425da9c7df3014b23a4d9a35d4e8ed383f4c",
+      "width": 100,
+      "height": 100,
+      "bytesPerCell": 6,
+      "decompressedBytes": 60000
+    },
+    {
+      "file": "barammap/Ba005505.cmp",
+      "sha256": "d28ac586ab1e3b55fa20fbbc8fab6c06464da3227672f517f811a7e03f8112c2",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba005522.cmp",
+      "sha256": "68523efb43a636fdafbf23c0be6afe32f779f08e7bb8b2566fb8f986f2bb59e1",
+      "width": 70,
+      "height": 70,
+      "bytesPerCell": 6,
+      "decompressedBytes": 29400
+    },
+    {
+      "file": "barammap/Ba005528.cmp",
+      "sha256": "14df8c67755abda8abbf8ef475260b26cc137ccf4b9fc950ab18018c1237583d",
+      "width": 50,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba006492.cmp",
+      "sha256": "7c785bbe78449d1686043bb3fab5f205c51c408daf4af28ab5cafb8a8588894b",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba007440.cmp",
+      "sha256": "fd26dc89c402ecf15f39b767bc4cb9ca440e1fc2d32db67a63548133a7300a2c",
+      "width": 70,
+      "height": 70,
+      "bytesPerCell": 6,
+      "decompressedBytes": 29400
+    },
+    {
+      "file": "barammap/Ba007441.cmp",
+      "sha256": "c50b2d9fff61a1908d1040cd034b770336d89f27adce846a82fa13669763e669",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007443.cmp",
+      "sha256": "42594730fe996e1c8da40d444ea30f9fc0059fe9d626c1df255ed859368f5ba3",
+      "width": 60,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba007461.cmp",
+      "sha256": "cfa7d81dbd7864188d42ea00865701a96b35e0a9d472cf4a123fda8db5ed255c",
+      "width": 25,
+      "height": 100,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba007462.cmp",
+      "sha256": "8a73dbea3e38bc30f7a53146b249931db675ca7dad7a941cf0a23377ccdf434d",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007463.cmp",
+      "sha256": "352fe74ddac361addf05d5f5eb944195168264f8abf740b5c2ef6236ac0fec6d",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba007483.cmp",
+      "sha256": "0c515c219e92729979813ce73070a91aa7c539d10d7439b4ce6a5342da8d5ad7",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007490.cmp",
+      "sha256": "485a573ccc11146bb815658b2adea494a6735997d9eff6f4f31beea9871b5159",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007491.cmp",
+      "sha256": "a98754c1853dfaa40a7ddaa83818ce8bb4774758b1a9bb44ae4d8049f88bc09d",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba007492.cmp",
+      "sha256": "2e268bc17b98da41f5ee8d8c7e7a8d9f948703efe7508781935a27107a1474a6",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba007493.cmp",
+      "sha256": "627619d37b093fe40a26a4a16ec649e172d90aece4bdd156da7d61cd6ed40ed1",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba007494.cmp",
+      "sha256": "fc09e4a7a72c8b663b83f5e2bccd4fe3b81cebc96655b0f4a4ebe9b508eb7cd2",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba007513.cmp",
+      "sha256": "91043c185abf644e799daa11dc37c587128a61b464b23c6735ec400cbc535932",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba007514.cmp",
+      "sha256": "93a4498e76e650c55aeafc6d97ff94522418afc1c7c793beb5243062d442d0d4",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007516.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007517.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007518.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007519.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007520.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007522.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007523.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007530.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007540.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007544.cmp",
+      "sha256": "1d411b4d886acf86d7faf08198397b28bb676a055146c939bab446ab710eddc2",
+      "width": 100,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba007560.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007563.cmp",
+      "sha256": "528301a1266d776abca058971d1ca654456e635161242354b844baa2c1728445",
+      "width": 17,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1530
+    },
+    {
+      "file": "barammap/Ba007565.cmp",
+      "sha256": "e3834030b5f81007be4434386cfdd5c6fe171ee5e7157ec03b0799f934cb84f7",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007566.cmp",
+      "sha256": "5e89f70872f8480945aa427e093502c3bafa89234f50bf72cb6dab81f5f036e3",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba007567.cmp",
+      "sha256": "ee4cadf3a481f38870d412d0b7efe19d995ea354cb53fb6079944bb6cedc86de",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba007568.cmp",
+      "sha256": "8a54e7b06e5ae664e7ed32702cff798aa656a53c7c224b2a937ab95ac7cdec4a",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba007570.cmp",
+      "sha256": "ae0a291e34f5f5f0933c5b10fad170ab2be3ef2d85da9c6f311624890332bb45",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba007594.cmp",
+      "sha256": "5e89f70872f8480945aa427e093502c3bafa89234f50bf72cb6dab81f5f036e3",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba007601.cmp",
+      "sha256": "e3834030b5f81007be4434386cfdd5c6fe171ee5e7157ec03b0799f934cb84f7",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007602.cmp",
+      "sha256": "20cfbf24714b53c7cebb83ac4de9e906e5df26206999a33c7d37b4c2176d7a86",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba007603.cmp",
+      "sha256": "8a21940632cad60b169e75897dec81e590cf738a45a65170650bb6c292bc36ce",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba007604.cmp",
+      "sha256": "bfa745338564c6460f50bb039f2a2793611338504ae9f3979281b7f902268e9b",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba007614.cmp",
+      "sha256": "c26132f998acedec074ed28ec691e1376bd0c3ab1db1aa4ee80105ff3d5ebd73",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba007615.cmp",
+      "sha256": "20b01ef9057c723a3498e48c4ac68b192cfe04c145d91c983abb91f6afec584f",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba007616.cmp",
+      "sha256": "699e27f5fc7c6867386e107d04dd1d869de3b2e0509bb553c99119f84bab253f",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba007617.cmp",
+      "sha256": "1fc7d9a722152325792f4f669a110eeaa907ca82f20abd29abbfb5ddc544d60f",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba007618.cmp",
+      "sha256": "42c7a1e07e09d15e4b3101d515cc7d42e826c8571729fe443e390cf031a4536c",
+      "width": 25,
+      "height": 100,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba007672.cmp",
+      "sha256": "9f641a1df068d62135513df90936954769814f8ba506a9a68b7e7e52ad7e86f1",
+      "width": 55,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6600
+    },
+    {
+      "file": "barammap/Ba007716.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007717.cmp",
+      "sha256": "c3970fd2a4a8bdc8567a1a81804d58053ea10b6fdc2bc059d425020f68224ae0",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007718.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007743.cmp",
+      "sha256": "607505719bd9dae6812d66d33057f17b1944a2446a8cb175da18f6e2a78335bd",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007744.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007745.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007771.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007772.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007797.cmp",
+      "sha256": "14b4b33b3a2166bcdb17873306c853e6961de57042be3e52b477396467f2f1d1",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007798.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007799.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007824.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007825.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007826.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007851.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007853.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007877.cmp",
+      "sha256": "274ed413c83ecd28dd2cef1d09ef4841b7fcb655a17674d003d78c7aefb80314",
+      "width": 12,
+      "height": 12,
+      "bytesPerCell": 6,
+      "decompressedBytes": 864
+    },
+    {
+      "file": "barammap/Ba007878.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007880.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007907.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007932.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007933.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007934.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007959.cmp",
+      "sha256": "79732e58d09a044d90524bbba8a3e24daf7abb2929a52b987621d80060320b0e",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007960.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba007961.cmp",
+      "sha256": "ea4adac5c1932364e0857940f8bf7676632714bcfa69f6560d4774dca64d45cf",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba008301.cmp",
+      "sha256": "48021d839a26703f056c27a96cfd3f913e4515c0f5894ae50f14d5be2bb35dcd",
+      "width": 60,
+      "height": 70,
+      "bytesPerCell": 6,
+      "decompressedBytes": 25200
+    },
+    {
+      "file": "barammap/Ba008303.cmp",
+      "sha256": "784395ef377d0b1be067862782842c5622d795c52de15071a719bac7ad426145",
+      "width": 20,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2760
+    },
+    {
+      "file": "barammap/Ba008304.cmp",
+      "sha256": "7e67f44bc740c22083f80458175f39e28111efa85cae21a9e29f22f9269850b1",
+      "width": 15,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1350
+    },
+    {
+      "file": "barammap/Ba008305.cmp",
+      "sha256": "8c175aa06c68b8f6329e4b9ffaf88cbc5181ac4d04a2d72bf97442966e433a5c",
+      "width": 20,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1800
+    },
+    {
+      "file": "barammap/Ba009010.cmp",
+      "sha256": "c9f652227372b491270bdb8068bc48ec42d94ed9fb8c29c6f123e4d704f09b7d",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba009011.cmp",
+      "sha256": "2b0f6c10e30152c8d8f60a0e562671dc7cf39933acd8a5755d90b9caefe7920a",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba009012.cmp",
+      "sha256": "3d5e9322998f2f8d59587b0c7f8a5960041600abec1d4f8259851794f9568a76",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba009013.cmp",
+      "sha256": "a486fc5a62ed9309e0f353946983315b7d8392c8ab3f0cceb82ae762757393cb",
+      "width": 20,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba009014.cmp",
+      "sha256": "a4bc08836033bec01894e4e369004f8028a893a2763b12a60652e25fc03e5c7c",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba009030.cmp",
+      "sha256": "7459fabc687ffb9e376aaabf1b3be9adc209e910b6a8211338008c9c8407a9b1",
+      "width": 70,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 21000
+    },
+    {
+      "file": "barammap/Ba009983.cmp",
+      "sha256": "28919e4d4312f04b62c4142396d7bed618ab7e6c25d9feff9041a91c9ccfc681",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba009984.cmp",
+      "sha256": "4f55eac9a4b0c604b97b14c3fb6fd390a57391fe1c954551abfd3ee2a3b1139e",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba009985.cmp",
+      "sha256": "090cfe2557b96f4d00e39f0f32885664eef77838353207f2b78aab00acec2571",
+      "width": 15,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1350
+    },
+    {
+      "file": "barammap/Ba010100.cmp",
+      "sha256": "480c47465c6defc18bd4eb4a6f6c00b429b7c7901ae40fb23ba2aa41c055495d",
+      "width": 25,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3000
+    },
+    {
+      "file": "barammap/Ba010101.cmp",
+      "sha256": "0b93c7288b968419bfd47c8e29ac7614c328b170e9034a18ce11fd1a4f089b8c",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba010197.cmp",
+      "sha256": "b85c258bc4d6c1e77b9f8ad06b6524717b6a51f5888369d2acb37a212d5ae6d8",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba011961.cmp",
+      "sha256": "6b02ccb6cd07ab64ffacb52ea39954d3c4ede400378a8c9e6338afa33644432a",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba012153.cmp",
+      "sha256": "c2ce38de25f659d6d756f9d7b2f3e85e4ae9104a55c4cc10a066aa637c15b930",
+      "width": 36,
+      "height": 62,
+      "bytesPerCell": 6,
+      "decompressedBytes": 13392
+    },
+    {
+      "file": "barammap/Ba012154.cmp",
+      "sha256": "1b8ab63984f6166b2a8e9e7bfce2f93986b5920a9a08163260fc6ebf0005238f",
+      "width": 62,
+      "height": 62,
+      "bytesPerCell": 6,
+      "decompressedBytes": 23064
+    },
+    {
+      "file": "barammap/Ba012155.cmp",
+      "sha256": "bc9c49dcbdbc4d65714902d4bcf44fb232c342c662694e15b49f051a9ac301a8",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba012156.cmp",
+      "sha256": "24b9de796f590a460bcec6260cc2cbfcc48922489e9fc23d6c160ab28abcd84e",
+      "width": 36,
+      "height": 62,
+      "bytesPerCell": 6,
+      "decompressedBytes": 13392
+    },
+    {
+      "file": "barammap/Ba012165.cmp",
+      "sha256": "226baae66e194edb630f3e4a45cb35fc90061e18762cb086bb1eeae8355d15ea",
+      "width": 30,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba012192.cmp",
+      "sha256": "7770d922525654f1b84e348d04faa11c073006a627d9019645d1494166517782",
+      "width": 100,
+      "height": 100,
+      "bytesPerCell": 6,
+      "decompressedBytes": 60000
+    },
+    {
+      "file": "barammap/Ba014401.cmp",
+      "sha256": "3ab2e4f1a62453bbe0ee440a028731c9a1d22673549aa381cc6c52245c649e98",
+      "width": 200,
+      "height": 200,
+      "bytesPerCell": 6,
+      "decompressedBytes": 240000
+    },
+    {
+      "file": "barammap/Ba014502.cmp",
+      "sha256": "0f8ed2120a22d5ad633c970fe5811cf286d3ec9d15e8001f3d897977a254e000",
+      "width": 15,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1350
+    },
+    {
+      "file": "barammap/Ba015511.cmp",
+      "sha256": "17c4d7c0ceba667d732b9787b08c4e73acd41702fcd53dd87da9c740ed3aff80",
+      "width": 100,
+      "height": 99,
+      "bytesPerCell": 6,
+      "decompressedBytes": 59400
+    },
+    {
+      "file": "barammap/Ba022280.cmp",
+      "sha256": "f764cb9a447bc5bcef4e0b93c4aa28cedc464cf5c40b8e02f083a88815e7bcf0",
+      "width": 8,
+      "height": 35,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1680
+    },
+    {
+      "file": "barammap/Ba022284.cmp",
+      "sha256": "1bbb1a8d304b1b79d31430a1b76f6afb6a038e636c478628bc60459846b948cc",
+      "width": 28,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4704
+    },
+    {
+      "file": "barammap/Ba022285.cmp",
+      "sha256": "bface39969589f9a246e71eee3451ceafec70104ff37d84925cad92b2d759e40",
+      "width": 27,
+      "height": 27,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4374
+    },
+    {
+      "file": "barammap/Ba022286.cmp",
+      "sha256": "2c8a92c235769835e270760f2a8a1eb77dc0aceca0dfe16547b80b515644325b",
+      "width": 27,
+      "height": 27,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4374
+    },
+    {
+      "file": "barammap/Ba022289.cmp",
+      "sha256": "a18d2438b2315a9e1a4a038a0dcaeff33c17ebc623d963105078ed1a8ef2fc30",
+      "width": 27,
+      "height": 27,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4374
+    },
+    {
+      "file": "barammap/Ba030001.cmp",
+      "sha256": "eaf942961c510cc6732b99b55080cbbad4d0d42ac7fd663535a20ef8325d3a37",
+      "width": 15,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1350
+    },
+    {
+      "file": "barammap/Ba030010.cmp",
+      "sha256": "3287da408b19f654edb6dc9d818962da9700f3a9c505b7d9e614062a5b97586e",
+      "width": 15,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1350
+    },
+    {
+      "file": "barammap/Ba031001.cmp",
+      "sha256": "3c3e789d62055e42d8de4c5abd0910707d1d1881fc0408ee568880ee4436a66c",
+      "width": 31,
+      "height": 15,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2790
+    },
+    {
+      "file": "barammap/Ba038002.cmp",
+      "sha256": "6b1a83faf9652080eb9db042433b4895428a80aa985ed6073d020e2c8de10f87",
+      "width": 18,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1836
+    },
+    {
+      "file": "barammap/Ba041999.cmp",
+      "sha256": "2a44b8162c555f76a5c3dc8b49dd766b8ee2697f533bb453ac2a66b7aefaba65",
+      "width": 25,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3000
+    },
+    {
+      "file": "barammap/Ba042009.cmp",
+      "sha256": "70db242f3126d65f9c8cdf5d4e65c97ab5abb1d4d9c47580b360b373572cf629",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba042141.cmp",
+      "sha256": "b003a40f4ada70250f620f9ea0398ef9c4b2efb08637371721f60e0655d387a0",
+      "width": 32,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3840
+    },
+    {
+      "file": "barammap/Ba043844.cmp",
+      "sha256": "6761583e2ad91d958a582053bdaa804231dc804c844015bf4487f3579189f01c",
+      "width": 25,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba043845.cmp",
+      "sha256": "95e9380eee71d5ac85753f24723ac409a2b07548256e6104d6f473dada6cd2d0",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba043866.cmp",
+      "sha256": "2d9b4723df0e60df30eac78d6863b57ac0b9a8878d64db460e961479a347913d",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba043867.cmp",
+      "sha256": "7c746cbb54eb4b2c605512dda7c756c4c6b8cc96e298a72250ba0415e57eea39",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba043868.cmp",
+      "sha256": "6c30acf364d3ae4f2704da2401784d15e2ce395584c34a1a03afe2a4f8d2a5b2",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba043869.cmp",
+      "sha256": "6133629fe49f529c13a751be1363749aed1d13ca69408d43b953839733459848",
+      "width": 25,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba043870.cmp",
+      "sha256": "ddef4b517c50c61a77448d6b3cc35ce9f2c4c65fd9b4526997b8dbeae15e399a",
+      "width": 18,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2700
+    },
+    {
+      "file": "barammap/Ba043871.cmp",
+      "sha256": "498e950bdc4bf5db04d47b049519e5ff1a229a58333af060739e13586add8402",
+      "width": 25,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba043872.cmp",
+      "sha256": "04b738f45bd37e0cf3a64e3e3072e70f28f45d21104dda6c54c668753ab9eff3",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba053002.cmp",
+      "sha256": "ed0f1190a0942db5390af02ae9bb61d7129993d41b21310b8b7d29430f57c6db",
+      "width": 16,
+      "height": 19,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1824
+    },
+    {
+      "file": "barammap/Ba053003.cmp",
+      "sha256": "5a6ecac1f7979b53a4956933c20d6e07495b5950432a3660a4b0dc4ff80f56a3",
+      "width": 16,
+      "height": 19,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1824
+    },
+    {
+      "file": "barammap/Ba053004.cmp",
+      "sha256": "482e1902e7fbbc5f24cffc1bca077797371bf05d99550236690508e0975c98db",
+      "width": 14,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1176
+    },
+    {
+      "file": "barammap/Ba053124.cmp",
+      "sha256": "20d140818af61b94e458889a1db6967f68068f82a88c19a590b22bc6ba9dd12c",
+      "width": 12,
+      "height": 18,
+      "bytesPerCell": 6,
+      "decompressedBytes": 1296
+    },
+    {
+      "file": "barammap/Ba053125.cmp",
+      "sha256": "790130ed5ed1308cdd05ea6243dbdbc7928bdbe9d916a69687754e3f1c26f4ab",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053126.cmp",
+      "sha256": "991a1170b9a1869120cb21cf68f4775db841313217c5856df921c6dcb212b513",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053127.cmp",
+      "sha256": "59ad6d7f07d9c776a604013ab85d8c9f402d3b569b327968eee85a938df828ea",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053128.cmp",
+      "sha256": "73ec050d2586be63a9de65275a91a8c28e74124b3cce1a349901bf5258b31eb7",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053129.cmp",
+      "sha256": "2f5e85ab13e055e1117cad42924bd4020cf30476c0eb842578b16dbe9ce432ab",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053130.cmp",
+      "sha256": "14392b1242543c091489921f2bf29409239f738accb1b7886e0fd50515ab789f",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053131.cmp",
+      "sha256": "3a2c9e789afa1ff745e94223177eff2ea6a93e16541dedacadea5649dc8cc160",
+      "width": 50,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 15000
+    },
+    {
+      "file": "barammap/Ba053133.cmp",
+      "sha256": "2e99a24f3cfae265a5cf0e32ac0e666aca77958d20e3161cd9c112119deb24f3",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba053134.cmp",
+      "sha256": "e4d1643932a960a33c8ad0903bf0e50a9fea15b3c0fb6ad562fc611b255d54b1",
+      "width": 60,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba053135.cmp",
+      "sha256": "f00ce9a816de49643764f42e61544cee0a7232a1cb4eb068fb378577f399900c",
+      "width": 50,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6900
+    },
+    {
+      "file": "barammap/Ba053136.cmp",
+      "sha256": "e85e3f294057daa04a71f2e6b2796912efb74377568b3af03e4052f04fb0443d",
+      "width": 75,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053137.cmp",
+      "sha256": "5630f59225ffea52352d9c07b8d6ab6becbb82d1782c710fdf3d2f7e545f54a3",
+      "width": 52,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6864
+    },
+    {
+      "file": "barammap/Ba053138.cmp",
+      "sha256": "42e6498736146ebc9b69417f74ad9b60f8785ed60c240750950c9bf98914d808",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba053139.cmp",
+      "sha256": "8fc5fe5275762e41a7bd2e939dad3b9e04d8b72ea073c93c7fbfdb88cbbd47e2",
+      "width": 65,
+      "height": 21,
+      "bytesPerCell": 6,
+      "decompressedBytes": 8190
+    },
+    {
+      "file": "barammap/Ba053153.cmp",
+      "sha256": "e03f896406f8d908f2b61ef76ff6b73145a8e0274f8397d49ecf815e0c1a5cff",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba053154.cmp",
+      "sha256": "26a2ea74b08f53895481c140f2947a9976465fcaca9f4e518ce4426547035adf",
+      "width": 63,
+      "height": 66,
+      "bytesPerCell": 6,
+      "decompressedBytes": 24948
+    },
+    {
+      "file": "barammap/Ba053156.cmp",
+      "sha256": "453bf26e3514770c6cdff2b6926cb0d1f109b18bf3ccd021db4872b819644cda",
+      "width": 50,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6900
+    },
+    {
+      "file": "barammap/Ba053179.cmp",
+      "sha256": "d121339d919845f66b5a66724ffe2e693b58d19e345b114fb6427c449201531a",
+      "width": 40,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4080
+    },
+    {
+      "file": "barammap/Ba053214.cmp",
+      "sha256": "116cd5230be6d58b6dc68e1f8952084413dac66359be9fd41f62181de47715d1",
+      "width": 40,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4080
+    },
+    {
+      "file": "barammap/Ba053215.cmp",
+      "sha256": "a26a8534e45d1a0ea333ad184bebf68875a3d03bc5a4ec583a0f259e6251c5d4",
+      "width": 26,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3120
+    },
+    {
+      "file": "barammap/Ba053216.cmp",
+      "sha256": "4af99fff904aca51f7340d580516be1190e251bdf91afdd06c7a21918b1b1b80",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba053217.cmp",
+      "sha256": "d34df19d8260af6910e54d718c9060c4f0d787988fe0f7a13d2c99de3ffe2f94",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba053218.cmp",
+      "sha256": "33ec4ed48a1fcf5b71bea17f7265261343c06b7cebba6362dc38f0ff3f76d817",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba053219.cmp",
+      "sha256": "aa5b7ccfd79da106647b315b6b70a3c5d4923edc2ebb4cf461bb990908136fce",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba053220.cmp",
+      "sha256": "92616798b0242c9cb8e8ea0e4de618590383befb3d63fba13639caa9967e0252",
+      "width": 34,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5712
+    },
+    {
+      "file": "barammap/Ba053221.cmp",
+      "sha256": "01b2f0e3fef66bc206f9fc63829fedaee15133e26b934100107f7d6d46c15a82",
+      "width": 34,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5712
+    },
+    {
+      "file": "barammap/Ba053222.cmp",
+      "sha256": "61ec615913ac1a14138f5166060184d99b0bf051c84716a7ea4692ec2faf08e8",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba053223.cmp",
+      "sha256": "47e1ebfeaa9861e6a0091ed77e249946f37e7d663b9204c7a4df3cf2492b0c8e",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba053224.cmp",
+      "sha256": "4d10c164c4a5b4ae16f548670b91fed5b2cae21734f5ce0760550c5ae3e739d9",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba053225.cmp",
+      "sha256": "5e7cb39d166c4ff7c9702b2228f7afe87fc1911ad3f8f03785597490a5dcfb43",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba053229.cmp",
+      "sha256": "9a5cb8d2b4a3a8b474586ab7eafbc00d9cd4fbb0dc1114f7af95caa15bda19e9",
+      "width": 40,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4080
+    },
+    {
+      "file": "barammap/Ba053304.cmp",
+      "sha256": "347d08c347b2f07547ce763c3ea14ad5ae1a9ce1fc8b885eb20eca76d1eb7db9",
+      "width": 59,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6018
+    },
+    {
+      "file": "barammap/Ba053331.cmp",
+      "sha256": "df3a70c6f69a3d6539134d9535ceee548a9a49e9575f502c05dcb6e01b59f385",
+      "width": 60,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 21600
+    },
+    {
+      "file": "barammap/Ba053332.cmp",
+      "sha256": "ad1619990b7a87ea8f3b2a94fcef5a06b94d941e31a020971d9177209695c415",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053333.cmp",
+      "sha256": "a3b299d2e72246b7ab54553f7b3d9f61996dd55bc107a71a04ff87fffe54c8d4",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053334.cmp",
+      "sha256": "13778b9bb422d98e75a9f79a37f1e926bbe7dce952f4707f138984a689e2a733",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053335.cmp",
+      "sha256": "b3241ed56de08fb20ba92607b01630c90f4cc1702ad91a9aa52b015e8e92d235",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053336.cmp",
+      "sha256": "631ab46f2b2c975b10aa1aaa8446fd283883a184b1fd19bb8fe87cd932f9ad85",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053337.cmp",
+      "sha256": "46514fcd4755bbe28d957f6e2583e0198f18674447b055f9c63dc8ff58b0aa23",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053338.cmp",
+      "sha256": "cf681464036aaa3611d29728a55fa2731a6d3e615b0b904700d8a5bc74854dfa",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053339.cmp",
+      "sha256": "8e14595778b8bc1228d9fb01d073a1ce0db8ea43def2144e4e5b0564253822af",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053340.cmp",
+      "sha256": "6396d4c5a600d0d72a6bcb76c6b7a6253b1bf5df9434aa29d5bdf022d8f47c14",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053342.cmp",
+      "sha256": "5ffe491da02d32b2295b332d9b3bc90b7c2266fa9a6fe158240b32f1e1965d85",
+      "width": 18,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2484
+    },
+    {
+      "file": "barammap/Ba053343.cmp",
+      "sha256": "01f3bad02ee58686244dfdbcdbc37bac738d7691b06b0083ddc0629dd3de9b2a",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba053344.cmp",
+      "sha256": "ccfcfa03f49722171799ce703802eb77f7069d58c7395b5da5c7b99db2584074",
+      "width": 60,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba053345.cmp",
+      "sha256": "914759f6d2689610623761222a111cec17e212d7012e551c0de79fab5be35581",
+      "width": 50,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6900
+    },
+    {
+      "file": "barammap/Ba053346.cmp",
+      "sha256": "a255b37ef727d4703b683a6f636a34d6d7ff01cb5197c55caec91bd588fcf42e",
+      "width": 75,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053347.cmp",
+      "sha256": "da91efc5f8c5e95dc749e6867997a8c3b29828c828154f136985b20ccfc3d220",
+      "width": 52,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6864
+    },
+    {
+      "file": "barammap/Ba053348.cmp",
+      "sha256": "be3901bd598750e0a3fc56122db3bb5d5585c6d5eef06043268e2ba73e242a95",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba053349.cmp",
+      "sha256": "9c36eb252ad3f2b292c987abef0839779ac200ecdcb704a29a117a616d388c6d",
+      "width": 65,
+      "height": 21,
+      "bytesPerCell": 6,
+      "decompressedBytes": 8190
+    },
+    {
+      "file": "barammap/Ba053350.cmp",
+      "sha256": "92a1430be7d63718d8705dc1db65f51136240bdcc67ce05114a00800b8a4ab71",
+      "width": 50,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6900
+    },
+    {
+      "file": "barammap/Ba053351.cmp",
+      "sha256": "0872b50c90655a489e9e331516b839006bba558f91e479eba0393bd7291e801a",
+      "width": 75,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 10350
+    },
+    {
+      "file": "barammap/Ba053352.cmp",
+      "sha256": "91719e3d7d5d0040b1596f58e33aca3c1688ac408334cb07253e152d3633ce91",
+      "width": 55,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6600
+    },
+    {
+      "file": "barammap/Ba053353.cmp",
+      "sha256": "852226fa16f8def29b6f2eb37c5943a5fa51b04dce9c74d5e93f5043b82425fd",
+      "width": 25,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4200
+    },
+    {
+      "file": "barammap/Ba053364.cmp",
+      "sha256": "9def464408b31a2b0ccdafa3a9efaed363c5fc9995fe8c5a6ea5afc36daaf815",
+      "width": 60,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba053365.cmp",
+      "sha256": "2fca3df0e0bb09224b5de36e68efe449ddb584a843d01ca9c8c33b897272c2fa",
+      "width": 50,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6900
+    },
+    {
+      "file": "barammap/Ba053366.cmp",
+      "sha256": "fde146aed348a4128cf0fa8a58095aaef0eecec897bc3e17604f3592ba0a0299",
+      "width": 75,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053367.cmp",
+      "sha256": "b25769bcae4b02865c70b1c8bf9c5fee26a86b47a989b8fe092f6b3f35362668",
+      "width": 52,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6864
+    },
+    {
+      "file": "barammap/Ba053368.cmp",
+      "sha256": "ac41fbc6381bb2a9cb8af83b454ac3eab2a4058239e2eb97d100ada9967effde",
+      "width": 50,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6000
+    },
+    {
+      "file": "barammap/Ba053369.cmp",
+      "sha256": "cd87b1c3d0322db58058fb4cb09971b428fbf4a7e21720d0b3530d1fa5a18e0c",
+      "width": 65,
+      "height": 21,
+      "bytesPerCell": 6,
+      "decompressedBytes": 8190
+    },
+    {
+      "file": "barammap/Ba053370.cmp",
+      "sha256": "339e70ecbf72352512938594a7b05ea54d0f7a9d72b269689ef0177834679a13",
+      "width": 50,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6900
+    },
+    {
+      "file": "barammap/Ba053371.cmp",
+      "sha256": "766545ceb0c921195545f5c39b299a5fe9d78b8c417b7cb78081268850263b36",
+      "width": 75,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 10350
+    },
+    {
+      "file": "barammap/Ba053372.cmp",
+      "sha256": "a6a1230459f74e350a98374f49d3bef704fdad1d9b5cd16f7422b9589a1947b6",
+      "width": 55,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6600
+    },
+    {
+      "file": "barammap/Ba053373.cmp",
+      "sha256": "cd0645a9690d9d86af65ef8512281a0c4cbc79363d0a9708caf70195b9c92f84",
+      "width": 25,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4200
+    },
+    {
+      "file": "barammap/Ba053388.cmp",
+      "sha256": "e69e879dad8d3ef8bea8eef2155ecf737b92260383b3bda5b091a2c34c444ea4",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053389.cmp",
+      "sha256": "5817eac02a56428275f717078fea2f859d6b08d99dc653678ed46a4712ae41b3",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053390.cmp",
+      "sha256": "eb2a05554f20868ecf2978f9b1279abac85563f2bd93ae5b6e55d804df46dee2",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053391.cmp",
+      "sha256": "e4198d7b3a152f78f3d33f7e982d294d754238658b9a847caeec75a6065e9f24",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053392.cmp",
+      "sha256": "c968c8db5de0801cdc06cbac553f2a4ff2691ca3cba20fe5a85b5e512e8d475c",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053393.cmp",
+      "sha256": "6de55ae533da36c6099b5fe246adc82b8b1be8d851825a97ea9dbdece37136f3",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053394.cmp",
+      "sha256": "4fa70587a7aca4da1676441175c712ea82bc05727f78650966404ec072510287",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053395.cmp",
+      "sha256": "97181e7745c9f05e393457a2a836f8ba41a07f362de0d0ff917b9b9906e656af",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053396.cmp",
+      "sha256": "6d26ca71db367c6f80303ff21596989744a990a2d285280830825631a5b2d9af",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053397.cmp",
+      "sha256": "053c09208c9ff1c55d9b49f3e00fed17a8975889e2fbf9242709b9884b0f2b7b",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053398.cmp",
+      "sha256": "4f9eacedc5add9d09dcfc8af3f0994e19bb50f9036f84a27e69c57e4a4f50ff4",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba053408.cmp",
+      "sha256": "681ab3c37a80405bf4918f1970afcd830f53384388f75857f34c44bca6c6ae7d",
+      "width": 150,
+      "height": 100,
+      "bytesPerCell": 6,
+      "decompressedBytes": 90000
+    },
+    {
+      "file": "barammap/Ba053409.cmp",
+      "sha256": "cd629a4189dd8e36c7e0339ba8f1b72aa8e3fade63ab8d517fbd64039a03859e",
+      "width": 32,
+      "height": 32,
+      "bytesPerCell": 6,
+      "decompressedBytes": 6144
+    },
+    {
+      "file": "barammap/Ba053419.cmp",
+      "sha256": "5ffa6f1a945d01946bc0e20e413ff116bbe7537d153558b58e3dfc7dfcbbbad5",
+      "width": 28,
+      "height": 23,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3864
+    },
+    {
+      "file": "barammap/Ba053426.cmp",
+      "sha256": "1178810aa8417309a2217f96d6acdbd79bb55b40a43510faf3ad3583a51124e2",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba053492.cmp",
+      "sha256": "257d545d9c229d4ad96c7866c9ed299fcf1bc1e9b1a859b9d247be18fadfbce7",
+      "width": 25,
+      "height": 21,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3150
+    },
+    {
+      "file": "barammap/Ba053493.cmp",
+      "sha256": "9048d8284aaf122ac246e7fa2bde9c10a072eebc26489a6e773d7b65b8ade5ec",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053494.cmp",
+      "sha256": "3c7753fa7502a92c327e6eaf05c98c94126e75a086d352f08af8819f03aa6e61",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053495.cmp",
+      "sha256": "331751c3edd634ec09562cdb6bdc61ea65d469e048eac6d530d780da6054e1b1",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053496.cmp",
+      "sha256": "ba431f5d7edc55b3be18365da6fac3552953fcd26ee14f48c625122d92109ec8",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053497.cmp",
+      "sha256": "1a4c438c8d0199d9ea06e69ada2c851097d42a8b1cd89b9d3d113713331dd8bf",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053498.cmp",
+      "sha256": "6264bbb0690354c9cd98e4768ffc04e6d39d167aaad668a6c3d74c1472c52910",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053499.cmp",
+      "sha256": "60fb8e8a7dd77670140cd4c861339ae1451191b9f37cfdf12c2c6d85f0521228",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053500.cmp",
+      "sha256": "af5d1339667c220e6e33ae133722a21e1b77cd72cd137e30cf3636ea37373dba",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053501.cmp",
+      "sha256": "092f202bf959ca0649a99b21f1058bded14a0a7ffa0919410ecbe76638e5d739",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053502.cmp",
+      "sha256": "9c130740627b7477ed2b5a3f2293c8d0f70cce41056900d49a932585ce02373f",
+      "width": 25,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba053503.cmp",
+      "sha256": "5ddd3adb437a36b4378e118a79f0690816c6669c336656f529056d70237b0c73",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053504.cmp",
+      "sha256": "5ddd3adb437a36b4378e118a79f0690816c6669c336656f529056d70237b0c73",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053505.cmp",
+      "sha256": "5ddd3adb437a36b4378e118a79f0690816c6669c336656f529056d70237b0c73",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053506.cmp",
+      "sha256": "5ddd3adb437a36b4378e118a79f0690816c6669c336656f529056d70237b0c73",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053507.cmp",
+      "sha256": "5ddd3adb437a36b4378e118a79f0690816c6669c336656f529056d70237b0c73",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053508.cmp",
+      "sha256": "5ddd3adb437a36b4378e118a79f0690816c6669c336656f529056d70237b0c73",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba053509.cmp",
+      "sha256": "a39e1d6bb9ed90857d84e3bf28874e181d21cabebcf1a4ad74a94cf8eb08d48b",
+      "width": 27,
+      "height": 27,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4374
+    },
+    {
+      "file": "barammap/Ba053515.cmp",
+      "sha256": "e64b1a38b2a6e5be4269348e27207e191d7237b18dd8b4a21b6ba0de029116c7",
+      "width": 22,
+      "height": 17,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2244
+    },
+    {
+      "file": "barammap/Ba053526.cmp",
+      "sha256": "50eb7186b4b5847b87bbbc364dfeb760ec1e2e9bd6c1a8ed9cbc13e88f07f773",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba053551.cmp",
+      "sha256": "d5b41a915962cf0fd1ba8bf684cec48410482bc0822888b9e753fa38648cffe2",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba060001.cmp",
+      "sha256": "4a075a4968c05838cd509e412ffda376fa5b923ba076a0a73b067ad8ed2d40fb",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba060002.cmp",
+      "sha256": "1242e40dfaa453a138ccd4c4923023c7044a00ed3688cfecd27d631411b7763d",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba060003.cmp",
+      "sha256": "15fe318d9767a4273de81d068749099a4617c38909970082ca6a2805a7560e45",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba060004.cmp",
+      "sha256": "3474c21d771d29cf01912079db2bf56b3dc333e5a05b4aad5e7efee5945ee7dc",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba060005.cmp",
+      "sha256": "610e9182c6a12ab292274c6391a4beec32b4fe6ba92964e992970406a27b2c4c",
+      "width": 34,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5712
+    },
+    {
+      "file": "barammap/Ba060006.cmp",
+      "sha256": "bd97bf145dadc91d84fcd822acda63e0813fb41e7d093d04648c060812ee7ef5",
+      "width": 34,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5712
+    },
+    {
+      "file": "barammap/Ba060007.cmp",
+      "sha256": "7f994d40e07869a1a1ed50fa3dc95d9090eaa89cd481ae7d05a0676449cd3d1f",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba060008.cmp",
+      "sha256": "9c5ca71aba640dc77ecf5c3ac39e44460eb103ba866021c4522fb099d991949e",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba060009.cmp",
+      "sha256": "c9cf6e13908120e8ca5126c829d988c47e1960831c6e8d29b87f40d98e9d4528",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba060010.cmp",
+      "sha256": "80475b0158c34dfe283a8ad55615d8a409f426a1ce00f29f94aefd2170827a0b",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba060011.cmp",
+      "sha256": "6bddbac5d48a3244c565a510ce6a3a5af43ce27b621c73a6cca39a488b989722",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba060012.cmp",
+      "sha256": "8e3102594fc9e102790f363e91429976952975d3f532ca77940a6d5a4763dcbe",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba060013.cmp",
+      "sha256": "0c2a67d1a883b1f5192b82c8a6784dce756a964b31449d51453aa6f42d410aee",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba060014.cmp",
+      "sha256": "8ea571036ad5f506f323607e9f398d53ae5c69d924afd4702d7045d1dff0a393",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba060015.cmp",
+      "sha256": "fab90a4bfb1f142ff5f5e7ead4b53a9a7af5ab04242662ea7f82afacd555febc",
+      "width": 34,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5712
+    },
+    {
+      "file": "barammap/Ba060016.cmp",
+      "sha256": "0a8a7759e2d51b92175f134b99ea16fbcf9d74d2f737cfa0a266b92f2f29ef0a",
+      "width": 34,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5712
+    },
+    {
+      "file": "barammap/Ba060017.cmp",
+      "sha256": "aec41b4e71e7006407540ed9f1ee668eafcd0a6074413fb4e63d2938fe0d4937",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba060018.cmp",
+      "sha256": "f1fa444f07dabda1db5b39d62537f08819294198e8d8ff21d913d1221ed38a22",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba060019.cmp",
+      "sha256": "dd4febdd980a21884f56c0ba6ab3ec0476ad05adb7cfc683df6904baaf69c8cf",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba060020.cmp",
+      "sha256": "ef5b33587d9dd735c2919d23e42ed062004d7c467c8a0d73a5db4501e8e4c10d",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba060021.cmp",
+      "sha256": "ead5ee263e688d55cd00a7fc2dcaae27c5cdf9aae5d4f4fcb5d268255a093eb6",
+      "width": 36,
+      "height": 22,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4752
+    },
+    {
+      "file": "barammap/Ba060022.cmp",
+      "sha256": "e0eb7e1f60947ef229b496d9bf66804254a74a3cd9f2d7955f3db1fa0b294097",
+      "width": 28,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5040
+    },
+    {
+      "file": "barammap/Ba060023.cmp",
+      "sha256": "fe8d9fbb0c86285ee1d54ce89e7b9901e63e6ed93ea3d2a72dfdd6a9aab7a94b",
+      "width": 28,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3360
+    },
+    {
+      "file": "barammap/Ba060024.cmp",
+      "sha256": "408e0b4b88d8b267236405d022a76b7afacb435da50cba36ca41d40e04a81656",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba061041.cmp",
+      "sha256": "0da7ae6bd62b24aafb4d26d94f599c4b41e63f39191c3d6eddb1297679d16541",
+      "width": 150,
+      "height": 100,
+      "bytesPerCell": 6,
+      "decompressedBytes": 90000
+    },
+    {
+      "file": "barammap/Ba061050.cmp",
+      "sha256": "58cc515e8e89bdf18e93d772731b63ea82903857b138a533a024676ebb9fb981",
+      "width": 30,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 5400
+    },
+    {
+      "file": "barammap/Ba061059.cmp",
+      "sha256": "851846d75be50c15eefbbbe7f2e7144c958a78bb042724ec1d775acef410ca98",
+      "width": 30,
+      "height": 14,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2520
+    },
+    {
+      "file": "barammap/Ba061062.cmp",
+      "sha256": "f25b76326051559c28566bbce275f967b46165e2c198a6a3286a72478c9c3b1c",
+      "width": 40,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    },
+    {
+      "file": "barammap/Ba061063.cmp",
+      "sha256": "f77c5fe8f24f56f4c99b33a5b6020a49279028dc60a401e91d9d2185aa7b15af",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba061064.cmp",
+      "sha256": "57c760e24ac0a76a2bb972a79e6de9ad7f2a2b949d1ba639b6bfc9fad8cc4f5f",
+      "width": 40,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9600
+    },
+    {
+      "file": "barammap/Ba061065.cmp",
+      "sha256": "b75fa0b47293c20c8413cc0301e439bb7635975b9f1cdeeb242af083c8348e44",
+      "width": 40,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba061066.cmp",
+      "sha256": "83c91b74f3d0575e68f0bb3d7a991112b49ceb3b512792f42d75323efe43befe",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba061085.cmp",
+      "sha256": "c97e814f04877b3c3a51d0161c9a6a96c229c6dd5a9d8af5493f7a6e5f47cf7d",
+      "width": 20,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3000
+    },
+    {
+      "file": "barammap/Ba061105.cmp",
+      "sha256": "de0e0f91cf51327b6cac0c893b663997223b6848cb2dee32f976d5b9e6936105",
+      "width": 30,
+      "height": 60,
+      "bytesPerCell": 6,
+      "decompressedBytes": 10800
+    },
+    {
+      "file": "barammap/Ba061239.cmp",
+      "sha256": "4f3e4589b5299efb9ea5c964ae66b176d11729997cdf48eab864cd2e914be41a",
+      "width": 20,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba061345.cmp",
+      "sha256": "465e9d5b06d26d4a97295aea2d22fb7d0e8cf91dbb29ef390bf3387c5fe61839",
+      "width": 30,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 7200
+    },
+    {
+      "file": "barammap/Ba061349.cmp",
+      "sha256": "fe138e59e69743cc5212ede7bc84b6bce97596e1058d2509fcaac9dbc7a6557c",
+      "width": 30,
+      "height": 50,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba061406.cmp",
+      "sha256": "b5950b73e252db538dd6444d1e41f804a455d012ec93a8313bb6d52a51e5bb20",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba061407.cmp",
+      "sha256": "4534dde462610a018767f8a6fb86edbd0660a6dd0590b0d8853b5a7113edd1ad",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba061592.cmp",
+      "sha256": "a36e7fd970283269163aa5bf17ff9163c15c12ca1f542ed8e988e5d2901f9d8b",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba061615.cmp",
+      "sha256": "74ba72c20153381bbba44cf869594c539c0a0b18a934aacb79e6f76b943e14c0",
+      "width": 30,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3600
+    },
+    {
+      "file": "barammap/Ba061644.cmp",
+      "sha256": "063c4a14ee003a8adfc1ce6764f7da76d01471ea8bdf36fd903180430c9f0741",
+      "width": 30,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba061645.cmp",
+      "sha256": "53fa08f9205ca4e1d644b459383219591645824610a6403a68b30c7134bcd1fc",
+      "width": 30,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4500
+    },
+    {
+      "file": "barammap/Ba062010.cmp",
+      "sha256": "51350ad9c8ef9d070a312a580cb652fd994cfdd8672ceadb88829df9a744abb1",
+      "width": 25,
+      "height": 28,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4200
+    },
+    {
+      "file": "barammap/Ba063111.cmp",
+      "sha256": "84959760a050c63294b069f9c5f39b1cc9795cfbf4198d729dd5a64d620cbc49",
+      "width": 25,
+      "height": 25,
+      "bytesPerCell": 6,
+      "decompressedBytes": 3750
+    },
+    {
+      "file": "barammap/Ba063119.cmp",
+      "sha256": "562f489eb7218475bcb4a966ab2af883552b0a8d9c4011d12ec820bd2991a9f9",
+      "width": 20,
+      "height": 20,
+      "bytesPerCell": 6,
+      "decompressedBytes": 2400
+    },
+    {
+      "file": "barammap/Ba063263.cmp",
+      "sha256": "2ce72c5ac0c0011c9ac83a1263cb78371232af29818d9978ce0ae93dd39a304c",
+      "width": 50,
+      "height": 30,
+      "bytesPerCell": 6,
+      "decompressedBytes": 9000
+    },
+    {
+      "file": "barammap/Ba063343.cmp",
+      "sha256": "e03b3ca8eeeb2a4a3a3ac6e6cd90a44344fc74620902e73daa0ab5a614b90aa9",
+      "width": 20,
+      "height": 40,
+      "bytesPerCell": 6,
+      "decompressedBytes": 4800
+    }
+  ],
+  "issues": []
+}

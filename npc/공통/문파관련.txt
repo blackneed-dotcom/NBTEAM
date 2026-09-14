@@ -1,0 +1,1753 @@
+공성타이머	{
+	set @id, objid();
+	if(#clan_start == 1)	//공성 시작
+	{
+		set @target_id, obj_getxy(20,8);
+		set #clan_add_score_timer, #clan_add_score_timer+1;
+
+		if(@target_id > 0)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(get_clanname(@target_sd) != "")
+			{
+				if(#clan_add_score_timer != 0)
+				{
+					if(#clan_add_score_timer%75==0)
+					{
+						set @add_score_val, 500;
+						broadcast 5, "[알림] 옥좌를 " + get_clanname(@target_sd) + "문파의 " + get_name(@target_sd) + "님이 점령하셨습니다.";	
+						broadcast 5, "[알림] 해당 " + get_clanname(@target_sd) + " 문파에 "+@add_score_val+"점의 추가점수가 주어집니다.";
+
+						//랜덤 점수 설정
+						//점수 지급
+						if(#clan_battle_list1$ == get_clanname(@target_sd)) { set #clan_battle_1sp, #clan_battle_1sp + @add_score_val; }
+						if(#clan_battle_list2$ == get_clanname(@target_sd)) { set #clan_battle_2sp, #clan_battle_2sp + @add_score_val; }
+						if(#clan_battle_list3$ == get_clanname(@target_sd)) { set #clan_battle_3sp, #clan_battle_3sp + @add_score_val; }
+						if(#clan_battle_list4$ == get_clanname(@target_sd)) { set #clan_battle_4sp, #clan_battle_4sp + @add_score_val; }
+						if(#clan_battle_list5$ == get_clanname(@target_sd)) { set #clan_battle_5sp, #clan_battle_5sp + @add_score_val; }
+						if(#clan_battle_list6$ == get_clanname(@target_sd)) { set #clan_battle_6sp, #clan_battle_6sp + @add_score_val; }
+						if(#clan_battle_list7$ == get_clanname(@target_sd)) { set #clan_battle_7sp, #clan_battle_7sp + @add_score_val; }
+						if(#clan_battle_list8$ == get_clanname(@target_sd)) { set #clan_battle_8sp, #clan_battle_8sp + @add_score_val; }
+						if(#clan_battle_list9$ == get_clanname(@target_sd)) { set #clan_battle_9sp, #clan_battle_9sp + @add_score_val; }
+						if(#clan_battle_list10$ == get_clanname(@target_sd)) { set #clan_battle_10sp, #clan_battle_10sp + @add_score_val; }
+
+
+						//점수 공지
+						broadcast 5, "----------------- 점수 알림 --------------";
+						if(#clan_battle_list1$ != "") { broadcast 5, "* " + #clan_battle_list1$ + "문파는 총 " + #clan_battle_1sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list2$ != "") { broadcast 4, "* " + #clan_battle_list2$ + "문파는 총 " + #clan_battle_2sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list3$ != "") { broadcast 5, "* " + #clan_battle_list3$ + "문파는 총 " + #clan_battle_3sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list4$ != "") { broadcast 4, "* " + #clan_battle_list4$ + "문파는 총 " + #clan_battle_4sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list5$ != "") { broadcast 5, "* " + #clan_battle_list5$ + "문파는 총 " + #clan_battle_5sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list6$ != "") { broadcast 4, "* " + #clan_battle_list6$ + "문파는 총 " + #clan_battle_6sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list7$ != "") { broadcast 5, "* " + #clan_battle_list7$ + "문파는 총 " + #clan_battle_7sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list8$ != "") { broadcast 4, "* " + #clan_battle_list8$ + "문파는 총 " + #clan_battle_8sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list9$ != "") { broadcast 5, "* " + #clan_battle_list9$ + "문파는 총 " + #clan_battle_9sp + "점을 획득하셨습니다."; }
+						if(#clan_battle_list10$ != "") { broadcast 4, "* " + #clan_battle_list10$ + "문파는 총 " + #clan_battle_10sp + "점을 획득하셨습니다."; }		
+	
+
+						//점수 계산
+						set @max_clan, 10;
+						set @p_1, #clan_battle_1sp;
+						set @p_2, #clan_battle_2sp;
+						set @p_3, #clan_battle_3sp;
+						set @p_4, #clan_battle_4sp;
+						set @p_5, #clan_battle_5sp;
+						set @p_6, #clan_battle_6sp;
+						set @p_7, #clan_battle_7sp;
+						set @p_8, #clan_battle_8sp;
+						set @p_9, #clan_battle_9sp;
+						set @p_10, #clan_battle_10sp;
+						setarray @point[0], @p_1, @p_2, @p_3, @p_4, @p_5, @p_6, @p_7, @p_8, @p_9, @p_10;
+						for(set @loop_i, 0; @loop_i<@max_clan; set @loop_i, @loop_i+1)
+						{
+							if(@max < @point[@loop_i])
+								set @max, @point[@loop_i];
+						}
+	
+						if(@max == #clan_battle_1sp) { set @win_clan_name$, #clan_battle_list1$; }
+						else if(@max == #clan_battle_2sp) { set @win_clan_name$, #clan_battle_list2$; }
+						else if(@max == #clan_battle_3sp) { set @win_clan_name$, #clan_battle_list3$; }
+						else if(@max == #clan_battle_4sp) { set @win_clan_name$, #clan_battle_list4$; }
+						else if(@max == #clan_battle_5sp) { set @win_clan_name$, #clan_battle_list5$; }
+						else if(@max == #clan_battle_6sp) { set @win_clan_name$, #clan_battle_list6$; }
+						else if(@max == #clan_battle_7sp) { set @win_clan_name$, #clan_battle_list7$; }
+						else if(@max == #clan_battle_8sp) { set @win_clan_name$, #clan_battle_list8$; }
+						else if(@max == #clan_battle_9sp) { set @win_clan_name$, #clan_battle_list9$; }
+						else if(@max == #clan_battle_10sp) { set @win_clan_name$, #clan_battle_list10$; }
+
+						if(@max >= 3300) 
+						{
+							set @ck, 1;
+							broadcast 5, "[알림] 현재 " + @win_clan_name$ + "문파가 " + @max + "점으로 최대 공성승점 3300점이 넘었습니다.";
+							broadcast 4, "[공성결과] "+@win_clan_name$+"문파가 "+#clan_mapname$+"을 점령하였습니다.";
+							//점령 설정
+							if(#clan_mapname$ == "주작성") 
+							{ 
+								set #bird_castle$, @win_clan_name$;
+								set #bird_clothes, 0; 
+							}
+							else if(#clan_mapname$ == "현무성") 
+							{ 
+								set #turtle_castle$, @win_clan_name$; 
+								set #turtle_clothes, 0;
+							}
+							else if(#clan_mapname$ == "청룡성") 
+							{ 
+								set #dragon_castle$, @win_clan_name$;
+								set #dragon_clothes, 0; 
+							}
+							else if(#clan_mapname$ == "백호성")
+							{ 
+								set #tiger_castle$, @win_clan_name$; 
+								set #tiger_clothes, 0;
+							}
+										
+							//기타변수 초기화 함수 호출
+							callfunc "BATTLE_SCORE_RESET";
+						}
+						broadcast 5, "[알림] 현재 " + @win_clan_name$ + "문파가 " + @max + "점으로 공성승점이 가장 높습니다.";
+					}
+				}
+				if(#clan_add_score_timer > 897 && @ck == 0)	//공성 마지막 타이머
+				{
+					//마지막 랜덤 점수 설정
+					set @add_score_val, 500;
+
+					broadcast 5, "[알림] 옥좌를 " + get_clanname(@target_sd) + "문파의 " + get_name(@target_sd) + "님이 점령하셨습니다.";	
+					//sleep(500);
+					broadcast 5, "[알림] 해당 " + get_clanname(@target_sd) + " 문파에 "+@add_score_val+"점의 추가점수가 주어집니다.";
+					
+					//점수 지급
+					if(#clan_battle_list1$ == get_clanname(@target_sd)) { set #clan_battle_1sp, #clan_battle_1sp + @add_score_val; }
+					if(#clan_battle_list2$ == get_clanname(@target_sd)) { set #clan_battle_2sp, #clan_battle_2sp + @add_score_val; }
+					if(#clan_battle_list3$ == get_clanname(@target_sd)) { set #clan_battle_3sp, #clan_battle_3sp + @add_score_val; }
+					if(#clan_battle_list4$ == get_clanname(@target_sd)) { set #clan_battle_4sp, #clan_battle_4sp + @add_score_val; }
+					if(#clan_battle_list5$ == get_clanname(@target_sd)) { set #clan_battle_5sp, #clan_battle_5sp + @add_score_val; }
+					if(#clan_battle_list6$ == get_clanname(@target_sd)) { set #clan_battle_6sp, #clan_battle_6sp + @add_score_val; }
+					if(#clan_battle_list7$ == get_clanname(@target_sd)) { set #clan_battle_7sp, #clan_battle_7sp + @add_score_val; }
+					if(#clan_battle_list8$ == get_clanname(@target_sd)) { set #clan_battle_8sp, #clan_battle_8sp + @add_score_val; }
+					if(#clan_battle_list9$ == get_clanname(@target_sd)) { set #clan_battle_9sp, #clan_battle_9sp + @add_score_val; }
+					if(#clan_battle_list10$ == get_clanname(@target_sd)) { set #clan_battle_10sp, #clan_battle_10sp + @add_score_val; }
+
+
+					//점수 공지
+					broadcast 5, "------------------- 최종점수 알림 --------------";
+					if(#clan_battle_list1$ != "") { broadcast 5, "* " + #clan_battle_list1$ + "문파는 총 " + #clan_battle_1sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list2$ != "") { broadcast 4, "* " + #clan_battle_list2$ + "문파는 총 " + #clan_battle_2sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list3$ != "") { broadcast 5, "* " + #clan_battle_list3$ + "문파는 총 " + #clan_battle_3sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list4$ != "") { broadcast 4, "* " + #clan_battle_list4$ + "문파는 총 " + #clan_battle_4sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list5$ != "") { broadcast 5, "* " + #clan_battle_list5$ + "문파는 총 " + #clan_battle_5sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list6$ != "") { broadcast 4, "* " + #clan_battle_list6$ + "문파는 총 " + #clan_battle_6sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list7$ != "") { broadcast 5, "* " + #clan_battle_list7$ + "문파는 총 " + #clan_battle_7sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list8$ != "") { broadcast 4, "* " + #clan_battle_list8$ + "문파는 총 " + #clan_battle_8sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list9$ != "") { broadcast 5, "* " + #clan_battle_list9$ + "문파는 총 " + #clan_battle_9sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list10$ != "") { broadcast 4, "* " + #clan_battle_list10$ + "문파는 총 " + #clan_battle_10sp + "점을 획득하셨습니다."; }		
+
+
+					//점수 계산
+					set @max_clan, 10;
+					set @p_1, #clan_battle_1sp;
+					set @p_2, #clan_battle_2sp;
+					set @p_3, #clan_battle_3sp;
+					set @p_4, #clan_battle_4sp;
+					set @p_5, #clan_battle_5sp;
+					set @p_6, #clan_battle_6sp;
+					set @p_7, #clan_battle_7sp;
+					set @p_8, #clan_battle_8sp;
+					set @p_9, #clan_battle_9sp;
+					set @p_10, #clan_battle_10sp;
+					setarray @point[0], @p_1, @p_2, @p_3, @p_4, @p_5, @p_6, @p_7, @p_8, @p_9, @p_10;
+					for(set @loop_i, 0; @loop_i<@max_clan-1; set @loop_i, @loop_i+1)
+					{
+						if(@max < @point[@loop_i])
+							set @max, @point[@loop_i];
+					}
+
+					if(@max == #clan_battle_1sp) { set @win_clan_name$, #clan_battle_list1$; }
+					else if(@max == #clan_battle_2sp) { set @win_clan_name$, #clan_battle_list2$; }
+					else if(@max == #clan_battle_3sp) { set @win_clan_name$, #clan_battle_list3$; }
+					else if(@max == #clan_battle_4sp) { set @win_clan_name$, #clan_battle_list4$; }
+					else if(@max == #clan_battle_5sp) { set @win_clan_name$, #clan_battle_list5$; }
+					else if(@max == #clan_battle_6sp) { set @win_clan_name$, #clan_battle_list6$; }
+					else if(@max == #clan_battle_7sp) { set @win_clan_name$, #clan_battle_list7$; }
+					else if(@max == #clan_battle_8sp) { set @win_clan_name$, #clan_battle_list8$; }
+					else if(@max == #clan_battle_9sp) { set @win_clan_name$, #clan_battle_list9$; }
+					else if(@max == #clan_battle_10sp) { set @win_clan_name$, #clan_battle_list10$; }
+
+					broadcast 4, "[공성결과] "+@win_clan_name$+"문파가 "+#clan_mapname$+"을 점령하였습니다.";
+
+					//점령 설정
+					if(#clan_mapname$ == "주작성") 
+					{ 
+						set #bird_castle$, @win_clan_name$;
+						set #bird_clothes, 0; 
+					}
+					else if(#clan_mapname$ == "현무성") 
+					{ 
+						set #turtle_castle$, @win_clan_name$; 
+						set #turtle_clothes, 0;
+					}
+					else if(#clan_mapname$ == "청룡성") 
+					{ 
+						set #dragon_castle$, @win_clan_name$;
+						set #dragon_clothes, 0; 
+					}
+					else if(#clan_mapname$ == "백호성")
+					{ 
+						set #tiger_castle$, @win_clan_name$; 
+						set #tiger_clothes, 0;
+					}
+								
+					//기타변수 초기화 함수 호출
+					callfunc "BATTLE_SCORE_RESET";
+				}
+			}
+		}
+		else
+		{
+			if(#clan_add_score_timer != 0)
+			{
+				if(#clan_add_score_timer%75==0)
+				{
+					//점수 공지
+					broadcast 5, "----------------- 점수 알림 --------------";
+					if(#clan_battle_list1$ != "") { broadcast 5, "* " + #clan_battle_list1$ + "문파는 총 " + #clan_battle_1sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list2$ != "") { broadcast 4, "* " + #clan_battle_list2$ + "문파는 총 " + #clan_battle_2sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list3$ != "") { broadcast 5, "* " + #clan_battle_list3$ + "문파는 총 " + #clan_battle_3sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list4$ != "") { broadcast 4, "* " + #clan_battle_list4$ + "문파는 총 " + #clan_battle_4sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list5$ != "") { broadcast 5, "* " + #clan_battle_list5$ + "문파는 총 " + #clan_battle_5sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list6$ != "") { broadcast 4, "* " + #clan_battle_list6$ + "문파는 총 " + #clan_battle_6sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list7$ != "") { broadcast 5, "* " + #clan_battle_list7$ + "문파는 총 " + #clan_battle_7sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list8$ != "") { broadcast 4, "* " + #clan_battle_list8$ + "문파는 총 " + #clan_battle_8sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list9$ != "") { broadcast 5, "* " + #clan_battle_list9$ + "문파는 총 " + #clan_battle_9sp + "점을 획득하셨습니다."; }
+					if(#clan_battle_list10$ != "") { broadcast 4, "* " + #clan_battle_list10$ + "문파는 총 " + #clan_battle_10sp + "점을 획득하셨습니다."; }		
+
+
+					//점수 계산
+					set @max_clan, 10;
+					set @p_1, #clan_battle_1sp;
+					set @p_2, #clan_battle_2sp;
+					set @p_3, #clan_battle_3sp;
+					set @p_4, #clan_battle_4sp;
+					set @p_5, #clan_battle_5sp;
+					set @p_6, #clan_battle_6sp;
+					set @p_7, #clan_battle_7sp;
+					set @p_8, #clan_battle_8sp;
+					set @p_9, #clan_battle_9sp;
+					set @p_10, #clan_battle_10sp;
+					setarray @point[0], @p_1, @p_2, @p_3, @p_4, @p_5, @p_6, @p_7, @p_8, @p_9, @p_10;
+					for(set @loop_i, 0; @loop_i<@max_clan; set @loop_i, @loop_i+1)
+					{
+						if(@max < @point[@loop_i])
+							set @max, @point[@loop_i];
+					}
+
+					if(@max == #clan_battle_1sp) { set @win_clan_name$, #clan_battle_list1$; }
+					else if(@max == #clan_battle_2sp) { set @win_clan_name$, #clan_battle_list2$; }
+					else if(@max == #clan_battle_3sp) { set @win_clan_name$, #clan_battle_list3$; }
+					else if(@max == #clan_battle_4sp) { set @win_clan_name$, #clan_battle_list4$; }
+					else if(@max == #clan_battle_5sp) { set @win_clan_name$, #clan_battle_list5$; }
+					else if(@max == #clan_battle_6sp) { set @win_clan_name$, #clan_battle_list6$; }
+					else if(@max == #clan_battle_7sp) { set @win_clan_name$, #clan_battle_list7$; }
+					else if(@max == #clan_battle_8sp) { set @win_clan_name$, #clan_battle_list8$; }
+					else if(@max == #clan_battle_9sp) { set @win_clan_name$, #clan_battle_list9$; }
+					else if(@max == #clan_battle_10sp) { set @win_clan_name$, #clan_battle_list10$; }
+
+					if(@max >= 3300) 
+					{
+						set @ck, 1;
+						broadcast 5, "[알림] 현재 " + @win_clan_name$ + "문파가 " + @max + "점으로 최대 공성승점 3300점이 넘었습니다.";
+						broadcast 4, "[공성결과] "+@win_clan_name$+"문파가 "+#clan_mapname$+"을 점령하였습니다.";
+						//점령 설정
+						if(#clan_mapname$ == "주작성") 
+						{ 
+							set #bird_castle$, @win_clan_name$;
+							set #bird_clothes, 0; 
+						}
+						else if(#clan_mapname$ == "현무성") 
+						{ 
+							set #turtle_castle$, @win_clan_name$; 
+							set #turtle_clothes, 0;
+						}
+						else if(#clan_mapname$ == "청룡성") 
+						{ 
+							set #dragon_castle$, @win_clan_name$;
+							set #dragon_clothes, 0; 
+						}
+						else if(#clan_mapname$ == "백호성")
+						{ 
+							set #tiger_castle$, @win_clan_name$; 
+							set #tiger_clothes, 0;
+						}
+									
+						//기타변수 초기화 함수 호출
+						callfunc "BATTLE_SCORE_RESET";
+					}
+					broadcast 5, "아무도 옥좌에 앉지 않았습니다.";
+				}
+			}
+			if(#clan_add_score_timer > 897 && @ck == 0)	//공성 마지막 타이머
+			{
+				//점수 공지
+				broadcast 5, "------------------- 최종점수 알림 --------------";
+				if(#clan_battle_list1$ != "") { broadcast 5, "* " + #clan_battle_list1$ + "문파는 총 " + #clan_battle_1sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list2$ != "") { broadcast 4, "* " + #clan_battle_list2$ + "문파는 총 " + #clan_battle_2sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list3$ != "") { broadcast 5, "* " + #clan_battle_list3$ + "문파는 총 " + #clan_battle_3sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list4$ != "") { broadcast 4, "* " + #clan_battle_list4$ + "문파는 총 " + #clan_battle_4sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list5$ != "") { broadcast 5, "* " + #clan_battle_list5$ + "문파는 총 " + #clan_battle_5sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list6$ != "") { broadcast 4, "* " + #clan_battle_list6$ + "문파는 총 " + #clan_battle_6sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list7$ != "") { broadcast 5, "* " + #clan_battle_list7$ + "문파는 총 " + #clan_battle_7sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list8$ != "") { broadcast 4, "* " + #clan_battle_list8$ + "문파는 총 " + #clan_battle_8sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list9$ != "") { broadcast 5, "* " + #clan_battle_list9$ + "문파는 총 " + #clan_battle_9sp + "점을 획득하셨습니다."; }
+				if(#clan_battle_list10$ != "") { broadcast 4, "* " + #clan_battle_list10$ + "문파는 총 " + #clan_battle_10sp + "점을 획득하셨습니다."; }		
+
+
+				//점수 계산
+				set @max_clan, 10;
+				set @p_1, #clan_battle_1sp;
+				set @p_2, #clan_battle_2sp;
+				set @p_3, #clan_battle_3sp;
+				set @p_4, #clan_battle_4sp;
+				set @p_5, #clan_battle_5sp;
+				set @p_6, #clan_battle_6sp;
+				set @p_7, #clan_battle_7sp;
+				set @p_8, #clan_battle_8sp;
+				set @p_9, #clan_battle_9sp;
+				set @p_10, #clan_battle_10sp;
+				setarray @point[0], @p_1, @p_2, @p_3, @p_4, @p_5, @p_6, @p_7, @p_8, @p_9, @p_10;
+				for(set @loop_i, 0; @loop_i<@max_clan-1; set @loop_i, @loop_i+1)
+				{
+					if(@max < @point[@loop_i])
+						set @max, @point[@loop_i];
+				}
+
+				if(@max == #clan_battle_1sp) { set @win_clan_name$, #clan_battle_list1$; }
+				else if(@max == #clan_battle_2sp) { set @win_clan_name$, #clan_battle_list2$; }
+				else if(@max == #clan_battle_3sp) { set @win_clan_name$, #clan_battle_list3$; }
+				else if(@max == #clan_battle_4sp) { set @win_clan_name$, #clan_battle_list4$; }
+				else if(@max == #clan_battle_5sp) { set @win_clan_name$, #clan_battle_list5$; }
+				else if(@max == #clan_battle_6sp) { set @win_clan_name$, #clan_battle_list6$; }
+				else if(@max == #clan_battle_7sp) { set @win_clan_name$, #clan_battle_list7$; }
+				else if(@max == #clan_battle_8sp) { set @win_clan_name$, #clan_battle_list8$; }
+				else if(@max == #clan_battle_9sp) { set @win_clan_name$, #clan_battle_list9$; }
+				else if(@max == #clan_battle_10sp) { set @win_clan_name$, #clan_battle_list10$; }
+
+				broadcast 4, "[공성결과] "+@win_clan_name$+"문파가 "+#clan_mapname$+"을 점령하였습니다.";
+
+				//점령 설정
+				if(#clan_mapname$ == "주작성") 
+				{ 
+					set #bird_castle$, @win_clan_name$;
+					set #bird_clothes, 0; 
+				}
+				else if(#clan_mapname$ == "현무성") 
+				{ 
+					set #turtle_castle$, @win_clan_name$; 
+					set #turtle_clothes, 0;
+				}
+				else if(#clan_mapname$ == "청룡성") 
+				{ 
+					set #dragon_castle$, @win_clan_name$;
+					set #dragon_clothes, 0; 
+				}
+				else if(#clan_mapname$ == "백호성")
+				{ 
+					set #tiger_castle$, @win_clan_name$; 
+					set #tiger_clothes, 0;
+				}
+							
+				//기타변수 초기화 함수 호출
+				callfunc "BATTLE_SCORE_RESET";
+			}		
+		}
+	}
+	else
+	{
+		//엔피씨 삭제
+		deletenpc @id, mapid();
+	}
+}
+
+FUNC_BATTLE_SCORE_RESET	{
+	//함수 호출 후 공성타이머 엔피시 자동 삭제 처리
+
+
+	//점수공성 변수 초기화
+	set #clan_battle_1sp, 0;
+	set #clan_battle_2sp, 0;
+	set #clan_battle_3sp, 0;
+	set #clan_battle_4sp, 0;
+	set #clan_battle_5sp, 0;
+	set #clan_battle_6sp, 0;
+	set #clan_battle_7sp, 0;
+	set #clan_battle_8sp, 0;
+	set #clan_battle_9sp, 0;
+	set #clan_battle_10sp, 0;
+
+	//점수공성 등록 문파 초기화
+	set #clan_battle_list1$, "";
+	set #clan_battle_list2$, "";
+	set #clan_battle_list3$, "";
+	set #clan_battle_list4$, "";
+	set #clan_battle_list5$, "";
+	set #clan_battle_list6$, "";
+	set #clan_battle_list7$, "";
+	set #clan_battle_list8$, "";
+	set #clan_battle_list9$, "";
+	set #clan_battle_list10$, "";
+
+	set #clan_add_score_timer, 0;
+
+	//고추레아 변수 초기화
+	set #clan_start, 0;
+	set #clan_timer, 0;
+	set #clan_namecheck, 0;
+	set #clan_name$, "";
+	set #clan_mapname$, "";
+	set #clan_mapcheck$, "";
+
+	broadcast 5, "[알림] 공성이 종료되었습니다. 모두 수고하셨습니다.";
+	
+	return;
+}
+
+문파가입요청	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @name$, #clanname$;
+	
+	set @join, list1(@name$ + "문파에서 문파가입 요청이 들어왔습니다. 가입하시겠습니까? ", "네, 가입하겠습니다.", "아니오, 안할래요.");
+	if(@join == 1)
+	{
+		set @err, set_clan(@sd, @name$, get_name(@sd));
+		if(@err == 0)
+		{
+			set @pos, dialog(0, 0, 0, "정상적으로 가입되었습니다.");
+			end;
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "오류로 인해 가입되지 않았습니다..");
+			end;
+		}
+	}
+	end;
+}
+
+문파강제가입	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @name$, #clanname$;
+	
+	set @err, set_clan(@sd, @name$, get_name(@sd));
+	if(@err == 0)
+	{
+		set @pos, dialog(0, 0, 0, "정상적으로 가입되었습니다.");
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 0, "오류로 인해 가입되지 않았습니다..");
+		end;
+	}
+	end;
+}
+
+문파대리인	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @money, 10000000;
+	set @clan_money, 50000000;
+	set @limit_member, 2;
+	set @menu, menu("안녕하세요. 무엇을 도와드릴까요?", "문파 제작", "문파 관리");
+	if(@menu == 1) goto make;
+	else if(@menu == 2) goto setting;
+	else end;
+	end;
+make:
+	if(clan_exist(@sd) != 0)
+	{
+		set @pos, dialog(1, 0, 1, "이미 문파에 활동중이십니다.");
+		end;
+	}
+
+	if(get_level(@sd) < 99)
+	{
+		set @pos, dialog(1, 0, 1, "레벨 99이상만 문파를 제작할 수 있습니다.");
+		end;
+	}
+
+	set @menu, menu("문파를 제작하는데는, " + @money + "만전이 필요합니다. 정말로 만드시겠습니까?", "네", "아니요");
+	if(@menu == 1)
+	{
+		set @menu, menu("정말로요?", "네", "아니요");
+		if(@menu == 1)
+		{
+AAA_001:
+			set @pos, dialog(1, 0, 1, "<주의사항>\\n문파를 정하기 이전에, 파티원 " + (@limit_member-1) + "명이 있는지 확인해 주세요. 파티원이 자신을 제외한 " + (@limit_member-1) + "명이 존재하지 않으면 문파를 창설할 수 없습니다.");
+			if(@pos == 0) end;
+			if(party(@sd) == 0) { set @pos, dialog(1, 0, 0, "자신을 포함한 " + @limit_member + "명이상의 파티원을 모아서 와주세요."); end; }
+			else
+			{
+				for(set @i, 0; @i < partymax(); set @i, @i+1)
+				{
+					set @target_sd, party_member(@sd, @i);
+					if(@target_sd > 0)
+					{
+						if(clan_exist(@target_sd) != 1 && get_mapid(@sd) == get_mapid(@target_sd))
+						{
+							set @member_count, @member_count+1;
+						}
+					}
+				}
+				if(@member_count < @limit_member) { set @pos, dialog(1, 0, 0, "파티원중 한명이 문파에 이미 속해 있거나, 또는 같은 맵에 존재하지 않던가, 파티원이 부족합니다."); end; }
+			}
+AAA_002:
+			set @pos, input2(@input$, 1, 12, "만들 문파 이름을 정하시기 바랍니다.", "", "");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto AAA_001;
+AAA_003:
+			set @pos, dialog(1, 1, 1, @input$ + "이라고 문파이름을 정하셨습니다.\\n확실하면 '다음'을 눌르시고, 그렇지 않으면 종료해주십시오.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto AAA_002;
+AAA_004:
+			set @list, list1(@input$ + "이라고 문파이름을 정하셨습니다. 정말로 맞습니까? ", "네", "아니요");
+			if(@list == 1)
+			{
+AAA_005:
+				set @pos, dialog(0, 0, 1, "그럼 문파를 제작하겠습니다. 잠시만 기다려 주십시요.");
+				if(get_money(@sd) < @money) { set @pos, dialog(0, 0, 0, "문파를 제작할 돈이 부족합니다."); end; }
+				if(@pos == 0) end;
+				else if(@pos == -1) goto AAA_004;
+AAA_006:
+				//문파 세팅
+				set @err, makeclan(@input$, 0, get_name(@sd), "0");
+				if(@err == 1) { set @pos, dialog(1, 0, 0, "문파이름이 중복되었습니다."); end; }
+				else if(@err == 2) { set @pos, dialog(1, 0, 0, "문파장이 존재하지 않습니다."); end; }
+				else if(@err == 3) { set @pos, dialog(1, 0, 0, "이미 문파에 가입되어있습니다."); end; }
+				else
+				{
+					set @member_count, 0;
+					if(party(@sd) == 0) { set @pos, dialog(1, 0, 0, "자신을 포함한 " + @limit_member + "명이상의 파티원을 모아서 와주세요."); end; }
+					else
+					{
+						for(set @i, 0; @i < partymax(); set @i, @i+1)
+						{
+							set @target_sd, party_member(@sd, @i);
+							if(@target_sd > 0 && @target_sd != @sd)
+							{
+								if(clan_exist(@target_sd) != 1 && get_mapid(@sd) == get_mapid(@target_sd))
+								{
+									set @member_count, @member_count+1;
+								}
+							}
+						}
+					}
+
+					set #clanname$, @input$;
+					for(set @i, 0; @i < partymax(); set @i, @i+1)
+					{
+						set @target_sd, party_member(@sd, @i);
+						if(@sd != @target_sd && @target_sd > 0)
+						{
+							if(clan_exist(@target_sd) != 1 && get_mapid(@sd) == get_mapid(@target_sd))
+							{
+								runscript @target_sd, "문파강제가입";
+							}
+						}
+					}
+					set_money @sd, get_money(@sd)-@money;
+					updatestatus @sd, 2;
+					broadcast 5, get_name(@sd) + "님이 " + @input$ + "문파를 제작하셨습니다. 축하합니다.";
+					set @pos, dialog(1, 0, 0, "문파를 제작하셨습니다.\\n문파 관리 부분을 이용하실 수 있습니다.");
+					end;
+				}
+			}
+			else end;
+		}
+		else end;
+	}
+	else end;
+	end;
+setting:
+	if(clan_exist(@sd) == 0)
+	{
+		set @pos, dialog(1, 0, 1, "문파에 가입하시지 않았습니다.");
+		end;
+	}
+	else if(strcmp(get_clanmaster(@sd), get_name(@sd)) != 0 && strcmp(get_clanlowmaster(@sd), get_name(@sd)) != 0)
+	{
+		set @menu, menu("안녕하세요? " + get_clanname(@sd) + "의 " + get_name(@sd) + "회원님 무슨 일로 오셨나요?", "문파 탈퇴");
+		if(@menu == 1)
+		{
+			set @menu, menu("탈퇴시 금전 20만전이 필요합니다.\\n정말로 탈퇴하시겠습니까?", "네", "아니요");
+			if(@menu == 1)
+			{
+				if(get_money(@sd) < 200000) { set @pos, dialog(0, 0, 0, "문파를 탈퇴할 돈이 부족합니다."); end; }
+				set_money @sd, get_money(@sd)-200000;
+				updatestatus @sd, 2;
+
+				set @err, del_clan(@sd, get_clanname(@sd), get_name(@sd));
+				if(@err == 0) { set @pos, dialog(0, 0, 0, "정상적으로 탈퇴되었습니다."); end; }
+				else { set @pos, dialog(0, 0, 0, "에러가 발생하였습니다."); end; }
+			}
+			else end;
+		}
+		else end;
+	}
+	else
+	{
+POC_000:
+		set @menu, menu("안녕하세요? " + get_clanname(@sd) + "의 " + get_name(@sd) + "회원님 무슨 일로 오셨나요?", "문파 현황", "문파성 관리", "문파원 초대", "문파원 축출", "문파장 이임", "부문주 설정", "부문주 해임", "문파타이틀 설정", "문파인원확인", "문원추가초대");
+		if(@menu == 1)
+		{
+			set @pos, dialog(1, 0, 1, "청룡의성 점령 문파: " + #dragon_castle$ + " 문주 이름: " + #dragon_castle_master$ + "\\n주작의성 점령 문파: " + #bird_castle$ + " 문주 이름: " + #bird_castle_master$ + "\\n백호의성 점령 문파: " + #tiger_castle$ + " 문주 이름: " + #tiger_castle_master$ + "\\n현무의성 점령 문파: " + #turtle_castle$ + " 문주 이름: " + #turtle_castle_master$);
+			if(@pos == 0) end;
+			else if(@pos == 1) goto POC_000;
+		}
+		else if(@menu == 2)
+		{
+			if(!strcmp(get_clanname(@sd), #dragon_castle$))
+			{
+				set @pos, dialog(1, 0, 1, "현재 청룡의성을 보유하고 있습니다.");
+				if(@pos == 0) end;
+				else if(@pos == 1) goto POC_000;
+			}
+			else if(!strcmp(get_clanname(@sd), #bird_castle$))
+			{
+				set @pos, dialog(1, 0, 1, "현재 주작의성을 보유하고 있습니다.");
+				if(@pos == 0) end;
+				else if(@pos == 1) goto POC_000;
+			}
+			else if(!strcmp(get_clanname(@sd), #tiger_castle$))
+			{
+				set @pos, dialog(1, 0, 1, "현재 백호의성을 보유하고 있습니다.");
+				if(@pos == 0) end;
+				else if(@pos == 1) goto POC_000;
+			}
+			else if(!strcmp(get_clanname(@sd), #turtle_castle$))
+			{
+				set @pos, dialog(1, 0, 1, "현재 현무의성을 보유하고 있습니다.");
+				if(@pos == 0) end;
+				else if(@pos == 1) goto POC_000;
+			}
+			else
+			{
+				set @pos, dialog(1, 0, 1, "현재 보유하고 있는 성이 없습니다.");
+				if(@pos == 0) end;
+				else if(@pos == 1) goto POC_000;
+			}
+		}
+		else if(@menu == 3)
+		{
+POC_001:
+			set @pos, input2(@invite$, 0, 12, "가입하고자 하는 사람의 이름을 적어주세요.", "", "");
+			if(@pos == 0) end;
+
+			set @target_sd, name2sd(@invite$);
+			if(@target_sd > 0)
+			
+				if(clan_membercount(@sd) > 50)
+				{
+					set @pos, dialog(0, 0, 0, "문파의 인원이 꽉 차 더 이상 문원을 등용할 수 없습니다.");
+					end;
+			}
+			if(name2sd(@invite$) == 0)
+			{
+				set @pos, dialog(0, 0, 1, "현재 접속해 있지 않거나, 없는 아이디입니다.");
+				end;
+			}
+			set @target_sd, name2sd(@invite$);
+			if(get_mapid(@sd) != get_mapid(@target_sd))
+			{
+				set @pos, dialog(0, 0, 1, "대상이 같은 맵에 있지 않습니다.");
+				end;
+			}
+
+			if(clan_exist(@target_sd) != 0)
+			{
+				set @pos, dialog(0, 0, 1, "이미 문파에 가입되어있습니다.");
+				end;
+			}
+			set #clanname$, get_clanname(@sd);
+			runscript @target_sd, "문파가입요청";
+			end;
+		}
+		else if(@menu == 4)
+		{
+POD_001:
+			set @pos, input2(@invite$, 1, 12, "축출하고자 하는 사람의 이름을 적어주세요.", "", "");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto POC_000;
+
+			if(!strcmp(get_clanmaster(@sd), @invite$) || !strcmp(get_clanlowmaster(@sd), @invite$)) { set @pos, dialog(0, 0, 0, "문파장 또는 부문파장은 탈퇴할 수 없습니다."); end; }
+
+			if(name2sd(@invite$) == 0)
+			{
+				set @err, del_clan(0, get_clanname(@sd), @invite$);
+				if(@err == 0) { set @pos, dialog(0, 0, 0, "정상적으로 탈퇴되었습니다."); end; }
+				else { set @pos, dialog(0, 0, 0, "그런 문파원은 존재하지 않습니다."); end; }
+			}
+			else
+			{
+				set @target_sd, name2sd(@invite$);
+				set @err, del_clan(@target_sd, get_clanname(@target_sd), @invite$);
+				if(@err == 0) { set @pos, dialog(0, 0, 0, "정상적으로 탈퇴되었습니다."); end; }
+				else { set @pos, dialog(0, 0, 0, "그런 문파원은 존재하지 않습니다."); end; }
+			}
+		}
+			else if(@menu == 5)
+			{
+				if(!strcmp(get_clanmaster(@sd), get_name(@sd)))
+				{
+					set @pos, dialog(1, 0, 1, "문주는 자신의 문파에 속한 모든 문파원들을 끝까지 이끌어가야 할 것이요.\\n문주라는 이름을 가지고서 문파를 버릴 순 없으나, 문파에 관련된 모든 일을 책임질 수 있는 부문주 또는 문파원에게 문주권 자리를 이임해줄수 있소.");
+					if(@pos == 0) end;
+
+					set @pos, input2(@invite$, 0, 6, "준비가 됬다면, 문주로 이임하고자 하는 회원의 이름을 알려주시오.\\n\\n당신의 주위에 있어야 이임이 가능 할 것이오.", "", "");
+					if(@pos == 0) end;
+					else if(@invite$ == "") end;
+
+					set @target_sd, name2sd(@invite$);
+					if(@target_sd > 0)
+					{
+						if(get_clanname(@sd) == get_clanname(@target_sd))
+						{
+							if(@sd != @target_sd)
+							{
+								if(get_money(@sd) >= 0 && get_money(@sd) < (@clan_money/5))
+								{
+									set @pos, dialog(0, 0, 0, "문주를 이임하기 위해선 " + (@clan_money/5) + "전이 필요하오.");
+									end;
+								}
+
+								set_money @sd, get_money(@sd)-(@clan_money/5);
+								updatestatus @sd, 2;
+
+								set_clanmaster @sd, @invite$;
+
+								set @pos, dialog(0, 0, 1, @invite$ + "의 문주 이임 수속이 처리되었소.");
+								end;
+							}
+							else
+							{
+								set @pos, dialog(0, 0, 0, "장난하자는 것이요?");
+								end;
+							}
+						}
+						else
+						{
+							set @pos, dialog(0, 0, 0, "같은 문파원이 아니구먼.");
+							end;
+						}
+					}
+					else
+					{
+						set @pos, dialog(0, 0, 0, @invite$ + " 회원은 현재 바람의나라에 없소.");
+						end;
+					}
+				}
+				else
+				{
+					set @pos, dialog(0, 0, 0, "너는 문주가 아니구나!");
+					end;
+				}
+			}
+		else if(@menu == 6)
+		{
+			if(strcmp(get_clanmaster(@sd), get_name(@sd)) == 0)
+			{
+POE_001:
+				set @pos, dialog(1, 0, 1, "※주의※\\n\\n  설정하고자 하는 부문주는 같은 위치에 있어야 하며, 문파가 같아야 합니다.");
+				if(@pos == 0) end;
+POE_002:
+				set @pos, input2(@invite$, 0, 6, "임명하고자 하는 부문주를 고르세요. 부문주는 같은 문파여야 합니다.", "", "");
+				if(@pos == 0) end;
+
+				set @target_sd, name2sd(@invite$);
+				if(@target_sd > 0)
+				{
+					if(get_clanname(@sd) == get_clanname(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							set_clanlowmaster @sd, @invite$;
+							set @pos, dialog(0, 0, 1, @invite$ + "님이 부문주로 임명되었습니다");
+							end;
+						}
+						else
+						{
+							set @pos, dialog(0, 0, 0, "자신을 부문주로 설정할 수 없습니다.");
+							end;
+						}
+					}
+					else
+					{
+						set @pos, dialog(0, 0, 0, "같은 문파원이 아닙니다.");
+						end;
+					}
+				}
+				else
+				{
+					set @pos, dialog(0, 0, 0, @invite$ + "님은 바람의나라에 없습니다");
+					end;
+				}
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "문주가 아닙니다.");
+				end;
+			}
+		}
+		else if(@menu == 7)
+		{
+			if(strcmp(get_clanmaster(@sd), get_name(@sd)) == 0)
+			{
+				set_clanlowmaster @sd, get_name(@sd);
+				set @pos, dialog(0, 0, 1, "부문주가 해임되었습니다");
+				end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "문주가 아닙니다.");
+				end;
+			}
+		}
+		else if(@menu == 8)
+		{
+			set @pos, input2(@invite$, 1, 6, "문파 타이틀을 주고싶은 클랜원의 이름을 적어주세요.", "", "");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto POC_000;
+			set @target_sd, name2sd(@invite$);
+			if(@target_sd > 0)
+			{
+				if(get_clanname(@sd) == get_clanname(@target_sd))
+				{
+					set @pos, input2(@clantitle$, 0, 15, "지정하고자 하는 문파 타이틀 명을 적어주세요.", "", "");
+					if(@pos == 0) end;
+					
+					set_clantitle @target_sd, "";
+					set_clantitle @target_sd, @clantitle$;
+					updatestatus @sd, 2;
+					set @pos, dialog(0,0,1, "지정이 완료되었습니다.");
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0,0,0, "같은 문파원만 지정이 가능합니다.");
+					end;
+				}
+			}
+			else
+			{
+				set @pos, dialog(0,0,0, @invite$ + "님은 바람의나라에 없습니다.");
+				end;
+			}
+		}
+		else if(@menu == 9)
+		{
+			if(clan_exist(@sd) == 0)
+			{
+				set @pos, dialog(0, 0, 0, "가입 된 문파가 없습니다.");
+				end;
+			}
+
+			for(set @i, 0; @i < clan_membercount(@sd); set @i, @i+1)
+			{
+				if(clan_membername(@sd, @i) == get_clanmaster(@sd))
+				{
+					set @target_sd, name2sd(clan_membername(@sd, @i));
+					if(validsd(@target_sd) == 0) { set @title$, ""; }
+					else { set @title$, get_clantitle(@target_sd); }
+
+					if(strlen(clan_membername(@sd, @i)) == 4) set @word$[@i], clan_membername(@sd, @i)+"　　　　(문주　　　) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 6) set @word$[@i], clan_membername(@sd, @i)+"　　　(문주　　　) : "+@title$; 
+					else if(strlen(clan_membername(@sd, @i)) == 8) set @word$[@i], clan_membername(@sd, @i)+"　　(문주　　　) : "+@title$; 
+					else if(strlen(clan_membername(@sd, @i)) == 10) set @word$[@i], clan_membername(@sd, @i)+"　(문주　　　) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 12) set @word$[@i], clan_membername(@sd, @i)+"(문주　　　) : "+@title$; 
+				}
+				else if(clan_membername(@sd, @i) == get_clanlowmaster(@sd))
+				{
+					set @target_sd, name2sd(clan_membername(@sd, @i));
+					if(validsd(@target_sd) == 0) { set @title$, ""; }
+					else { set @title$, get_clantitle(@target_sd); }
+
+					if(strlen(clan_membername(@sd, @i)) == 4) set @word$[@i], clan_membername(@sd, @i)+"　　　　(부문주　　) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 6) set @word$[@i], clan_membername(@sd, @i)+"　　　(부문주　　) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 8) set @word$[@i], clan_membername(@sd, @i)+"　　(부문주　　) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 10) set @word$[@i], clan_membername(@sd, @i)+"　(부문주　　) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 12) set @word$[@i], clan_membername(@sd, @i)+"(부문주　　) : "+@title$;
+				}
+				else
+				{
+					set @target_sd, name2sd(clan_membername(@sd, @i));
+					if(validsd(@target_sd) == 0) { set @title$, ""; }
+					else { set @title$, get_clantitle(@target_sd); }
+
+					if(strlen(clan_membername(@sd, @i)) == 4) set @word$[@i], clan_membername(@sd, @i)+"　　　　(일반문파원) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 6) set @word$[@i], clan_membername(@sd, @i)+"　　　(일반문파원) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 8) set @word$[@i], clan_membername(@sd, @i)+"　　(일반문파원) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 10) set @word$[@i], clan_membername(@sd, @i)+"　(일반문파원) : "+@title$;
+					else if(strlen(clan_membername(@sd, @i)) == 12) set @word$[@i], clan_membername(@sd, @i)+"(일반문파원) : "+@title$;
+				}
+			}
+
+			if(@word$[0] == "") message @sd, 8, "문파에 인원이 없습니다.";
+			else if(@word$[1] == "") message @sd, 8, @word$[0];
+			else if(@word$[2] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1];
+			else if(@word$[3] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2];
+			else if(@word$[4] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3];
+			else if(@word$[5] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4];
+			else if(@word$[6] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5];
+			else if(@word$[7] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6];
+			else if(@word$[8] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7];
+			else if(@word$[9] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8];
+			else if(@word$[10] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9];
+			else if(@word$[11] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10];
+			else if(@word$[12] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11];
+			else if(@word$[13] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12];
+			else if(@word$[14] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13];
+			else if(@word$[15] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14];
+			else if(@word$[16] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15];
+			else if(@word$[17] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16];
+			else if(@word$[18] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17];
+			else if(@word$[19] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18];
+			else if(@word$[20] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19];
+			else if(@word$[21] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20];
+			else if(@word$[22] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21];
+			else if(@word$[23] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22];
+			else if(@word$[24] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23];
+			else if(@word$[25] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24];
+			else if(@word$[26] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25];
+			else if(@word$[27] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26];
+			else if(@word$[28] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27];
+			else if(@word$[29] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28];
+			else if(@word$[30] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29];
+			else if(@word$[31] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30];
+			else if(@word$[32] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31];
+			else if(@word$[33] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32];
+			else if(@word$[34] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33];
+			else if(@word$[35] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34];
+			else if(@word$[36] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35];
+			else if(@word$[37] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36];
+			else if(@word$[38] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37];
+			else if(@word$[39] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38];
+			else if(@word$[40] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39];
+			else if(@word$[41] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40];
+			else if(@word$[42] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41];
+			else if(@word$[43] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42];
+			else if(@word$[44] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43];
+			else if(@word$[45] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44];
+			else if(@word$[46] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44]+"\\n"+@word$[45];
+			else if(@word$[47] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44]+"\\n"+@word$[45]+"\\n"+@word$[46];
+			else if(@word$[48] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44]+"\\n"+@word$[45]+"\\n"+@word$[46]+"\\n"+@word$[47];
+			else if(@word$[49] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44]+"\\n"+@word$[45]+"\\n"+@word$[46]+"\\n"+@word$[47]+"\\n"+@word$[48];
+			else if(@word$[50] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44]+"\\n"+@word$[45]+"\\n"+@word$[46]+"\\n"+@word$[47]+"\\n"+@word$[48]+"\\n"+@word$[49];
+			else if(@word$[51] == "") message @sd, 8, @word$[0]+"\\n"+@word$[1]+"\\n"+@word$[2]+"\\n"+@word$[3]+"\\n"+@word$[4]+"\\n"+@word$[5]+"\\n"+@word$[6]+"\\n"+@word$[7]+"\\n"+@word$[8]+"\\n"+@word$[9]+"\\n"+@word$[10]+"\\n"+@word$[11]+"\\n"+@word$[12]+"\\n"+@word$[13]+"\\n"+@word$[14]+"\\n"+@word$[15]+"\\n"+@word$[16]+"\\n"+@word$[17]+"\\n"+@word$[18]+"\\n"+@word$[19]+"\\n"+@word$[20]+"\\n"+@word$[21]+"\\n"+@word$[22]+"\\n"+@word$[23]+"\\n"+@word$[24]+"\\n"+@word$[25]+"\\n"+@word$[26]+"\\n"+@word$[27]+"\\n"+@word$[28]+"\\n"+@word$[29]+"\\n"+@word$[30]+"\\n"+@word$[31]+"\\n"+@word$[32]+"\\n"+@word$[33]+"\\n"+@word$[34]+"\\n"+@word$[35]+"\\n"+@word$[36]+"\\n"+@word$[37]+"\\n"+@word$[38]+"\\n"+@word$[39]+"\\n"+@word$[40]+"\\n"+@word$[41]+"\\n"+@word$[42]+"\\n"+@word$[43]+"\\n"+@word$[44]+"\\n"+@word$[45]+"\\n"+@word$[46]+"\\n"+@word$[47]+"\\n"+@word$[48]+"\\n"+@word$[49]+"\\n"+@word$[50];
+		}
+		else if(@menu == 10)
+		{
+POZ_001:
+			set @pos, input2(@invite$, 0, 12, "가입하고자 하는 사람의 이름을 적어주세요.", "", "");
+			if(@pos == 0) end;
+
+			set @target_sd, name2sd(@invite$);
+			if(@target_sd > 0)
+			
+			if(get_money(@sd) < 100000)
+			{
+				set @pos, dialog(0, 0, 0, "추가 가입은 십만전전 이라네. 돈이 부족한 것 아닌가?");
+				end;
+			}
+			else
+			{
+			set_money @sd, get_money(@sd)-100000;
+			updatestatus @sd, 2;
+			}
+			if(name2sd(@invite$) == 0)
+			{
+				set @pos, dialog(0, 0, 1, "현재 접속해 있지 않거나, 없는 아이디입니다.");
+				end;
+			}
+			set @target_sd, name2sd(@invite$);
+			if(get_mapid(@sd) != get_mapid(@target_sd))
+			{
+				set @pos, dialog(0, 0, 1, "대상이 같은 맵에 있지 않습니다.");
+				end;
+			}
+
+			if(clan_exist(@target_sd) != 0)
+			{
+				set @pos, dialog(0, 0, 1, "이미 문파에 가입되어있습니다.");
+				end;
+			}
+			set #clanname$, get_clanname(@sd);
+			runscript @target_sd, "문파가입요청";
+			end;
+		}
+		}
+	}
+}
+
+청룡성문지기	{
+	callfunc "KONGSUNG", "청룡", #dragon_castle$, 1, 2;
+}
+
+주작성문지기	{
+	callfunc "KONGSUNG", "주작", #bird_castle$, 1, 31;
+}
+
+현무성문지기	{
+	callfunc "KONGSUNG", "현무", #turtle_castle$, 1, 3;
+}
+
+백호성문지기	{
+	callfunc "KONGSUNG", "백호", #tiger_castle$, 1, 11;
+}
+
+공성타이머1	{
+	set @id, objid();
+	if(#clan_start == 1)
+	{
+		set @target_id, obj_getxy(20, 8);
+		if(@target_id > 0)
+		{
+			if(istype(@target_id) == 1)
+			{
+				set @target_sd, id2sd(@target_id);
+				if(strcmp(get_clanname(@target_sd), #clan_mapcheck$))
+				{
+					if(#clan_namecheck == 0)
+					{
+						set #clan_name$, get_name(@target_sd);
+						set #clan_namecheck, 1;
+					}
+					else
+					{
+						if(get_name(@target_sd) == #clan_name$)
+						{
+							set #clan_timer, #clan_timer+1;
+							switch(#clan_timer)
+							{
+							case 1:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 5:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 15:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 20:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 35:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 45:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 55:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 60:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 65:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 70:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 73:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 74:
+								announce 5, "[알림] " + get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 옥좌를 " + (#clan_timer*4) + "초간 지키고 계십니다.";
+								break;
+							case 75:
+								if(#clan_mapname$ == "주작성") { set #bird_castle$, get_clanname(@target_sd); }
+								else if(#clan_mapname$ == "현무성") { set #turtle_castle$, get_clanname(@target_sd); }
+								else if(#clan_mapname$ == "청룡성") { set #dragon_castle$, get_clanname(@target_sd); }
+								else if(#clan_mapname$ == "백호성") { set #tiger_castle$, get_clanname(@target_sd); }
+
+								announce 5, get_clanname(@target_sd) + " 문파의 " + get_name(@target_sd) + "님이 " + #clan_mapname$ + "을 탈환하였습니다.";
+
+								if(#clan_mapname$ == "주작성") { npcspawn name2mapid("주작성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("주작성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("주작성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("주작성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("주작성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("주작성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("주작성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("주작성입구"), 77, 105, 2, 248, "성문문지기8"; }
+								else if(#clan_mapname$ == "청룡성") { npcspawn name2mapid("청룡성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("청룡성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("청룡성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("청룡성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("청룡성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("청룡성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("청룡성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("청룡성입구"), 77, 105, 2, 248, "성문문지기8"; }
+								else if(#clan_mapname$ == "백호성") { npcspawn name2mapid("백호성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("백호성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("백호성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("백호성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("백호성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("백호성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("백호성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("백호성입구"), 77, 105, 2, 248, "성문문지기8"; }
+								else if(#clan_mapname$ == "현무성") { npcspawn name2mapid("현무성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("현무성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("현무성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("현무성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("현무성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("현무성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("현무성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("현무성입구"), 77, 105, 2, 248, "성문문지기8"; }
+
+								set #clan_start, 0;
+								set #clan_timer, 0;
+								set #clan_namecheck, 0;
+								set #clan_name$, "";
+								set #clan_mapname$, "";
+								set #clan_mapcheck$, "";
+
+								timecount_all 2, 1;
+
+								deletenpc @id, mapid();
+								break;
+							default:
+								break;
+							}
+						}
+						else
+						{
+							set #clan_timer, 0;
+							set #clan_namecheck, 0;
+						}
+					}
+				}
+				else
+				{
+					set #clan_timer, 0;
+					set #clan_namecheck, 0;
+				}
+			}
+			else
+			{
+				set #clan_timer, 0;
+				set #clan_namecheck, 0;
+			}
+		}
+		else
+		{
+			set #clan_timer, 0;
+			set #clan_namecheck, 0;
+		}
+	}
+	else
+	{
+		announce 5, "[알림] 옥좌를 점령한 유저가 없기에 성은 기존문파로 돌아갑니다.";
+
+		if(#clan_mapname$ == "주작성") { npcspawn name2mapid("주작성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("주작성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("주작성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("주작성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("주작성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("주작성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("주작성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("주작성입구"), 77, 105, 2, 248, "성문문지기8"; }
+		else if(#clan_mapname$ == "청룡성") { npcspawn name2mapid("청룡성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("청룡성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("청룡성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("청룡성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("청룡성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("청룡성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("청룡성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("청룡성입구"), 77, 105, 2, 248, "성문문지기8"; }
+		else if(#clan_mapname$ == "백호성") { npcspawn name2mapid("백호성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("백호성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("백호성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("백호성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("백호성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("백호성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("백호성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("백호성입구"), 77, 105, 2, 248, "성문문지기8"; }
+		else if(#clan_mapname$ == "현무성") { npcspawn name2mapid("현무성입구"), 70, 105, 2, 228, "성문문지기1"; npcspawn name2mapid("현무성입구"), 71, 105, 2, 242, "성문문지기2"; npcspawn name2mapid("현무성입구"), 72, 105, 2, 243, "성문문지기3"; npcspawn name2mapid("현무성입구"), 73, 105, 2, 244, "성문문지기4"; npcspawn name2mapid("현무성입구"), 74, 105, 2, 245, "성문문지기5"; npcspawn name2mapid("현무성입구"), 75, 105, 2, 246, "성문문지기6"; npcspawn name2mapid("현무성입구"), 76, 105, 2, 247, "성문문지기7"; npcspawn name2mapid("현무성입구"), 77, 105, 2, 248, "성문문지기8"; }
+
+		set #clan_start, 0;
+		set #clan_timer, 0;
+		set #clan_namecheck, 0;
+		set #clan_name$, "";
+		set #clan_mapname$, "";
+		set #clan_mapcheck$, "";
+
+		deletenpc @id, mapid();
+	}
+}
+
+성문문지기1	{
+	set @target_id, obj_getxy(70, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문1")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기2	{
+	set @target_id, obj_getxy(71, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문2")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기3	{
+	set @target_id, obj_getxy(72, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문3")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기4	{
+	set @target_id, obj_getxy(73, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문4")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기5	{
+	set @target_id, obj_getxy(74, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문5")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기6	{
+	set @target_id, obj_getxy(75, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문6")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기7	{
+	set @target_id, obj_getxy(76, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문7")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+성문문지기8	{
+	set @target_id, obj_getxy(77, 104);
+	if(@target_id > 0 && istype(@target_id) == 2 && get_mobname(@target_id) == "성문8")
+	{
+		deletemob @target_id, mapid();
+	}
+	deletenpc objid(), mapid();
+}
+
+청룡성문주	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @menu, menu("안녕하세요? " + get_clanname(@sd) + "의 " + get_name(@sd) + "회원님 무슨 일로 오셨나요?", "문파 현황", "문파검 받기", "문파공지사항등록");
+	if(@menu == 1)
+	{
+		set @pos, dialog(1, 0, 1, "청룡의성 점령 문파: " + #dragon_castle$ + " 문주 이름: " + #dragon_castle_master$ + "\\n주작의성 점령 문파: " + #bird_castle$ + " 문주 이름: " + #bird_castle_master$ + "\\n백호의성 점령 문파: " + #tiger_castle$ + " 문주 이름: " + #tiger_castle_master$ + "\\n현무의성 점령 문파: " + #turtle_castle$ + " 문주 이름: " + #turtle_castle_master$);
+		if(@pos == 0) end;
+		else if(@pos == 1) goto POC_000;
+	}
+	else if(@menu == 2)
+	{
+		if($dragon_clothes == 1)
+		{
+			set @pos, dialog(0,0,0, "이미 한번 받았지 않느냐..?");
+			end;
+		}
+		if(get_clanmaster(@sd) != get_name(@sd))
+		{
+			set @pos, dialog(0, 0, 1, "문파장이 아닌 자는 사용할 수 없습니다.");
+			end;
+		}
+		if(!strcmp(get_clanname(@sd), #dragon_castle$))
+		{
+			set $dragon_clothes, 1;
+			additem @sd, name2itemid("청룡의검"), 1;
+			set_money @sd, get_money(@sd)+5000000;
+			broadcast 5, " " + get_name(@sd) + "님이 문파지원금 오백만전과 청룡의검을 지급 받으셨습니다.";
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 1, "현재 보유하고 있는 성이 없습니다.");
+			if(@pos == 0) end;
+			else if(@pos == 1) { goto POC_000; }
+		}
+	}
+	else if(@menu == 3)
+	{
+		if(get_clanmaster(@sd) == get_name(@sd))
+		{
+			set @pos, input2(@txt$, 0, 50, "등록할 공지는 무엇입니까? (없음 입력 시 등록되지 않음)", " ", " ");
+			if(@pos == 0 || @txt$ == "") end;
+
+			if(@animal$ == "청룡") { set #dragon_message$, get_clanmaster(@sd) + ": " + @txt$; }
+
+			set @pos, dialog(1, 0, 1, "앞으로 청룡의성 문파원이 접속하면 다음과 같은 문구를 띄웁니다.\\n\\n문구: " + @txt$);
+			end;
+	}
+	else
+	{
+
+			set @pos, dialog(0, 0, 0, "너는 문주가 아니구나!");
+			end;
+		}
+	}
+	else end;
+	end;
+
+	return;
+}
+
+주작성문주	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @menu, menu("안녕하세요? " + get_clanname(@sd) + "의 " + get_name(@sd) + "회원님 무슨 일로 오셨나요?", "문파 현황", "문파검 받기", "문파공지사항등록");
+	if(@menu == 1)
+	{
+		set @pos, dialog(1, 0, 1, "청룡의성 점령 문파: " + #dragon_castle$ + " 문주 이름: " + #dragon_castle_master$ + "\\n주작의성 점령 문파: " + #bird_castle$ + " 문주 이름: " + #bird_castle_master$ + "\\n백호의성 점령 문파: " + #tiger_castle$ + " 문주 이름: " + #tiger_castle_master$ + "\\n현무의성 점령 문파: " + #turtle_castle$ + " 문주 이름: " + #turtle_castle_master$);
+		if(@pos == 0) end;
+		else if(@pos == 1) goto POC_000;
+	}
+	else if(@menu == 2)
+	{
+		if($bird_clothes == 1)
+		{
+			set @pos, dialog(0,0,0, "이미 한번 받았지 않느냐..?");
+			end;
+		}
+		if(get_clanmaster(@sd) != get_name(@sd))
+		{
+			set @pos, dialog(0, 0, 1, "문파장이 아닌 자는 사용할 수 없습니다.");
+			end;
+		}
+		if(!strcmp(get_clanname(@sd), #bird_castle$))
+		{
+			set $bird_clothes, 1;
+			additem @sd, name2itemid("주작의검"), 1;
+			set_money @sd, get_money(@sd)+5000000;
+			broadcast 5, " " + get_name(@sd) + "님이 문파지원금 오백만전과 주작의검을 지급 받으셨습니다.";
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 1, "현재 보유하고 있는 성이 없습니다.");
+			if(@pos == 0) end;
+			else if(@pos == 1) { goto POC_000; }
+		}
+	}
+	else if(@menu == 3)
+	{
+		if(get_clanmaster(@sd) == get_name(@sd))
+		{
+			set @pos, input2(@txt$, 0, 50, "등록할 공지는 무엇입니까? (없음 입력 시 등록되지 않음)", " ", " ");
+			if(@pos == 0 || @txt$ == "") end;
+
+			if(@animal$ == "주작") { set #bird_message$, get_clanmaster(@sd) + ": " + @txt$; }
+
+			set @pos, dialog(1, 0, 1, "앞으로 주작의성 문파원이 접속하면 다음과 같은 문구를 띄웁니다.\\n\\n문구: " + @txt$);
+			end;
+	}
+	else
+	{
+
+			set @pos, dialog(0, 0, 0, "너는 문주가 아니구나!");
+			end;
+		}
+	}
+	else end;
+	end;
+
+	return;
+}
+
+백호성문주	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @menu, menu("안녕하세요? " + get_clanname(@sd) + "의 " + get_name(@sd) + "회원님 무슨 일로 오셨나요?", "문파 현황", "문파검 받기", "문파공지사항등록");
+	if(@menu == 1)
+	{
+		set @pos, dialog(1, 0, 1, "청룡의성 점령 문파: " + #dragon_castle$ + " 문주 이름: " + #dragon_castle_master$ + "\\n주작의성 점령 문파: " + #bird_castle$ + " 문주 이름: " + #bird_castle_master$ + "\\n백호의성 점령 문파: " + #tiger_castle$ + " 문주 이름: " + #tiger_castle_master$ + "\\n현무의성 점령 문파: " + #turtle_castle$ + " 문주 이름: " + #turtle_castle_master$);
+		if(@pos == 0) end;
+		else if(@pos == 1) goto POC_000;
+	}
+	else if(@menu == 2)
+	{
+		if($tiger_clothes == 1)
+		{
+			set @pos, dialog(0,0,0, "이미 한번 받았지 않느냐..?");
+			end;
+		}
+		if(get_clanmaster(@sd) != get_name(@sd))
+		{
+			set @pos, dialog(0, 0, 1, "문파장이 아닌 자는 사용할 수 없습니다.");
+			end;
+		}
+		if(!strcmp(get_clanname(@sd), #tiger_castle$))
+		{
+			set $tiger_clothes, 1;
+			additem @sd, name2itemid("백호의검"), 1;
+			set_money @sd, get_money(@sd)+5000000;
+			broadcast 5, " " + get_name(@sd) + "님이 문파지원금 오백만전과 백호의검을 지급 받으셨습니다.";
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 1, "현재 보유하고 있는 성이 없습니다.");
+			if(@pos == 0) end;
+			else if(@pos == 1) { goto POC_000; }
+		}
+	}
+	else if(@menu == 3)
+	{
+		if(get_clanmaster(@sd) == get_name(@sd))
+		{
+			set @pos, input2(@txt$, 0, 50, "등록할 공지는 무엇입니까? (없음 입력 시 등록되지 않음)", " ", " ");
+			if(@pos == 0 || @txt$ == "") end;
+
+			if(@animal$ == "백호") { set #tiger_message$, get_clanmaster(@sd) + ": " + @txt$; }
+
+			set @pos, dialog(1, 0, 1, "앞으로 백호의성 문파원이 접속하면 다음과 같은 문구를 띄웁니다.\\n\\n문구: " + @txt$);
+			end;
+	}
+	else
+	{
+
+			set @pos, dialog(0, 0, 0, "너는 문주가 아니구나!");
+			end;
+		}
+	}
+	else end;
+	end;
+
+	return;
+}
+
+현무성문주	{
+	image 0, 220, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @mapname$, get_mapname(@sd);
+
+	if(@mapname$ == "주작의성") { set @animal$, "주작"; set @totem$, #bird_castle$; }
+	else if(@mapname$ == "현무의성") { set @animal$, "현무"; set @totem$, #turtle_castle$; }
+	else if(@mapname$ == "청룡의성") { set @animal$, "청룡"; set @totem$, #dragon_castle$; }
+	else if(@mapname$ == "백호의성") { set @animal$, "백호"; set @totem$, #tiger_castle$; }
+
+	set @menu, menu("안녕하세요? " + get_clanname(@sd) + "의 " + get_name(@sd) + "회원님 무슨 일로 오셨나요?", "문파 현황", "문파검 받기", "문파공지사항등록");
+	if(@menu == 1)
+	{
+		set @pos, dialog(1, 0, 1, "청룡의성 점령 문파: " + #dragon_castle$ + " 문주 이름: " + #dragon_castle_master$ + "\\n주작의성 점령 문파: " + #bird_castle$ + " 문주 이름: " + #bird_castle_master$ + "\\n백호의성 점령 문파: " + #tiger_castle$ + " 문주 이름: " + #tiger_castle_master$ + "\\n현무의성 점령 문파: " + #turtle_castle$ + " 문주 이름: " + #turtle_castle_master$);
+		if(@pos == 0) end;
+		else if(@pos == 1) goto POC_000;
+	}
+	else if(@menu == 2)
+	{
+		if($turtle_clothes == 1)
+		{
+			set @pos, dialog(0,0,0, "이미 한번 받았지 않느냐..?");
+			end;
+		}
+		if(get_clanmaster(@sd) != get_name(@sd))
+		{
+			set @pos, dialog(0, 0, 1, "문파장이 아닌 자는 사용할 수 없습니다.");
+			end;
+		}
+		if(!strcmp(get_clanname(@sd), #turtle_castle$))
+		{
+			set $turtle_clothes, 1;
+			additem @sd, name2itemid("현무의검"), 1;
+			set_money @sd, get_money(@sd)+5000000;
+			broadcast 5, " " + get_name(@sd) + "님이 문파지원금 오백만전과 현무의검을 지급 받으셨습니다.";
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 1, "현재 보유하고 있는 성이 없습니다.");
+			if(@pos == 0) end;
+			else if(@pos == 1) { goto POC_000; }
+		}
+	}
+	else if(@menu == 3)
+	{
+		if(get_clanmaster(@sd) == get_name(@sd))
+		{
+			set @pos, input2(@txt$, 0, 50, "등록할 공지는 무엇입니까? (없음 입력 시 등록되지 않음)", " ", " ");
+			if(@pos == 0 || @txt$ == "") end;
+
+			if(@animal$ == "현무") { set #tutle_message$, get_clanmaster(@sd) + ": " + @txt$; }
+
+			set @pos, dialog(1, 0, 1, "앞으로 현무의성 문파원이 접속하면 다음과 같은 문구를 띄웁니다.\\n\\n문구: " + @txt$);
+			end;
+
+			set @pos, dialog(0, 0, 0, "너는 문주가 아니구나!");
+			end;
+		}
+	}
+	else end;
+	end;
+
+	return;
+}
+
+
+
+청룡성	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("안녕하세요. 어떻게 오셨나요?", "용무기 수리", "용무기 수리 주의사항");
+	if(@list > 0)
+	{
+		if(#dragon_castle$ == get_clanname(@sd))
+		{
+			if(@list == 1)
+			{
+				goto Repair;
+			}
+			else if(@list == 2)
+			{
+				set @pos, dialog(0,0,1, "용무기를 수리하기 위해선 일정량의 금전이 필요하며 수리할 무기는 반드시 1개만 가지고 있어야 합니다.");
+				end;
+			}
+			else end;
+		}
+		else
+		{
+			set @pos, dialog(0,0,0, "청룡의성을 보유하고 있지 않습니다.");
+			end;
+		}
+	}
+	else end;
+
+
+Repair:
+	set @list1, list1("어느 종류의 용무기를 수리하시겠습니까?", "용마", "용천", "용랑", "용겸");
+	if(@list1 == 1)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용마제일검", "용마제이검", "용마제삼검", "용마제사검", "용마제오검", "용마제육검", "용마제칠검", "*용마제칠검", "용마제칠검(손상)", "*용마제칠검(손상)", "용마제팔검", "*용마제팔검", "용마제팔검(손상)", "*용마제팔검(손상)", "용마제구검", "*용마제구검");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용마제일검", "용마제이검", "용마제삼검", "용마제사검", "용마제오검", "용마제육검", "용마제칠검", "*용마제칠검", "용마제칠검(손상)", "*용마제칠검(손상)", "용마제팔검", "*용마제팔검", "용마제팔검(손상)", "*용마제팔검(손상)", "용마제구검", "*용마제구검";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else if(@list1 == 2)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용천제일검", "용천제이검", "용천제삼검", "용천제사검", "용천제오검", "용천제육검", "용천제칠검", "*용천제칠검", "용천제칠검(손상)", "*용천제칠검(손상)", "용천제팔검", "*용천제팔검", "용천제팔검(손상)", "*용천제팔검(손상)", "용천제구검", "*용천제구검");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용천제일검", "용천제이검", "용천제삼검", "용천제사검", "용천제오검", "용천제육검", "용천제칠검", "*용천제칠검", "용천제칠검(손상)", "*용천제칠검(손상)", "용천제팔검", "*용천제팔검", "용천제팔검(손상)", "*용천제팔검(손상)", "용천제구검", "*용천제구검";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else if(@list1 == 3)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용랑제일봉", "용랑제이봉", "용랑제삼봉", "용랑제사봉", "용랑제오봉", "용랑제육봉", "용랑제칠봉", "*용랑제칠봉", "용랑제칠봉(손상)", "*용랑제칠봉(손상)", "용랑제팔봉", "*용랑제팔봉", "용랑제팔봉(손상)", "*용랑제팔봉(손상)", "용랑제구봉", "*용랑제구봉");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용랑제일봉", "용랑제이봉", "용랑제삼봉", "용랑제사봉", "용랑제오봉", "용랑제육봉", "용랑제칠봉", "*용랑제칠봉", "용랑제칠봉(손상)", "*용랑제칠봉(손상)", "용랑제팔봉", "*용랑제팔봉", "용랑제팔봉(손상)", "*용랑제팔봉(손상)", "용랑제구봉", "*용랑제구봉";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else if(@list1 == 4)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용겸제일봉", "용겸제이봉", "용겸제삼봉", "용겸제사봉", "용겸제오봉", "용겸제육봉", "용겸제칠봉", "*용겸제칠봉", "용겸제칠봉(손상)", "*용겸제칠봉(손상)", "용겸제팔봉", "*용겸제팔봉", "용겸제팔봉(손상)", "*용겸제팔봉(손상)", "용겸제구봉", "*용겸제구봉");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용겸제일봉", "용겸제이봉", "용겸제삼봉", "용겸제사봉", "용겸제오봉", "용겸제육봉", "용겸제칠봉", "*용겸제칠봉", "용겸제칠봉(손상)", "*용겸제칠봉(손상)", "용겸제팔봉", "*용겸제팔봉", "용겸제팔봉(손상)", "*용겸제팔봉(손상)", "용겸제구봉", "*용겸제구봉";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else end;
+
+Repair_s:
+	for(set @loop, 1; @loop <= 16; set @loop, @loop+1)
+	{
+		if(@weapon == @loop)
+		{
+		Repair_c:
+			set @pos, dialog(0,0,1, @item$[@loop] + "을 수리하기 위해선 " + @money[@loop] + "전이 필요합니다.");
+			if(@pos == 0) end;
+
+			set @pos, list2(@list2, 0, 1, "정말 수리하시겠습니까?", "예", "아뇨");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto Repair_c;
+
+			if(@list2 == 1)
+			{
+				if(get_money(@sd) < @money[@loop])
+				{
+					set @pos, dialog(0,0,0, "금전이 부족합니다.");
+					deletearray @item$[1], getarraysize(@item$);
+					deletearray @money[1], getarraysize(@money);
+					end;
+				}
+				else
+				{
+					if(countitem(name2itemid(@item$[@loop])) == 0)
+					{
+						set @pos, dialog(0,0,0, @item$[@loop] + "이 없습니다.");
+						deletearray @item$[1], getarraysize(@item$);
+						deletearray @money[1], getarraysize(@money);
+						end;
+					}
+					else
+					{
+						set @pos, dialog(0,0,1, "수리가 완료되었습니다.");
+						delitem @sd, name2itemid(@item$[@loop]), 1;
+						additem @sd, name2itemid(@item$[@loop]), 1;
+						set_money @sd, get_money(@sd)-@money[@loop];
+						updatestatus @sd, 2;
+						deletearray @item$[1], getarraysize(@item$);
+						deletearray @money[1], getarraysize(@money);
+						end;
+					}
+				}
+			}
+			else
+			{
+				deletearray @item$[1], getarraysize(@item$);
+				deletearray @money[1], getarraysize(@money);
+				end;
+			}
+		}
+	}
+}
+
+주작성	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("안녕하세요. 어떻게 오셨나요?", "용무기 수리", "용무기 수리 주의사항");
+	if(@list > 0)
+	{
+		if(#bird_castle$ == get_clanname(@sd))
+		{
+			if(@list == 1)
+			{
+				goto Repair;
+			}
+			else if(@list == 2)
+			{
+				set @pos, dialog(0,0,1, "용무기를 수리하기 위해선 일정량의 금전이 필요하며 수리할 무기는 반드시 1개만 가지고 있어야 합니다.");
+				end;
+			}
+			else end;
+		}
+		else
+		{
+			set @pos, dialog(0,0,0, "주작의성을 보유하고 있지 않습니다.");
+			end;
+		}
+	}
+	else end;
+
+Repair:
+	set @list1, list1("어느 종류의 용무기를 수리하시겠습니까?", "용마", "용천", "용랑", "용겸");
+	if(@list1 == 1)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용마제일검", "용마제이검", "용마제삼검", "용마제사검", "용마제오검", "용마제육검", "용마제칠검", "*용마제칠검", "용마제칠검(손상)", "*용마제칠검(손상)", "용마제팔검", "*용마제팔검", "용마제팔검(손상)", "*용마제팔검(손상)", "용마제구검", "*용마제구검");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용마제일검", "용마제이검", "용마제삼검", "용마제사검", "용마제오검", "용마제육검", "용마제칠검", "*용마제칠검", "용마제칠검(손상)", "*용마제칠검(손상)", "용마제팔검", "*용마제팔검", "용마제팔검(손상)", "*용마제팔검(손상)", "용마제구검", "*용마제구검";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else if(@list1 == 2)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용천제일검", "용천제이검", "용천제삼검", "용천제사검", "용천제오검", "용천제육검", "용천제칠검", "*용천제칠검", "용천제칠검(손상)", "*용천제칠검(손상)", "용천제팔검", "*용천제팔검", "용천제팔검(손상)", "*용천제팔검(손상)", "용천제구검", "*용천제구검");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용천제일검", "용천제이검", "용천제삼검", "용천제사검", "용천제오검", "용천제육검", "용천제칠검", "*용천제칠검", "용천제칠검(손상)", "*용천제칠검(손상)", "용천제팔검", "*용천제팔검", "용천제팔검(손상)", "*용천제팔검(손상)", "용천제구검", "*용천제구검";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else if(@list1 == 3)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용랑제일봉", "용랑제이봉", "용랑제삼봉", "용랑제사봉", "용랑제오봉", "용랑제육봉", "용랑제칠봉", "*용랑제칠봉", "용랑제칠봉(손상)", "*용랑제칠봉(손상)", "용랑제팔봉", "*용랑제팔봉", "용랑제팔봉(손상)", "*용랑제팔봉(손상)", "용랑제구봉", "*용랑제구봉");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용랑제일봉", "용랑제이봉", "용랑제삼봉", "용랑제사봉", "용랑제오봉", "용랑제육봉", "용랑제칠봉", "*용랑제칠봉", "용랑제칠봉(손상)", "*용랑제칠봉(손상)", "용랑제팔봉", "*용랑제팔봉", "용랑제팔봉(손상)", "*용랑제팔봉(손상)", "용랑제구봉", "*용랑제구봉";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else if(@list1 == 4)
+	{
+		set @pos, list2(@weapon, 0, 1, "수리할 용무기를 골라주세요.", "용겸제일봉", "용겸제이봉", "용겸제삼봉", "용겸제사봉", "용겸제오봉", "용겸제육봉", "용겸제칠봉", "*용겸제칠봉", "용겸제칠봉(손상)", "*용겸제칠봉(손상)", "용겸제팔봉", "*용겸제팔봉", "용겸제팔봉(손상)", "*용겸제팔봉(손상)", "용겸제구봉", "*용겸제구봉");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto Repair;
+
+		if(@weapon > 0)
+		{
+			setarray @item$[1], "용겸제일봉", "용겸제이봉", "용겸제삼봉", "용겸제사봉", "용겸제오봉", "용겸제육봉", "용겸제칠봉", "*용겸제칠봉", "용겸제칠봉(손상)", "*용겸제칠봉(손상)", "용겸제팔봉", "*용겸제팔봉", "용겸제팔봉(손상)", "*용겸제팔봉(손상)", "용겸제구봉", "*용겸제구봉";
+			setarray @money[1], 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 7000000, 7000000, 9000000, 4000000, 8000000, 8200000, 8400000, 8500000, 10000000;
+			goto Repair_s;
+		}
+		end;
+	}
+	else end;
+
+Repair_s:
+	for(set @loop, 1; @loop <= 16; set @loop, @loop+1)
+	{
+		if(@weapon == @loop)
+		{
+		Repair_c:
+			set @pos, dialog(0,0,1, @item$[@loop] + "을 수리하기 위해선 " + @money[@loop] + "전이 필요합니다.");
+			if(@pos == 0) end;
+
+			set @pos, list2(@list2, 0, 1, "정말 수리하시겠습니까?", "예", "아뇨");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto Repair_c;
+
+			if(@list2 == 1)
+			{
+				if(get_money(@sd) < @money[@loop])
+				{
+					set @pos, dialog(0,0,0, "금전이 부족합니다.");
+					deletearray @item$[1], getarraysize(@item$);
+					deletearray @money[1], getarraysize(@money);
+					end;
+				}
+				else
+				{
+					if(countitem(name2itemid(@item$[@loop])) == 0)
+					{
+						set @pos, dialog(0,0,0, @item$[@loop] + "이 없습니다.");
+						deletearray @item$[1], getarraysize(@item$);
+						deletearray @money[1], getarraysize(@money);
+						end;
+					}
+					else
+					{
+						set @pos, dialog(0,0,1, "수리가 완료되었습니다.");
+						delitem @sd, name2itemid(@item$[@loop]), 1;
+						additem @sd, name2itemid(@item$[@loop]), 1;
+						set_money @sd, get_money(@sd)-@money[@loop];
+						updatestatus @sd, 2;
+						deletearray @item$[1], getarraysize(@item$);
+						deletearray @money[1], getarraysize(@money);
+						end;
+					}
+				}
+			}
+			else
+			{
+				deletearray @item$[1], getarraysize(@item$);
+				deletearray @money[1], getarraysize(@money);
+				end;
+			}
+		}
+	}
+}

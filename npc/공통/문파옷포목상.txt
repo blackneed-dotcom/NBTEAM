@@ -1,0 +1,291 @@
+주작포목상	{
+	set @sd, mysd();
+	set @id, myid();
+
+		if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+		countitem(name2itemid("주작의옷")) > 0 ||
+		countitem(name2itemid("현무의옷")) > 0 ||
+		countitem(name2itemid("청룡의옷")) > 0 ||
+		countitem(name2itemid("백호의옷")) > 0)
+		{
+			set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+			end;
+		}
+		set @ret, list1("안녕하세요. 어떻게 오셨나요?", "물건 사기");
+		if(@ret == 1) { callshop 0, 125; }
+		}
+	}
+}
+
+현무포목상	{
+	set @sd, mysd();
+	set @id, myid();
+	set @totem$, "현무";
+
+	set @sd, mysd();
+	set @id, myid();
+
+		if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+		countitem(name2itemid("주작의옷")) > 0 ||
+		countitem(name2itemid("현무의옷")) > 0 ||
+		countitem(name2itemid("청룡의옷")) > 0 ||
+		countitem(name2itemid("백호의옷")) > 0)
+		{
+			set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+			end;
+		}
+		set @ret, list1("안녕하세요. 어떻게 오셨나요?", "물건 사기");
+		if(@ret == 1) { callshop 0, 126; }
+		}
+	}
+}
+
+청룡포목상	{
+	set @sd, mysd();
+	set @id, myid();
+
+		if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+		countitem(name2itemid("주작의옷")) > 0 ||
+		countitem(name2itemid("현무의옷")) > 0 ||
+		countitem(name2itemid("청룡의옷")) > 0 ||
+		countitem(name2itemid("백호의옷")) > 0)
+		{
+			set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+			end;
+		}
+		set @ret, list1("안녕하세요. 어떻게 오셨나요?", "물건 사기");
+		if(@ret == 1) { callshop 0, 127; }
+		}
+	}
+}
+
+백호포목상	{
+	set @sd, mysd();
+	set @id, myid();
+
+		if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+		get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+		countitem(name2itemid("주작의옷")) > 0 ||
+		countitem(name2itemid("현무의옷")) > 0 ||
+		countitem(name2itemid("청룡의옷")) > 0 ||
+		countitem(name2itemid("백호의옷")) > 0)
+		{
+			set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+			end;
+		}
+		set @ret, list1("안녕하세요. 어떻게 오셨나요?", "물건 사기");
+		if(@ret == 1) { callshop 0, 128; }
+		}
+	}
+}
+
+//주작포목상	{
+	set @sd, mysd();
+	set @id, myid();
+	set @totem$, "주작";
+
+	if(#bird_castle$ != get_clanname(@sd))
+	{
+		set @pos, dialog(0, 0, 0, @totem$ + "성을 점령한 문파에게만 " + @totem$ + "을 만들어 드린답니다.");
+		end;
+	}
+
+	set @pos, list2(@list, 0, 0, @totem$ + "의옷을 만드시겠습니까? 3만전이 필요하며 옷은 30시간후 사라집니다.", "예, 만들어주세요.", "아뇨, 안만들래요.");
+	if(@pos == 1 && @list == 1)
+	{
+		if(get_money(@sd) >= 0 && get_money(@sd) < 30000)
+		{
+			set @pos, dialog(0, 0, 0, "금전이 부족합니다.");
+			end;
+		}
+		else
+		{
+			if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+			countitem(name2itemid("주작의옷")) > 0 ||
+			countitem(name2itemid("현무의옷")) > 0 ||
+			countitem(name2itemid("청룡의옷")) > 0 ||
+			countitem(name2itemid("백호의옷")) > 0)
+			{
+				set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+				end;
+			}
+
+			set_money @sd, get_money(@sd)-30000;
+			updatestatus @sd, 2;
+
+			set @time, callfunc("server_nowtime");
+			set $bird_clothes_time, @time+1080000;
+
+			additem @sd, name2itemid(@totem$ + "의옷"), 1;
+
+			set @pos, dialog(0, 0, 1, @totem$ + "의옷을 만들어 드렸습니다. 30시간후 사라지니 주의하세요.");
+			end;
+		}
+	}
+	else end;
+	end;
+}
+
+//현무포목상	{
+	set @sd, mysd();
+	set @id, myid();
+	set @totem$, "현무";
+
+	if(#turtle_castle$ != get_clanname(@sd))
+	{
+		set @pos, dialog(0, 0, 0, @totem$ + "성을 점령한 문파에게만 " + @totem$ + "을 만들어 드린답니다.");
+		end;
+	}
+
+	set @pos, list2(@list, 0, 0, @totem$ + "의옷을 만드시겠습니까? 3만전이 필요하며 옷은 30시간후 사라집니다.", "예, 만들어주세요.", "아뇨, 안만들래요.");
+	if(@pos == 1 && @list == 1)
+	{
+		if(get_money(@sd) >= 0 && get_money(@sd) < 30000)
+		{
+			set @pos, dialog(0, 0, 0, "금전이 부족합니다.");
+			end;
+		}
+		else
+		{
+			if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+			countitem(name2itemid("주작의옷")) > 0 ||
+			countitem(name2itemid("현무의옷")) > 0 ||
+			countitem(name2itemid("청룡의옷")) > 0 ||
+			countitem(name2itemid("백호의옷")) > 0)
+			{
+				set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+				end;
+			}
+
+			set_money @sd, get_money(@sd)-30000;
+			updatestatus @sd, 2;
+
+			set @time, callfunc("server_nowtime");
+			set $turtle_clothes_time, @time+1080000;
+
+			additem @sd, name2itemid(@totem$ + "의옷"), 1;
+
+			set @pos, dialog(0, 0, 1, @totem$ + "의옷을 만들어 드렸습니다. 30시간후 사라지니 주의하세요.");
+			end;
+		}
+	}
+	else end;
+	end;
+}
+
+//청룡포목상	{
+	set @sd, mysd();
+	set @id, myid();
+	set @totem$, "청룡";
+
+	if(#dragon_castle$ != get_clanname(@sd))
+	{
+		set @pos, dialog(0, 0, 0, @totem$ + "성을 점령한 문파에게만 " + @totem$ + "을 만들어 드린답니다.");
+		end;
+	}
+
+	set @pos, list2(@list, 0, 0, @totem$ + "의옷을 만드시겠습니까? 3만전이 필요하며 옷은 30시간후 사라집니다.", "예, 만들어주세요.", "아뇨, 안만들래요.");
+	if(@pos == 1 && @list == 1)
+	{
+		if(get_money(@sd) >= 0 && get_money(@sd) < 30000)
+		{
+			set @pos, dialog(0, 0, 0, "금전이 부족합니다.");
+			end;
+		}
+		else
+		{
+			if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+			countitem(name2itemid("주작의옷")) > 0 ||
+			countitem(name2itemid("현무의옷")) > 0 ||
+			countitem(name2itemid("청룡의옷")) > 0 ||
+			countitem(name2itemid("백호의옷")) > 0)
+			{
+				set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+				end;
+			}
+
+			set_money @sd, get_money(@sd)-30000;
+			updatestatus @sd, 2;
+
+			set @time, callfunc("server_nowtime");
+			set $dragon_clothes_time, @time+1080000;
+
+			additem @sd, name2itemid(@totem$ + "의옷"), 1;
+
+			set @pos, dialog(0, 0, 1, @totem$ + "의옷을 만들어 드렸습니다. 30시간후 사라지니 주의하세요.");
+			end;
+		}
+	}
+	else end;
+	end;
+}
+
+//백호포목상	{
+	set @sd, mysd();
+	set @id, myid();
+	set @totem$, "백호";
+
+	if(#tiger_castle$ != get_clanname(@sd))
+	{
+		set @pos, dialog(0, 0, 0, @totem$ + "성을 점령한 문파에게만 " + @totem$ + "을 만들어 드린답니다.");
+		end;
+	}
+
+	set @pos, list2(@list, 0, 0, @totem$ + "의옷을 만드시겠습니까? 3만전이 필요하며 옷은 30시간후 사라집니다.", "예, 만들어주세요.", "아뇨, 안만들래요.");
+	if(@pos == 1 && @list == 1)
+	{
+		if(get_money(@sd) >= 0 && get_money(@sd) < 30000)
+		{
+			set @pos, dialog(0, 0, 0, "금전이 부족합니다.");
+			end;
+		}
+		else
+		{
+			if(get_equipitem(@sd, 1) == name2itemid("주작의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("현무의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("청룡의옷") ||
+			get_equipitem(@sd, 1) == name2itemid("백호의옷") ||
+			countitem(name2itemid("주작의옷")) > 0 ||
+			countitem(name2itemid("현무의옷")) > 0 ||
+			countitem(name2itemid("청룡의옷")) > 0 ||
+			countitem(name2itemid("백호의옷")) > 0)
+			{
+				set @pos, dialog(0, 0, 0, "이미 신수의옷을 한벌 이상 가지고 계시네요.");
+				end;
+			}
+
+			set_money @sd, get_money(@sd)-30000;
+			updatestatus @sd, 2;
+
+			set @time, callfunc("server_nowtime");
+			set $tiger_clothes_time, @time+1080000;
+
+			additem @sd, name2itemid(@totem$ + "의옷"), 1;
+
+			set @pos, dialog(0, 0, 1, @totem$ + "의옷을 만들어 드렸습니다. 30시간후 사라지니 주의하세요.");
+			end;
+		}
+	}
+	else end;
+	end;
+}

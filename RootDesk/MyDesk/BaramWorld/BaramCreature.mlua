@@ -1,0 +1,47 @@
+@Component
+script BaramCreature extends Component
+    @Sync
+    property integer SourceId = 1
+    @Sync
+    property integer GridX = 1
+    @Sync
+    property integer GridY = 1
+    @Sync
+    property integer Hp = 15
+    @Sync
+    property integer Facing = 6
+    @Sync
+    property integer Step = 0
+    property string AggroUser = ""
+    property number Wait = 1
+    property number DeadWait = 0
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        local sprite = self.Entity:GetChildByName("Sprite")
+        local index = self.SourceId == 1 and 26 or 22
+        local frame = _BaramCreatureData.Frames[index][self.Facing + self.Step % 3 + 1]
+        if self._T.frame ~= frame then sprite.SpriteRendererComponent.SpriteRUID = frame self._T.frame = frame end
+        sprite.Visible = self.Hp > 0
+        local label = self.Entity:GetChildByName("Label")
+        label.TextRendererComponent.Text = self.Hp > 0 and ((self.SourceId == 1 and "다람쥐 " or "토끼 ") .. tostring(self.Hp)) or ""
+    end
+
+    @ExecSpace("ServerOnly")
+    @EventSender("Self")
+    handler HandleHit(HitEvent event)
+        if self.Hp <= 0 or not isvalid(event.AttackerEntity) then return end
+        local player = event.AttackerEntity.PlayerComponent
+        if not isvalid(player) then return end
+        local r = _BaramWorld:GetRecord(player.UserId)
+        if r == nil or r.state.map ~= 315 then return end
+        self.Hp = math.max(0, self.Hp - event.TotalDamage)
+        self.AggroUser = player.UserId
+        if self.Hp == 0 then
+            self.DeadWait = 30
+            self.Entity.HitComponent.Enable = false
+            _BaramWorld:Killed(player.UserId, self.SourceId, self.GridX, self.GridY)
+        end
+        log("[BaramCombat] hit mob=" .. tostring(self.SourceId) .. " hp=" .. tostring(self.Hp))
+    end
+end

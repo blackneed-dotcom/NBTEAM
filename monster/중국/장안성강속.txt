@@ -1,0 +1,3 @@
+@장안성여왕인어	{
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("공주의반지"), 1;
+}

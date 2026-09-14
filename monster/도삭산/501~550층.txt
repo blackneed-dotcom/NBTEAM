@@ -1,0 +1,7 @@
+@도삭산적살쾡이	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("도삭산살쾡이가죽"), 1;
+}
+
+@도삭산녹살쾡이	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("도삭산살쾡이가죽"), 1;
+}

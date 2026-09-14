@@ -1,0 +1,1450 @@
+{
+  "canvas": {
+    "w": 48,
+    "h": 72,
+    "ox": 24,
+    "oy": 60
+  },
+  "assets": [
+    {
+      "name": "body-0-0",
+      "file": "Docs/BaramAppearance/Assets/body-0-0.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 0,
+      "index": 0,
+      "bytes": 386,
+      "canonical": "body-0-0"
+    },
+    {
+      "name": "body-0-1",
+      "file": "Docs/BaramAppearance/Assets/body-0-1.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 1,
+      "index": 1,
+      "bytes": 395,
+      "canonical": "body-0-1"
+    },
+    {
+      "name": "body-0-2",
+      "file": "Docs/BaramAppearance/Assets/body-0-2.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 2,
+      "index": 2,
+      "bytes": 393,
+      "canonical": "body-0-2"
+    },
+    {
+      "name": "body-0-3",
+      "file": "Docs/BaramAppearance/Assets/body-0-3.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 3,
+      "index": 3,
+      "bytes": 325,
+      "canonical": "body-0-3"
+    },
+    {
+      "name": "body-0-4",
+      "file": "Docs/BaramAppearance/Assets/body-0-4.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 4,
+      "index": 4,
+      "bytes": 442,
+      "canonical": "body-0-4"
+    },
+    {
+      "name": "body-0-5",
+      "file": "Docs/BaramAppearance/Assets/body-0-5.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 5,
+      "index": 5,
+      "bytes": 439,
+      "canonical": "body-0-5"
+    },
+    {
+      "name": "body-0-6",
+      "file": "Docs/BaramAppearance/Assets/body-0-6.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 6,
+      "index": 6,
+      "bytes": 400,
+      "canonical": "body-0-6"
+    },
+    {
+      "name": "body-0-7",
+      "file": "Docs/BaramAppearance/Assets/body-0-7.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 7,
+      "index": 7,
+      "bytes": 443,
+      "canonical": "body-0-7"
+    },
+    {
+      "name": "body-0-8",
+      "file": "Docs/BaramAppearance/Assets/body-0-8.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 8,
+      "index": 8,
+      "bytes": 453,
+      "canonical": "body-0-8"
+    },
+    {
+      "name": "body-0-9",
+      "file": "Docs/BaramAppearance/Assets/body-0-9.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 9,
+      "index": 9,
+      "bytes": 313,
+      "canonical": "body-0-9"
+    },
+    {
+      "name": "body-0-10",
+      "file": "Docs/BaramAppearance/Assets/body-0-10.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 10,
+      "index": 10,
+      "bytes": 436,
+      "canonical": "body-0-10"
+    },
+    {
+      "name": "body-0-11",
+      "file": "Docs/BaramAppearance/Assets/body-0-11.png",
+      "kind": "BODY",
+      "style": 0,
+      "motion": 11,
+      "index": 11,
+      "bytes": 443,
+      "canonical": "body-0-11"
+    },
+    {
+      "name": "body-1-0",
+      "file": "Docs/BaramAppearance/Assets/body-1-0.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 0,
+      "index": 104,
+      "bytes": 373,
+      "canonical": "body-1-0"
+    },
+    {
+      "name": "body-1-1",
+      "file": "Docs/BaramAppearance/Assets/body-1-1.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 1,
+      "index": 105,
+      "bytes": 391,
+      "canonical": "body-1-1"
+    },
+    {
+      "name": "body-1-2",
+      "file": "Docs/BaramAppearance/Assets/body-1-2.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 2,
+      "index": 106,
+      "bytes": 396,
+      "canonical": "body-1-2"
+    },
+    {
+      "name": "body-1-3",
+      "file": "Docs/BaramAppearance/Assets/body-1-3.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 3,
+      "index": 107,
+      "bytes": 321,
+      "canonical": "body-1-3"
+    },
+    {
+      "name": "body-1-4",
+      "file": "Docs/BaramAppearance/Assets/body-1-4.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 4,
+      "index": 108,
+      "bytes": 427,
+      "canonical": "body-1-4"
+    },
+    {
+      "name": "body-1-5",
+      "file": "Docs/BaramAppearance/Assets/body-1-5.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 5,
+      "index": 109,
+      "bytes": 421,
+      "canonical": "body-1-5"
+    },
+    {
+      "name": "body-1-6",
+      "file": "Docs/BaramAppearance/Assets/body-1-6.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 6,
+      "index": 110,
+      "bytes": 391,
+      "canonical": "body-1-6"
+    },
+    {
+      "name": "body-1-7",
+      "file": "Docs/BaramAppearance/Assets/body-1-7.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 7,
+      "index": 111,
+      "bytes": 430,
+      "canonical": "body-1-7"
+    },
+    {
+      "name": "body-1-8",
+      "file": "Docs/BaramAppearance/Assets/body-1-8.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 8,
+      "index": 112,
+      "bytes": 431,
+      "canonical": "body-1-8"
+    },
+    {
+      "name": "body-1-9",
+      "file": "Docs/BaramAppearance/Assets/body-1-9.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 9,
+      "index": 113,
+      "bytes": 311,
+      "canonical": "body-1-9"
+    },
+    {
+      "name": "body-1-10",
+      "file": "Docs/BaramAppearance/Assets/body-1-10.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 10,
+      "index": 114,
+      "bytes": 417,
+      "canonical": "body-1-10"
+    },
+    {
+      "name": "body-1-11",
+      "file": "Docs/BaramAppearance/Assets/body-1-11.png",
+      "kind": "BODY",
+      "style": 1,
+      "motion": 11,
+      "index": 115,
+      "bytes": 431,
+      "canonical": "body-1-11"
+    },
+    {
+      "name": "head-0-0",
+      "file": "Docs/BaramAppearance/Assets/head-0-0.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 0,
+      "index": 0,
+      "bytes": 281,
+      "canonical": "head-0-0"
+    },
+    {
+      "name": "head-0-1",
+      "file": "Docs/BaramAppearance/Assets/head-0-1.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 1,
+      "index": 1,
+      "bytes": 281,
+      "canonical": "head-0-0"
+    },
+    {
+      "name": "head-0-2",
+      "file": "Docs/BaramAppearance/Assets/head-0-2.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 2,
+      "index": 2,
+      "bytes": 281,
+      "canonical": "head-0-0"
+    },
+    {
+      "name": "head-0-3",
+      "file": "Docs/BaramAppearance/Assets/head-0-3.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 3,
+      "index": 3,
+      "bytes": 319,
+      "canonical": "head-0-3"
+    },
+    {
+      "name": "head-0-4",
+      "file": "Docs/BaramAppearance/Assets/head-0-4.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 4,
+      "index": 4,
+      "bytes": 320,
+      "canonical": "head-0-4"
+    },
+    {
+      "name": "head-0-5",
+      "file": "Docs/BaramAppearance/Assets/head-0-5.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 5,
+      "index": 5,
+      "bytes": 319,
+      "canonical": "head-0-5"
+    },
+    {
+      "name": "head-0-6",
+      "file": "Docs/BaramAppearance/Assets/head-0-6.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 6,
+      "index": 6,
+      "bytes": 354,
+      "canonical": "head-0-6"
+    },
+    {
+      "name": "head-0-7",
+      "file": "Docs/BaramAppearance/Assets/head-0-7.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 7,
+      "index": 7,
+      "bytes": 354,
+      "canonical": "head-0-6"
+    },
+    {
+      "name": "head-0-8",
+      "file": "Docs/BaramAppearance/Assets/head-0-8.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 8,
+      "index": 8,
+      "bytes": 354,
+      "canonical": "head-0-6"
+    },
+    {
+      "name": "head-0-9",
+      "file": "Docs/BaramAppearance/Assets/head-0-9.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 9,
+      "index": 9,
+      "bytes": 313,
+      "canonical": "head-0-9"
+    },
+    {
+      "name": "head-0-10",
+      "file": "Docs/BaramAppearance/Assets/head-0-10.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 10,
+      "index": 10,
+      "bytes": 312,
+      "canonical": "head-0-10"
+    },
+    {
+      "name": "head-0-11",
+      "file": "Docs/BaramAppearance/Assets/head-0-11.png",
+      "kind": "Head",
+      "style": 0,
+      "motion": 11,
+      "index": 11,
+      "bytes": 317,
+      "canonical": "head-0-11"
+    },
+    {
+      "name": "head-1-0",
+      "file": "Docs/BaramAppearance/Assets/head-1-0.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 0,
+      "index": 100,
+      "bytes": 173,
+      "canonical": "head-1-0"
+    },
+    {
+      "name": "head-1-1",
+      "file": "Docs/BaramAppearance/Assets/head-1-1.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 1,
+      "index": 101,
+      "bytes": 173,
+      "canonical": "head-1-0"
+    },
+    {
+      "name": "head-1-2",
+      "file": "Docs/BaramAppearance/Assets/head-1-2.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 2,
+      "index": 102,
+      "bytes": 173,
+      "canonical": "head-1-0"
+    },
+    {
+      "name": "head-1-3",
+      "file": "Docs/BaramAppearance/Assets/head-1-3.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 3,
+      "index": 103,
+      "bytes": 254,
+      "canonical": "head-1-3"
+    },
+    {
+      "name": "head-1-4",
+      "file": "Docs/BaramAppearance/Assets/head-1-4.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 4,
+      "index": 104,
+      "bytes": 246,
+      "canonical": "head-1-4"
+    },
+    {
+      "name": "head-1-5",
+      "file": "Docs/BaramAppearance/Assets/head-1-5.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 5,
+      "index": 105,
+      "bytes": 254,
+      "canonical": "head-1-3"
+    },
+    {
+      "name": "head-1-6",
+      "file": "Docs/BaramAppearance/Assets/head-1-6.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 6,
+      "index": 106,
+      "bytes": 274,
+      "canonical": "head-1-6"
+    },
+    {
+      "name": "head-1-7",
+      "file": "Docs/BaramAppearance/Assets/head-1-7.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 7,
+      "index": 107,
+      "bytes": 274,
+      "canonical": "head-1-6"
+    },
+    {
+      "name": "head-1-8",
+      "file": "Docs/BaramAppearance/Assets/head-1-8.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 8,
+      "index": 108,
+      "bytes": 274,
+      "canonical": "head-1-6"
+    },
+    {
+      "name": "head-1-9",
+      "file": "Docs/BaramAppearance/Assets/head-1-9.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 9,
+      "index": 109,
+      "bytes": 266,
+      "canonical": "head-1-9"
+    },
+    {
+      "name": "head-1-10",
+      "file": "Docs/BaramAppearance/Assets/head-1-10.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 10,
+      "index": 110,
+      "bytes": 266,
+      "canonical": "head-1-9"
+    },
+    {
+      "name": "head-1-11",
+      "file": "Docs/BaramAppearance/Assets/head-1-11.png",
+      "kind": "Head",
+      "style": 1,
+      "motion": 11,
+      "index": 111,
+      "bytes": 258,
+      "canonical": "head-1-11"
+    },
+    {
+      "name": "head-2-0",
+      "file": "Docs/BaramAppearance/Assets/head-2-0.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 0,
+      "index": 200,
+      "bytes": 178,
+      "canonical": "head-2-0"
+    },
+    {
+      "name": "head-2-1",
+      "file": "Docs/BaramAppearance/Assets/head-2-1.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 1,
+      "index": 201,
+      "bytes": 178,
+      "canonical": "head-2-0"
+    },
+    {
+      "name": "head-2-2",
+      "file": "Docs/BaramAppearance/Assets/head-2-2.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 2,
+      "index": 202,
+      "bytes": 178,
+      "canonical": "head-2-0"
+    },
+    {
+      "name": "head-2-3",
+      "file": "Docs/BaramAppearance/Assets/head-2-3.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 3,
+      "index": 203,
+      "bytes": 281,
+      "canonical": "head-2-3"
+    },
+    {
+      "name": "head-2-4",
+      "file": "Docs/BaramAppearance/Assets/head-2-4.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 4,
+      "index": 204,
+      "bytes": 270,
+      "canonical": "head-2-4"
+    },
+    {
+      "name": "head-2-5",
+      "file": "Docs/BaramAppearance/Assets/head-2-5.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 5,
+      "index": 205,
+      "bytes": 281,
+      "canonical": "head-2-3"
+    },
+    {
+      "name": "head-2-6",
+      "file": "Docs/BaramAppearance/Assets/head-2-6.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 6,
+      "index": 206,
+      "bytes": 313,
+      "canonical": "head-2-6"
+    },
+    {
+      "name": "head-2-7",
+      "file": "Docs/BaramAppearance/Assets/head-2-7.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 7,
+      "index": 207,
+      "bytes": 313,
+      "canonical": "head-2-6"
+    },
+    {
+      "name": "head-2-8",
+      "file": "Docs/BaramAppearance/Assets/head-2-8.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 8,
+      "index": 208,
+      "bytes": 313,
+      "canonical": "head-2-6"
+    },
+    {
+      "name": "head-2-9",
+      "file": "Docs/BaramAppearance/Assets/head-2-9.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 9,
+      "index": 209,
+      "bytes": 282,
+      "canonical": "head-2-9"
+    },
+    {
+      "name": "head-2-10",
+      "file": "Docs/BaramAppearance/Assets/head-2-10.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 10,
+      "index": 210,
+      "bytes": 282,
+      "canonical": "head-2-9"
+    },
+    {
+      "name": "head-2-11",
+      "file": "Docs/BaramAppearance/Assets/head-2-11.png",
+      "kind": "Head",
+      "style": 2,
+      "motion": 11,
+      "index": 211,
+      "bytes": 272,
+      "canonical": "head-2-11"
+    },
+    {
+      "name": "head-3-0",
+      "file": "Docs/BaramAppearance/Assets/head-3-0.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 0,
+      "index": 300,
+      "bytes": 172,
+      "canonical": "head-3-0"
+    },
+    {
+      "name": "head-3-1",
+      "file": "Docs/BaramAppearance/Assets/head-3-1.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 1,
+      "index": 301,
+      "bytes": 172,
+      "canonical": "head-3-0"
+    },
+    {
+      "name": "head-3-2",
+      "file": "Docs/BaramAppearance/Assets/head-3-2.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 2,
+      "index": 302,
+      "bytes": 172,
+      "canonical": "head-3-0"
+    },
+    {
+      "name": "head-3-3",
+      "file": "Docs/BaramAppearance/Assets/head-3-3.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 3,
+      "index": 303,
+      "bytes": 259,
+      "canonical": "head-3-3"
+    },
+    {
+      "name": "head-3-4",
+      "file": "Docs/BaramAppearance/Assets/head-3-4.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 4,
+      "index": 304,
+      "bytes": 251,
+      "canonical": "head-3-4"
+    },
+    {
+      "name": "head-3-5",
+      "file": "Docs/BaramAppearance/Assets/head-3-5.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 5,
+      "index": 305,
+      "bytes": 259,
+      "canonical": "head-3-3"
+    },
+    {
+      "name": "head-3-6",
+      "file": "Docs/BaramAppearance/Assets/head-3-6.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 6,
+      "index": 306,
+      "bytes": 288,
+      "canonical": "head-3-6"
+    },
+    {
+      "name": "head-3-7",
+      "file": "Docs/BaramAppearance/Assets/head-3-7.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 7,
+      "index": 307,
+      "bytes": 288,
+      "canonical": "head-3-6"
+    },
+    {
+      "name": "head-3-8",
+      "file": "Docs/BaramAppearance/Assets/head-3-8.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 8,
+      "index": 308,
+      "bytes": 288,
+      "canonical": "head-3-6"
+    },
+    {
+      "name": "head-3-9",
+      "file": "Docs/BaramAppearance/Assets/head-3-9.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 9,
+      "index": 309,
+      "bytes": 256,
+      "canonical": "head-3-9"
+    },
+    {
+      "name": "head-3-10",
+      "file": "Docs/BaramAppearance/Assets/head-3-10.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 10,
+      "index": 310,
+      "bytes": 256,
+      "canonical": "head-3-9"
+    },
+    {
+      "name": "head-3-11",
+      "file": "Docs/BaramAppearance/Assets/head-3-11.png",
+      "kind": "Head",
+      "style": 3,
+      "motion": 11,
+      "index": 311,
+      "bytes": 246,
+      "canonical": "head-3-11"
+    },
+    {
+      "name": "head-4-0",
+      "file": "Docs/BaramAppearance/Assets/head-4-0.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 0,
+      "index": 400,
+      "bytes": 197,
+      "canonical": "head-4-0"
+    },
+    {
+      "name": "head-4-1",
+      "file": "Docs/BaramAppearance/Assets/head-4-1.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 1,
+      "index": 401,
+      "bytes": 197,
+      "canonical": "head-4-0"
+    },
+    {
+      "name": "head-4-2",
+      "file": "Docs/BaramAppearance/Assets/head-4-2.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 2,
+      "index": 402,
+      "bytes": 197,
+      "canonical": "head-4-0"
+    },
+    {
+      "name": "head-4-3",
+      "file": "Docs/BaramAppearance/Assets/head-4-3.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 3,
+      "index": 403,
+      "bytes": 279,
+      "canonical": "head-4-3"
+    },
+    {
+      "name": "head-4-4",
+      "file": "Docs/BaramAppearance/Assets/head-4-4.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 4,
+      "index": 404,
+      "bytes": 284,
+      "canonical": "head-4-4"
+    },
+    {
+      "name": "head-4-5",
+      "file": "Docs/BaramAppearance/Assets/head-4-5.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 5,
+      "index": 405,
+      "bytes": 275,
+      "canonical": "head-4-5"
+    },
+    {
+      "name": "head-4-6",
+      "file": "Docs/BaramAppearance/Assets/head-4-6.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 6,
+      "index": 406,
+      "bytes": 271,
+      "canonical": "head-4-6"
+    },
+    {
+      "name": "head-4-7",
+      "file": "Docs/BaramAppearance/Assets/head-4-7.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 7,
+      "index": 407,
+      "bytes": 271,
+      "canonical": "head-4-6"
+    },
+    {
+      "name": "head-4-8",
+      "file": "Docs/BaramAppearance/Assets/head-4-8.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 8,
+      "index": 408,
+      "bytes": 271,
+      "canonical": "head-4-6"
+    },
+    {
+      "name": "head-4-9",
+      "file": "Docs/BaramAppearance/Assets/head-4-9.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 9,
+      "index": 409,
+      "bytes": 270,
+      "canonical": "head-4-9"
+    },
+    {
+      "name": "head-4-10",
+      "file": "Docs/BaramAppearance/Assets/head-4-10.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 10,
+      "index": 410,
+      "bytes": 274,
+      "canonical": "head-4-10"
+    },
+    {
+      "name": "head-4-11",
+      "file": "Docs/BaramAppearance/Assets/head-4-11.png",
+      "kind": "Head",
+      "style": 4,
+      "motion": 11,
+      "index": 411,
+      "bytes": 275,
+      "canonical": "head-4-11"
+    },
+    {
+      "name": "head-5-0",
+      "file": "Docs/BaramAppearance/Assets/head-5-0.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 0,
+      "index": 500,
+      "bytes": 257,
+      "canonical": "head-5-0"
+    },
+    {
+      "name": "head-5-1",
+      "file": "Docs/BaramAppearance/Assets/head-5-1.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 1,
+      "index": 501,
+      "bytes": 257,
+      "canonical": "head-5-0"
+    },
+    {
+      "name": "head-5-2",
+      "file": "Docs/BaramAppearance/Assets/head-5-2.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 2,
+      "index": 502,
+      "bytes": 257,
+      "canonical": "head-5-2"
+    },
+    {
+      "name": "head-5-3",
+      "file": "Docs/BaramAppearance/Assets/head-5-3.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 3,
+      "index": 503,
+      "bytes": 285,
+      "canonical": "head-5-3"
+    },
+    {
+      "name": "head-5-4",
+      "file": "Docs/BaramAppearance/Assets/head-5-4.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 4,
+      "index": 504,
+      "bytes": 285,
+      "canonical": "head-5-3"
+    },
+    {
+      "name": "head-5-5",
+      "file": "Docs/BaramAppearance/Assets/head-5-5.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 5,
+      "index": 505,
+      "bytes": 285,
+      "canonical": "head-5-3"
+    },
+    {
+      "name": "head-5-6",
+      "file": "Docs/BaramAppearance/Assets/head-5-6.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 6,
+      "index": 506,
+      "bytes": 318,
+      "canonical": "head-5-6"
+    },
+    {
+      "name": "head-5-7",
+      "file": "Docs/BaramAppearance/Assets/head-5-7.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 7,
+      "index": 507,
+      "bytes": 318,
+      "canonical": "head-5-6"
+    },
+    {
+      "name": "head-5-8",
+      "file": "Docs/BaramAppearance/Assets/head-5-8.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 8,
+      "index": 508,
+      "bytes": 318,
+      "canonical": "head-5-6"
+    },
+    {
+      "name": "head-5-9",
+      "file": "Docs/BaramAppearance/Assets/head-5-9.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 9,
+      "index": 509,
+      "bytes": 289,
+      "canonical": "head-5-9"
+    },
+    {
+      "name": "head-5-10",
+      "file": "Docs/BaramAppearance/Assets/head-5-10.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 10,
+      "index": 510,
+      "bytes": 289,
+      "canonical": "head-5-9"
+    },
+    {
+      "name": "head-5-11",
+      "file": "Docs/BaramAppearance/Assets/head-5-11.png",
+      "kind": "Head",
+      "style": 5,
+      "motion": 11,
+      "index": 511,
+      "bytes": 289,
+      "canonical": "head-5-9"
+    },
+    {
+      "name": "head-6-0",
+      "file": "Docs/BaramAppearance/Assets/head-6-0.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 0,
+      "index": 600,
+      "bytes": 220,
+      "canonical": "head-6-0"
+    },
+    {
+      "name": "head-6-1",
+      "file": "Docs/BaramAppearance/Assets/head-6-1.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 1,
+      "index": 601,
+      "bytes": 220,
+      "canonical": "head-6-0"
+    },
+    {
+      "name": "head-6-2",
+      "file": "Docs/BaramAppearance/Assets/head-6-2.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 2,
+      "index": 602,
+      "bytes": 220,
+      "canonical": "head-6-0"
+    },
+    {
+      "name": "head-6-3",
+      "file": "Docs/BaramAppearance/Assets/head-6-3.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 3,
+      "index": 603,
+      "bytes": 296,
+      "canonical": "head-6-3"
+    },
+    {
+      "name": "head-6-4",
+      "file": "Docs/BaramAppearance/Assets/head-6-4.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 4,
+      "index": 604,
+      "bytes": 296,
+      "canonical": "head-6-3"
+    },
+    {
+      "name": "head-6-5",
+      "file": "Docs/BaramAppearance/Assets/head-6-5.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 5,
+      "index": 605,
+      "bytes": 296,
+      "canonical": "head-6-3"
+    },
+    {
+      "name": "head-6-6",
+      "file": "Docs/BaramAppearance/Assets/head-6-6.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 6,
+      "index": 606,
+      "bytes": 301,
+      "canonical": "head-6-6"
+    },
+    {
+      "name": "head-6-7",
+      "file": "Docs/BaramAppearance/Assets/head-6-7.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 7,
+      "index": 607,
+      "bytes": 306,
+      "canonical": "head-6-7"
+    },
+    {
+      "name": "head-6-8",
+      "file": "Docs/BaramAppearance/Assets/head-6-8.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 8,
+      "index": 608,
+      "bytes": 300,
+      "canonical": "head-6-8"
+    },
+    {
+      "name": "head-6-9",
+      "file": "Docs/BaramAppearance/Assets/head-6-9.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 9,
+      "index": 609,
+      "bytes": 296,
+      "canonical": "head-6-9"
+    },
+    {
+      "name": "head-6-10",
+      "file": "Docs/BaramAppearance/Assets/head-6-10.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 10,
+      "index": 610,
+      "bytes": 296,
+      "canonical": "head-6-9"
+    },
+    {
+      "name": "head-6-11",
+      "file": "Docs/BaramAppearance/Assets/head-6-11.png",
+      "kind": "Head",
+      "style": 6,
+      "motion": 11,
+      "index": 611,
+      "bytes": 296,
+      "canonical": "head-6-9"
+    },
+    {
+      "name": "head-7-0",
+      "file": "Docs/BaramAppearance/Assets/head-7-0.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 0,
+      "index": 700,
+      "bytes": 305,
+      "canonical": "head-7-0"
+    },
+    {
+      "name": "head-7-1",
+      "file": "Docs/BaramAppearance/Assets/head-7-1.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 1,
+      "index": 701,
+      "bytes": 305,
+      "canonical": "head-7-0"
+    },
+    {
+      "name": "head-7-2",
+      "file": "Docs/BaramAppearance/Assets/head-7-2.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 2,
+      "index": 702,
+      "bytes": 305,
+      "canonical": "head-7-0"
+    },
+    {
+      "name": "head-7-3",
+      "file": "Docs/BaramAppearance/Assets/head-7-3.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 3,
+      "index": 703,
+      "bytes": 334,
+      "canonical": "head-7-3"
+    },
+    {
+      "name": "head-7-4",
+      "file": "Docs/BaramAppearance/Assets/head-7-4.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 4,
+      "index": 704,
+      "bytes": 338,
+      "canonical": "head-7-4"
+    },
+    {
+      "name": "head-7-5",
+      "file": "Docs/BaramAppearance/Assets/head-7-5.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 5,
+      "index": 705,
+      "bytes": 338,
+      "canonical": "head-7-4"
+    },
+    {
+      "name": "head-7-6",
+      "file": "Docs/BaramAppearance/Assets/head-7-6.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 6,
+      "index": 706,
+      "bytes": 314,
+      "canonical": "head-7-6"
+    },
+    {
+      "name": "head-7-7",
+      "file": "Docs/BaramAppearance/Assets/head-7-7.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 7,
+      "index": 707,
+      "bytes": 314,
+      "canonical": "head-7-6"
+    },
+    {
+      "name": "head-7-8",
+      "file": "Docs/BaramAppearance/Assets/head-7-8.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 8,
+      "index": 708,
+      "bytes": 314,
+      "canonical": "head-7-6"
+    },
+    {
+      "name": "head-7-9",
+      "file": "Docs/BaramAppearance/Assets/head-7-9.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 9,
+      "index": 709,
+      "bytes": 346,
+      "canonical": "head-7-9"
+    },
+    {
+      "name": "head-7-10",
+      "file": "Docs/BaramAppearance/Assets/head-7-10.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 10,
+      "index": 710,
+      "bytes": 346,
+      "canonical": "head-7-10"
+    },
+    {
+      "name": "head-7-11",
+      "file": "Docs/BaramAppearance/Assets/head-7-11.png",
+      "kind": "Head",
+      "style": 7,
+      "motion": 11,
+      "index": 711,
+      "bytes": 346,
+      "canonical": "head-7-10"
+    },
+    {
+      "name": "head-8-0",
+      "file": "Docs/BaramAppearance/Assets/head-8-0.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 0,
+      "index": 800,
+      "bytes": 273,
+      "canonical": "head-8-0"
+    },
+    {
+      "name": "head-8-1",
+      "file": "Docs/BaramAppearance/Assets/head-8-1.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 1,
+      "index": 801,
+      "bytes": 273,
+      "canonical": "head-8-0"
+    },
+    {
+      "name": "head-8-2",
+      "file": "Docs/BaramAppearance/Assets/head-8-2.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 2,
+      "index": 802,
+      "bytes": 273,
+      "canonical": "head-8-0"
+    },
+    {
+      "name": "head-8-3",
+      "file": "Docs/BaramAppearance/Assets/head-8-3.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 3,
+      "index": 803,
+      "bytes": 298,
+      "canonical": "head-8-3"
+    },
+    {
+      "name": "head-8-4",
+      "file": "Docs/BaramAppearance/Assets/head-8-4.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 4,
+      "index": 804,
+      "bytes": 298,
+      "canonical": "head-8-3"
+    },
+    {
+      "name": "head-8-5",
+      "file": "Docs/BaramAppearance/Assets/head-8-5.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 5,
+      "index": 805,
+      "bytes": 298,
+      "canonical": "head-8-3"
+    },
+    {
+      "name": "head-8-6",
+      "file": "Docs/BaramAppearance/Assets/head-8-6.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 6,
+      "index": 806,
+      "bytes": 313,
+      "canonical": "head-8-6"
+    },
+    {
+      "name": "head-8-7",
+      "file": "Docs/BaramAppearance/Assets/head-8-7.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 7,
+      "index": 807,
+      "bytes": 313,
+      "canonical": "head-8-6"
+    },
+    {
+      "name": "head-8-8",
+      "file": "Docs/BaramAppearance/Assets/head-8-8.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 8,
+      "index": 808,
+      "bytes": 313,
+      "canonical": "head-8-6"
+    },
+    {
+      "name": "head-8-9",
+      "file": "Docs/BaramAppearance/Assets/head-8-9.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 9,
+      "index": 809,
+      "bytes": 306,
+      "canonical": "head-8-9"
+    },
+    {
+      "name": "head-8-10",
+      "file": "Docs/BaramAppearance/Assets/head-8-10.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 10,
+      "index": 810,
+      "bytes": 306,
+      "canonical": "head-8-9"
+    },
+    {
+      "name": "head-8-11",
+      "file": "Docs/BaramAppearance/Assets/head-8-11.png",
+      "kind": "Head",
+      "style": 8,
+      "motion": 11,
+      "index": 811,
+      "bytes": 306,
+      "canonical": "head-8-9"
+    },
+    {
+      "name": "head-9-0",
+      "file": "Docs/BaramAppearance/Assets/head-9-0.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 0,
+      "index": 900,
+      "bytes": 410,
+      "canonical": "head-9-0"
+    },
+    {
+      "name": "head-9-1",
+      "file": "Docs/BaramAppearance/Assets/head-9-1.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 1,
+      "index": 901,
+      "bytes": 410,
+      "canonical": "head-9-0"
+    },
+    {
+      "name": "head-9-2",
+      "file": "Docs/BaramAppearance/Assets/head-9-2.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 2,
+      "index": 902,
+      "bytes": 410,
+      "canonical": "head-9-0"
+    },
+    {
+      "name": "head-9-3",
+      "file": "Docs/BaramAppearance/Assets/head-9-3.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 3,
+      "index": 903,
+      "bytes": 403,
+      "canonical": "head-9-3"
+    },
+    {
+      "name": "head-9-4",
+      "file": "Docs/BaramAppearance/Assets/head-9-4.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 4,
+      "index": 904,
+      "bytes": 403,
+      "canonical": "head-9-3"
+    },
+    {
+      "name": "head-9-5",
+      "file": "Docs/BaramAppearance/Assets/head-9-5.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 5,
+      "index": 905,
+      "bytes": 399,
+      "canonical": "head-9-5"
+    },
+    {
+      "name": "head-9-6",
+      "file": "Docs/BaramAppearance/Assets/head-9-6.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 6,
+      "index": 906,
+      "bytes": 441,
+      "canonical": "head-9-6"
+    },
+    {
+      "name": "head-9-7",
+      "file": "Docs/BaramAppearance/Assets/head-9-7.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 7,
+      "index": 907,
+      "bytes": 441,
+      "canonical": "head-9-6"
+    },
+    {
+      "name": "head-9-8",
+      "file": "Docs/BaramAppearance/Assets/head-9-8.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 8,
+      "index": 908,
+      "bytes": 441,
+      "canonical": "head-9-6"
+    },
+    {
+      "name": "head-9-9",
+      "file": "Docs/BaramAppearance/Assets/head-9-9.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 9,
+      "index": 909,
+      "bytes": 399,
+      "canonical": "head-9-9"
+    },
+    {
+      "name": "head-9-10",
+      "file": "Docs/BaramAppearance/Assets/head-9-10.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 10,
+      "index": 910,
+      "bytes": 399,
+      "canonical": "head-9-9"
+    },
+    {
+      "name": "head-9-11",
+      "file": "Docs/BaramAppearance/Assets/head-9-11.png",
+      "kind": "Head",
+      "style": 9,
+      "motion": 11,
+      "index": 911,
+      "bytes": 399,
+      "canonical": "head-9-9"
+    }
+  ]
+}

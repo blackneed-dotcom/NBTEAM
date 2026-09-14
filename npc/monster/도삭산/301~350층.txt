@@ -1,0 +1,11 @@
+@도삭산해파리부하	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("만리향씨앗"), 1;
+}
+
+@도삭산해파리수하	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("만리향씨앗"), 1;
+}
+
+@도삭산해파리장군	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("금덩어리"), 400;
+}

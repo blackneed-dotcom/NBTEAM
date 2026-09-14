@@ -1,0 +1,103 @@
+{
+  "source": "C:/Users/black/UI/000000.map",
+  "sourceSha256": "e1afd305e6c12aa296c85a11217fba2d9b16facfefe5efb50c2f665042cbfd53",
+  "archive": "C:/Users/black/UI/TILE.DAT",
+  "mapName": "가상계",
+  "format": {
+    "width": 3,
+    "height": 3,
+    "header": "two big-endian uint16 dimensions",
+    "record": "two big-endian uint16 values",
+    "fileBytes": 40
+  },
+  "cells": [
+    {
+      "x": 0,
+      "y": 0,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "tileId": 1429,
+      "object": 0
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "tileId": 1429,
+      "object": 0
+    }
+  ],
+  "tile": {
+    "entry": "tile.epf",
+    "index": 1429,
+    "width": 24,
+    "height": 24,
+    "offset": 891046
+  },
+  "palette": {
+    "entry": "tile.pal",
+    "tableEntry": "tile.tbl",
+    "tableWord": 32769,
+    "selectedPalette": 1,
+    "status": "provisional; flag and palette selection semantics not confirmed"
+  },
+  "render": {
+    "width": 72,
+    "height": 72,
+    "ruid": "b66ec027e8484dfa9fa5548871fa9a9b",
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "limitations": [
+    "visual preview only",
+    "palette mapping not verified against original rendering",
+    "no collision or map-bound movement implemented"
+  ]
+}

@@ -1,0 +1,15 @@
+@말갈족병사	{
+	set .@id, objid();
+
+	//callfunc "mob_atlarge_spell", 200, 0, 176, 8, rand(100000, 150000), 1, 4, 3, "말갈의일격", "을";
+	callfunc "mob_constanting_spell", 300, 1, 176, 8, rand(100000, 150000), 0, "말갈의일격", "을";
+}
+
+@말갈족병사드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루6"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각6"), 1;
+}
+
+@말갈족대장드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각6"), 1;
+}

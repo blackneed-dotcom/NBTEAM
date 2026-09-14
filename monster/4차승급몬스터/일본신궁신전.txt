@@ -1,0 +1,9 @@
+//@요제	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 예언컨데... 인간은 스스로 멸하리라...";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("요제의증표"), 1;
+}
+@요제공격	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 8, 184, rand(400000, 450000), 2, "환각의안개", 16, "환각의안개..!";
+}

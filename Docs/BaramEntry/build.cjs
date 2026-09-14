@@ -1,0 +1,42 @@
+const {UIBuilder}=require('../../.agents/skills/msw-ui-system/scripts/msw_ui_builder.cjs');
+const b=new UIBuilder('BaramEntry',100,true);
+const title='191bdff54c3148f08786f62683615493',creation='7a341bdc07eb43a68fb4aa4f17788cc0',login='55ff75c1bf944e63830d342ba731f529';
+b.panel('Backdrop',{anchor:'stretch',color:'#000000',alpha:1,raycast:true});
+b.empty('Frame',{anchor:'middle-center',rect_size:[640,480]});
+b.patchComponent('Frame','MOD.Core.UITransformComponent',{UIScale:{x:2.25,y:2.25,z:1},Scale:{x:2.25,y:2.25,z:1}});
+function picture(p,r,w,h,x=0,y=0){b.sprite('Frame/'+p,{anchor:'top-left',pos:[x,-y],rect_size:[w,h],image_ruid:r,sprite_type:0,color:'#FFFFFF',alpha:1,raycast:true});}
+function text(p,s,x,y,w,h,size=11,color='#FDE4B0'){b.text('Frame/'+p,s,{anchor:'top-left',pos:[x,-y],rect_size:[w,h],size,color,alignment:4,overflow:1});b.patchComponent('Frame/'+p,'MOD.Core.TextGUIRendererComponent',{Font:'Galmuri9',IsRichText:false});}
+function hit(p,x,y,w,h){b.sprite('Frame/'+p,{anchor:'top-left',pos:[x,-y],rect_size:[w,h],alpha:0,raycast:true});b.addComponent('Frame/'+p,'MOD.Core.UITouchReceiveComponent');}
+picture('Title',title,640,480);
+hit('Title/New',468,298,159,22);hit('Title/Continue',468,328,159,22);
+picture('Create',creation,640,480);
+text('Create/NameDeferred','추후 추가',126,125,146,21,10,'#503018');
+text('Create/PasswordDeferred','MSW 계정 사용',126,162,146,20,10,'#503018');
+text('Create/ConfirmDeferred','별도 비밀번호 없음',126,199,146,20,10,'#503018');
+hit('Create/Male',461,102,29,31);hit('Create/Female',461,215,29,31);
+hit('Create/Left',329,157,29,31);hit('Create/Right',593,157,29,31);
+picture('Create/Preview','c64b25f16d014f5284f06b2ed46e7052',48,72,451,137);
+picture('Create/PreviewHead','3d16bf20f98748b8a7a2fb67ad1256c4',48,72,451,137);
+b.button('Frame/Create/Turn','회전',{anchor:'top-left',pos:[523,-181],rect_size:[52,20],font_size:9,bg_color:'#80532D',color:'#FFF0D0'});
+b.addComponent('Frame/Create/Turn','MOD.Core.UITouchReceiveComponent');
+text('Create/PreviewLabel','머리 1 / 10',371,183,74,16,9);
+hit('Create/Goguryeo',125,274,42,42);hit('Create/Buyeo',176,274,42,42);
+for(let i=0;i<4;i++)hit('Create/Totem'+i,369+i*50,274,42,42);
+text('Create/Selection','',340,250,273,18,11);
+text('Create/NationText','',25,351,273,45,18);
+text('Create/TotemText','',341,351,249,45,18);
+text('Create/Status','',62,423,520,22,11);
+hit('Create/Confirm',245,456,76,21);hit('Create/Cancel',323,456,77,21);
+picture('Login',login,284,187,178,146);
+text('Login/Account','MSW 계정',110,66,126,18,10,'#402818');
+text('Login/Password','자동 인증',110,89,126,18,10,'#402818');
+hit('Login/Confirm',67,133,73,23);hit('Login/Cancel',145,133,73,23);
+b.panel('Frame/Notice',{anchor:'middle-center',rect_size:[340,150],color:'#51331B',alpha:1,raycast:true});
+text('Notice/Text','',15,20,310,72,13);
+b.button('Frame/Notice/Confirm','확인',{anchor:'top-left',pos:[128,-106],rect_size:[84,28],font_size:12,bg_color:'#A87534',color:'#FFF0D0'});
+b.addComponent('Frame/Notice/Confirm','MOD.Core.UITouchReceiveComponent');
+b.panel('Frame/Loading',{anchor:'stretch',color:'#17100A',alpha:1,raycast:true});
+text('Loading/Title','바람의 나라',160,188,320,40,25);
+text('Loading/Text','캐릭터를 불러오는 중...',130,244,380,24,12);
+for(const p of ['Title','Create','Login','Notice'])b.patch('Frame/'+p,{enable:false});
+b.write('ui/BaramEntry.ui');

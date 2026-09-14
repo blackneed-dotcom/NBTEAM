@@ -1,0 +1,42 @@
+@Component
+script BaramCharacterStats extends Component
+    -- Level-1 initial values explicitly confirmed by the user.
+    -- Local character attributes; growth and persistence are not implemented.
+    property integer Strength = 1
+    property integer Dexterity = 1
+    property integer Intelligence = 1
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        self._T.hud = nil
+        self._T.lastAttributes = ""
+        log("[BaramStats] level-1 attributes: strength=1 dexterity=1 intelligence=1")
+    end
+
+    @ExecSpace("ClientOnly")
+    method boolean SetAttributes(integer strength, integer dexterity, integer intelligence)
+        if strength < 0 or dexterity < 0 or intelligence < 0 then return false end
+        self.Strength = strength
+        self.Dexterity = dexterity
+        self.Intelligence = intelligence
+        return true
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        local hudEntity = self._T.hud
+        if not isvalid(hudEntity) then
+            hudEntity = _EntityService:GetEntityByPath("/ui/BaramHUD")
+            if not isvalid(hudEntity) then return end
+            self._T.hud = hudEntity
+            self._T.lastAttributes = ""
+        end
+        local signature = tostring(self.Strength) .. ":" .. tostring(self.Dexterity) .. ":" .. tostring(self.Intelligence)
+        if signature == self._T.lastAttributes then return end
+        local hud = hudEntity:GetComponent("script.BaramHUDController")
+        if not isvalid(hud) then return end
+        hud:SetAttributes(self.Strength, self.Dexterity, self.Intelligence)
+        self._T.lastAttributes = signature
+        log("[BaramStats] HUD attributes=" .. signature)
+    end
+end

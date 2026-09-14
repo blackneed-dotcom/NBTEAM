@@ -1,0 +1,489 @@
+@강제귀환	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @target_id, script_target(@mysd);
+	if(!validid(@target_id)) end;
+
+	message @mysd, 3, "강제귀환을 외웠습니다.";
+
+	set @target_sd, id2sd(@target_id);
+	warp @target_sd, 15, rand(1,14), rand(4,10);
+	message @target_sd, 3, "GM에 의해 강제귀환 되었습니다.";
+	end;
+}
+
+@감옥보내기	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @target_id, script_target(@mysd);
+	if(!validid(@target_id)) end;
+
+	message @mysd, 3, "감옥으로 보냅니다.";
+
+	set @target_sd, id2sd(@target_id);
+	warp @target_sd, 2394, rand(1,10), rand(4,4);
+	message @target_sd, 3, "감옥으로 이송합니다.";
+	broadcast 5, "▶▶ 감옥에 죄수가 들어갔습니다.. ◀◀";
+	end;
+}
+
+@버그해결	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @target_id, script_target(@sd);
+	if(istype(@target_id) != 1)
+	{
+		message @sd, 3, "사람이 아니면 어떻게 버그 해결 할건데?";
+		end;
+	}
+	else
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_state(@target_sd) == 1) end;
+		set_state @target_sd, 0;
+		for(set @loop, 0; @loop < 8; set @loop, @loop+1)
+		{
+			set_unequipitem @target_sd, @loop;
+		}
+		spelleveryuncast @target_sd;
+		set_s_mindam @target_sd, 0;
+		set_s_maxdam @target_sd, 0;
+		set_l_mindam @target_sd, 0;
+		set_l_maxdam @target_sd, 0;
+		set_ac @target_sd, 100-get_level(@target_sd);
+		set_protection @target_sd, 0;
+		set_healing @target_sd, 0;
+		set_dam @target_sd, 0;
+		set_hit @target_sd, 0;
+		set_maxhp @sd, get_purehp(@sd);
+		set_maxmp @sd, get_puremp(@sd);
+		message @target_sd, 3, "버그해결 완료.";
+	}
+}
+
+//@전체노획	{
+	set @id, myid();
+	set @sd, mysd();
+	set @x1, 0;
+	set @x2, get_mapwidth(@sd);
+	set @y1, 0;
+	set @y2, get_mapheight(@sd);
+	message @sd, 3, "끝이라는글자나오기전에 막누르면 맵팅길수도..";
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j <= @y2; set @j, @j+1)
+		{
+			getitem @sd, @i, @j;
+		}
+		sleep 1;
+	}
+	message @sd, 3, "끝";
+}
+
+
+
+
+
+
+
+//@전체노획	{
+	set @id, myid();
+	set @sd, mysd();
+	set @x1, 0;
+	set @x2, get_mapwidth(@sd);
+	set @y1, 0;
+	set @y2, get_mapheight(@sd);
+	message @sd, 3, "끝이라는글자나오기전에 막누르면 맵팅길수도..";
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j <= @y2; set @j, @j+1)
+		{
+			getitem @sd, @i, @j;
+		}
+		sleep 1;
+	}
+	message @sd, 3, "끝";
+}
+
+
+
+
+
+
+@전체노획	{
+	set @sd, mysd();
+	set @id, myid();
+
+
+		set @x1, get_x(@id)-8;
+		set @x2, get_x(@id)+8;
+		set @y1, get_y(@id)-7;
+		set @y2, get_y(@id)+7;
+	
+		if(@x1 < 0) { set @x1, 0; }
+		if(@x2 > get_mapwidth(@sd)-1) { set @x2, get_mapwidth(@sd)-1; }
+		if(@y1 < 0) { set @y1, 0; }
+		if(@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd)-1; }
+	
+		for(set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for(set @j, @y1; @j <= @y2; set @j, @j+1)
+			{
+				getitem @sd, @i, @j;
+			}
+		}
+
+		//action @id, 6, 30, 0;
+		//sound @id, 310;
+
+		message @sd, 3, "전체노획을 외웠습니다.";
+	}
+}
+
+
+
+
+@텔레포트	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($check_spell_type != 1)
+	{
+		for(set @i, 0; @i < 52; set @i, @i+1)
+		{
+			if(checkspell(name2spellid("텔레포트")) == @i) { delspell @i; }
+		}
+		callfunc "GMSendMail", "* 마법 배우기 악용자를 발견했습니다.", "텔레포트";
+		end;
+	}
+
+	callfunc "SPELL_MOMENT";
+	callfunc "MANA_DELAY", 1000, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-1000;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			if(get_x(@id)-8 <= get_x(@target_id) && get_x(@id)+8 >= get_x(@target_id) && get_y(@id)-7 <=get_y(@target_id) && get_y(@id)+7 >= get_y(@target_id))
+			{
+				set @target_sd, id2sd(@target_id);
+				if(get_state(@target_sd) != 1 && @target_sd != @sd)
+				{
+					if(clan_exist(@sd) != 0)
+					{
+						if(get_clanname(@sd) != get_clanname(@target_sd))
+						{
+							message @sd, 3, "걸리지 않습니다.";
+							end;
+						}
+					}
+					else
+					{
+						if(clan_exist(@target_sd) != 0)
+						{
+							message @sd, 3, "걸리지 않습니다.";
+							end;
+						}
+					}
+
+					action @id, 6, 30, 0;
+					effect @id, 93;
+
+					set $tell_id, @target_id;
+					set $tell_move, get_mapid(@sd)+get_x(@id)+get_y(@id)+get_side(@id);
+
+					spellaether @sd, name2spellid("텔레포트"), 4;
+
+					spelldelay @sd, name2spellid("텔레포트"), 19;
+					message @sd, 3, "텔레포트를 시전하였습니다.";
+				}
+				else
+				{
+					message @sd, 3, "걸리지 않습니다.";
+					end;
+				}
+			}
+			else
+			{
+				message @sd, 3, "대상이 너무 멉니다..";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "걸리지 않습니다.";
+			end;
+		}
+	}
+	else end;
+	end;
+}
+
+@텔레포트지속	{
+	set @sd, mysd();
+	set @id, myid();
+	set @move, get_mapid(@sd)+get_x(@id)+get_y(@id)+get_side(@id);
+
+	if(spellaethered(@sd, name2spellid("텔레포트")) == 0) end;
+
+	if(@move != $tell_move || spellaethered(@sd, name2spellid("스턴")) == 1) { spelluncast @sd, name2spellid("텔레포트"); end; }
+
+	if(spellaetherdelay(@sd, name2spellid("텔레포트")) == 1)
+	{
+		set @target_id, $tell_id;
+		if(@target_id > 0)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(get_mapid(@sd) == get_mapid(@target_sd))
+			{
+				if(get_x(@id)-14 <= get_x(@target_id) && get_x(@id)+14 >= get_x(@target_id) && get_y(@id)-13 <=get_y(@target_id) && get_y(@id)+13 >= get_y(@target_id))
+				{
+					goto tell;
+				}
+			}
+		}
+	}
+	else end;
+	end;
+tell:
+	set @x, get_x(@target_id);
+	set @y, get_y(@target_id);
+	set @side, get_side(@id);
+	if(@side == 0)
+	{
+		set @var, canmove(@target_id, @x, @y+1);
+		if(@var)
+		{
+			set @var, canmove(@target_id, @x-1, @y);
+			if(@var)
+			{
+				set @var, canmove(@target_id, @x, @y-1);
+				if(@var)
+				{
+					set @var, canmove(@target_id, @x+1, @y);
+					if(@var)
+						end;
+					else
+					{
+
+						set_side @id, 3;
+						set_xy @id, @x+1, @y;
+					}
+				}
+				else
+				{
+					set_side @id, 2;
+					set_xy @id, @x, @y-1;
+				}
+			}
+			else
+			{
+				set_side @id, 1;
+				set_xy @id, @x-1, @y;
+			}
+		}
+		else
+			set_xy @id, @x, @y+1;
+	}
+	else if(@side == 1)
+	{
+		set @var, canmove(@target_id, @x-1, @y);
+		if(@var)
+		{
+			set @var, canmove(@target_id, @x, @y-1);
+			if(@var)
+			{
+				set @var, canmove(@target_id, @x+1, @y);
+				if(@var)
+				{
+					set @var, canmove(@target_id, @x, @y+1);
+					if(@var)
+						end;
+					else
+					{
+						set_side @id, 0;
+						set_xy @id, @x, @y+1;
+					}
+				}
+				else
+				{
+					set_side @id, 3;
+					set_xy @id, @x+1, @y;
+				}
+			}
+			else
+			{
+				set_side @id, 2;
+				set_xy @id, @x, @y-1;
+			}
+		}
+		else
+			set_xy @id, @x-1, @y;
+	}
+	else if(@side == 2)
+	{
+		set @var, canmove(@target_id, @x, @y-1);
+		if(@var)
+		{
+			set @var, canmove(@target_id, @x-1, @y);
+			if(@var)
+			{
+				set @var, canmove(@target_id, @x, @y+1);
+				if(@var)
+				{
+					set @var, canmove(@target_id, @x+1, @y);
+					if(@var)
+						end;
+					else
+					{
+						set_side @id, 3;
+						set_xy @id, @x+1, @y;
+					}
+				}
+				else
+				{
+					set_side @id, 0;
+					set_xy @id, @x, @y+1;
+				}
+			}
+			else
+			{
+				set_side @id, 1;
+				set_xy @id, @x-1, @y;
+			}
+		}
+		else
+			set_xy @id, @x, @y-1;
+	}
+	else if(@side == 3)
+	{
+		set @var, canmove(@target_id, @x+1, @y);
+		if(@var)
+		{
+			set @var, canmove(@target_id, @x, @y-1);
+			if(@var)
+			{
+				set @var, canmove(@target_id, @x-1, @y);
+				if(@var)
+				{
+					set @var, canmove(@target_id, @x, @y+1);
+					if(@var)
+						end;
+					else
+					{
+						set_side @id, 0;
+						set_xy @id, @x, @y+1;
+					}
+				}
+				else
+				{
+					set_side @id, 1;
+					set_xy @id, @x-1, @y;
+				}
+			}
+			else
+			{
+				set_side @id, 2;
+				set_xy @id, @x, @y-1;
+			}
+		}
+		else
+			set_xy @id, @x+1, @y;
+	}
+
+	updatexy @sd;
+	updatelookpc @sd, 0;
+	updatelook @target_id;
+	updateallpc @sd;
+
+	spelluncast @sd, name2spellid("텔레포트");
+}
+
+@빛의보호막	{
+	set @sd, mysd();
+	set @id, myid();
+
+
+	callfunc "SPELL_MOMENT";
+	callfunc "MANA_DELAY", 5000, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-5000;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(get_state(@target_sd) != 1)
+			{
+				if(spellaethered(@target_sd, name2spellid("빛의보호막")) == 0)
+				{
+					action @id, 6, 30, 0;
+					sound @target_id, 10;
+
+					spellaether @target_sd, name2spellid("빛의보호막"), 60;
+;
+					spelldelay @sd, name2spellid("빛의보호막"), 120;
+
+					if(@target_sd != @sd) { message @target_sd, 3, get_name(@sd) + "님이 빛의보호막을 외워주셨습니다."; }
+
+					message @sd, 3, "빛의보호막을 외웠습니다.";
+					end;
+				}
+				else
+				{
+					message @sd, 3, "이미 걸려있습니다.";
+					end;
+				}
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "걸리지 않습니다.";
+			end;
+		}
+	}
+}
+
+@빛의보호막지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("빛의보호막")) == 0) end;
+
+	if($light_shiled == 0)
+	{
+		set $light_shiled, 1;
+		set $light_shiled_hp, get_hp(@sd);
+	}
+	else if($light_shiled == 1)
+	{
+		if(get_hp(@sd) < $light_shiled_hp)
+		{
+			set @healhp, get_hp(@sd)+(get_maxhp(@sd)/100*30);
+
+			if($light_shiled_hp <= @healhp) { set_hp @sd, $light_shiled_hp; }
+			else { set_hp @sd, @healhp; }
+
+			effect @id, 62;
+		}
+	}
+}
+
+@빛의보호막해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set $light_shiled, 0;
+	message @sd, 3, "빛의보호막 해제.";
+}

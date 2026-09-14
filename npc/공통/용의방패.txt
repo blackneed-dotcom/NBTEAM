@@ -1,0 +1,46 @@
+용의방패제작	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	set @pos, list2(@list, 0, 0, "안녕하신가..", "네 안녕하세요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@ice, 0, 1, "그래..무슨일로 날 찾아 왔는가??", "용의방패를 제작해 주세요");
+		if(@pos == 0) end;
+		{
+			if(countitem(name2itemid("여신의방패")) == 0) || (countitem(name2itemid("묵룡의어금니")) == 0) || (countitem(name2itemid("흑룡의어금니")) == 0) || (countitem(name2itemid("감룡의어금니")) == 0) || (countitem(name2itemid("진룡의어금니")) == 0)
+			{
+				set @pos, dialog(0, 0, 0, "용의방패를 제작하기 위해선 묵룡,흑룡,감룡,진룡의 어금니가 필요하다네.");
+				end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 1, "오..모두 모아 왔구만.. 수고했네... 만들어 보겠네...");
+				if(@pos == 0) end;
+
+				delitem @sd, name2itemid("여신의방패"), 1;
+				delitem @sd, name2itemid("묵룡의어금니"), 1;
+				delitem @sd, name2itemid("흑룡의어금니"), 1;
+				delitem @sd, name2itemid("감룡의어금니"), 1;
+				delitem @sd, name2itemid("진룡의어금니"), 1;
+				message @sd, 3, "재료를 주었습니다";
+
+				if(rand(1, 30) <= 2)
+				{
+					additem @sd, name2itemid("용의방패"), 1;
+					set @pos, dialog(0, 0, 0, "자..받게나..방금 만든 용의방패 일쎄...어떤가? 감사한가? 껄껄껄..그래..잘 가게..");
+					broadcast 5, get_name(@sd) + "님이 용의방패 제작에 성공하셨습니다.";
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0, 0, 0, "이런..제작 도중에 방패와 재료 모두 부숴저 버렸군.. 미안하네..");
+					additem @sd, name2itemid("진룡의어금니"), 1;
+					broadcast 5, get_name(@sd) + "님이 용의방패 제작에 실패하셨습니다.";
+					end;
+				}
+			}
+		}
+	}
+}

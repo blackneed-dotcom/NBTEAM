@@ -1,0 +1,133 @@
+@누리의힘	{
+	set @sd, mysd();	
+	callfunc "MANA_DELAY", 30, name2spellid("누리의힘"), @sd;
+	callfunc "BEGINFUNC", 11, 21, name2spellid("누리의힘"), 165, 6, 0;
+	set_mp @sd, get_mp(@sd)-30;
+	set_might @sd, get_might(@sd)+3;
+	updatestatus @sd, 0;
+	message @sd, 3, "누리의힘을 외웠습니다.";
+}
+
+@누리의힘해제	{
+	set @sd, mysd();	
+	set_might @sd, get_might(@sd)-3;
+	updatestatus @sd, 0;
+	message @sd, 3, "누리의힘 해제.";
+}
+
+@무영보법	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("무영보법"), @sd;
+	callfunc "BEGINFUNC", 20, 24, name2spellid("무영보법"), 180, 6, 0;
+	set_mp @sd, get_mp(@sd)-30;
+	set_will @sd, get_will(@sd)+3;
+	updatestatus @sd, 0;
+	message @sd, 3, "무영보법을 외웠습니다.";
+	message @sd, 3, "몸이 빨라지는 느낌이 듭니다.";
+}
+
+@무영보법해제	{
+	set @sd, mysd();
+	set_will @sd, get_will(@sd)-3;
+	updatestatus @sd, 0;
+	message @sd, 3, "무영보법 해제.";
+}
+
+@투명	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "SPELL_MOMENT", 6;
+	callfunc "MANA_DELAY", 0, name2spellid("투명"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("광란의발걸음"), @sd;
+
+	if(get_mapid(@sd) == 2190)
+	{
+		message @sd, 3, "고래갑판에서는 사용할 수 없습니다.";
+		end;
+	}
+
+	if(get_state(@sd) != 0) { message @sd, 3, "평범한 상태에서만 사용이 가능합니다."; end; }
+
+	if(get_equipitem(@sd, 6) == name2itemid("투명구두") || get_equipitem(@sd, 7) == name2itemid("투명구두"))
+	{
+		sound @id, 28;
+		effect @id, 20;
+		if(get_job(@sd) != 2) { action @id, 6, 30, 0; }
+
+		spellaether @sd, name2spellid("투명"), 60;
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 20, 28, name2spellid("투명"), 180, 6, 0;
+	}
+	//say @id, 2, "투명!!";
+	set_state @sd, 2;
+	updatelookpc @sd, 1;
+	message @sd, 3, "투명을 외웠습니다.";
+}
+
+@투명해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "투명 해제.";
+}
+
+@분신	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("분신"), @sd;
+	
+	set_dam @sd, get_dam(@sd)+3;
+	message @sd, 3, "분신을 외웠습니다.";
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 11, 39, name2spellid("분신"), 625, 6, 0;
+}
+
+@분신해제	{
+	set @sd, mysd();
+	set_dam @sd, get_dam(@sd)-3;
+	message @sd, 3, "분신 해제.";
+}
+
+@기문방술	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 600, name2spellid("기문방술"), @sd;
+
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0)
+			{
+				if(get_state(@target_sd) == 0)
+				{
+					set_state @target_sd, 2;
+					updatelookpc @target_sd, 1;
+					spellaether @target_sd, name2spellid("투명"), 30;
+					spelldelay @sd, name2spellid("기문방술"), 120;
+					message @target_sd, 3, get_name(@sd) + "님이 기문방술을 외워주셨습니다.";
+				}
+			}
+		}
+	}
+	else
+	{
+		set_state @sd, 2;
+		updatelookpc @sd, 1;
+		spellaether @sd, name2spellid("투명"), 30;
+		message @sd, 3, "기문방술을 외웠습니다.";
+	}
+}
+
+@기문방술해제	{
+	set @sd, mysd();
+	set @id, myid();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	spelldelay @sd, name2spellid("기문방술"), 120;
+	message @sd, 3, "기문방술 해제";
+}

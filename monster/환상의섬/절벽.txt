@@ -1,0 +1,23 @@
+@절벽초성인성초	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("파수다지오"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("열대땅콩"), 1;
+}
+
+@절벽중성인성초	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("바나나"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("야자열매"), 1;
+}
+
+@원랑	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("늑대고기"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("늑대의이빨"), 1;
+}
+
+@검랑	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("늑대고기"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("늑대의송곳니"), 1;
+}
+
+@진인랑	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("대지의토템"), 1;
+}

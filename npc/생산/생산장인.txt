@@ -1,0 +1,312 @@
+생산장인	{
+	set @sd, mysd();
+	set @id, myid();
+
+COS001:
+	set @pos, list2(@list, 0, 0, "이 곳에는 무슨 일로 왔는가?", "생산을 가르쳐주세요.", "생산이란 무엇인가요?", "생산 장비 구매", "아무것도 아닙니다.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		if($produce_level == 0)
+		{
+COS002:
+			set @pos, dialog(0,0,1, "생산을 배우고 싶은가? 하지만 세상에 공짜가 없듯이 생산을 배움에도 공짜가 없네.");
+			if(@pos == 0) end;
+COS003:
+			set @pos, dialog(0,1,1, "생산을 배우기 위해선 노란비서 100장, 금전 1000전이 필요하네.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS002;
+COS004:
+			set @pos, list2(@list1, 0, 1, "정말로 생산을 배우겠나?", "예, 가르쳐주세요.", "아니요, 필요 없어요.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS003;
+			else if(@list1 == 1)
+			{
+				if(get_money(@sd) < 1000 || countitem(name2itemid("노란비서")) < 100)
+				{
+					set @pos, dialog(0,0,0, "생산을 배우기 위한 준비가 부족한 것 같군..");
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0,0,1, "좋아! 그럼 생산을 가르쳐주겠네. 부디 멋진 장인이 되시게나.");
+					if(@pos == 0) end;
+
+					set $produce_level, 1;
+					delitem @sd, name2itemid("노란비서"), 100;
+					set_money @sd, get_money(@sd)-1000;
+					updatestatus @sd, 2;
+					broadcast 4, "※ " + get_name(@sd) + "님이 생산기술을 습득하셨습니다.";
+					end;
+				}
+			}
+			else if(@list1 == 2)
+			{
+				set @pos, dialog(0,0,0, "그런가? 하지만 언젠가는 생산이 진정으로 필요할 순간이 올걸세.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0,0,1, "자네는 이미 생산기술을 익혔군? 한번 배운 기술은 두번 익힐 필요는 없네.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+COS005:
+		set @pos, dialog(0,0,1, "생산이란 자네가 직접 재료를 획득하여 아이템을 제작하는 것을 말하지.");
+		if(@pos == 0) end;
+COS006:
+		set @pos, dialog(0,1,1, "생산 경험을 쌓으면 쌓을수록 점점 더 수준높은 아이템을 제작할수 있네.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS005;
+COS007:
+		set @pos, dialog(0,1,1, "생산에 관심이 있다면 나를 찾아오게나.");
+		if(@pos == 1) goto COS001;
+		else if(@pos == -1) goto COS006;
+		else end;
+	}
+//	else if(@list == 3)
+//	{
+//		setarray @produce_level_check[0], 1, 2, 3, 4, 5;
+//		setarray @produce_fullexp[0], 300, 800, 1500, 3000, 4500, 7000, 8800, 10000, 12000, 15000;
+//		setarray @money[0], 1000, 3000, 5000, 10000, 20000, 30000, 50000, 70000, 100000, 150000;
+//		setarray @number[0], 10, 20, 30, 40, 50, 70, 90, 110, 130, 150;
+//		for(set @loop, 0; @loop < 10; set @loop, @loop+1)
+//		{
+//			if($produce_level == @produce_level_check[@loop])
+//			{
+//				if($produce_exp < @produce_fullexp[@loop])
+//				{
+//					set @pos, dialog(0,0,0, "아직 생산 경험이 부족한것 같은데?\\n\\n현재 생산 경험 : " + $produce_exp + "\\n필요 생산 경험 : " + @produce_fullexp[@loop]);
+//					deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+//					deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+//					deletearray @money[0], getarraysize(@money);
+//					deletearray @number[0], getarraysize(@number);
+//					end;
+//				}
+//				else
+//				{
+//					set @level_up, list1("놀라보게 성장했군. 다음 레벨로 진급하기 위해선 노란비서 " + @number[@loop] + "개, 금전 " + @money[@loop] + "전이 필요하네. 정말 진급할텐가?", "예", "아뇨");
+//					if(@level_up == 1)
+//					{
+//						if(get_money(@sd) < @money[@loop] || countitem(name2itemid("노란비서")) < @number[@loop])
+//						{
+//							set @pos, dialog(0,0,0, "진급하기 위한 성의가 부족한것 같군.");
+//							deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+//							deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+//							deletearray @money[0], getarraysize(@money);
+//							deletearray @number[0], getarraysize(@number);
+//							end;
+//						}
+//						else
+//						{
+//							set @pos, dialog(0,0,1, "정말 구해왔군. 좋아. 자네를 다음 레벨로 진급시켜 주겠네.");
+//							if(@pos == 0) end;
+//
+//							set $produce_level, $produce_level+1;
+//							set $produce_exp, 0;
+//							delitem @sd, name2itemid("노란비서"), @number[@loop];
+//							set_money @sd, get_money(@sd)-@money[@loop];
+//							updatestatus @sd, 2;
+//							broadcast 4, "※ " + get_name(@sd) + "님의 생산레벨이 " + $produce_level + "단계로 진급하셨습니다.";
+//							deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+//							deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+//							deletearray @money[0], getarraysize(@money);
+//							deletearray @number[0], getarraysize(@number);
+//							end;
+//						}
+//					}
+//					else if(@level_up == 2)
+//					{
+//						set @pos, dialog(0,0,0, "아직 진급은 필요 없는것인가?");
+//						deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+//						deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+//						deletearray @money[0], getarraysize(@money);
+//						deletearray @number[0], getarraysize(@number);
+//						end;
+//					}
+//				}
+//			}
+//		}
+//	}
+//	else if(@list == 4)
+//	{
+//		setarray @produce_level_check[0], 1, 2, 3, 4, 5;
+//		setarray @produce_fullexp[0], 300, 800, 1500, 3000, 4500, 7000, 8800, 10000, 12000, 15000;
+//		for(set @loop, 0; @loop < 10; set @loop, @loop+1)
+//		{
+//			if($produce_level == @produce_level_check[@loop])
+//			{
+//				set @pos, dialog(0,0,1, "< 생산 정보 >\\n\\n생산 레벨 : " + $produce_level + "\\n생산 경험 : " + $produce_exp + "/" + @produce_fullexp[@loop]);
+//				deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+//				deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);		
+//				if(@pos == 1) goto COS001;
+//				else if(@pos == 0) end;
+//				else end;
+//				end;
+//			}
+//		}
+//	}
+	else if(@list == 3)
+	{
+		if($produce_level == 0)
+		{
+			set @pos, dialog(0,0,0, "자네는 아직 생산 기술을 배우지 않았군. 그렇다면 무기도 필요 없을테지.");
+			end;
+		}
+		else
+		{
+			set @produce_weapon, list1("그래. 어떤 무기를 구매하겠나?", "낫(1000)", "단단한망치(1000)", "도끼(1000)");
+			if(@produce_weapon == 1) { set @item_name$, "낫"; set @need_money, 1000; }
+			else if(@produce_weapon == 2) { set @item_name$, "단단한망치"; set @need_money, 1000; }
+			else if(@produce_weapon == 3) { set @item_name$, "도끼"; set @need_money, 1000; }
+			//
+			if(get_money(@sd) < @need_money)
+			{
+				set @pos, dialog(0,0,0, "허허. 생산 장비를 구매하려거든 1000전을 준비해오게.");
+				end;
+			}
+			else
+			{
+				set @pos, dialog(0,0,1, "여기 생산장비를 주었네. 부디 좋은 생산하게.");
+				additem @sd, name2itemid(@item_name$), 1;
+				set_money @sd, get_money(@sd)-@need_money;
+				updatestatus @sd, 2;
+				end;
+			}
+		}
+	}		
+	else if(@list == 4)
+	{
+		set @pos, dialog(0,0,1, "허허.. 싱겁기는.");
+		end;
+	}
+}
+
+채광장입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($produce_level_1 == 0)
+	{
+		set @pos, dialog(0,0,0, "채광술을 보유하고 있어야 입장이 가능합니다.");
+		end;
+	}
+	else
+	{
+		set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "채광장 입장", "주의사항 듣기");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			if(spellaethered(@sd, name2spellid("채광중")))
+			{
+				set @pos, dialog(0,0,0, "채광장에 입장하실 수 없습니다. 잠시후 다시와주세요.");
+				end;
+			}
+			set @pos, dialog(0,0,1, "채광장으로 이동합니다.");
+			if(@pos == 0) end;
+
+			spellaether @sd, name2spellid("채광중"), 3600;
+			warp @sd, 20001, rand(7,11), 18;
+			end;
+		}
+		else if(@list == 2)
+		{
+		COS001:
+			set @pos, dialog(0,0,1, "채광장에 입장하신 후 1시간동안 채광장에 계실수 있습니다.");
+			if(@pos == 0) end;
+		COS002:
+			set @pos, dialog(0,1,1, "채광장에서 채광무기를 장착하지 않으시거나 채광맵을 이탈하실 경우 자동귀환 됩니다.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS001;
+			else end;
+			end;
+		}
+	}
+}
+
+직조장입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($produce_level_2 == 0)
+	{
+		set @pos, dialog(0,0,0, "직조술을 보유하고 있어야 입장이 가능합니다.");
+		end;
+	}
+	else
+	{
+		set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "직조장 입장", "주의사항 듣기");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			if(spellaethered(@sd, name2spellid("직조중")))
+			{
+				set @pos, dialog(0,0,0, "직조장에 입장하실 수 없습니다. 잠시후 다시와주세요.");
+				end;
+			}
+			set @pos, dialog(0,0,1, "직조장으로 이동합니다.");
+			if(@pos == 0) end;
+
+			spellaether @sd, name2spellid("직조중"), 3600;
+			warp @sd, 20006, rand(7,11), 18;
+			end;
+		}
+		else if(@list == 2)
+		{
+		COS001:
+			set @pos, dialog(0,0,1, "직조장에 입장하신 후 1시간동안 직조장에 계실수 있습니다.");
+			if(@pos == 0) end;
+		COS002:
+			set @pos, dialog(0,1,1, "직조장에서 직조무기를 장착하지 않으시거나 직조맵을 이탈하실 경우 자동귀환 됩니다.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS001;
+			else end;
+			end;
+		}
+	}
+}
+
+벌목장입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($produce_level_3 == 0)
+	{
+		set @pos, dialog(0,0,0, "벌목술을 보유하고 있어야 입장이 가능합니다.");
+		end;
+	}
+	else
+	{
+		set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "벌목장 입장", "주의사항 듣기");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			if(spellaethered(@sd, name2spellid("벌목중")))
+			{
+				set @pos, dialog(0,0,0, "벌목장에 입장하실 수 없습니다. 잠시후 다시와주세요.");
+				end;
+			}
+			set @pos, dialog(0,0,1, "벌목장으로 이동합니다.");
+			if(@pos == 0) end;
+
+			spellaether @sd, name2spellid("벌목중"), 3600;
+			warp @sd, 20011, rand(7,11), 18;
+			end;
+		}
+		else if(@list == 2)
+		{
+		COS001:
+			set @pos, dialog(0,0,1, "벌목장에 입장하신 후 1시간동안 벌목장에 계실수 있습니다.");
+			if(@pos == 0) end;
+		COS002:
+			set @pos, dialog(0,1,1, "벌목장에서 직조무기를 장착하지 않으시거나 벌목맵을 이탈하실 경우 자동귀환 됩니다.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS001;
+			else end;
+			end;
+		}
+	}
+}

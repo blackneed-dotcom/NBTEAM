@@ -1,0 +1,7 @@
+@유성지	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("유성지의보패"), 1;
+}
+
+@유성지공격	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 4, -1, 8, 113, rand(70000, 140000), 2, "유성소환", 10, "유성소환~!";
+}

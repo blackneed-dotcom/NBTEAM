@@ -1,0 +1,819 @@
+@화염주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 40, 320+get_grace(mysd()), 45, "화염주", 120;
+}
+
+@자무주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 45, 320+get_grace(mysd()), 23, "자무주", 120;
+}
+
+@백열주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 50, 320+get_grace(mysd()), 40, "백열주", 120;
+}
+
+@뢰진주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 55, 320+get_grace(mysd()), 27, "뢰진주", 120;
+}
+
+@화영열주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 41, 530+(get_grace(mysd())*2), 46, "화영열주", 180;
+}
+
+@자영무주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 46, 530+(get_grace(mysd())*2), 24, "자영무주", 180;
+}
+
+@백령주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 51, 530+(get_grace(mysd())*2), 41, "백령주", 180;
+}
+
+@뢰격주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 56, 530+(get_grace(mysd())*2), 28, "뢰격주", 180;
+}
+
+@화열참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 42, 740+(get_grace(mysd())*3), 47, "화열참주", 250;
+}
+
+@자천무주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 47, 740+(get_grace(mysd())*3), 25, "자천무주", 250;
+}
+
+@백열참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 52, 740+(get_grace(mysd())*3), 42, "백열참주", 250;
+}
+
+@뢰격참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 57, 740+(get_grace(mysd())*3), 29, "뢰격참주", 250;
+}
+
+@진화열참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 43, 1950+(get_grace(mysd())*4), 48, "진화열참주", 330;
+}
+
+@진자천무주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 48, 1950+(get_grace(mysd())*4), 26, "진자천무주", 330;
+}
+
+@진백열참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 53, 1950+(get_grace(mysd())*4), 43, "진백열참주", 330;
+}
+
+@진뢰격참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 58, 1950+(get_grace(mysd())*4), 30, "진뢰격참주", 330;
+}
+
+@극진화열참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 44, 3580+(get_grace(mysd())*5), 48, "극진화열참주", 360;
+}
+
+@극진자천무주	{
+	callfunc "MAGICIANSPELL", myid(), mysd(), 49, 3580+(get_grace(mysd())*5), 26, "극진자천무주", 360;
+}
+
+@극진백열참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 54, 3580+(get_grace(mysd())*5), 43, "극진백열참주", 360;
+}
+
+@극진뢰격참주	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 59, 3580+(get_grace(mysd())*5), 30, "극진뢰격참주", 360;
+}
+
+@화염주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 40, 300, 45, "화염주'첨", 180;
+}
+
+@자무주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 45, 300, 23, "자무주'첨", 180;
+}
+
+@백열주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 50, 300, 40, "백열주'첨", 180;
+}
+
+@뢰진주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 55, 300, 27, "뢰진주'첨", 180;
+}
+
+@화영열주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 41, 510, 46, "화영열주'첨", 250;
+}
+
+@자영무주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 46, 510, 24, "자영무주'첨", 250;
+}
+
+@백령주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 51, 510, 41, "백령주'첨", 250;
+}
+
+@뢰격주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 56, 510, 28, "뢰격주'첨", 250;
+}
+
+@화열참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 42, 720, 47, "화열참주'첨", 330;
+}
+
+@자천무주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 47, 720, 25, "자천무주'첨", 330;
+}
+
+@백열참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 52, 720, 42, "백열참주'첨", 330;
+}
+
+@뢰격참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 57, 720, 29, "뢰격참주'첨", 330;
+}
+
+@진화열참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 43, 1930, 48, "진화열참주'첨", 400;
+}
+
+@진자천무주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 48, 1930, 26, "진자천무주'첨", 400;
+}
+
+@진백열참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 53, 1930, 43, "진백열참주'첨", 400;
+}
+
+@진뢰격참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 58, 1930, 30, "진뢰격참주'첨", 400;
+}
+
+@극진화열참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 44, 3560, 48, "극진화열참주'첨", 470;
+}
+
+@극진자천무주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 49, 3560, 26, "극진자천무주'첨", 470;
+}
+
+@극진백열참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 54, 3560, 43, "극진백열참주'첨", 470;
+}
+
+@극진뢰격참주'첨	{
+	callfunc "MAGICIANCHOM", myid(), mysd(), 59, 3560, 30, "극진뢰격참주'첨", 470;
+}
+
+@성려멸주	{
+	set @sd, mysd();
+	set @id, myid();
+	callfunc "MANA_DELAY", get_mp(@sd)/10, 0, @sd;
+
+	if($jusul_psv1 == 1)
+	{
+		set @damage, (get_mp(@sd)/1000*get_grace(@sd))*2;
+	}
+	else
+	{
+		set @damage, (get_mp(@sd)/1000*get_grace(@sd));
+	}
+
+	callfunc "MAGICIANSPELL", @id, @sd, 60, (get_mp(@sd)/1000*get_grace(@sd)), 4, "성려멸주", get_mp(@sd)/10;
+}
+
+
+
+@헬파이어	{
+	set @sd, mysd();
+	set @id, myid();
+	if(checkspell(name2spellid("지옥인화")) < 52)
+	{
+		message @sd, 3, "상위 마법이 존재합니다.";
+		end;
+	}
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 9 || @gap_y > 9)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	set @weapon$, get_equipitem_name(@sd, 0);
+	set @delay, 7;
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산봉'태")
+	{
+	if(@rand <= 100)
+	callfunc "MAGICIANSPELL", myid(), mysd(), 73, (get_mp(@sd)), 8, "헬파이어", 0;
+	}
+	if( !strcmp(@weapon$, "용랑제삼봉") ) { set @delay, 6; }
+	else if( !strcmp(@weapon$, "용랑제사봉") ) { set @delay, 6; }
+	else if( !strcmp(@weapon$, "용설봉") ) { set @delay, 6; }
+	else if( !strcmp(@weapon$, "용랑제오봉") ) { set @delay, 5; }
+	else if( !strcmp(@weapon$, "용랑제육봉") ) { set @delay, 5; }
+	else if( !strcmp(@weapon$, "귀문진산봉'진") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "진'적염곤봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "영후단봉'극") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "용랑제칠봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "진혼단봉'이") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "현성곤봉'무") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "기간용랑제칠봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "[손상]용랑제칠봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "[손상]용랑제팔봉") ) { set @delay, 3; }
+	else if( !strcmp(@weapon$, "용랑제팔봉") ) { set @delay, 3; }
+	else if( !strcmp(@weapon$, "용랑제구봉") ) {  set @delay, 2; }
+	else if( !strcmp(@weapon$, "귀문진산봉'태") ) {  set @delay, 2; }
+	else { set @delay, 7; }
+
+	spelldelay @sd, name2spellid("헬파이어"), @delay;
+	callfunc "MAGICIANSPELL", myid(), mysd(), 73, get_mp(@sd)+(get_mp(@sd)/2)*get_joblevel(@sd)/2, 8, "헬파이어", get_mp(@sd);
+}
+
+@지옥인화	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 9 || @gap_y > 9)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	set @weapon$, get_equipitem_name(@sd, 0);
+	set @delay, 7;
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산봉'태")
+	{
+	if(@rand <= 100)
+	callfunc "MAGICIANSPELL", myid(), mysd(), 73, (get_mp(@sd)), 8, "헬파이어", 0;
+	}
+	if( !strcmp(@weapon$, "용랑제삼봉") ) { set @delay, 6; }
+	else if( !strcmp(@weapon$, "용랑제사봉") ) { set @delay, 6; }
+	else if( !strcmp(@weapon$, "용설봉") ) { set @delay, 6; }
+	else if( !strcmp(@weapon$, "용랑제오봉") ) { set @delay, 5; }
+	else if( !strcmp(@weapon$, "용랑제육봉") ) { set @delay, 5; }
+	else if( !strcmp(@weapon$, "용랑제칠봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "기간용랑제칠봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "[손상]용랑제칠봉") ) { set @delay, 4; }
+	else if( !strcmp(@weapon$, "[손상]용랑제팔봉") ) { set @delay, 3; }
+	else if( !strcmp(@weapon$, "용랑제팔봉") ) { set @delay, 3; }
+	else if( !strcmp(@weapon$, "용랑제구봉") ) {  set @delay, 2; }
+	else if( !strcmp(@weapon$, "[허상]용랑제구봉") ) {  set @delay, 2; }
+	else if( !strcmp(@weapon$, "귀문진산봉'태") ) {  set @delay, 2; }
+	else { set @delay, 7; }
+
+	spelldelay @sd, name2spellid("지옥인화"), @delay;
+	callfunc "MAGICIANSPELL", myid(), mysd(), 73, get_mp(@sd)+(get_mp(@sd)/2)+(get_mp(@sd)/2)*get_joblevel(@sd)/2, 8, "지옥인화", get_mp(@sd);
+}
+
+@삼매진화	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	spelldelay @sd, name2spellid("삼매진화"), 25;
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "영후단봉")
+	{
+	if(@rand <= 50)
+	callfunc "TARGETMAGICIANCHOM", myid(), mysd(), 73, (get_mp(@sd)/1), 104, "삼매진화", 0;
+	}
+	callfunc "TARGETMAGICIANCHOM", myid(), mysd(), 73, get_mp(@sd)+(get_mp(@sd)/1), 8, "삼매진화", get_mp(@sd);
+}
+
+@지폭지술	{
+	set @sd, mysd();
+	set @id, myid();
+	set @damage, get_mp(@sd)*6/2;
+	if($damageup) { set @damage, @damage*6; }
+	
+	callfunc "MANA_DELAY", 600, 0, @sd;
+	
+	set @x1, get_x(@id)-8;
+	set @x2, get_x(@id)+8;
+	set @y1, get_y(@id)-7;
+	set @y2, get_y(@id)+7;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					damage @id, @target, @damage, 0;
+					effect @target, 104;
+					if(ismapoption(@sd, 6)) message @target_sd, 3, get_name(@sd) + "님께서 지폭지술을 가합니다.";
+				}
+				else if (istype(@target) == 2)
+				{
+					effect @target, 104;
+					damage @id, @target, @damage, 0;
+				}
+			}
+		}
+	}
+	action @id, 6, 30, 0;
+	sound @id, 107;
+	set_mp @sd, 0;
+	if(get_equipitem_name(@sd, 0) == "현성곤봉'무") { set @delay, 195; }
+	else if(get_equipitem_name(@sd, 0) == "진혼단봉'이") { set @delay, 185; }
+	else { set @delay, 210; }
+	spellaether @sd, name2spellid("지폭지술"), @delay;
+	spelldelay @sd, name2spellid("지폭지술"), @delay;
+	message @sd, 3, "지폭지술을 외웠습니다.";
+}
+
+@폭류유성	{
+	set @sd, mysd();
+	set @id, myid();
+	set @damage, (get_hp(@sd)*75/100) + get_mp(@sd)*7/2;
+	if($damageup) { set @damage, @damage*6; }
+	
+	callfunc "MANA_DELAY", 600, 0, @sd;
+	
+	set @x1, get_x(@id)-6;
+	set @x2, get_x(@id)+5;
+	set @y1, get_y(@id)-6;
+	set @y2, get_y(@id)+5;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					damage @id, @target, @damage, 0;	
+					if(ismapoption(@sd, 6)) message @target_sd, 3, get_name(@sd) + "님께서 폭류유성을 가합니다.";
+				}
+				else if (istype(@target) == 2)
+				{
+					damage @id, @target, @damage, 0;
+				}
+			}
+		}
+	}
+	
+	effect @id, 161;
+	action @id, 6, 30, 0;
+	sound @id, 500;
+	set_hp @sd, get_hp(@sd)/2;
+	set_mp @sd, get_mp(@sd)/2;
+	if(get_equipitem_name(@sd, 0) == "현성곤봉'무") { set @delay, 285; }
+	else if(get_equipitem_name(@sd, 0) == "진혼단봉'이") { set @delay, 275; }
+	else { set @delay, 300; }
+	spellaether @sd, name2spellid("폭류유성"), @delay;
+	spelldelay @sd, name2spellid("폭류유성"), @delay;
+	message @sd, 3, "폭류유성을 외웠습니다.";
+}

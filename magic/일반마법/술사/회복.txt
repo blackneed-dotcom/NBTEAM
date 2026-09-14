@@ -1,0 +1,45 @@
+@현자의기원	{
+	callfunc "TARGETHEALMAGIC", 1000, 15000, 168, 503, "현자의기원";
+}
+
+@환기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 300, name2spellid("환기"), @sd;
+	set_mp @sd, get_mp(@sd)-300;
+
+	spellaether @sd, name2spellid("환기"), 20;
+
+	message @sd, 3, "환기를 외웠습니다.";
+}
+
+@환기지속	{
+	set @id, myid();
+	set @sd, mysd();
+
+	if(spellaethered(@sd, name2spellid("환기")) == 0){ spelluncast @sd, name2spellid("환기"); end; }
+
+	callfunc "BEGINFUNC", 70, 2, 0, 0, 6, 0;
+
+	if(get_maxhp(@sd) < (get_hp(@sd) + 30000)) { set_hp @sd, get_maxhp(@sd); }
+	else { set_hp @sd, get_hp(@sd) + 30000; }
+}
+
+@환기해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	spelldelay @sd, name2spellid("환기"), 120;
+
+	message @sd, 3, "환기 해제.";
+}
+
+@마신의기원	{
+	callfunc "TARGETHEALMAGIC", 2000, 40000, 168, 503, "마신의기원";
+	set @rand, rand(1,100);
+	{
+	if(@rand <= 100)
+	callfunc "TARGETHEALMAGIC", 2000, 2, 163, 503;
+	}
+}

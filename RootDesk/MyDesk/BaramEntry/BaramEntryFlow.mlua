@@ -1,0 +1,319 @@
+@Logic
+script BaramEntryFlow extends Logic
+    property boolean InWorld = false
+    property string State = "loading"
+    property boolean Ready = false
+    property boolean Busy = false
+    property number RequestWait = 0
+    property boolean HasCharacter = false
+    property integer Gender = 0
+    property integer Hair = 0
+    property integer Nation = 0
+    property integer Totem = 0
+    property integer PreviewDirection = 2
+    property string StorageKey = "BaramCharacterV1"
+
+    method void OnBeginPlay()
+        if self:IsServer() then
+            self._T.records = {}
+            self._T.busy = {}
+            return
+        end
+        self.InWorld = false
+        self.Ready = false
+        self.Busy = false
+        self.RequestWait = 0
+        self._T.requested = false
+        self._T.links = {}
+        self._T.assetsReady = false
+        self:Show("loading")
+        self:Bind("Title/New", "new")
+        self:Bind("Title/Continue", "continue")
+        self:Bind("Create/Confirm", "create")
+        self:Bind("Create/Cancel", "cancel")
+        self:Bind("Create/Male", "male")
+        self:Bind("Create/Female", "female")
+        self:Bind("Create/Left", "left")
+        self:Bind("Create/Right", "right")
+        self:Bind("Create/Turn", "turn")
+        self:Bind("Create/Goguryeo", "nation0")
+        self:Bind("Create/Buyeo", "nation1")
+        for i = 0, 3 do self:Bind("Create/Totem" .. tostring(i), "totem" .. tostring(i)) end
+        self:Bind("Login/Confirm", "enter")
+        self:Bind("Login/Cancel", "cancel")
+        self:Bind("Notice/Confirm", "dismiss")
+        self._T.key = _InputService:ConnectEvent(KeyDownEvent, function(event)
+            if self.InWorld or self.Busy then return end
+            if event.key == KeyboardKey.Escape then self:Action("cancel")
+            elseif event.key == KeyboardKey.Return then
+                if self.State == "notice" then self:Action("dismiss")
+                elseif self.State == "login" then self:Action("enter") end
+            end
+        end)
+        local ruids = {"191bdff54c3148f08786f62683615493", "7a341bdc07eb43a68fb4aa4f17788cc0", "55ff75c1bf944e63830d342ba731f529"}
+        for i, ruid in ipairs(ruids) do
+            local sprite = _ResourceService:LoadSpriteAndWait(ruid)
+            if sprite == nil then
+                self:SetText("Loading/Text", "화면을 불러오지 못했습니다. 다시 실행해 주세요.")
+                log_error("[BaramEntry] resource load failed")
+                return
+            end
+            self:SetText("Loading/Text", "화면 불러오는 중 " .. tostring(i) .. " / 3")
+        end
+        self._T.assetsReady = true
+        log("[BaramEntry] original screens loaded")
+    end
+
+    @ExecSpace("ClientOnly")
+    method Entity Find(string path)
+        return _EntityService:GetEntityByPath("/ui/BaramEntry/Frame/" .. path)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetText(string path, string value)
+        local entity = self:Find(path)
+        if isvalid(entity) then entity.TextGUIRendererComponent.Text = value end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Bind(string path, string action)
+        local entity = self:Find(path)
+        local link = entity:ConnectEvent(UITouchDownEvent, function(event) self:Action(action) end)
+        table.insert(self._T.links, {entity = entity, link = link})
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        if self.InWorld then return end
+        if self.Busy then
+            self.RequestWait = self.RequestWait + delta
+            if self.RequestWait >= 30 then
+                self.Busy = false
+                self.RequestWait = 0
+                self:Notice("서버 응답을 받지 못했습니다. 잠시 후 다시 시도해 주세요.")
+                log_warning("[BaramEntry] request timed out; controls released")
+            end
+        else self.RequestWait = 0 end
+        if not self._T.requested and isvalid(_UserService.LocalPlayer) then
+            self._T.requested = true
+            self:LoadCharacter()
+        end
+        if self.State == "loading" and self.Ready and self._T.assetsReady then self:Show("title") end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Show(string state)
+        self.State = state
+        for _, name in ipairs({"Title", "Create", "Login", "Loading", "Notice"}) do
+            local entity = self:Find(name)
+            if isvalid(entity) then entity.Enable = string.lower(name) == state or (name == "Title" and (state == "login" or state == "notice")) end
+        end
+        local hud = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame")
+        if isvalid(hud) then hud.Enable = self.InWorld end
+        if state == "create" then self:UpdateSelection() end
+        log("[BaramEntry] screen=" .. state)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Notice(string message)
+        self:SetText("Notice/Text", message)
+        self:Show("notice")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Action(string action)
+        if self.Busy or self.InWorld or not self.Ready then return end
+        if action == "cancel" or action == "dismiss" then
+            if self._T.savedSelection ~= nil then
+                self.Gender = self._T.savedSelection.gender
+                self.Hair = self._T.savedSelection.hair
+                self.Nation = self._T.savedSelection.nation
+                self.Totem = self._T.savedSelection.totem
+            end
+            self:Show("title")
+            return
+        end
+        if action == "new" and self.State == "title" then
+            self:Show("create")
+            self:SetText("Create/Status", self.HasCharacter and "저장된 캐릭터의 외형을 변경합니다." or "")
+        elseif action == "continue" and self.State == "title" then
+            if self.HasCharacter then self:Show("login") else self:Notice("먼저 처음하기에서 캐릭터를 만들어 주세요.") end
+        elseif self.State == "create" then
+            if action == "male" then self.Gender = 0
+            elseif action == "female" then self.Gender = 1
+            elseif action == "nation0" and not self.HasCharacter then self.Nation = 0
+            elseif action == "nation1" and not self.HasCharacter then self.Nation = 1
+            elseif action == "left" then self.Hair = (self.Hair + 9) % 10
+            elseif action == "right" then self.Hair = (self.Hair + 1) % 10
+            elseif action == "turn" then self.PreviewDirection = (self.PreviewDirection + 1) % 4
+            elseif string.sub(action, 1, 5) == "totem" and not self.HasCharacter then self.Totem = tonumber(string.sub(action, 6)) or 0
+            elseif action == "create" then
+                self.Busy = true
+                self:SetText("Create/Status", "캐릭터를 저장하고 있습니다...")
+                self:CreateCharacter(self.Gender, self.Nation, self.Totem, self.Hair)
+            end
+            self:UpdateSelection()
+        elseif action == "enter" and self.State == "login" then
+            self.Busy = true
+            self:EnterCharacter()
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void UpdateSelection()
+        local gender = self.Gender == 0 and "남자" or "여자"
+        local nation = self.Nation == 0 and "고구려" or "부여"
+        local totems = {"주작", "백호", "현무", "청룡"}
+        self:SetText("Create/Selection", gender .. " · " .. nation .. " · " .. totems[self.Totem + 1])
+        self:SetText("Create/NationText", nation)
+        self:SetText("Create/TotemText", totems[self.Totem + 1])
+        local motion = self.PreviewDirection * 3
+        self:Find("Create/Preview").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(self.Gender, motion))
+        self:Find("Create/PreviewHead").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetHead(self.Hair, motion))
+        self:SetText("Create/PreviewLabel", "머리 " .. tostring(self.Hair + 1) .. " / 10")
+        log("[BaramAppearance] preview gender=" .. tostring(self.Gender) .. " hair=" .. tostring(self.Hair) .. " frame=" .. tostring(motion))
+    end
+
+    @ExecSpace("Server")
+    method void LoadCharacter()
+        self:LoadForUser(senderUserId)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void LoadForUser(string userId)
+        if self._T.busy[userId] then return end
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return end
+        if self._T.records[userId] ~= nil then
+            self:ReceiveRecord(self._T.records[userId], true, userId)
+            return
+        end
+        self._T.busy[userId] = true
+        local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
+        local code, raw = storage:GetAndWait(self.StorageKey)
+        self._T.busy[userId] = nil
+        if code ~= 0 and code ~= 1000002 then
+            self:ReceiveRecord("", false, userId)
+            log_warning("[BaramEntry] load failed code=" .. tostring(code))
+            return
+        end
+        raw = raw or ""
+        if raw ~= "" and not self:IsValidRecord(raw) then
+            self:ReceiveRecord("", false, userId)
+            log_warning("[BaramEntry] invalid saved profile; preserved without overwriting")
+            return
+        end
+        self._T.records[userId] = raw
+        self:ReceiveRecord(raw, true, userId)
+        log("[BaramEntry] profile loaded, created=" .. tostring(raw ~= ""))
+    end
+
+    @ExecSpace("Server")
+    method void CreateCharacter(integer gender, integer nation, integer totem, integer hair)
+        local userId = senderUserId
+        if self._T.busy[userId] or self._T.records[userId] == nil then return end
+        if gender < 0 or gender > 1 or nation < 0 or nation > 1 or totem < 0 or totem > 3 or hair < 0 or hair > 9 then return end
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return end
+        self._T.busy[userId] = true
+        local previous = self._T.records[userId]
+        if previous ~= "" then
+            local saved = self:DecodeRecord(previous)
+            nation = saved.nation
+            totem = saved.totem
+        end
+        local raw = "2:" .. tostring(gender) .. ":" .. tostring(nation) .. ":" .. tostring(totem) .. ":" .. tostring(hair)
+        if raw == previous then
+            self._T.busy[userId] = nil
+            self:ReceiveRecord(raw, true, userId)
+            self:CreationResult(true, "이어하기를 눌러 주세요.", userId)
+            return
+        end
+        local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
+        local code = storage:SetAndWait(self.StorageKey, raw)
+        self._T.busy[userId] = nil
+        if code == 0 then
+            self._T.records[userId] = raw
+            self:ReceiveRecord(raw, true, userId)
+            self:CreationResult(true, "이어하기를 눌러 주세요.", userId)
+            log("[BaramEntry] character saved")
+        else
+            self:CreationResult(false, "저장하지 못했습니다. 다시 시도해 주세요.", userId)
+            log_warning("[BaramEntry] save failed code=" .. tostring(code))
+        end
+    end
+
+    @ExecSpace("Server")
+    method void EnterCharacter()
+        local userId = senderUserId
+        local raw = self._T.records[userId]
+        local success = raw ~= nil and raw ~= ""
+        if success then
+            local ok, entered = pcall(function() return _BaramWorld:Enter(userId, raw) end)
+            success = ok and entered == true
+            if not ok then log_error("[BaramEntry] world entry failed: " .. tostring(entered)) end
+        end
+        self:EnterResult(success, userId)
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveRecord(string raw, boolean success)
+        self.Ready = success
+        self.HasCharacter = raw ~= ""
+        if not success then self:SetText("Loading/Text", "캐릭터를 불러오지 못했습니다. 다시 실행해 주세요.") return end
+        if self.HasCharacter then
+            local saved = self:DecodeRecord(raw)
+            self.Gender = saved.gender
+            self.Nation = saved.nation
+            self.Totem = saved.totem
+            self.Hair = saved.hair
+        end
+        self._T.savedSelection = {gender = self.Gender, nation = self.Nation, totem = self.Totem, hair = self.Hair}
+    end
+
+    method boolean IsValidRecord(string raw)
+        return string.match(raw, "^[01]:[01]:[0-3]$") ~= nil or string.match(raw, "^2:[01]:[01]:[0-3]:[0-9]$") ~= nil
+    end
+
+    method table DecodeRecord(string raw)
+        local offset = #raw == 9 and 2 or 0
+        return {gender = tonumber(string.sub(raw, 1 + offset, 1 + offset)) or 0,
+            nation = tonumber(string.sub(raw, 3 + offset, 3 + offset)) or 0,
+            totem = tonumber(string.sub(raw, 5 + offset, 5 + offset)) or 0,
+            hair = offset == 2 and (tonumber(string.sub(raw, 9, 9)) or 0) or 0}
+    end
+
+    @ExecSpace("Client")
+    method void CreationResult(boolean success, string message)
+        self.Busy = false
+        self:SetText("Create/Status", "")
+        if success then self:Notice(message) else self:SetText("Create/Status", message) end
+    end
+
+    @ExecSpace("Client")
+    method void EnterResult(boolean success)
+        self.Busy = false
+        if not success then self:Notice("게임에 접속하지 못했습니다. 잠시 후 이어하기를 다시 눌러 주세요.") return end
+        self.InWorld = true
+        self.State = "world"
+        _EntityService:GetEntityByPath("/ui/BaramEntry").Enable = false
+        _EntityService:GetEntityByPath("/ui/BaramHUD/Frame").Enable = true
+        _BaramChatRelay.InputBlockSeconds = 0.2
+        log("[BaramEntry] entered saved world / first start Buyeo")
+    end
+
+    @ExecSpace("ServerOnly")
+    @EventSender("Service", "UserService")
+    handler HandleUserLeave(UserLeaveEvent event)
+        self._T.records[event.UserId] = nil
+        self._T.busy[event.UserId] = nil
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        for _, item in ipairs(self._T.links or {}) do
+            if isvalid(item.entity) then item.entity:DisconnectEvent(UITouchDownEvent, item.link) end
+        end
+        if self._T.key ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self._T.key) end
+    end
+end

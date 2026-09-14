@@ -1,0 +1,34 @@
+@¼ö·æ	{
+	set @id, objid();
+	if(rand(1, 10) <= 3)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, "¼ö·æ: Å©·Ö·Ö!!!!";
+		set_mobhp @id, get_mobmaxhp(@id);
+		set $revival, $revival+1;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+	
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("¿ëÀÇºñ´Ã"), 1;
+}
+@È­·æ	{
+	set @id, objid();
+	if(rand(1, 10) <= 3)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, "È­·æ: Å©·Ö·Ö!!!!";
+		set_mobhp @id, get_mobmaxhp(@id);
+		set $revival, $revival+1;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("¿ëÀÇºñ´Ã"), 1;
+}

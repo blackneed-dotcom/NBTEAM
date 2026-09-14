@@ -1,0 +1,9 @@
+//@제곡	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 나의 죽음으로... 한 층 더 가까와졌음을.. 어리석은 인간들이... 어찌 알겠는가...";
+	dropitem get_mobx(@id), get_moby(@id), name2itemid("제곡의증표"), 1;
+}
+@제곡공격	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 8, 173, rand(300000, 350000), 2, "일천만파", 16, "일천만파~!";
+}

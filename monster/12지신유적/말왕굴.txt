@@ -1,0 +1,3 @@
+@¸»¿Õ	{
+	callfunc "DROPITEM", objid(), 100, 5, name2itemid("±Ýµ¢¾î¸®"), 50000;
+}

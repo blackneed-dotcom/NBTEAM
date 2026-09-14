@@ -1,0 +1,21 @@
+@µ∂ªÁ	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("πÏ∞Ì±‚"), 1;
+}
+
+@πÈªÁ	{
+	callfunc "DROPITEM2", objid(), 100, 60, name2itemid("πÏ∞Ì±‚"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("±›µ¢æÓ∏Æ"), 100;
+}
+
+@¡¯πÈªÁ	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("±Õ»Ø∫Òº≠"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("±›µ¢æÓ∏Æ"), 100;
+}
+
+@ø’±∏∑∑¿Ã	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("»˚¿«≈ı±∏1"), 1;
+}
+
+@±∏∑∑¿Ã	{
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("¡¡¿∫πÏ∞Ì±‚"), 1;
+}

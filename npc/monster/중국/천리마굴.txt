@@ -1,0 +1,11 @@
+@흑천리마	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("갈색구슬조각"), 1;
+}
+
+@비영천리마	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("회색구슬조각"), 1;
+}
+
+@진왕천리마	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("자색보주"), 1;
+}

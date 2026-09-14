@@ -1,0 +1,82 @@
+@선우	{
+	callfunc "DROPITEM", objid(), 120, 10, name2itemid("용형도"), 1;
+}
+
+@선중	{
+	callfunc "DROPITEM", objid(), 120, 10, name2itemid("청형도"), 1;
+}
+
+@선백	{
+	callfunc "DROPITEM", objid(), 120, 15, name2itemid("백형도"), 1;
+}
+
+@선궁	{
+	callfunc "DROPITEM", objid(), 120, 15, name2itemid("적형도"), 1;
+}
+
+@선계	{
+	callfunc "DROPITEM", objid(), 120, 15, name2itemid("흑형도"), 1;
+}
+
+@영격참	{
+	set @id, objid();
+	if(rand(1, 25) <= 7)
+	{
+		callfunc "mob_constanting_spell", 1000, "영격참", 147, 4, 20000, 30000, 1;
+	}
+	if(rand(1, 25) == 23)
+	{
+		if(rand(1, 10) <= 2)
+		{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 7;
+				}
+			}
+		}
+	}			
+}
+@진격참	{
+	set @id, objid();
+	if(rand(1, 25) <= 7)
+	{
+		callfunc "mob_constanting_spell", 1000, "진격참", 147, 4, 20000, 30000, 1;
+	}
+	if(rand(1, 25) == 23)
+	{
+		if(rand(1, 10) <= 2)
+		{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 7;
+				}
+			}
+		}
+	}
+}
+
+@무성운파	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 4, 147, rand(10000, 20000), 0, "무성운파", "-1";
+}
+
+@무성격파	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 4, 147, rand(90000, 130000), 0, "무성격파", "-1";
+}

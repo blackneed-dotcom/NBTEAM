@@ -1,0 +1,35 @@
+휴식의방	{
+	set @sd, mysd();
+	set @id, myid();
+	set @joblevel, get_joblevel(@sd);
+
+	if(@joblevel < 1)
+	{
+		dialog 0,0,1, "1차이상만 입장 가능합니다.";
+		end;
+	}
+	set @list, list1("휴식의방에 입장하시겠습니까?", "확인", "취소");
+	if(@list == 1)
+	{
+		warp @sd, name2mapid("휴식의방"), rand(11, 18), rand(10, 11);
+		spellaether @sd, name2spellid("휴식중"), 3600;
+		spellaether @sd, name2spellid("푹휴식중"), 3600;
+
+		set @pos, dialog(0, 0, 1, "휴식의방에 입장하였습니다. 1시간 후 휴식 보상을 받을 수 있으며 로그아웃시 자동 귀환됩니다.");
+		end;
+	}
+}
+
+
+휴식의방종료	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("휴식의방에서 나가시겠습니까?", "확인", "취소");
+	if(@list == 1)
+	{
+		warp @sd, name2mapid("부여성"), rand(76, 77), rand(140, 141);
+		spelluncast @sd, name2spellid("휴식중");
+		spelluncast @sd, name2spellid("푹휴식중");
+	}
+}

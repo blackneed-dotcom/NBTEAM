@@ -1,0 +1,7 @@
+@도삭산토끼부하	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("약초잎사귀"), 1;
+}
+
+@도삭산불토끼	{
+	callfunc "DROPITEM", objid(), 100, 5, name2itemid("약초가지"), 1;
+}

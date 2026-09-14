@@ -1,0 +1,38 @@
+@십억경자동변환지속	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	updatestatus @sd, 2; //상태창 업데이트
+	//message @sd, 3, "적용중..";
+	set @need_money, 150;
+	set @my_money, get_money(@sd);
+	set @exp, get_exp(@sd);// 현재 갖고있는 경험치
+
+	if(countitem(name2itemid("십억경")) == 2000) // 십억경 갯수로 2차 체크
+	{
+		message @sd, 3, "십억경 한도 초과.";
+		end;
+	}
+	// 돈복사가 우려되므로 아래에서 금전 체크 후 처리
+	if(@exp < 0 && @exp < (-1147483648)){ // 중간 음수처리
+		if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+		else {set_money @sd, @my_money - @need_money;}
+		set_exp @sd, @exp + 2147483648 - 1000000000;
+		additem @sd, name2itemid("십억경"), 1;
+		updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp > 0 && @exp >= 1000000000){ // 양수 처리
+		if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+		else {set_money @sd, @my_money - @need_money;}
+		set_exp @sd, @exp - 1000000000;
+		additem @sd, name2itemid("십억경"), 1;
+		updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp < 0 && @exp >= (-1147483648)){ // 나머지 음수 처리
+		if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+		else {set_money @sd, @my_money - @need_money;}
+		set_exp @sd, @exp - 1000000000;
+		additem @sd, name2itemid("십억경"), 1;
+		updatestatus @sd, 2; //상태창 업데이트
+	}
+}

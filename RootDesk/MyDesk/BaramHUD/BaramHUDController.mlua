@@ -1,0 +1,186 @@
+@Component
+script BaramHUDController extends Component
+    -- Shared presentation policy: original world pixels remain at 100 pixels/unit.
+    -- 720 reference world pixels / 480 source UI pixels = camera zoom 150%.
+    property number WorldZoomPercent = 150
+    property Vector2 WorldScreenCenter = Vector2(0.2609375, 0.3625)
+    -- Local prototype data, not saved character stats.
+    property integer Hp = 100
+    property integer MaxHp = 100
+    property integer Mp = 80
+    property integer MaxMp = 80
+    property integer Level = 1
+    property integer Experience = 0
+    property integer Gold = 0
+    property integer Strength = 1
+    property integer Dexterity = 1
+    property integer Intelligence = 1
+    property table BlueDigitRuids = {"43ee6da79b38401fa404733cf97a1256","b4ba58f65b4f4a13bdd348136bf495a4","e032be51714d44919e4ad028d077f914","878c6d32418a4c629b4cf261e4310ad7","3ad1822de80b48899ec39f0548e17d7e","4a271bf5fb2b4c9e97f97252563d1505","568d2e73477344599b5f1888b3c59867","6ea2a1b1c11749d18d9a02129e30fa68","b94c3470d2e44213b0f5a72c0b785efd","3fe5337e5e4649c7b6276f5b4e1eadfe"}
+    property table DigitRuids = {"e0d44369789c448c9303130a928a3004","08317fa138334af1bedd1c310992d6f7","ff285f050a7f4b42a4b42a6e217ca1a1","7f649df3a1094d15a92a9e9d2ad77c11","017db0ffa46e4fdbbb7a9d3208b3da82","72b64abea23947e58e808e953f50c148","928a72a8bf2d4583ba9fb1c7177edbac","dd70a5a6a20e4f80a17011d59bf0e3b1","f93d20ecd3bc4f4b89bed2854fda70ae","b3c2aab674cc45ebaabe0705da4258c7"}
+    property table GreenDigitRuids = {"8326dd4a490141d68620942ba4394de6","7b36bf8ecc6744c59ae87b6423f67670","1bb486f1ee7c4015a86f35f0f67aba94","1bbeea07ccce48a2931b3baa5102717d","d39d877456db4605b2d1813c205d2fed","91f2e616793d49b9b3cf75cdd76ae40e","d10f45282bae4ffc8e5e81eeef2cc037","802fb33ef1a14dacbef68909f6cec09c","24ac98e76e4d483b9a57fcb6abff5fd7","50da0d6ad64f439998f33a987e220858"}
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Resolve fixed UI references once.
+        self._T.infoSignature = nil
+        self._T.infoPanel = self.Entity:GetChildByName("CharacterInfo", true)
+        self._T.infoButton = self.Entity:GetChildByName("InfoButton", true)
+        self._T.infoClick = self._T.infoButton:ConnectEvent(UITouchDownEvent, function(evt) self:ToggleInfo() end)
+        self._T.infoKey = _InputService:ConnectEvent(KeyDownEvent, function(evt)
+            if _BaramChatRelay:IsInputBlocked() then return end
+            if evt.key == KeyboardKey.Escape and isvalid(self._T.infoPanel) then self._T.infoPanel.Enable = false end
+        end)
+        self._T.worldCamera = nil
+        self._T.rows = {}
+        self._T.last = ""
+        for _, rowName in ipairs({"Hp", "Mp", "Level", "Experience", "Gold", "Strength", "Dexterity", "Intelligence"}) do
+            local row = self.Entity:GetChildByName("Row" .. rowName, true)
+            self._T.rows[rowName] = row
+        end
+        self._T.hpFill = self.Entity:GetChildByName("HpFill", true)
+        self._T.mpFill = self.Entity:GetChildByName("MpFill", true)
+        self:RefreshDisplay()
+        log("[BaramHUD] ready: source frame, bitmap digits, HP/MP/level/experience/gold")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetVitals(integer hp, integer maxHp, integer mp, integer maxMp, integer level)
+        -- Client-only entry point for future character-data integration.
+        self.MaxHp = math.max(0, maxHp)
+        self.MaxMp = math.max(0, maxMp)
+        self.Hp = math.max(0, math.min(hp, self.MaxHp))
+        self.Mp = math.max(0, math.min(mp, self.MaxMp))
+        self.Level = math.max(1, math.min(99, level))
+        self:RefreshDisplay()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetAttributes(integer strength, integer dexterity, integer intelligence)
+        self.Strength = strength
+        self.Dexterity = dexterity
+        self.Intelligence = intelligence
+        self:RefreshDisplay()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void DrawNumber(string rowName, integer value)
+        -- Right-align the original 9x11 glyphs; no substituted font.
+        local row = self._T.rows[rowName]
+        if not isvalid(row) then return end
+        local digits = tostring(math.max(0, math.floor(value)))
+        local count = 10
+        if rowName == "Hp" or rowName == "Mp" then count = 8 end
+        if rowName == "Level" then count = 2 end
+        if rowName == "Strength" or rowName == "Dexterity" or rowName == "Intelligence" then count = 3 end
+        if #digits > count then digits = string.rep("9", count) end
+        for i = 1, count do
+            local entity = row:GetChildByName("Digit" .. tostring(i))
+            local index = i - (count - #digits)
+            entity.Enable = index > 0
+            if index > 0 then
+                local digit = tonumber(string.sub(digits, index, index))
+                local glyphs = self.DigitRuids
+                if rowName == "Hp" or rowName == "Mp" or rowName == "Experience" then glyphs = self.GreenDigitRuids end
+                if rowName == "Strength" or rowName == "Dexterity" or rowName == "Intelligence" then glyphs = self.BlueDigitRuids end
+                entity.SpriteGUIRendererComponent.ImageRUID = glyphs[digit + 1]
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshDisplay()
+        -- Quantize clipping to whole source pixels, preserving gauge texture.
+        if self._T.rows == nil then return end
+        local hp = math.max(0, math.min(self.Hp, math.max(0, self.MaxHp)))
+        local mp = math.max(0, math.min(self.Mp, math.max(0, self.MaxMp)))
+        local hpRatio = 0
+        local mpRatio = 0
+        if self.MaxHp > 0 then hpRatio = hp / self.MaxHp end
+        if self.MaxMp > 0 then mpRatio = mp / self.MaxMp end
+        self._T.hpFill.SpriteGUIRendererComponent.FillAmount = math.floor(hpRatio * 100) / 100
+        self._T.mpFill.SpriteGUIRendererComponent.FillAmount = math.floor(mpRatio * 100) / 100
+        self:DrawNumber("Hp", hp)
+        self:DrawNumber("Mp", mp)
+        self:DrawNumber("Level", math.max(1, math.min(99, self.Level)))
+        self:DrawNumber("Experience", self.Experience)
+        self:DrawNumber("Gold", self.Gold)
+        self:DrawNumber("Strength", self.Strength)
+        self:DrawNumber("Dexterity", self.Dexterity)
+        self:DrawNumber("Intelligence", self.Intelligence)
+        self._T.last = tostring(self.Hp) .. ":" .. tostring(self.MaxHp) .. ":" .. tostring(self.Mp) .. ":" .. tostring(self.MaxMp) .. ":" .. tostring(self.Level) .. ":" .. tostring(self.Experience) .. ":" .. tostring(self.Gold) .. ":" .. tostring(self.Strength) .. ":" .. tostring(self.Dexterity) .. ":" .. tostring(self.Intelligence)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        self:ApplyWorldPresentation()
+        if isvalid(self._T.infoPanel) and self._T.infoPanel.Enable then self:RefreshInfo() end
+        -- Update only when local values change.
+        local state = tostring(self.Hp) .. ":" .. tostring(self.MaxHp) .. ":" .. tostring(self.Mp) .. ":" .. tostring(self.MaxMp) .. ":" .. tostring(self.Level) .. ":" .. tostring(self.Experience) .. ":" .. tostring(self.Gold) .. ":" .. tostring(self.Strength) .. ":" .. tostring(self.Dexterity) .. ":" .. tostring(self.Intelligence)
+        if state ~= self._T.last then self:RefreshDisplay() end
+    end
+    @ExecSpace("ClientOnly")
+    method void ApplyWorldPresentation()
+        -- Apply to each newly activated camera, including cameras on future maps.
+        -- Zoom scales map tiles, actor pixels and visual offsets together.
+        local camera = _CameraService:GetCurrentCameraComponent()
+        if not isvalid(camera) then return end
+        if self._T.worldCamera ~= camera then
+            self:RestoreWorldCamera()
+            self._T.worldCamera = camera
+            self._T.oldZoom = camera.ZoomRatio
+            self._T.oldScreenOffset = camera.ScreenOffset
+            self._T.oldConfine = camera.ConfineCameraArea
+            log("[BaramViewport] camera=" .. camera.Entity.Name .. " zoom=" .. tostring(self.WorldZoomPercent))
+        end
+        if camera.ZoomRatio ~= self.WorldZoomPercent then camera.ZoomRatio = self.WorldZoomPercent end
+        camera.ConfineCameraArea = false
+        camera.ScreenOffset = self.WorldScreenCenter
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RestoreWorldCamera()
+        local camera = self._T.worldCamera
+        if isvalid(camera) then
+            camera.ZoomRatio = self._T.oldZoom
+            camera.ScreenOffset = self._T.oldScreenOffset
+            camera.ConfineCameraArea = self._T.oldConfine
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ToggleInfo()
+        -- Select the status pane; repeated selection keeps it open.
+        if not isvalid(self._T.infoPanel) then return end
+        if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
+        _BaramInput:Close()
+        self._T.infoPanel.Enable = true
+        self:RefreshInfo()
+        log("[BaramInfo] visible=" .. tostring(self._T.infoPanel.Enable))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshInfo()
+        local panel = self._T.infoPanel
+        local player = _UserService.LocalPlayer
+        if isvalid(player) then panel:GetChildByName("Name").TextGUIRendererComponent.Text = player.PlayerComponent.Nickname end
+        local lines = {
+            "레벨 " .. tostring(self.Level),
+            "체력 " .. tostring(self.Hp) .. " / " .. tostring(self.MaxHp),
+            "마력 " .. tostring(self.Mp) .. " / " .. tostring(self.MaxMp),
+            "힘 " .. tostring(self.Strength) .. "  민첩 " .. tostring(self.Dexterity) .. "  지력 " .. tostring(self.Intelligence),
+            "누적 경험치 " .. tostring(self.Experience),
+            "금전 " .. tostring(self.Gold)
+        }
+        local signature = table.concat(lines, "|")
+        if self._T.infoSignature == signature then return end
+        self._T.infoSignature = signature
+        for i = 1, 6 do panel:GetChildByName("Line" .. tostring(i - 1)).TextGUIRendererComponent.Text = lines[i] end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        if self._T.infoKey ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self._T.infoKey) end
+        if isvalid(self._T.infoButton) and self._T.infoClick ~= nil then self._T.infoButton:DisconnectEvent(UITouchDownEvent, self._T.infoClick) end
+        self:RestoreWorldCamera()
+    end
+end

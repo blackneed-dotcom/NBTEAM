@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "directory://4cc231c6d8704db1a25efb4162d4c766",
+  "ContentType": "x-mod/directory",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "entry_id": "directory://4cc231c6d8704db1a25efb4162d4c766",
+      "name": "Converted",
+      "lock": false,
+      "folding": false,
+      "nameEditable": true
+    }
+  }
+}

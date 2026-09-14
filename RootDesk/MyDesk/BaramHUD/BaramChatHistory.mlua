@@ -1,0 +1,166 @@
+@Component
+script BaramChatHistory extends Component
+    -- Original CHATBACK rows with an independent Baram text entry field.
+    property Entity InputPanel = "d7a5a326-6213-4e9d-a5a9-ba7ccc3f4863"
+    property Entity InputHint = "7167aa09-90fe-429c-9c3b-18f984296d09"
+    property TextGUIRendererInputComponent InputField = "a1681a6c-9872-4bdd-a295-0eecab1cb7bd"
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Connect the custom input while preserving the five existing history rows.
+        self._T.messages = {}
+        self._T.rows = {}
+        self._T.focusPending = false
+        self._T.closePending = false
+        self._T.focusRequested = false
+        self._T.mapId = ""
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ChatHistory")
+        if not isvalid(root) or not isvalid(self.InputField) then
+            log_error("[BaramChat] missing history or input binding")
+            return
+        end
+        for i = 1, 5 do
+            self._T.rows[i] = root:GetChildByName("Line" .. tostring(i)):GetChildByName("Message")
+        end
+        self.InputPanel.Enable = false
+        self.InputHint.Enable = true
+        self.InputField.Text = ""
+        _BaramChatRelay.IsEditing = false
+        self._T.keySubscription = _InputService:ConnectEvent(KeyDownEvent, function(evt)
+            if evt.key == KeyboardKey.Return or evt.key == KeyboardKey.KeypadEnter then
+                if not _BaramChatRelay:IsInputBlocked() then self:OpenInput() end
+            elseif evt.key == KeyboardKey.Escape and _BaramChatRelay.IsEditing then
+                self:CloseInput()
+            end
+        end)
+        self._T.submitSubscription = self.InputField.Entity:ConnectEvent(TextInputSubmitEvent, function(evt)
+            self:SubmitMessage(evt.Text)
+        end)
+        self._T.endSubscription = self.InputField.Entity:ConnectEvent(TextInputEndEditEvent, function(evt)
+            -- EndEdit can precede Submit; defer cancellation to the next frame.
+            if _BaramChatRelay.IsEditing then self._T.closePending = true end
+        end)
+        log("[BaramChat] custom input ready: Enter=open/send, Escape=cancel")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OpenInput()
+        -- Block gameplay immediately and focus only after the opening key is released.
+        if not isvalid(self.InputField) then return end
+        _BaramChatRelay.IsEditing = true
+        self._T.closePending = false
+        self._T.focusPending = true
+        self._T.focusRequested = false
+        self.InputPanel.Enable = true
+        self.InputHint.Enable = false
+        self.InputField.Text = ""
+        log("[BaramChat] input opened")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void CloseInput()
+        -- Disabling the input releases focus; suppress the closing key briefly.
+        _BaramChatRelay.IsEditing = false
+        _BaramChatRelay.InputBlockSeconds = 0.15
+        self._T.closePending = false
+        self._T.focusPending = false
+        self._T.focusRequested = false
+        if isvalid(self.InputPanel) then self.InputPanel.Enable = false end
+        if isvalid(self.InputHint) then self.InputHint.Enable = true end
+        if isvalid(self.InputField) then self.InputField.Text = "" end
+        log("[BaramChat] input closed")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SubmitMessage(string message)
+        -- Send once through the server, without a duplicate local echo.
+        if not _BaramChatRelay.IsEditing or self._T.focusPending then return end
+        local text = string.gsub(message or "", "%c", " ")
+        text = string.match(text, "^%s*(.-)%s*$") or ""
+        self:CloseInput()
+        if text == "" then return end
+        log("[BaramChat] submit bytes=" .. tostring(#text))
+        _BaramChatRelay:RequestMessage(text)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Resolve delayed input focus and clear local history when changing maps.
+        local player = _UserService.LocalPlayer
+        if isvalid(player) and isvalid(player.CurrentMap) then
+            local mapId = player.CurrentMap.Id
+            if self._T.mapId ~= mapId then
+                if self._T.mapId ~= "" then
+                    self:CloseInput()
+                    self:ClearMessages()
+                end
+                self._T.mapId = mapId
+            end
+        end
+        if self._T.closePending then self:CloseInput() end
+        if self._T.focusPending and isvalid(self.InputField) then
+            if _InputService:IsKeyPressed(KeyboardKey.Return) or _InputService:IsKeyPressed(KeyboardKey.KeypadEnter) then return end
+            if not self._T.focusRequested then
+                self.InputField:ActivateInputField()
+                self._T.focusRequested = true
+            elseif self.InputField.IsFocused then
+                self._T.focusPending = false
+                log("[BaramChat] input focused")
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void AppendMessage(string senderName, string message)
+        -- Wrap Unicode text to fit the original fixed-width rows.
+        if message == nil or message == "" then return end
+        if self._T.messages == nil then return end
+        local sender = senderName or ""
+        local text = message
+        if sender ~= "" then text = sender .. ": " .. message end
+        local first = self._T.rows[1]
+        if not isvalid(first) then return end
+        local line = ""
+        for _, code in utf8.codes(text) do
+            local character = utf8.char(code)
+            local candidate = line .. character
+            if line ~= "" and first.TextGUIRendererComponent:GetPreferredWidth(candidate) > 404 then
+                table.insert(self._T.messages, line)
+                line = character
+            else
+                line = candidate
+            end
+        end
+        if line ~= "" then table.insert(self._T.messages, line) end
+        while #self._T.messages > 5 do table.remove(self._T.messages, 1) end
+        self:RefreshLines()
+        log("[BaramChat] displayed rows=" .. tostring(#self._T.messages))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ClearMessages()
+        -- Reset session-only history.
+        self._T.messages = {}
+        self:RefreshLines()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshLines()
+        -- Reuse the five existing white text entities.
+        if self._T.rows == nil then return end
+        for i = 1, 5 do
+            local row = self._T.rows[i]
+            if isvalid(row) then row.TextGUIRendererComponent.Text = self._T.messages[i] or "" end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release subscriptions and the gameplay input lock when the UI unloads.
+        if self._T.keySubscription ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self._T.keySubscription) end
+        if isvalid(self.InputField) then
+            if self._T.submitSubscription ~= nil then self.InputField.Entity:DisconnectEvent(TextInputSubmitEvent, self._T.submitSubscription) end
+            if self._T.endSubscription ~= nil then self.InputField.Entity:DisconnectEvent(TextInputEndEditEvent, self._T.endSubscription) end
+        end
+        self:CloseInput()
+    end
+end

@@ -1,0 +1,16 @@
+@꼬리해마	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("해마꼬리"), 1;
+	}
+}
+
+@쥐방울해마	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("해마꼬리"), 1;
+}
+
+@해마병사	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("해마의심장"), 1;
+}
+
+@수마파	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 6, 2, 8, 142, rand(15000, 20000), 0, "수마파", "-1";
+}

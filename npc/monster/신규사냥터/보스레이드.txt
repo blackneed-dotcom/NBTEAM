@@ -1,0 +1,56 @@
+@Èæ¿î¸ê»ýÀÌ	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 183, rand(300000, 400000), 0, "Èæ¿î¸ê»ý", 8, "-1";
+}
+
+@¾ÏÈæ¿Õ°ø°ÝÀÌ	{
+	if(rand(1, 2) == 1)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 149, rand(100000, 200000), 2, "¾ÏÈæÁøÆÄ", 10, "-1";
+	}
+	else
+	{
+		callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 3, -1, 8, 139, rand(200000, 300000), 2, "¾ÏÈæÆÄ", "-1";
+	}
+}
+
+@ÇØ°ñ¿Õ°ø°ÝÀÌ	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 5, 121, rand(200000, 250000), 2, "¾Æ°ø°£º£±â", 10, "-1";
+}
+
+@¹Ý°í°ø°ÝÀÌ	{
+	set @id, objid();
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*3; }
+
+	if(mobspellaethered(@id, name2spellid("Àý¸Á")) == 1) { mobspellaether @id, name2spellid("Àý¸Á"), 5; }
+
+	if(rand(1, 10) <= 5) end;
+
+	set @x1, 0;
+	set @x2, mapwidth()-1;
+	set @y1, 0;
+	set @y2, mapheight()-1;
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+
+					if(get_state(@target_sd) == 1) { continue; }
+
+					sound @target_id, 507;
+					effect @target_id, 185;
+
+					damage @id, @target_id, rand(100000, 20000), 2;
+					message @target_sd, 3, "¹Ý°í°¡ ÁøÈæ·æ¼ÒÈ¯À» °¡ÇÕ´Ï´Ù.";
+				}
+			}
+		}
+	}
+}

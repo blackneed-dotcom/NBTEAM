@@ -1,0 +1,50 @@
+@쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("쥐고기"), 1;
+}
+
+@큰쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("쥐고기"), 1;
+}
+
+@시궁쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("쥐고기"), 1;
+}
+
+@시궁창쥐	{
+	callfunc "DROPITEM2", objid(), 100, 30, name2itemid("귀환비서"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("은전"), 200;
+}
+
+@병든쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("쥐고기"), 1;
+}
+
+@박쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("박쥐고기"), 1;
+}
+
+@빨간박쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("박쥐고기"), 1;
+}
+
+@보라박쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("박쥐고기"), 1;
+}
+
+@파란박쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("박쥐고기"), 1;
+}
+
+@흡혈쥐	{
+	callfunc "DROPITEM", objid(), 100, 75, name2itemid("쥐고기"), 1;
+}
+
+@서생원	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("인삼"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("산삼"), 1;
+}
+
+@자생원	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("귀환비서"), 1;
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("은전"), 500;
+}

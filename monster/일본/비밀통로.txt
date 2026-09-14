@@ -1,0 +1,7 @@
+@대장군의망령	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("도깨비가죽"), 1;
+}
+
+@장군의저주	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 4, -1, 8, 138, rand(50000, 60000), 0, "장군의저주";
+}

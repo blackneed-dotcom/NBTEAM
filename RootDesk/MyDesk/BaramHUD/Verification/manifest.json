@@ -1,0 +1,227 @@
+{
+  "reference": "C:/Users/black/UI/ui.png",
+  "sourceArchive": "C:/Users/black/UI/bint.dat",
+  "sourceEntries": [
+    "FRAME.EPF",
+    "USERSTAT.EPF",
+    "SELFLOOK.EPF",
+    "NATION.EPF",
+    "TOTEM.EPF",
+    "BAR.EPF",
+    "9X11FONT.BIN",
+    "NPAL5.PAL",
+    "NPAL6.PAL",
+    "NPAL7.PAL",
+    "BARAM.PAL"
+  ],
+  "ui": "C:/Users/black/UI/ui/BaramHUD.ui",
+  "controller": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/BaramHUDController.mlua",
+  "paletteMapping": {
+    "FRAME": "NPAL5.PAL",
+    "SELFLOOK": "NPAL6.PAL",
+    "USERSTAT": "NPAL7.PAL",
+    "TOTEM": "NPAL7.PAL",
+    "NATION": "NPAL7.PAL",
+    "BAR": "BARAM.PAL",
+    "FONT": "NPAL7.PAL"
+  },
+  "layout": {
+    "nativeCanvas": [
+      640,
+      480
+    ],
+    "anchor": "center",
+    "scale": 1,
+    "selflook": [
+      434,
+      12
+    ],
+    "userstat": [
+      434,
+      374
+    ],
+    "hp": [
+      525,
+      403,
+      100,
+      11
+    ],
+    "mp": [
+      525,
+      416,
+      100,
+      11
+    ],
+    "numbers": [
+      [
+        "Hp",
+        625,
+        403,
+        8
+      ],
+      [
+        "Mp",
+        625,
+        416,
+        8
+      ],
+      [
+        "Level",
+        624,
+        376,
+        2
+      ],
+      [
+        "Experience",
+        625,
+        429,
+        10
+      ],
+      [
+        "Gold",
+        625,
+        455,
+        10
+      ]
+    ]
+  },
+  "assets": [
+    {
+      "name": "hud-frame",
+      "w": 640,
+      "h": 480,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/hud-frame.png",
+      "bytes": 142807
+    },
+    {
+      "name": "hp-fill",
+      "w": 100,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/hp-fill.png",
+      "bytes": 166
+    },
+    {
+      "name": "mp-fill",
+      "w": 100,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/mp-fill.png",
+      "bytes": 167
+    },
+    {
+      "name": "digit-0",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-0.png",
+      "bytes": 160
+    },
+    {
+      "name": "digit-1",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-1.png",
+      "bytes": 151
+    },
+    {
+      "name": "digit-2",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-2.png",
+      "bytes": 160
+    },
+    {
+      "name": "digit-3",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-3.png",
+      "bytes": 157
+    },
+    {
+      "name": "digit-4",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-4.png",
+      "bytes": 155
+    },
+    {
+      "name": "digit-5",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-5.png",
+      "bytes": 154
+    },
+    {
+      "name": "digit-6",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-6.png",
+      "bytes": 156
+    },
+    {
+      "name": "digit-7",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-7.png",
+      "bytes": 156
+    },
+    {
+      "name": "digit-8",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-8.png",
+      "bytes": 163
+    },
+    {
+      "name": "digit-9",
+      "w": 9,
+      "h": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramHUD/Converted/digit-9.png",
+      "bytes": 159
+    }
+  ],
+  "ruids": {
+    "hud-frame": "7b9fd3e161e040cfa227c935af523d78",
+    "hp-fill": "f00ec190c1594144acfef9c451a1651f",
+    "mp-fill": "285bd62d147b4df8b74ffa7bb0fafdd5",
+    "digit-0": "b0f26d92cf15429aab6596319e6a0326",
+    "digit-1": "e59a7e0f09f2472d961cd2ae073cb3e7",
+    "digit-2": "cb33d34e6b094095bb269836156d9920",
+    "digit-3": "50037ad82d164778b1f17856e9be2500",
+    "digit-4": "e8c9f289f836463c83613614512b7004",
+    "digit-5": "80a6ed15b0cb47e0938c840ab1c16a9c",
+    "digit-6": "d2f66da5fa3d4d029adb7ba86d79241e",
+    "digit-7": "0f4540409da648ffb6412cef5280893b",
+    "digit-8": "af08295bef0b44c0a01c94d683cadf18",
+    "digit-9": "7865a7a90efd4628bd59ad0e32c57d88"
+  },
+  "defaultTestValues": {
+    "hp": 100,
+    "maxHp": 100,
+    "mp": 80,
+    "maxMp": 100,
+    "level": 1,
+    "experience": 0,
+    "gold": 0
+  },
+  "verification": {
+    "strictUiLint": "PASS",
+    "vitalPercentages": [
+      0,
+      50,
+      100
+    ],
+    "zeroMaximumAndClamping": "PASS",
+    "level42DataIds": "PASS",
+    "leadingDigitHide": "PASS",
+    "teardownErrors": 0,
+    "oldComparisonFailure": "Initial tostring(DataRef) assertion was invalid; corrected to declared DataId field, then passed.",
+    "sourceArchiveUnchanged": true
+  },
+  "differences": [
+    "640x480 fixed UI layout; engine preview scales it to 420x315 at current viewport. Pixel-perfect rendered equality not certified.",
+    "Local demo statistics only; no combat, character data, persistence or equipment logic.",
+    "Original name, map title, chat contents, toolbar actions and equipped portrait are not reproduced.",
+    "BAR.EPF uses original 100x11 frames; gauge origin is prototype placement aligned to the status rows.",
+    "Bitmap digits use raw 9x11 font glyphs 20..29."
+  ],
+  "otherFix": "BaramMinimalController.OnEndPlay checks previous camera Enable and entity EnabledInHierarchy before switching."
+}

@@ -1,0 +1,568 @@
+@초원진인	{
+	set @id, objid();
+	set @target_id, get_mobtarget(@id);
+	set @rand, rand(1, 10);
+	if(@rand <= 2)
+	{
+	set @x1, get_x(@id)-3;
+	set @x2, get_x(@id)+3;
+	set @y1, get_y(@id)-3;
+	set @y2, get_y(@id)+3;
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j<=@y2; set @j, @j+1)
+			{
+				set @target_id, obj_getxy(@i, @j);
+				if(@target_id > 0)
+				{
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+						if(spellaethered(@target_sd, name2spellid("파력무참진")) == 0)
+						{
+							effect @id, 115;
+							effect @target_id, 107;
+							action @id, 6, 30, 0;
+							sound @id, 108;
+							spellaether @target_sd, name2spellid("파력무참진"), 4;
+						}
+					}
+					else if(istype(@target_id) == 2)
+					{
+						if(mobspellaethered(@target_id, name2spellid("파력무참진")) == 0)
+						{
+							effect @id, 115;
+							effect @target_id, 107;
+							action @id, 6, 30, 0;
+							sound @id, 108;
+							mobspellaether @target_id, name2spellid("파력무참진"), 4;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@초원도사	{
+	set @id, objid();
+	set @rand, rand(1, 20);
+	if(@rand <= 1)
+	{
+	set @x1, get_x(@id)-13;
+	set @x2, get_x(@id)+13;
+	set @y1, get_y(@id)-13;
+	set @y2, get_y(@id)+13;
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j<=@y2; set @j, @j+1)
+			{
+				set @target_id, obj_getxy(@i, @j);
+				if(@target_id > 0)
+				{
+					if(istype(@target_id) == 2)
+					{
+						if(get_mobhp(@target_id) <= 2500000)
+						{
+							effect @id, 63;
+							effect @target_id, 63; //신령이펙트
+							sound @id, 97; //신령효과음
+							set_mobhp @target_id, get_mobhp(@target_id) + 1000000;
+							showgage @target_id; //체력바 표시
+						}
+					}
+				}
+			}
+		}
+	}
+	else if(@rand <= 1)
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rate <= 1 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 39;
+				sound @target_id, 79;
+				set_ac @target_sd, get_ac(@target_sd)+50;
+				spellaether @target_sd, name2spellid("혼마술"), 60;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 혼마술을 가합니다";
+			}
+		}
+	}
+	else if(@rand <= 3)
+	{
+	set @me_x, get_x(@id);
+	set @me_y, get_y(@id);
+	set @x1, @me_x-9;
+	set @x2, @me_x+9;
+	set @y1, @me_y-9;
+	set @y2, @me_y+9;
+
+	if(@x1 < 0) { set @x1, 0; }
+	if(@x2 > mapwidth() -1) { set @x2, mapwidth() -1; }
+	if(@y1 < 0) { set @y1, 0; }
+	if(@y2 > mapheight()-1) { set @y2, mapheight() -1; }
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			
+			if( validid(@target) && @target != @id)
+			{
+				set @chk_x, callfunc("maxtomincalc", @me_x, @i);
+				set @chk_y, callfunc("maxtomincalc", @me_y, @j);
+				
+				if( @chk_x >= @chk_y )
+				{
+					set @ret, @chk_x;
+				} 
+				else 
+				{
+					set @ret, @chk_y;
+				}
+
+				if(istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					if( spellaethered(@target_sd, "호체주술") )
+					{
+						sound @target, 96;
+						effect @target, 98;
+						message @sd, 3, "마법 보호!!";
+						end;
+					}
+
+					if(istype(@target) == 1)
+					{
+						if(spellaethered(@target_sd, name2spellid("귀염추혼소")) ||
+						   spellaethered(@target_sd, name2spellid("저주")) ||
+						   spellaethered(@target_sd, name2spellid("염화")) ||
+						   spellaethered(@target_sd, name2spellid("혼마술"))) 
+						{
+							continue;
+						}
+
+						effect @target, 39;
+						set_ac @target_sd, get_ac(@target_sd) + 50;
+						spellaether @target_sd, name2spellid("귀염추혼소"), 30;
+					}
+				}
+			}
+		}
+	}
+	if(rand(1, 10) == 2)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 30;
+				}
+			}
+		}
+	}
+}
+
+//@초원도사	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand <= 5)
+	{
+	set @x1, get_x(@id)-13;
+	set @x2, get_x(@id)+13;
+	set @y1, get_y(@id)-13;
+	set @y2, get_y(@id)+13;
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j<=@y2; set @j, @j+1)
+			{
+				set @target_id, obj_getxy(@i, @j);
+				if(@target_id > 0)
+				{
+					if(istype(@target_id) == 2)
+					{
+						if(get_mobhp(@target_id) <= 2500000)
+						{
+							effect @id, 63;
+							effect @target_id, 63; //신령이펙트
+							sound @id, 97; //신령효과음
+							set_mobhp @target_id, get_mobhp(@target_id) + 1000000;
+							showgage @target_id; //체력바 표시
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@초원술사	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand <= 2)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", @id, 10, 2, -1, 107, 104, rand(100000, 150000), 2, "지폭지술", 15, "-1";
+	}
+}
+
+
+//@초원술사	{
+	set @id, objid();
+	if(rand(1, 25) <= 7)
+	{
+		callfunc "mob_constanting_spell", 1000, "헬파이어", 8, 73, 150000, 200000, 1;
+	}
+	if(rand(1, 25) == 23)
+	{
+		if(rand(1, 10) <= 5)
+		{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 30;
+				}
+			}
+		}
+	}
+	else if(@rand == 9)
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rate <= 5 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 39;
+				sound @target_id, 79;
+				set_ac @target_sd, get_ac(@target_sd)+50;
+				spellaether @target_sd, name2spellid("혼마술"), 60;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 혼마술을 가합니다";
+			}
+		}
+	}
+	else
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rate <= 5 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 13;
+				sound @target_id, 69;
+				set_ac @target_sd, get_ac(@target_sd)+30;
+				spellaether @target_sd, name2spellid("저주"), 60;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 저주를 가합니다";
+			}
+		}
+	}
+}
+
+@혈마동전사공격	{
+	set @id, myid();
+	set @side, get_side(@id);
+	set @rand, rand(1, 2);
+	if(@rand == 1)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				if(istype(@target_id) != 3)
+				{
+					switch(@side)
+					{
+					case 0:
+						set_y @target_id, get_y(@id)-1;
+						set_side @target_id, 2; set @side, 2;
+						break;
+					case 1:
+						set_x @target_id, get_x(@id)+1;
+						set_side @target_id, 3; set @side, 3;
+						break;
+					case 2:
+						set_y @target_id, get_y(@id)+1;
+						set_side @target_id, 0; set @side, 0;
+						break;
+					case 3:
+						set_x @target_id, get_x(@id)-1;
+						set_side @target_id, 1; set @side, 1;
+						break;
+					}
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+//						updatexy @target_sd;
+//						updatelookpc @target_sd, 0;
+						updateallpc @target_sd;
+						say @id, 2, get_mobname(@id) + ": 초혼비무~~!~!";
+					}
+					else
+					{
+						move @target_id, @side;
+					}
+					callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 99, 105, rand(150000, 200000), 0, "초혼비무~~!~!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+	else if(@rand == 2)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+		
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				switch(@side)
+				{
+				case 0:
+					set_y @id, get_y(@target_id)+1;
+					break;
+				case 1:
+					set_x @id, get_x(@target_id)-1;
+					break;
+				case 2:
+					set_y @id, get_y(@target_id)-1;
+					break;
+				case 3:
+					set_x @id, get_x(@target_id)+1;
+					break;
+				}
+				updatelook @id;
+				say @id, 2, get_mobname(@id) + ": 쇄혼비무~~!~!";
+				callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 100, 97, rand(50000, 600000), 0, "쇄혼비무~~!~!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+
+@초원전사	{
+	set @id, myid();
+	set @side, get_side(@id);
+	set @rand, rand(1, 2);
+	if(@rand == 1)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				if(istype(@target_id) != 3)
+				{
+					switch(@side)
+					{
+					case 0:
+						set_y @target_id, get_y(@id)-1;
+						set_side @target_id, 2; set @side, 2;
+						break;
+					case 1:
+						set_x @target_id, get_x(@id)+1;
+						set_side @target_id, 3; set @side, 3;
+						break;
+					case 2:
+						set_y @target_id, get_y(@id)+1;
+						set_side @target_id, 0; set @side, 0;
+						break;
+					case 3:
+						set_x @target_id, get_x(@id)-1;
+						set_side @target_id, 1; set @side, 1;
+						break;
+					}
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+//						updatexy @target_sd;
+//						updatelookpc @target_sd, 0;
+						updateallpc @target_sd;
+						say @id, 2, get_mobname(@id) + ": 초혼비무~~!~!";
+					}
+					else
+					{
+						move @target_id, @side;
+					}
+					callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 99, 105, rand(100000, 110000), 0, "초혼비무~~!~!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+	else if(@rand == 2)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+		
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				switch(@side)
+				{
+				case 0:
+					set_y @id, get_y(@target_id)+1;
+					break;
+				case 1:
+					set_x @id, get_x(@target_id)-1;
+					break;
+				case 2:
+					set_y @id, get_y(@target_id)-1;
+					break;
+				case 3:
+					set_x @id, get_x(@target_id)+1;
+					break;
+				}
+				updatelook @id;
+				say @id, 2, get_mobname(@id) + ": 쇄혼비무~~!~!";
+				callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 100, 97, rand(50000, 60000), 0, "쇄혼비무~~!~!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+
+@초원도적	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand <= 2)
+	{
+		callfunc "MONSTER_FRONT_ATTACK", @id, 10, 8, -1, 90, 69, rand(300000, 400000), 0, "백호검무", "백호검무~!!";
+	}
+}

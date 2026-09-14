@@ -1,0 +1,35 @@
+@동장군의망령	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("표신궁고문서1"), 1;
+}
+
+@서장군의망령	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("표신궁고문서2"), 1;
+}
+
+@남장군의망령	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("표신궁고문서3"), 1;
+}
+
+@북장군의망령	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("표신궁고문서4"), 1;
+}
+
+@중앙장군의망령	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("표신궁고문서5"), 1;
+}
+
+@표신궁합연	{
+	callfunc "DROPITEM", objid(), 10000, 100, name2itemid("금강석조각"), 1;
+}
+
+@표신궁백향	{
+	callfunc "DROPITEM", objid(), 10000, 90, name2itemid("금강석조각"), 1;
+}
+
+@표신궁문려	{
+	callfunc "DROPITEM", objid(), 10000, 90, name2itemid("금강석조각"), 1;
+}
+
+@표신궁에주겐	{
+	callfunc "DROPITEM", objid(), 10000, 90, name2itemid("금강석조각"), 1;
+}

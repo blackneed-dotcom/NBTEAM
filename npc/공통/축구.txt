@@ -1,0 +1,549 @@
+슛돌이	{
+	set @id, myid();
+	set @sd, mysd();
+
+	image 0, 148, 26;
+
+	set @pos, list2(@list, 0, 0, "\\n\\n\\n패기배 머그컵에 참가해보세요!", " 참가 방법", " 팀 선정");
+	if(@pos == 0) end;
+
+	if(@list == 1)
+	{
+	COS001:
+		set @pos, dialog(0, 0, 1, "축구란?\\n\\n패기서버에서의 축구는 규칙이 조금 다르답니다.\\n빨강팀과 파랑팀으로 나누어지는데, 한 팀당 5명씩!\\n총 10명의 인원으로 입장하실 수 있습니다.");
+		if(@pos == 0) end;
+	COS002:
+		set @pos, dialog(0, 1, 1, "주어진 점수까지를 먼저 획득하는 팀이 승리합니다.\\n\\n승리한 팀에겐 머그컵트로피가, \\n실패한 팀에겐 승급차수에 따른 적절한 갯수의 십억경이 지급됩니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS001;
+
+		set @pos, dialog(0, 1, 1, "아이템 칸은 최소 2칸을 비우셔야하며,\\n\\n신청 하는 사람들이 자신의 그룹에 있어야되고, 또 신청하는 사람이 그룹장이어야합니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS002;
+		else end;
+		end;
+	}
+	else if(@list == 2)
+	{
+		if(party(@sd) == 0 || party_member(@sd, 0) != @sd)
+		{
+			set @pos, dialog(0, 0, 0, "그룹 중이 아니거나 그룹장이 아닙니다.");
+			end;
+		}
+		if(#soccer == 1)
+		{
+			set @pos, dialog(0, 0, 0, "이미 패기배 머그컵이 진행중입니다.\\n\\n게임이 종료될때까지 기다려주세요.");
+			end;
+		}
+
+		setarray @player$[0], "", "", "", "", "", "", "", "", "", "";
+		setarray @player_number$[0], "첫", "두", "세", "네", "다섯", "여섯", "일곱", "여덟", "아홉", "열";
+
+		for(set @loop, 0; @loop < 10; set @loop, @loop+1)
+		{
+			if(@loop == 0)
+			{
+				set @pos, input2(@player$[@loop], 0, 6, @player_number$[@loop] + "번째 그룹원의 이름은 무엇입니까?\\n\\n(자신의 이름을 입력해주세요)", "나의 이름은", "입니다");
+
+				if(@player$[@loop] != get_name(@sd))
+				{
+					set @pos, dialog(0, 0, 0, get_name(@sd)+"(으)로 입력해주세요.");
+					end;
+				}
+			}
+			else { set @pos, input2(@player$[@loop], 0, 6, @player_number$[@loop] + "번째 그룹원의 이름은 무엇입니까?", "그룹원의 이름은", "입니다"); }
+
+			if(@pos == 0 || @player$[@loop] == "" || name2sd(@player$[@loop]) <= 0)
+			{
+				deletearray @player$[0], getarraysize(@player$); deletearray @player_number$[0], getarraysize(@player_number$);
+				set @pos, dialog(0, 0, 0, "존재하지 않는 사용자입니다.");
+				end;
+			}
+		}
+
+		deletearray @player_number$[0], getarraysize(@player_number$);
+
+		for(set @loop, 0; @loop < 10; set @loop, @loop+1)
+		{
+			if(@loop == 0)
+			{
+				if(get_name(@sd) != @player$[@loop])
+				{
+					set @error, @error+1;
+				}
+			}
+
+			set @target_sd, name2sd(@player$[@loop]);
+			if(@target_sd > 0)
+			{
+				if(get_mapid(@sd) != get_mapid(@target_sd))
+				{
+					set @error, @error+1;
+				}
+			}
+			else
+			{
+				set @error, @error+1;
+			}
+		}
+
+		if(@error > 0)
+		{
+			goto failed;
+			end;
+		}
+		else
+		{
+			if(party(@sd) != 0)
+			{
+				set @error, 0;
+
+				goto setting;
+				end;
+			}
+			else
+			{
+				goto failed;
+				end;
+			}
+		}
+	}
+	else end;
+	end;
+setting:
+	if(#soccer == 1)
+	{
+		set @pos, dialog(0, 0, 0, "이미 패기배 머그컵이 진행중입니다.\\n\\n게임이 종료될때까지 기다려주세요.");
+		end;
+	}
+
+	for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+	{
+		set @target_sd, party_member(@sd, @loop);
+		if(@target_sd > 0)
+		{
+			set @player_overlap, 0;
+
+			for(set @party, 0; @party < partymax(); set @party, @party+1)
+			{
+				if(@target_sd == name2sd(@player$[@party]))
+				{
+					set @member_count, @member_count+1;
+					set @player_overlap, @player_overlap+1;
+				}
+			}
+
+			if(@player_overlap != 1)
+			{
+				goto failed;
+				end;
+			}
+		}
+	}
+
+	if(@member_count != 10)
+	{
+		goto failed;
+		end;
+	}
+
+	//파랑팀
+	set #soccer_BlueTeam_1$, @player$[0];
+	set #soccer_BlueTeam_2$, @player$[1];
+	set #soccer_BlueTeam_3$, @player$[2];
+	set #soccer_BlueTeam_4$, @player$[3];
+	set #soccer_BlueTeam_5$, @player$[4];
+	//빨강팀
+	set #soccer_RedTeam_1$, @player$[5];
+	set #soccer_RedTeam_2$, @player$[6];
+	set #soccer_RedTeam_3$, @player$[7];
+	set #soccer_RedTeam_4$, @player$[8];
+	set #soccer_RedTeam_5$, @player$[9];
+
+	deletearray @player$[0], getarraysize(@player$);
+
+	//진행중
+	set #soccer, 1;
+
+	setarray @y[0], 5, 6, 7, 8, 9;
+
+	for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+	{
+		set @target_sd, party_member(@sd, @loop);
+		if(@target_sd > 0)
+		{
+			runscript @target_sd, "축구딜레이확인";
+			if(#huk == 1) { goto failed; end; }
+
+			additem @target_sd, name2itemid("신발"), 1;
+			additem @target_sd, name2itemid("노란비서"), 1;
+
+			if(@loop >= 0 && @loop < 5)
+			{
+				set @x, 13;
+				set @side, 1;
+				set @spell, name2spellid("축구파랑팀");
+			}
+			else
+			{
+				set @x, 16;
+				set @side, 3;
+				set @spell, name2spellid("축구빨강팀");
+			}
+
+			set_side sd2id(@target_sd), @side;
+
+			spellaether @target_sd, @spell, 150;
+
+			if(@loop < 5) { warp @target_sd, name2mapid("축구장"), @x, @y[@loop]; }
+			else { warp @target_sd, name2mapid("축구장"), @x, @y[@loop-5]; }
+
+			runscript @target_sd, "축구딜레이생성";
+			set @spawn, 1;
+		}
+	}
+
+	if(@spawn == 1) { mobspawn name2mapid("축구장"), rand(14,15), 7, 2, name2mobid("축구공"); }
+
+	deletearray @y[0], getarraysize(@y);
+	end;
+failed:
+	deletearray @player$[0], getarraysize(@player$);
+
+	//파랑팀
+	set #soccer_BlueTeam_1$, "";
+	set #soccer_BlueTeam_2$, "";
+	set #soccer_BlueTeam_3$, "";
+	set #soccer_BlueTeam_4$, "";
+	set #soccer_BlueTeam_5$, "";
+	//빨강팀
+	set #soccer_RedTeam_1$, "";
+	set #soccer_RedTeam_2$, "";
+	set #soccer_RedTeam_3$, "";
+	set #soccer_RedTeam_4$, "";
+	set #soccer_RedTeam_5$, "";
+
+	set #soccer, 0;
+
+	if(#huk == 0) { set @pos, dialog(0, 0, 0, "그룹 구성원 설정에 문제가 발생했습니다."); }
+	else { set #huk, 0; set @pos, dialog(0, 0, 1, "그룹 구성원 중 1일 이내에 참여한 사람이 있습니다."); }
+
+	set #huk, 0;
+	end;
+}
+
+축구딜레이확인	{
+	set @time, callfunc("server_nowtime");
+	if(@time < $soccer_delay)
+	{
+		set #huk, 1;
+	}
+}
+
+축구딜레이생성	{
+	set @time, callfunc("server_nowtime");
+	set $soccer_delay, @time+86400;
+}
+
+@축구파랑팀	{
+	set @id, myid();
+	set @sd, mysd();
+
+	effect myid(), 206;
+
+	if(#soccer == 0 || get_mapname(@sd) != "축구장") { goto end_game; }
+	else
+	{
+		if(spellaetherdelay(@sd, name2spellid("축구파랑팀")) < 10)
+		{
+			spellaether @sd, name2spellid("축구파랑팀"), 150;
+		}
+	}
+
+	if(rand(1,100) <= 55)
+	{
+		updateallpc @sd;
+	}
+
+	if(name2sd(#soccer_BlueTeam_1$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_1$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_2$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_2$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_3$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_3$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_4$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_4$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_5$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_5$)) != "축구장") { goto end_game; }
+
+	else if(name2sd(#soccer_RedTeam_1$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_1$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_2$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_2$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_3$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_3$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_4$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_4$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_5$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_5$)) != "축구장") { goto end_game; }
+
+	if(@end_game == 1)
+	{
+	end_game:
+		set #soccer, 0;
+		set #soccer_RedTeam_score, 0;
+		set #soccer_BlueTeam_score, 0;
+
+		set #soccer_RedTeam_1$, "";
+		set #soccer_RedTeam_2$, "";
+		set #soccer_RedTeam_3$, "";
+		set #soccer_RedTeam_4$, "";
+		set #soccer_RedTeam_5$, "";
+		set #soccer_BlueTeam_1$, "";
+		set #soccer_BlueTeam_2$, "";
+		set #soccer_BlueTeam_3$, "";
+		set #soccer_BlueTeam_4$, "";
+		set #soccer_BlueTeam_5$, "";
+
+		warp @sd, name2mapid("주막연실이네"), rand(3,4), 5;
+		spelluncast @sd, name2spellid("축구파랑팀");
+		message @sd, 5, " 그룹 구성원에 문제가 발생했거나 게임이 종료되었습니다.";
+	}
+}
+
+@축구빨강팀	{
+	set @sd, mysd();
+
+	effect myid(), 201;
+
+	if(#soccer == 0 || get_mapname(@sd) != "축구장") { goto end_game; }
+	else
+	{
+		if(spellaetherdelay(@sd, name2spellid("축구빨강팀")) < 10)
+		{
+			spellaether @sd, name2spellid("축구빨강팀"), 150;
+		}
+	}
+
+	if(rand(1,100) <= 55)
+	{
+		updateallpc @sd;
+	}
+
+	if(name2sd(#soccer_BlueTeam_1$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_1$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_2$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_2$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_3$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_3$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_4$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_4$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_BlueTeam_5$) <= 0 || get_mapname(name2sd(#soccer_BlueTeam_5$)) != "축구장") { goto end_game; }
+
+	else if(name2sd(#soccer_RedTeam_1$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_1$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_2$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_2$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_3$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_3$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_4$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_4$)) != "축구장") { goto end_game; }
+	else if(name2sd(#soccer_RedTeam_5$) <= 0 || get_mapname(name2sd(#soccer_RedTeam_5$)) != "축구장") { goto end_game; }
+	end;
+
+end_game:
+	set #soccer, 0;
+	set #soccer_RedTeam_score, 0;
+	set #soccer_BlueTeam_score, 0;
+
+	set #soccer_RedTeam_1$, "";
+	set #soccer_RedTeam_2$, "";
+	set #soccer_RedTeam_3$, "";
+	set #soccer_RedTeam_4$, "";
+	set #soccer_RedTeam_5$, "";
+	set #soccer_BlueTeam_1$, "";
+	set #soccer_BlueTeam_2$, "";
+	set #soccer_BlueTeam_3$, "";
+	set #soccer_BlueTeam_4$, "";
+	set #soccer_BlueTeam_5$, "";
+
+	deleteallmob name2mobid("축구공"), name2mapid("축구장");
+
+	warp @sd, name2mapid("주막연실이네"), rand(3,4), 5;
+	spelluncast @sd, name2spellid("축구빨강팀");
+	message @sd, 5, " 게임이 종료되었습니다.";
+}
+
+@신발	{
+	set @id, myid();
+	set @sd, mysd();
+
+	if(get_mapname(@sd) == "축구장")
+	{
+		set @target_id, obj_getfront();
+		if(@target_id > 0)
+		{
+			if(istype(@target_id) == 2)
+			{
+				if(get_mobname(@target_id) == "축구공")
+				{
+					set @x, get_mobx(@target_id);
+					set @y, get_moby(@target_id);
+
+					if(@x == 0) { deleteallmob name2mobid("축구공"), mapid(); mobspawn mapid(), rand(14,15), 7, 2, name2mobid("축구공"); warp @sd, mapid(), get_x(@id)+1, get_y(@id); effect @target_id, 2; }
+					else if(@x == 30) { deleteallmob name2mobid("축구공"), mapid(); mobspawn mapid(), rand(14,15), 7, 2, name2mobid("축구공"); warp @sd, mapid(), get_x(@id)-1, get_y(@id); effect @target_id, 2; }
+					else if(@y == 0) { deleteallmob name2mobid("축구공"), mapid(); mobspawn mapid(), rand(14,15), 7, 2, name2mobid("축구공"); warp @sd, mapid(), get_x(@id), get_y(@id)+1; effect @target_id, 2; }
+					else if(@y == 14) { deleteallmob name2mobid("축구공"), mapid(); mobspawn mapid(), rand(14,15), 7, 2, name2mobid("축구공"); warp @sd, mapid(), get_x(@id), get_y(@id)-1; effect @target_id, 2; }
+
+					if(@x == 1 && @y == 6 || @x == 2 && @y == 6 || @x == 1 && @y == 8)
+					{
+						//파랑팀 골대(빨강팀이 득점)
+						set #soccer_RedTeam_score, #soccer_RedTeam_score+1;
+						broadcast 4, "[머그컵 중계]: 현재 빨강팀의 득점 수는 "+#soccer_RedTeam_score+"점 입니다.";
+
+						deleteallmob name2mobid("축구공"), name2mapid("축구장");
+						mobspawn mapid(), rand(14,15), 7, 2, name2mobid("축구공");
+
+						if(#soccer_RedTeam_score >= 5)
+						{
+							deleteallmob name2mobid("축구공"), name2mapid("축구장");
+
+							setarray @RedTeam_Name$[0], #soccer_RedTeam_1$, #soccer_RedTeam_2$, #soccer_RedTeam_3$, #soccer_RedTeam_4$, #soccer_RedTeam_5$;
+							setarray @BlueTeam_Name$[0], #soccer_BlueTeam_1$, #soccer_BlueTeam_2$, #soccer_BlueTeam_3$, #soccer_BlueTeam_4$, #soccer_BlueTeam_5$;
+
+							for(set @loop, 0; @loop < 6; set @loop, @loop+1)
+							{
+								//빨강팀 승리
+								additem name2sd(@RedTeam_Name$[@loop]), name2itemid("머그컵트로피"), 1;
+								warp name2sd(@RedTeam_Name$[@loop]), name2mapid("주막연실이네"), rand(3,4), 5;
+								message name2sd(@RedTeam_Name$[@loop]), 5, " 패기배 머그컵에서 빨강팀이 승리하여 보상을 지급받았습니다!";
+
+								if(get_equipitem(@RedTeam_Name$[@loop], 0) == name2itemid("신발")) { set_unequipitem2 name2sd(@RedTeam_Name$[@loop]), 0; }
+								if(checkitem(@RedTeam_Name$[@loop], name2itemid("신발")) >= 1) { delitem name2sd(@RedTeam_Name$[@loop]), name2itemid("신발"), 1; }
+
+								//파랑팀 패배
+								runscript name2sd(@BlueTeam_Name$[@loop]), "축구십억경";
+
+								if(@loop == 5) { broadcast 5, " 패기배 머그컵에서 빨강팀이 승리했습니다!"; goto initialization; }
+							}
+						}
+					}
+					else if(@x == 29 && @y == 6 || @x == 29 && @y == 7 || @x == 29 && @y == 8)
+					{
+						//빨강팀 골대(파랑팀이 득점)
+						set #soccer_BlueTeam_score, #soccer_BlueTeam_score+1;
+						broadcast 4, "[머그컵 중계]: 현재 파랑팀의 득점 수는 "+#soccer_BlueTeam_score+"점 입니다.";
+
+						deleteallmob name2mobid("축구공"), name2mapid("축구장");
+						mobspawn mapid(), rand(14,15), 7, 2, name2mobid("축구공");
+
+						if(#soccer_BlueTeam_score >= 5)
+						{
+							deleteallmob name2mobid("축구공"), name2mapid("축구장");
+
+							setarray @RedTeam_Name$[0], #soccer_RedTeam_1$, #soccer_RedTeam_2$, #soccer_RedTeam_3$, #soccer_RedTeam_4$, #soccer_RedTeam_5$;
+							setarray @BlueTeam_Name$[0], #soccer_BlueTeam_1$, #soccer_BlueTeam_2$, #soccer_BlueTeam_3$, #soccer_BlueTeam_4$, #soccer_BlueTeam_5$;
+
+							for(set @loop, 0; @loop < 6; set @loop, @loop+1)
+							{
+								//파랑팀 승리
+								additem name2sd(@BlueTeam_Name$[@loop]), name2itemid("머그컵트로피"), 1;
+								warp name2sd(@BlueTeam_Name$[@loop]), name2mapid("주막연실이네"), rand(3,4), 5;
+								message name2sd(@BlueTeam_Name$[@loop]), 5, " 패기배 머그컵에서 파랑팀이 승리하여 보상을 지급받았습니다!";
+
+								if(get_equipitem(@RedTeam_Name$[@loop], 0) == name2itemid("신발")) { set_unequipitem2 name2sd(@RedTeam_Name$[@loop]), 0; }
+								if(checkitem(@RedTeam_Name$[@loop], name2itemid("신발")) >= 1) { delitem @RedTeam_Name$[@loop], name2itemid("신발"), 1; }
+
+								//빨강팀 패배
+								runscript name2sd(@RedTeam_Name$[@loop]), "축구십억경";
+
+								if(@loop == 5) { broadcast 5, " 패기배 머그컵에서 파랑팀이 승리했습니다!"; goto initialization; }
+							}
+						}
+					}
+
+					action @target_id, 1, 30, 0;
+					deleteallmob name2mobid("축구공"), mapid();
+
+					set @rand, rand(1, 3);
+					switch(get_side(@id))
+					{
+					case 0:
+						set @x, get_x(@id); set @y, get_y(@id)-@rand;
+						break;
+					case 1:
+						set @x, get_x(@id)+@rand; set @y, get_y(@id);
+						break;
+					case 2:
+						set @x, get_x(@id); set @y, get_y(@id)+@rand;
+						break;
+					case 3:
+						set @x, get_x(@id)-@rand; set @y, get_y(@id);
+						break;
+					}
+
+					if( !(@x >= 0 && @x < (get_mapwidth(@sd)-1)) || !(@y >= 0 && @y < (get_mapheight(@sd)-1)) )
+					{
+						set @x, rand(14, 15);
+						set @y, 7;
+					}
+
+					mobspawn mapid(), @x, @y, 2, name2mobid("축구공");
+					end;
+				}
+			}
+		}
+	}
+	else
+	{
+		if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "신발") { set_unequipitem2 @sd, 0; }
+	}
+	end;
+initialization:
+	set #soccer, 0;
+	set #soccer_RedTeam_score, 0;
+	set #soccer_BlueTeam_score, 0;
+
+	set #soccer_RedTeam_1$, "";
+	set #soccer_RedTeam_2$, "";
+	set #soccer_RedTeam_3$, "";
+	set #soccer_RedTeam_4$, "";
+	set #soccer_RedTeam_5$, "";
+	set #soccer_BlueTeam_1$, "";
+	set #soccer_BlueTeam_2$, "";
+	set #soccer_BlueTeam_3$, "";
+	set #soccer_BlueTeam_4$, "";
+	set #soccer_BlueTeam_5$, "";
+
+	deletearray @RedTeam_Name$[0], getarraysize(@RedTeam_Name$);
+	deletearray @BlueTeam_Name$[0], getarraysize(@BlueTeam_Name$);
+}
+
+축구십억경	{
+	set @sd, mysd();
+
+	if(get_joblevel(@sd) == 0) { set $saveexp_p, $saveexp_p+1; set @count, 1; }
+	else if(get_joblevel(@sd) == 1) { set $saveexp_p, $saveexp_p+2; set @count, 2; }
+	else if(get_joblevel(@sd) == 2) { set $saveexp_p, $saveexp_p+4; set @count, 4; }
+	else if(get_joblevel(@sd) == 3) { set $saveexp_p, $saveexp_p+6; set @count, 6; }
+	else if(get_joblevel(@sd) == 4) { set $saveexp_p, $saveexp_p+8; set @count, 8; }
+	else if(get_joblevel(@sd) == 5) { set $saveexp_p, $saveexp_p+8; set @count, 8; }
+	else if(get_joblevel(@sd) == 6) { set $saveexp_p, $saveexp_p+8; set @count, 8; }
+	else { message @sd, 5, " 지급 대상이 아닙니다."; }
+
+	warp @sd, name2mapid("주막연실이네"), rand(3,4), 5;
+	message @sd, 5, " 패기배 머그컵에서 탈락하여 십억경 "+@count+"개를 받았습니다.";
+}
+
+머그컵트로피	{
+	set @sd, mysd();
+
+	delitem @sd, name2itemid("머그컵트로피"), 1;
+	spellcast @sd, name2spellid("머그컵트로피");
+	message @sd, 3, "머그컵트로피 먹었습니다.";
+}
+
+@머그컵트로피	{
+	set @sd, mysd();
+	set @id, myid();
+
+	spelluncast @sd, 3072;
+	spelluncast @sd, 3073;
+	spelluncast @sd, 3074;
+	spelluncast @sd, 3075;
+	spelluncast @sd, 3076;
+	spelluncast @sd, 3077;
+	spelluncast @sd, 3078;
+	spelluncast @sd, 3079;
+	sound @id, 705;
+
+	spellaether @sd, name2spellid("머그컵트로피"), 900;
+	message @sd, 3, "머그컵트로피의 효과가 시작됩니다.";
+}
+
+@머그컵트로피해제	{
+	set @sd, mysd();
+	message @sd, 3, "머그컵트로피의 효과가 끝났습니다.";
+}

@@ -1,0 +1,18 @@
+@흡혈강시	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("청호박단추"), 1;
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("강시의손톱"), 1;
+}
+
+@아기강시	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("청호박단추"), 1;
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("강시의손톱"), 1;
+}
+
+@흑발강시	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("강시의손톱"), 1;
+}
+
+@만년원귀	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("만년원귀의손톱"), 1;
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("동인패"), 1;
+}

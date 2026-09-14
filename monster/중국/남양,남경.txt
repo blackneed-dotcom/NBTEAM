@@ -1,0 +1,31 @@
+@¿¬Ã»»ê¼Ò	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("¿¬Ã»»ê¼ÒÀÇ»Ô"), 1;
+}
+
+@¹é»ê¼Ò	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("¹é»ê¼ÒÀÇ»Ô"), 1;
+}
+
+@È²»ê¼Ò	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("È²»ê¼ÒÀÇ»Ô"), 1;
+}
+
+@Ã»»ê¼Ò±«	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("Ã»»ê¼Ò±«ÀÇ»Ô"), 1;
+}
+
+@Àû»ê¼Ò±«	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("Àû»ê¼Ò±«ÀÇ»Ô"), 1;
+}
+
+@³ì»ê¼Ò±«	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("³ì»ê¼Ò±«ÀÇ»Ô"), 1;
+}
+
+@»ê¼Ò±«¿Õ	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("»ê¼Ò±«¿ÕÀÇ»Ô"), 1;
+}
+
+@³«·ÚÃµ	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 8, 143, rand(8000, 10000), 0, "³«·ÚÃµ", "-1";
+}

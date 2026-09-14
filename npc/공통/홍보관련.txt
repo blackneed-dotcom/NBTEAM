@@ -1,0 +1,1156 @@
+황금교환	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "교환하고 싶은 아이템의 종류를 선택하세요.", "보물상자1개(황금20개)", "보물상자11개(황금200개)", "해골갑옷(황금1250개)", "크리스탈방패(황금3500개)", "진'해골방패(황금4500개)", "용마제칠검(황금6000개)", "용천제칠검(황금6000개)", "용랑제칠봉(황금6000개)", "용겸제칠봉(황금6000개)", "진'해골갑옷(황금7000개)", "황금투구(황금7000개)", "황금장갑짝(황금5000개)", "황금팔찌짝(황금5000개)", "황금반지짝(황금5000개)", "황금선류짝(황금5000개)", "진일신검(황금11500개)", "청일기창(황금11500개)", "황염곤봉(황금11500개)", "적염곤봉(황금11500개)", "구곡검(황금11500개)", "협가검(황금11500개)", "영후단봉(황금11500개)", "대모홍접선(황금11500개)", "용마제팔검(황금21000개)", "용천제팔검(황금21000개)", "용랑제팔봉(황금21000개)", "용겸제팔봉(황금21000개)");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 20개를 보물상자 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "보물상자"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 200개를 보물상자 11개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "보물상자"; }
+		if(countitem(name2itemid(@needitem$)) < 199)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "200개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 11;
+			delitem @mysd, name2itemid(@needitem$), 200;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 1250개를 여신의방패로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "해골갑옷";}
+		if(countitem(name2itemid(@needitem$)) < 1249)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "1250개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 1250;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 3500개를 크리스탈방패 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "크리스탈방패"; }
+		if(countitem(name2itemid(@needitem$)) < 3499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "3500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 3500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 5)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 4500개를 진'해골방패 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "진'해골방패"; }
+		if(countitem(name2itemid(@needitem$)) < 4499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "4500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 4500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 6)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 6000개를 용마제칠검 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용마제칠검"; }
+		if(countitem(name2itemid(@needitem$)) < 5999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "6000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 6000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 7)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 6000개를 용천제칠검 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용천제칠검"; }
+		if(countitem(name2itemid(@needitem$)) < 5999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "6000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 6000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 8)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 6000개를 용랑제칠봉 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용랑제칠봉"; }
+		if(countitem(name2itemid(@needitem$)) < 5999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "6000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 6000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 9)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 6000개를 용겸제칠봉 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용겸제칠봉"; }
+		if(countitem(name2itemid(@needitem$)) < 5999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "6000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 6000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 10)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 7000개를 진'해골갑옷 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "진'해골갑옷"; }
+		if(countitem(name2itemid(@needitem$)) < 6999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "7000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 7000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 11)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 7000개를 황금투구 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "황금투구"; }
+		if(countitem(name2itemid(@needitem$)) < 6999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "7000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 7000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 12)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 9500개를 황금장갑짝으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "황금장갑"; }
+		if(countitem(name2itemid(@needitem$)) < 4999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "5000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 5000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 13)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 9500개를 황금팔찌짝으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "황금팔찌"; }
+		if(countitem(name2itemid(@needitem$)) < 4999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "5000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 5000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 14)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 9500개를 황금반지짝으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "황금반지"; }
+		if(countitem(name2itemid(@needitem$)) < 4999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "5000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 5000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 15)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 5000개를 황금선류짝으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "황금선류"; }
+		if(countitem(name2itemid(@needitem$)) < 4999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "5000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 5000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 16)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 진일신검으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "진일신검"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 17)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 청일기창으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "청일기창"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 18)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 황염곤봉으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "황염곤봉"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 19)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 적염곤봉으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "적염곤봉"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 20)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 구곡검으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "구곡검"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 21)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 협가검으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "협가검"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 22)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 영후단봉으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "영후단봉"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 23)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 11500개를 대모홍접선으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "대모홍접선"; }
+		if(countitem(name2itemid(@needitem$)) < 11499)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "11500개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 11500;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 24)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 21000개를 용마제팔검으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용마제팔검"; }
+		if(countitem(name2itemid(@needitem$)) < 20999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "21000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 21000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 25)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 21000개를 용천제팔검으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용천제팔검"; }
+		if(countitem(name2itemid(@needitem$)) < 20999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "21000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 21000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 26)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 21000개를 용랑제팔봉으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용랑제팔봉"; }
+		if(countitem(name2itemid(@needitem$)) < 20999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "21000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 21000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 27)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 21000개를 용겸제팔봉으로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용겸제팔봉"; }
+		if(countitem(name2itemid(@needitem$)) < 20999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "21000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 21000;
+			set @pos, dialog(0,0,1, @additem$ + "드렸습니다.");
+			end;
+		}
+	}	
+}
+
+홍보지급	{
+	set @sd, mysd();
+	set @id, myid();
+	setarray @name$[0], #genius_gift_1$, #genius_gift_2$, #genius_gift_3$, #genius_gift_4$, #genius_gift_5$, #genius_gift_6$, #genius_gift_7$, #genius_gift_8$, #genius_gift_9$, #genius_gift_10$, #genius_gift_11$, #genius_gift_12$, #genius_gift_13$, #genius_gift_14$, #genius_gift_15$, #genius_gift_16$, #genius_gift_17$, #genius_gift_18$, #genius_gift_19$, #genius_gift_20$;
+	setarray @value[0], #genius_gift1, #genius_gift2, #genius_gift3, #genius_gift4, #genius_gift5, #genius_gift6, #genius_gift7, #genius_gift8, #genius_gift9, #genius_gift10, #genius_gift11, #genius_gift12, #genius_gift13, #genius_gift14, #genius_gift15, #genius_gift16, #genius_gift17, #genius_gift18, #genius_gift19, #genius_gift20;
+
+	for(set @i, 0; @i < 20; set @i, @i+1)
+	{
+		if(get_name(@sd) == @name$[@i])
+		{
+			additem @sd, name2itemid("황금"), @value[@i];
+			message @sd, 3, @name$[@i] + " " + @value[@i] + "개 얻었습니다.";
+			set @value[@i], 0;
+			set @name$[@i], "";
+			goto last;
+		}
+	}
+	set @pos, dialog(0, 0, 0, "지급 대상이 아닙니다!\\n\\n홍보이벤트 참여는 공지사항을 참고하세요!");
+	end;
+last:
+	set #genius_gift_1$, @name$[0];
+	set #genius_gift_2$, @name$[1];
+	set #genius_gift_3$, @name$[2];
+	set #genius_gift_4$, @name$[3];
+	set #genius_gift_5$, @name$[4];
+	set #genius_gift_6$, @name$[5];
+	set #genius_gift_7$, @name$[6];
+	set #genius_gift_8$, @name$[7];
+	set #genius_gift_9$, @name$[8];
+	set #genius_gift_10$, @name$[9];
+	set #genius_gift_11$, @name$[10];
+	set #genius_gift_12$, @name$[11];
+	set #genius_gift_13$, @name$[12];
+	set #genius_gift_14$, @name$[13];
+	set #genius_gift_15$, @name$[14];
+	set #genius_gift_16$, @name$[15];
+	set #genius_gift_17$, @name$[16];
+	set #genius_gift_18$, @name$[17];
+	set #genius_gift_19$, @name$[18];
+	set #genius_gift_20$, @name$[19];
+	set #genius_gift1, @value[0];
+	set #genius_gift2, @value[1];
+	set #genius_gift3, @value[2];
+	set #genius_gift4, @value[3];
+	set #genius_gift5, @value[4];
+	set #genius_gift6, @value[5];
+	set #genius_gift7, @value[6];
+	set #genius_gift8, @value[7];
+	set #genius_gift9, @value[8];
+	set #genius_gift10, @value[9];
+	set #genius_gift11, @value[10];
+	set #genius_gift12, @value[11];
+	set #genius_gift13, @value[12];
+	set #genius_gift14, @value[13];
+	set #genius_gift15, @value[14];
+	set #genius_gift16, @value[15];
+	set #genius_gift17, @value[16];
+	set #genius_gift18, @value[17];
+	set #genius_gift19, @value[18];
+	set #genius_gift20, @value[19];
+	set @pos, dialog(0, 0, 0, "지급이 완료되었습니다!\\n\\n자세한 사항은 벚꽃 님에게 문의하세요!");
+	end;
+}
+
+@홍보관리비령	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(!get_gmlevel(@sd))
+	{
+		set @pos, dialog(0, 0, 0, "어떤 경로로 얻게 되었는지는 몰라도 폐기 처분 하지 않으시면 제재됩니다.");
+		end;
+	}
+	setarray @name$[0], #genius_gift_1$, #genius_gift_2$, #genius_gift_3$, #genius_gift_4$, #genius_gift_5$, #genius_gift_6$, #genius_gift_7$, #genius_gift_8$, #genius_gift_9$, #genius_gift_10$, #genius_gift_11$, #genius_gift_12$, #genius_gift_13$, #genius_gift_14$, #genius_gift_15$, #genius_gift_16$, #genius_gift_17$, #genius_gift_18$, #genius_gift_19$, #genius_gift_20$;
+	setarray @value[0], #genius_gift1, #genius_gift2, #genius_gift3, #genius_gift4, #genius_gift5, #genius_gift6, #genius_gift7, #genius_gift8, #genius_gift9, #genius_gift10, #genius_gift11, #genius_gift12, #genius_gift13, #genius_gift14, #genius_gift15, #genius_gift16, #genius_gift17, #genius_gift18, #genius_gift19, #genius_gift20;
+POS_000:
+	set @pos, list2(@list, 0, 0, "홍보관리 비령입니다.\\n명령을 내려 주십시오.", @name$[0] + " (" + @value[0] + ")", @name$[1] + " (" + @value[1] + ")", @name$[2] + " (" + @value[2] + ")", @name$[3] + " (" + @value[3] + ")", @name$[4] + " (" + @value[4] + ")", @name$[5] + " (" + @value[5] + ")", @name$[6] + " (" + @value[6] + ")", @name$[7] + " (" + @value[7] + ")", @name$[8] + " (" + @value[8] + ")", @name$[9] + " (" + @value[9] + ")", @name$[10] + " (" + @value[10] + ")", @name$[11] + " (" + @value[11] + ")", @name$[12] + " (" + @value[12] + ")", @name$[13] + " (" + @value[13] + ")", @name$[14] + " (" + @value[14] + ")", @name$[15] + " (" + @value[15] + ")", @name$[16] + " (" + @value[16] + ")", @name$[17] + " (" + @value[17] + ")", @name$[18] + " (" + @value[18] + ")", @name$[19] + " (" + @value[19] + ")", @name$[20] + " (" + @value[20] + ")");
+	if(@pos != 1) end;
+	if(@list > 0)
+	{
+		set @var, @list - 1;
+		if(@name$[@var] == "")
+		{
+POS_001:
+			set @pos, input2(@name1$, 0, 12, "등록하실 이름을 적어 주십시오", "홍보한 사람의 이름은", "입니다.");
+			if(@pos == -1) goto POS_000;
+			else if(!@pos) end;
+			set @pos, input2(@value1, 0, 3, "지급할 횟수를 적어 주십시오.", "홍보상자 지급 회수는", "입니다.");
+			if(@pos == -1) goto POS_000;
+			else if(!@pos) end;
+			if(@value1 <= 0) end;
+			if(@name1$ == "") end;
+			
+			set @name$[@var], @name1$;
+			set @value[@var], @value1;
+			goto last;
+		}
+		else
+		{
+			set @pos, list2(@list_1, 0, 1, "홍보관리 비령입니다.\\n명령을 내려 주십시오.", "홍보지급 회수하기");
+			if(@pos == -1) goto POS_000;
+			else if(!@pos) end;
+			if(@list_1 != 1) end;
+			set @name$[@var], "";
+			set @value[@var], 0;
+			goto last;
+		}
+	}
+	end;
+last:
+	set #genius_gift_1$, @name$[0];
+	set #genius_gift_2$, @name$[1];
+	set #genius_gift_3$, @name$[2];
+	set #genius_gift_4$, @name$[3];
+	set #genius_gift_5$, @name$[4];
+	set #genius_gift_6$, @name$[5];
+	set #genius_gift_7$, @name$[6];
+	set #genius_gift_8$, @name$[7];
+	set #genius_gift_9$, @name$[8];
+	set #genius_gift_10$, @name$[9];
+	set #genius_gift_11$, @name$[10];
+	set #genius_gift_12$, @name$[11];
+	set #genius_gift_13$, @name$[12];
+	set #genius_gift_14$, @name$[13];
+	set #genius_gift_15$, @name$[14];
+	set #genius_gift_16$, @name$[15];
+	set #genius_gift_17$, @name$[16];
+	set #genius_gift_18$, @name$[17];
+	set #genius_gift_19$, @name$[18];
+	set #genius_gift_20$, @name$[19];
+	set #genius_gift1, @value[0];
+	set #genius_gift2, @value[1];
+	set #genius_gift3, @value[2];
+	set #genius_gift4, @value[3];
+	set #genius_gift5, @value[4];
+	set #genius_gift6, @value[5];
+	set #genius_gift7, @value[6];
+	set #genius_gift8, @value[7];
+	set #genius_gift9, @value[8];
+	set #genius_gift10, @value[9];
+	set #genius_gift11, @value[10];
+	set #genius_gift12, @value[11];
+	set #genius_gift13, @value[12];
+	set #genius_gift14, @value[13];
+	set #genius_gift15, @value[14];
+	set #genius_gift16, @value[15];
+	set #genius_gift17, @value[16];
+	set #genius_gift18, @value[17];
+	set #genius_gift19, @value[18];
+	set #genius_gift20, @value[19];
+	set @pos, dialog(0, 0, 0, "등록이 완료되었습니다!\\n\\n지급되면 자동으로 삭제됩니다.");
+
+	end;
+}
+
+하나교환	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "교환하고 싶은 아이템의 종류를 선택하세요.", "해골왕의뼈", "용마제일검", "용천제일검", "용랑제일봉", "용겸제일봉", "현철", "철갑마비서", "기간제용마제칠검[2일]", "기간제용천제칠검[2일]", "기간제용랑제칠봉[2일]", "기간제용겸제칠봉[2일]", "일본비서");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 70개로 해골왕의뼈 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "해골왕의뼈"; }
+		if(countitem(name2itemid(@needitem$)) < 69)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "70개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 70;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 50개로 용마제일검 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용마제일검"; }
+		if(countitem(name2itemid(@needitem$)) < 49)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "50개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 50;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 50개로 용천제일검 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용천제일검"; }
+		if(countitem(name2itemid(@needitem$)) < 49)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "50개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 50;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 5)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 50개로 용랑제일봉 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용랑제일검"; }
+		if(countitem(name2itemid(@needitem$)) < 49)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "50개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 50;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 6)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 50개로 용겸제일봉 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "용겸제일봉"; }
+		if(countitem(name2itemid(@needitem$)) < 49)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "50개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 50;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 7)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 30개로 현철 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "현철"; }
+		if(countitem(name2itemid(@needitem$)) < 29)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "30개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 30;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 8)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 20개로 철갑마비서 20개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "현철"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 20;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 9)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 30개로 기간제용마제칠검(2일) 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "*기간제용마상자"; }
+		if(countitem(name2itemid(@needitem$)) < 29)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "30개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 30;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 10)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 30개로 기간제용천제칠검(2일) 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "*기간제용천상자"; }
+		if(countitem(name2itemid(@needitem$)) < 29)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "30개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 30;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 11)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 30개로 기간제용랑제칠봉(2일) 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "*기간제용랑상자"; }
+		if(countitem(name2itemid(@needitem$)) < 29)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "30개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 30;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 12)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 30개로 기간제용겸제칠봉(2일) 1개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "*기간제용겸상자"; }
+		if(countitem(name2itemid(@needitem$)) < 29)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "30개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 30;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 13)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 3개를 일본비서2개로 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "일본비서"; }
+		if(countitem(name2itemid(@needitem$)) < 2)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "3개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 2;
+			delitem @mysd, name2itemid(@needitem$), 3;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+}
+
+상자교환	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "교환하고 싶은 아이템의 종류를 선택하세요.", "철갑마비서200개(황금10개)", "일본비서50개(황금10개)", "둔귀촌비서50개(황금10개)", "위례성비서50개(황금10개)", "메마른섬비서50개(황금10개)", "환상의섬비서50개(황금10개)", "오녀산성비서30개(황금10개)");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 10개로 철갑마비서200개를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "철갑마비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 200;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 10개로 일본비서50개를 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "일본비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 50;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 10개로 둔귀촌비서50개를 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "둔귀촌비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 50;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 10개로 위례성비서50개를 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "위례성비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 50;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 5)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 10개로 메마른섬비서50개를 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "메마른섬비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 50;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 6)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 10개로 환상의섬비서50개를 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "환상의섬비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 50;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 7)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 10개로 오녀산성비서30개를 교환하시겠습니까?", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "오녀산성비서"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 30;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+
+}
+
+기간제아이템교환	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "교환하고 싶은 아이템의 종류를 선택하세요.", "은나무가지(황금20개)", "현철(황금100개)", "크리스탈(황금600개)", "여신의방패(황금800개)", "해골왕의뼈(황금1000개)");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 20개로 은나무가지를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "은나무가지"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 100개로 현철을 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "현철"; }
+		if(countitem(name2itemid(@needitem$)) < 99)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "100개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 100;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 600개로 크리스탈을 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "크리스탈"; }
+		if(countitem(name2itemid(@needitem$)) < 599)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "600개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 600;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 800개로 여신의방패를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "여신의방패"; }
+		if(countitem(name2itemid(@needitem$)) < 799)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "800개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 800;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 5)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 1000개로 해골왕의뼈를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "해골왕의뼈"; }
+		if(countitem(name2itemid(@needitem$)) < 999)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "1000개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 1000;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+}

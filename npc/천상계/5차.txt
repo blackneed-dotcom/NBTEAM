@@ -1,0 +1,147 @@
+용인	{
+	set @sd, mysd();
+	set @id, myid();
+	image 0, 170, 0;
+	if(get_joblevel(@sd) == 4)
+	{
+		if(get_job(@sd) == 1 || get_job(@sd) == 2) { set @hp, 240000; set @mp, 0; }
+		else if(get_job(@sd) == 3) { set @hp, 100000; set @mp, 120000; }
+		else if(get_job(@sd) == 4) { set @hp, 100000; set @mp, 120000; }
+
+		if(get_purehp(@sd) < @hp || get_puremp(@sd) < @mp) goto COS00005;
+
+		if(!$fourclasss) goto COS00000;
+		else if($fourclasss == 1) goto COS00001;
+		else if($fourclasss == 2) goto COS00002;
+		else if($fourclasss == 3) goto COS00003;
+		else if($fourclasss == 4) goto COS00004;
+		else goto COS00005;
+COS00000:
+		set @pos, dialog(1, 0, 1, "신수의 반란이 일어났다네..\\n\\n도와줄 사람이없는가..");
+		if(@pos == 0) end;
+		set @pos, list2(@ret, 1, 1, "정녕 반란을 막을자가 없다는 말인가?", "제가 신수의 음모를 막아보겠습니다.", "신수들이 하는 일을 인간이 어쩔 순 없겠죠.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS00000;
+		else if(@ret == 1)
+		{
+			set $fourclasss, 1;
+			addlegend @sd, 7, 7, 0, 16, "주작 암살의 임무를 받다.";
+		}
+		end;
+COS00001:
+		if(countitem(name2itemid("주작의심장")) > 0)
+		{
+			set $fourclasss, 2;
+			delitem @sd, name2itemid("주작의심장"), 1;
+			set @pos, dialog(1, 0, 1, "주작을 잘 물리쳐 주었네. 하지만, 이제\\n시작이라네.\\n\\n이번엔 백호를 상대해야 하네.");
+			addlegend @sd, 7, 7, 0, 16, "백호 암살의 임무를 받다.";
+			end;
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 0, "아직 주작을 물리치지 못했군..");
+			end;
+		}
+		end;
+COS00002:
+		if(countitem(name2itemid("백호의심장")) > 0)
+		{
+			set $fourclasss, 3;
+			delitem @sd, name2itemid("백호의심장"), 1;
+			set @pos, dialog(1, 0, 1, "백호를 잘 물리쳐 주었네.\\n\\n이번엔 현무를 상대해야 하네.");
+			addlegend @sd, 7, 7, 0, 16, "현무 암살의 임무를 받다.";
+			end;
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 0, "아직 백호를 물리치지 못했군..");
+			end;
+		}
+		end;
+COS00003:
+		if(countitem(name2itemid("현무의심장")) > 0)
+		{
+			set $fourclasss, 4;
+			delitem @sd, name2itemid("현무의심장"), 1;
+			set @pos, dialog(1, 0, 1, "현무를 잘 물리쳐 주었네.\\n\\n이번엔 청룡을 상대해야 하네.");
+			addlegend @sd, 7, 7, 0, 16, "청룡 암살의 임무를 받다.";
+			end;
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 0, "아직 현무를 물리치지 못했군..");
+			end;
+		}
+		end;
+COS00004:
+		if(countitem(name2itemid("청룡의심장")) > 0)
+		{
+			set $fourclasss, 5;
+			delitem @sd, name2itemid("청룡의심장"), 1;
+			additem @sd, name2itemid("사신수의심장"), 1;
+			set @pos, dialog(1, 0, 1, "오오 청룡을 무찌른겐가 이걸받고 천상계에 있는 천용인에게 가보시게나.\\n\\n자네를 더욱 강하게 만들어줄걸세..");
+			addlegend @sd, 7, 7, 0, 16, "천용인 에게 가보자.";
+			end;
+		}
+		else
+		{
+			set @pos, dialog(1, 0, 0, "아직 청룡을 물리치지 못했군..");
+			end;
+		}
+		end;
+COS00005:
+		set @pos, dialog(1, 0, 0, "자네는 아직 약하다네...");
+		end;
+	}
+}
+
+천용인	{
+	image 0, 170, 0;
+	set @sd, mysd();
+	set @id, myid();
+	set @joblv, get_joblevel(@sd);
+
+	if($fourclasss == 5) { goto POS00000; }
+	else { set @pos, dialog(1, 0, 1, "..."); end; }
+POS00000:
+	if(get_job(@sd) == 1) { set @jobname$, "검신"; }
+	else if(get_job(@sd) == 2) { set @jobname$, "패왕"; }
+	else if(get_job(@sd) == 3) { set @jobname$, "마신"; }
+	else if(get_job(@sd) == 4) { set @jobname$, "신선"; }
+
+	set @pos, list2(@ret, 1, 0, "당신은 지금껏 수많은 수련을 거쳐 인간으로서 오르기\\n힘든 경지에 도달하셨고, 더욱이 세상을 종말로부터\\n보호하는 업적을 세우셨으니 " + @jobname$ + "으로 불리우시기에\\n부족함이 없습니다.\\n지금 바로 승급을 원하시나요?", "예", "아뇨");
+	if(@pos == 0) { end; }
+	else if(@ret == 1)
+	{
+		setarray @hp[0], 2400000, 2400000, 1000000, 1000000;
+		setarray @mp[0], 0, 0, 1200000, 1200000;
+
+		if(get_level(@sd) >= 99 && get_purehp(@sd) >= @hp[get_job(@sd)-1] && get_puremp(@sd) >= @mp[get_job(@sd)-1])
+		{
+			if(countitem(name2itemid("사신수의심장")) == 0)
+			{
+				set @pos, dialog(0, 0, 0, "사신수의심장이 없습니다.");
+			}
+			else
+			{
+				delitem @sd, name2itemid("사신수의심장"), 1;
+				message @sd, 3, "사신수의심장 주었습니다";
+
+				set_joblevel @sd, @joblv+1;
+
+				spellaether @sd, name2spellid("승급보상"), 1;
+
+				broadcast 4, "(( [" + get_name(@sd) + "]님이 " + get_jobname(@sd) + "으로 승급하였습니다. 축하합니다! ))";
+				addlegend @sd, 7, 7, 0, 16, "5차승급을 완료하였다.";
+				set $fourclasss, 6;
+			}
+			deletearray @hp[0], getarraysize(@hp);
+			deletearray @mp[0], getarraysize(@mp);
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "좀더 수련을 쌓고오세요.");
+			end;
+		}
+	}
+}

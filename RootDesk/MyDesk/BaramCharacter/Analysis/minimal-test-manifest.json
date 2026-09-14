@@ -1,0 +1,274 @@
+{
+  "project": "C:/Users/black/UI",
+  "source": "C:/Users/black/UI/char.dat",
+  "entries": [
+    "BODY.EPF",
+    "BODY.PAL",
+    "Head.EPF",
+    "Head.PAL"
+  ],
+  "testSelection": "BODY and Head frames 0..11; first palette block, index 0 transparent; body then head. Visual inspection only, original default-character mapping unconfirmed.",
+  "canvas": {
+    "width": 21,
+    "height": 43,
+    "left": -10,
+    "top": -40,
+    "right": 11,
+    "bottom": 3,
+    "footOrigin": [
+      10,
+      40
+    ],
+    "visualWorldOffset": [
+      0.005,
+      0.185
+    ]
+  },
+  "directionFrames": {
+    "up": [
+      0,
+      1,
+      2
+    ],
+    "right": [
+      3,
+      4,
+      5
+    ],
+    "down": [
+      6,
+      7,
+      8
+    ],
+    "left": [
+      9,
+      10,
+      11
+    ]
+  },
+  "testRules": {
+    "speedWorldUnitsPerSecond": 1.2,
+    "frameSeconds": 0.12,
+    "walkOffsets": [
+      1,
+      0,
+      2,
+      0
+    ],
+    "idleOffset": 0,
+    "diagonal": "horizontal priority",
+    "opposingKeys": "cancel",
+    "bounds": [
+      -4,
+      -2,
+      4,
+      2
+    ],
+    "collision": false,
+    "multiplayer": false
+  },
+  "ruids": [
+    "71bd894d99094698a6039fb3dca3984a",
+    "3ee63b01f9854bf8b1117506f15ab86e",
+    "7b49778a760042acb0d2e469c83c22d4",
+    "30eea64ede6243ad88ae789d9cd6b7e0",
+    "b44497d37a6f401cbe653951fc8a2dda",
+    "28e698163c7b470d884475756f3b1acb",
+    "940d28d21a1f4aeab412e92593254d22",
+    "f0e185def10648bcbe27fc30a583d177",
+    "15bc3878972c4ab8b886e72f3d75ec3c",
+    "faa4766e288b4db0b99ba52f097aa393",
+    "a89af559d7b443ad8cb06241ccb8bc0c",
+    "6e1d5d6d595b43cca7a9696f653b1a32"
+  ],
+  "files": [
+    {
+      "index": 0,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-0.png",
+      "bytes": 411,
+      "sha256": "84e3418b76f9100373c18c32cac8fb687f76050e9b9809dfcf2dfda676657d4f"
+    },
+    {
+      "index": 1,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-1.png",
+      "bytes": 434,
+      "sha256": "0b1d9ad6cf42178b486bf9f399a2012eb700a0fd828aff316985ba5f0eb7fe76"
+    },
+    {
+      "index": 2,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-2.png",
+      "bytes": 425,
+      "sha256": "2530abe3bd8900a952990ff0c02b4021b2f2ec681f12c078fef0c68ea4f40694"
+    },
+    {
+      "index": 3,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-3.png",
+      "bytes": 396,
+      "sha256": "7e361ed359803214404b0a620ad04c2e8a39ae2c30150b13d9f9f99196ea25e3"
+    },
+    {
+      "index": 4,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-4.png",
+      "bytes": 493,
+      "sha256": "74b14ac4a52f11ba22105777b8158c4e9546c9e256aee86ad6353b1cb012ee67"
+    },
+    {
+      "index": 5,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-5.png",
+      "bytes": 485,
+      "sha256": "7dbdd7ca6031e7c5863c93277c377f0dc79a0610531e5c71f0fc6e6290a28aeb"
+    },
+    {
+      "index": 6,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-6.png",
+      "bytes": 491,
+      "sha256": "d5ab1a0650e7c044b599301b9a2d011d8017502c8c29a1c062393787c155879f"
+    },
+    {
+      "index": 7,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-7.png",
+      "bytes": 528,
+      "sha256": "de918c83cb97660e84c11297b3862b62653b13aa685d14641dc51b25ee7011b9"
+    },
+    {
+      "index": 8,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-8.png",
+      "bytes": 534,
+      "sha256": "5ba85960ec465668db8a7321a001b197d710aac6170cb6878985d9498c4964dd"
+    },
+    {
+      "index": 9,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-9.png",
+      "bytes": 391,
+      "sha256": "b2a687def00fae6cdcd9486d34c5cd70e9d4dfbe855e3247dea9c8cc85151031"
+    },
+    {
+      "index": 10,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-10.png",
+      "bytes": 483,
+      "sha256": "219dac75e6b84fe9ac3611f0887f87e437e26599229d3ede54de1f5e2dd76816"
+    },
+    {
+      "index": 11,
+      "path": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Converted/MinimalTest/frame-11.png",
+      "bytes": 491,
+      "sha256": "a2bc829f2ade4039fa6f0099debc5c8799dd794752b3d6cc9e16139f167f711a"
+    }
+  ],
+  "verification": {
+    "pngChecks": [
+      {
+        "frame": 0,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "84e3418b76f9100373c18c32cac8fb687f76050e9b9809dfcf2dfda676657d4f",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 1,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "0b1d9ad6cf42178b486bf9f399a2012eb700a0fd828aff316985ba5f0eb7fe76",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 2,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "2530abe3bd8900a952990ff0c02b4021b2f2ec681f12c078fef0c68ea4f40694",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 3,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "7e361ed359803214404b0a620ad04c2e8a39ae2c30150b13d9f9f99196ea25e3",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 4,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "74b14ac4a52f11ba22105777b8158c4e9546c9e256aee86ad6353b1cb012ee67",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 5,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "7dbdd7ca6031e7c5863c93277c377f0dc79a0610531e5c71f0fc6e6290a28aeb",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 6,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "d5ab1a0650e7c044b599301b9a2d011d8017502c8c29a1c062393787c155879f",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 7,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "de918c83cb97660e84c11297b3862b62653b13aa685d14641dc51b25ee7011b9",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 8,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "5ba85960ec465668db8a7321a001b197d710aac6170cb6878985d9498c4964dd",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 9,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "b2a687def00fae6cdcd9486d34c5cd70e9d4dfbe855e3247dea9c8cc85151031",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 10,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "219dac75e6b84fe9ac3611f0887f87e437e26599229d3ede54de1f5e2dd76816",
+        "nativeBoundsPreserved": true
+      },
+      {
+        "frame": 11,
+        "size": [
+          21,
+          43
+        ],
+        "sha256": "a2bc829f2ade4039fa6f0099debc5c8799dd794752b3d6cc9e16139f167f711a",
+        "nativeBoundsPreserved": true
+      }
+    ],
+    "originalHashUnchanged": true,
+    "buildLogErrors": 0,
+    "runtime": "PASS for minimal prototype: actual Maker input verified all four directions, idle facing, non-resetting walk phase, fixed renderer offset, no build or runtime errors.",
+    "limitations": "Original palette association, basic outfit, movement rules and frame timing remain unverified. Current values are experimental. Pixel-perfect display is not certified; Maker screenshot is 1260x709."
+  }
+}

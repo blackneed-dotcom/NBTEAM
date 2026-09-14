@@ -1,0 +1,39 @@
+@농사꾼원숭이	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("초왕"), 1;
+}
+
+@부자원숭이	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("진호박"), 1;
+}
+
+@날쌘원숭이	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("진호박"), 1;
+}
+
+@사냥꾼원숭이	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("진호박"), 1;
+}
+
+@장로원숭이	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("한왕"), 1;
+}
+
+@유인원	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("보물열쇠1"), 1;
+}
+
+@킹콩	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("보물열쇠2"), 1;
+}
+
+@콩고	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("보물열쇠3"), 1;
+}
+
+@오랑우탄	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("보물열쇠4"), 1;
+}
+
+@원숭이왕	{
+	callfunc "DROPITEM", objid(), 100, 100, name2itemid("태괘"), 1;
+}

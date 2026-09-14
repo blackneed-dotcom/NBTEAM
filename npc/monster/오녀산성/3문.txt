@@ -1,0 +1,14 @@
+@산적일격	{
+	set .@id, objid();
+
+	callfunc "mob_constanting_spell", 100, 1, 6, 8, rand(2500, 3000), 1, "산적일격", "를";
+}
+
+@다금산적드랍	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의가루3"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각3"), 1;
+}
+
+@다금산적왕드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각3"), 1;
+}

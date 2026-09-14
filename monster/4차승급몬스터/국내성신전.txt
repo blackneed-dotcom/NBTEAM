@@ -1,0 +1,38 @@
+@순제	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 이제야... 모든...준비가...";
+	callfunc "Monster_Drop_End", objid(), 100, 100, name2itemid("순제의증표"), 1;
+}
+
+@전욱	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 그토록 살고 싶은가...추악한 인간들이여...";
+	callfunc "Monster_Drop_End", objid(), 100, 100, name2itemid("전욱의증표"), 1;
+}
+
+@제곡	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 나의 죽음으로... 한 층 더 가까워졌음을... 어리석은 인간들이... 어찌 알겠는가...";
+	callfunc "Monster_Drop_End", objid(), 100, 100, name2itemid("제곡의증표"), 1;
+}
+
+@요제	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 예언컨데... 인간은 스스로 멸하리라...";
+	callfunc "Monster_Drop_End", objid(), 100, 100, name2itemid("요제의증표"), 1;
+}
+
+@소호	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 어리석은 인간들이여...";
+	callfunc "Monster_Drop_End", objid(), 100, 100, name2itemid("소호의증표"), 1;
+}
+
+@전욱공격	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 8, 136, rand(350000, 400000), 2, "녹정기류", 16, "녹정기류!";
+}

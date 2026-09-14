@@ -1,0 +1,113 @@
+@State
+script StateTypeChase extends StateType
+
+	@HideFromInspector
+	property number lastElapsed = 0
+
+	method void OnEnter()
+		-- Server-only: FlipX is @Sync and would race with client writes.
+		if not self.ParentComponent:IsServer() then return end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return end
+		local ai = entity.StateChaseMonster
+		if not isvalid(ai) then return end
+		ai.walkTimeLeft = math.random(1000, 2999) * 0.001
+		ai.flipTimeLeft = 0
+		ai.jumpTimeLeft = 0
+		ai.jumpArmed = false
+		ai.movingDirection = Vector2(0, 0)
+		self.lastElapsed = _UtilLogic.ElapsedSeconds
+	end
+
+	method void OnUpdate()
+		-- Engine calls StateType.OnUpdate with no args; derive delta manually.
+		if not self.ParentComponent:IsServer() then return end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return end
+		local ai = entity.StateChaseMonster
+		if not isvalid(ai) then return end
+		
+		local now = _UtilLogic.ElapsedSeconds
+		local delta = now - self.lastElapsed
+		self.lastElapsed = now
+		if delta <= 0 then return end
+		
+		if ai.walkTimeLeft > 0 then
+			ai.walkTimeLeft = ai.walkTimeLeft - delta
+		end
+		if ai.flipTimeLeft > 0 then
+			ai.flipTimeLeft = ai.flipTimeLeft - delta
+		end
+		if ai.jumpArmed and ai.jumpTimeLeft > 0 then
+			ai.jumpTimeLeft = ai.jumpTimeLeft - delta
+		end
+		
+		local target = ai.currentTarget
+		if not isvalid(target) then return end
+		
+		local movement = entity.MovementComponent
+		if not isvalid(movement) then return end
+		local myTr = entity.TransformComponent
+		local tTr = target.TransformComponent
+		if not isvalid(myTr) or not isvalid(tTr) then return end
+		local myPos = myTr.WorldPosition
+		local tPos = tTr.WorldPosition
+		local mode = ai.tileMapModeCache
+		local sprite = entity.SpriteRendererComponent
+		
+		-- FlipX XOR SpriteFacesLeftByDefault handles both sprite orientations.
+		if ai.flipTimeLeft <= 0 then
+			if mode == TileMapMode.MapleTile or mode == TileMapMode.SideViewRectTile then
+				local goingLeft = tPos.x < myPos.x
+				if isvalid(sprite) then
+					sprite.FlipX = goingLeft ~= ai.SpriteFacesLeftByDefault
+				end
+				ai.movingDirection = Vector2(goingLeft and -1.0 or 1.0, 0)
+			elseif mode == TileMapMode.RectTile then
+				local dx = tPos.x - myPos.x
+				local dy = tPos.y - myPos.y
+				local d = math.sqrt(dx * dx + dy * dy)
+				if d > 0 then
+					ai.movingDirection = Vector2(dx / d, dy / d)
+				else
+					ai.movingDirection = Vector2(0, 0)
+				end
+				if isvalid(sprite) then
+					local goingLeft = ai.movingDirection.x < 0
+					sprite.FlipX = goingLeft ~= ai.SpriteFacesLeftByDefault
+				end
+			end
+			ai.flipTimeLeft = math.random(500, 999) * 0.001
+		end
+		
+		-- WALK cycle: on expiry, arm a 0.3s pause before movement resumes.
+		if ai.walkTimeLeft <= 0 then
+			ai.walkTimeLeft = math.random(300, 2999) * 0.001
+			ai.jumpTimeLeft = 0.3
+			ai.jumpArmed = true
+		elseif ai.jumpArmed and ai.jumpTimeLeft <= 0 then
+			if mode == TileMapMode.MapleTile or mode == TileMapMode.RectTile then
+				movement:MoveToDirection(ai.movingDirection, 0)
+			elseif mode == TileMapMode.SideViewRectTile then
+				local sv = entity.SideviewbodyComponent
+				if isvalid(sv) and sv:IsOnGround() then
+					movement:MoveToDirection(ai.movingDirection, 0)
+				else
+					movement:Stop()
+				end
+			end
+		end
+	end
+
+	method void OnExit()
+		-- Zero velocity so it doesn't leak into IDLE/HIT/DEAD.
+		if not self.ParentComponent:IsServer() then return end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return end
+		local movement = entity.MovementComponent
+		if isvalid(movement) then
+			movement:MoveToDirection(Vector2(0, 0), 0)
+		end
+	end
+
+end

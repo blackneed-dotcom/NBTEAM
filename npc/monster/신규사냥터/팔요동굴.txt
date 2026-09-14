@@ -1,0 +1,27 @@
+@월요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("월요지석"), 1;
+}
+
+@화요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("화요지석"), 1;
+}
+
+@수요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("수요지석"), 1;
+}
+
+@목요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("목요지석"), 1;
+}
+
+@금요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("금요지석"), 1;
+}
+
+@토요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("토요지석"), 1;
+}
+
+@일요지석	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("일요지석"), 1;
+}

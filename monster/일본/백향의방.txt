@@ -1,0 +1,27 @@
+@백발귀	{
+	callfunc "DROPITEM", objid(), 120, 15, name2itemid("진호박"), 1;
+}
+
+@적두귀	{
+	callfunc "DROPITEM", objid(), 120, 15, name2itemid("진호박"), 1;
+}
+
+@녹두귀	{
+	callfunc "DROPITEM", objid(), 300, 10, name2itemid("녹호박"), 1;
+}
+
+@사두귀	{
+	callfunc "DROPITEM", objid(), 300, 10, name2itemid("녹호박"), 1;
+}
+
+@청발귀	{
+	callfunc "DROPITEM", objid(), 300, 10, name2itemid("청호박"), 1;
+}
+
+@흑발귀	{
+	callfunc "DROPITEM", objid(), 120, 20, name2itemid("태존도"), 1;
+}
+
+@백향	{
+	callfunc "DROPITEM", objid(), 120, 15, name2itemid("진호박"), 1;
+}

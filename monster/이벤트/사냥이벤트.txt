@@ -1,0 +1,399 @@
+@고래공격	{
+	set @id, objid();
+	if(#event_whale != 2)
+	{
+		callfunc "MONSTER_ATTACK", @id, 10, 8, -1, 0, 0, rand(250, 500), 0, "고래공격", "-1";
+	}
+	if(#event_whale == 1)
+	{
+		if(get_mobhp(@id) >= #whalehp)
+		{
+			set_mobhp @id, #whalehp;
+		}
+		else
+		{
+			set #whalehp, get_mobhp(@id);
+		}   
+	}
+	if(#whalemob == 1)
+	{
+		deletemob @id, mapid();
+	} 
+}
+
+@고래	{
+	set @id, objid();
+
+	if(#whalemob == 0)
+	{
+		
+		set @map, mapid();
+		set @x1, 0;
+		set @x2, 18;
+		set @y1, 10;
+		set @y2, 49;
+		set #whalemob, 1;
+		set #event_whale, 2;
+
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth() -1) { set @x2, mapwidth() -1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight() -1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j <= @y2; set @j, @j+1)
+			{
+				set @target, obj_getmxy(@map, @i, @j); 
+				if(@target > 0 && @target != @id && istype(@target) == 1)
+				{
+					set @rnd, rand(1,100);
+					if(@rnd <= 80) { set @item$, "선물상자"; }
+					else if(@rnd <= 10) { set @item$, "고급선물상자"; }
+					else if(@rnd <= 10) { set @item$, "고래상자"; }
+
+					dropitem @i, @j, name2itemid(@item$), 1;
+				}
+			}
+		}
+		timecount_all 2, 0;
+		broadcast 5, "[이벤트] 고래이벤트가 종료되었습니다."; 
+	}
+	end;	
+}
+//@고래	{
+	set @id, objid();
+
+	if(#whalemob == 0)
+	{
+		
+		set @map, mapid();
+		set @x1, 0;
+		set @x2, 18;
+		set @y1, 10;
+		set @y2, 49;
+		set #whalemob, 1;
+		set #event_whale, 2;
+
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth() -1) { set @x2, mapwidth() -1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight() -1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j <= @y2; set @j, @j+1)
+			{
+				set @target, obj_getmxy(@map, @i, @j); 
+				if(@target > 0 && @target != @id && istype(@target) == 1)
+				{
+					set @rnd, rand(1,140);
+					if(@rnd <= 10) { set @item$, "하트A"; }
+					else if(@rnd <= 20) { set @item$, "하트2"; }
+					else if(@rnd <= 30) { set @item$, "하트3"; }
+					else if(@rnd <= 40) { set @item$, "하트4"; }
+					else if(@rnd <= 50) { set @item$, "하트5"; }
+					else if(@rnd <= 60) { set @item$, "하트6"; }
+					else if(@rnd <= 70) { set @item$, "하트7"; }
+					else if(@rnd <= 80) { set @item$, "하트8"; }
+					else if(@rnd <= 90) { set @item$, "하트9"; }
+					else if(@rnd <= 100) { set @item$, "하트10"; }
+					else if(@rnd <= 110) { set @item$, "하트J"; }
+					else if(@rnd <= 120) { set @item$, "하트Q"; }
+					else if(@rnd <= 130) { set @item$, "하트K"; }
+					else if(@rnd <= 140) { set @item$, "조커"; }
+
+					dropitem @i, @j, name2itemid(@item$), 1;
+				}
+			}
+		}
+		timecount_all 2, 0;
+		broadcast 5, "[이벤트] 고래이벤트가 종료되었습니다."; 
+	}
+	end;	
+}
+
+달	{
+	set @pos, dialog(0, 0, 1, "달입니다.");
+	end;
+}
+
+@달이동	{
+	set @id, objid();
+
+	set $moon_move, $moon_move + 1;
+	if($moon_move < 2) end;
+	set $moon_move, 0;
+
+	set @x, get_mobx(@id);
+
+	for(set @i, 0; @i < 15; set @i, @i+1)
+	{
+		set @target_id, obj_getxy(@x, @i);
+		if(@target_id > 0)
+		{
+			if(istype(@target_id) == 1)
+			{
+				set @target_sd, id2sd(@target_id);
+				if(get_equipitem_name(@target_sd, 1) == "남자설빔" || get_equipitem_name(@target_sd, 1) == "여자설빔")
+				{
+					spellcast @target_sd, name2spellid("개비획득");
+				}
+			}
+		}
+	}
+
+	move @id, 1;
+}
+
+@개비획득	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($gabi_time == gettime(3, 0))
+	{
+		end;
+	}
+
+	set $gabi_time, gettime(3,0);
+
+	set @rand, rand(1, 5);
+	if(@rand == 1) { additem @sd, name2itemid("하늘개비"), 1; effect @id, 131; }
+	else if(@rand == 2) { additem @sd, name2itemid("초록개비"), 1; effect @id, 131; }
+	else if(@rand == 3) { additem @sd, name2itemid("연두개비"), 1; effect @id, 131; }
+	else if(@rand == 4) { additem @sd, name2itemid("파랑개비"), 1; effect @id, 131; }
+	else if(@rand == 5) { additem @sd, name2itemid("분홍개비"), 1; effect @id, 131; }
+	message @sd, 5, " 소원을 빌었습니다.";
+	warp @sd, 15, 4, 5;
+	end;
+}
+
+@잡초	{
+	callfunc "Monster_Drop", objid(), 100, 100, name2itemid("잡초"), 1;
+}
+
+@해일	{
+	callfunc "MONSTER_ATTACK_MULTI", 2, 10, 182, 8, 30000, 100000, "해일!", 4;
+}
+
+//@고래	{
+	set @id, objid();
+
+	set @x1, get_mobx(@id)-7;
+	set @x2, get_mobx(@id)+7;
+	set @y1, get_moby(@id)-7;
+	set @y2, get_moby(@id)+7;
+	
+	
+	if(@x1 < 0) { set @x1, 0; }
+	if(@y1 < 0) { set @y1, 0; }
+	
+	if(@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+	if(@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+	
+	for(set @i, 0; @i < 25; set @i, @i+1)	{
+		set @r, rand(1,700);
+		if(@r > 0 && @r <= 20) { set @item$, "가시철단도"; }
+		else if(@r > 20 && @r <= 40) { set @item$, "가시철단도"; }
+		else if(@r > 40 && @r <= 60) { set @item$, "가시철단도"; }
+		else if(@r > 60 && @r <= 80) { set @item$, "가시철단도"; }
+		else if(@r > 80 && @r <= 100) { set @item$, "가시철단도"; }
+		else if(@r > 100 && @r <= 140) { set @item$, "가시철단도"; }
+		else if(@r > 140 && @r <= 180) { set @item$, "가시철단도"; }
+		else if(@r > 180 && @r <= 230) { set @item$, "가시철단도"; }
+		else if(@r > 230 && @r <= 270) { set @item$, "가시철단도"; }
+		else if(@r > 270 && @r <= 300) { set @item$, "가시철단도"; }
+		else if(@r > 300 && @r <= 330) { set @item$, "가시철단도"; }
+		else if(@r > 330 && @r <= 370) { set @item$, "가시철단도"; }
+		else if(@r > 370 && @r <= 400) { set @item$, "가시철단도"; }
+		else if(@r > 400 && @r <= 450) { set @item$, "가시철단도"; }
+		else if(@r > 450 && @r <= 470) { set @item$, "가시철단도"; }
+		else if(@r > 470 && @r <= 480) { set @item$, "가시철단도"; }
+		else if(@r > 480 && @r <= 500) { set @item$, "가시철단도"; }
+		else if(@r > 500 && @r <= 520) { set @item$, "가시철단도"; }
+		else if(@r > 520 && @r <= 540) { set @item$, "암반수의선물"; }
+		else if(@r > 540 && @r <= 560) { set @item$, "가시철단도"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "가시철단도"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "가시철단도"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "가시철단도"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "가시철단도"; }
+		else if(@r > 580 && @r <= 590) { set @item$, "가시철단도"; }
+		else if(@r > 590 && @r <= 630) { set @item$, "가시철단도"; }
+		else if(@r > 630 && @r <= 645) { set @item$, "가시철단도"; }
+		else if(@r > 645 && @r <= 650) { set @item$, "해골왕의뼈"; }
+		else	{ set @item$, "삼다수"; }
+		
+		dropitem rand(@x1, @x2), rand(@y1, @y2), name2itemid(@item$), 1;
+	}
+}
+
+//@고래	{
+	set @id, objid();
+
+	set @x1, get_mobx(@id)-7;
+	set @x2, get_mobx(@id)+7;
+	set @y1, get_moby(@id)-7;
+	set @y2, get_moby(@id)+7;
+	
+	
+	if(@x1 < 0) { set @x1, 0; }
+	if(@y1 < 0) { set @y1, 0; }
+	
+	if(@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+	if(@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+	
+	for(set @i, 0; @i < 25; set @i, @i+1)	{
+		set @r, rand(1,700);
+		if(@r > 0 && @r <= 20) { set @item$, "주홍투구"; }
+		else if(@r > 20 && @r <= 40) { set @item$, "주홍투구"; }
+		else if(@r > 40 && @r <= 60) { set @item$, "주홍투구"; }
+		else if(@r > 60 && @r <= 80) { set @item$, "주홍투구"; }
+		else if(@r > 80 && @r <= 100) { set @item$, "진주반지"; }
+		else if(@r > 100 && @r <= 140) { set @item$, "진주반지"; }
+		else if(@r > 140 && @r <= 180) { set @item$, "진주반지"; }
+		else if(@r > 180 && @r <= 230) { set @item$, "진주반지"; }
+		else if(@r > 230 && @r <= 270) { set @item$, "인어반지"; }
+		else if(@r > 270 && @r <= 300) { set @item$, "인어반지"; }
+		else if(@r > 300 && @r <= 330) { set @item$, "인어반지"; }
+		else if(@r > 330 && @r <= 370) { set @item$, "인어반지"; }
+		else if(@r > 370 && @r <= 400) { set @item$, "월광방패"; }
+		else if(@r > 400 && @r <= 450) { set @item$, "월광방패"; }
+		else if(@r > 450 && @r <= 470) { set @item$, "월광방패"; }
+		else if(@r > 470 && @r <= 480) { set @item$, "월광방패"; }
+		else if(@r > 480 && @r <= 500) { set @item$, "소다수의선물"; }
+		else if(@r > 500 && @r <= 520) { set @item$, "소다수의선물"; }
+		else if(@r > 520 && @r <= 540) { set @item$, "암반수의선물"; }
+		else if(@r > 540 && @r <= 560) { set @item$, "암반수의선물"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "암반수의선물"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "암반수의선물"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "암반수의선물"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "암반수의선물"; }
+		else if(@r > 580 && @r <= 590) { set @item$, "삼다수의선물"; }
+		else if(@r > 590 && @r <= 630) { set @item$, "암반수의선물"; }
+		else if(@r > 630 && @r <= 650) { set @item$, "삼다수의선물"; }
+		else	{ set @item$, "삼다수"; }
+		
+		dropitem rand(@x1, @x2), rand(@y1, @y2), name2itemid(@item$), 1;
+	}
+}
+
+//@고래	{
+	set @id, objid();
+
+	set @x1, get_mobx(@id)-7;
+	set @x2, get_mobx(@id)+7;
+	set @y1, get_moby(@id)-1;
+	set @y2, get_moby(@id)+20;
+	
+	
+	if(@x1 < 0) { set @x1, 0; }
+	if(@y1 < 0) { set @y1, 0; }
+	
+	if(@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+	if(@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+	
+	for(set @i, 0; @i < 25; set @i, @i+1)	{
+		set @r, rand(1,910);
+		if(@r > 0 && @r <= 20) { set @item$, "선물상자"; }
+		else if(@r > 20 && @r <= 40) { set @item$, "선물상자"; }
+		else if(@r > 40 && @r <= 60) { set @item$, "선물상자"; }
+		else if(@r > 60 && @r <= 80) { set @item$, "선물상자"; }
+		else if(@r > 80 && @r <= 100) { set @item$, "선물상자"; }
+		else if(@r > 100 && @r <= 140) { set @item$, "선물상자"; }
+		else if(@r > 140 && @r <= 180) { set @item$, "선물상자"; }
+		else if(@r > 180 && @r <= 230) { set @item$, "선물상자"; }
+		else if(@r > 230 && @r <= 270) { set @item$, "선물상자"; }
+		else if(@r > 270 && @r <= 300) { set @item$, "선물상자"; }
+		else if(@r > 300 && @r <= 330) { set @item$, "선물상자"; }
+		else if(@r > 330 && @r <= 370) { set @item$, "선물상자"; }
+		else if(@r > 370 && @r <= 400) { set @item$, "선물상자"; }
+		else if(@r > 400 && @r <= 450) { set @item$, "선물상자"; }
+		else if(@r > 450 && @r <= 470) { set @item$, "선물상자"; }
+		else if(@r > 470 && @r <= 480) { set @item$, "선물상자"; }
+		else if(@r > 480 && @r <= 500) { set @item$, "선물상자"; }
+		else if(@r > 500 && @r <= 520) { set @item$, "선물상자"; }
+		else if(@r > 520 && @r <= 540) { set @item$, "선물상자"; }
+		else if(@r > 540 && @r <= 560) { set @item$, "선물상자"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "선물상자"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "선물상자"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "선물상자"; }
+		else if(@r > 560 && @r <= 580) { set @item$, "선물상자"; }
+		else if(@r > 580 && @r <= 590) { set @item$, "선물상자"; }
+		else if(@r > 590 && @r <= 630) { set @item$, "선물상자"; }
+		else if(@r > 630 && @r <= 650) { set @item$, "선물상자"; }
+		else if(@r > 650 && @r <= 660) { set @item$, "선물상자"; }
+		else if(@r > 660 && @r <= 670) { set @item$, "선물상자"; }
+		else if(@r > 670 && @r <= 680) { set @item$, "선물상자"; }
+		else if(@r > 680 && @r <= 690) { set @item$, "선물상자"; }
+		else if(@r > 690 && @r <= 700) { set @item$, "선물상자"; }
+		else if(@r > 700 && @r <= 710) { set @item$, "선물상자"; }
+		else if(@r > 710 && @r <= 720) { set @item$, "선물상자"; }
+		else if(@r > 720 && @r <= 730) { set @item$, "선물상자"; }
+		else if(@r > 730 && @r <= 740) { set @item$, "선물상자"; }
+		else if(@r > 740 && @r <= 750) { set @item$, "선물상자"; }
+		else if(@r > 750 && @r <= 760) { set @item$, "선물상자"; }
+		else if(@r > 760 && @r <= 770) { set @item$, "선물상자"; }
+		else if(@r > 770 && @r <= 780) { set @item$, "선물상자"; }
+		else if(@r > 780 && @r <= 790) { set @item$, "선물상자"; }
+		else if(@r > 790 && @r <= 800) { set @item$, "선물상자"; }
+		else if(@r > 800 && @r <= 810) { set @item$, "선물상자"; }
+		else if(@r > 810 && @r <= 820) { set @item$, "선물상자"; }
+		else if(@r > 820 && @r <= 830) { set @item$, "선물상자"; }
+		else if(@r > 830 && @r <= 840) { set @item$, "선물상자"; }
+		else if(@r > 840 && @r <= 850) { set @item$, "선물상자"; }
+		else if(@r > 850 && @r <= 860) { set @item$, "선물상자"; }
+		else if(@r > 860 && @r <= 870) { set @item$, "선물상자"; }
+		else if(@r > 870 && @r <= 880) { set @item$, "선물상자"; }
+		else if(@r > 880 && @r <= 890) { set @item$, "선물상자"; }
+		else if(@r > 890 && @r <= 900) { set @item$, "선물상자"; }
+		else if(@r > 900 && @r <= 910) { set @item$, "선물상자"; }
+		else	{ set @item$, "선물상자"; }
+		
+		dropitem rand(@x1, @x2), rand(@y1, @y2), name2itemid(@item$), 1;
+	}
+}
+
+@헌트이벤트	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("선물상자"), 1;
+	callfunc "DROPITEM", objid(), 10, 5, name2itemid("은전"), rand(1000, 9909);
+	callfunc "DROPITEM", objid(), 13, 1, name2itemid("고급선물상자"), 1;
+	callfunc "DROPITEM", objid(), 50, 1, name2itemid("이벤트상자"), 1;
+}
+
+@죽어라	{
+	set @id, objid();
+	set @rand, rand(1, 5);
+
+	if(@rand <= 3)
+	{
+		if($blue_dragon == 0)
+		{
+			set @target_id, get_mobtarget(@id);
+			if(@target_id > 0 && istype(@target_id) == 1)
+			{
+				set $blue_dragon, 1;
+				set @target_sd, id2sd(@target_id);
+
+				say @id, 0, get_mobname(@id) + ": 자 누구를 죽여볼까요";
+				sleep(1500);
+				say @id, 0, get_mobname(@id) + ": 좋아 정했어요";
+				sleep(1500);
+				say @id, 0, get_mobname(@id) + ": ㅎㅎㅎㅎㅎ";
+				sleep(1500);
+				say @id, 0, get_mobname(@id) + ": 국자에 물을담아서 ~";
+				sleep(1500);
+				say @id, 0, get_mobname(@id) + ": 뜨거운물 ~~!!";
+
+				set $blue_dragon, 0;
+
+				effect @target_id, 142;
+				action @id, 1, 30, 8;
+				sound @target_id, 8;
+
+				message @target_sd, 3, get_mobname(@id) + "가 뜨거운물을 뿌립니다.";
+
+				damage @id, @target_id, rand(100000000, 300000000), 1;
+			}
+		}
+	}	
+}

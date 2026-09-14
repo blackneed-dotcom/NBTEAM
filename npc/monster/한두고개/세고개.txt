@@ -1,0 +1,39 @@
+@방어의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("방어의반지2"), 1;
+}
+
+@명중의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("명중의반지2"), 1;
+}
+
+@공격의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("공격의반지2"), 1;
+}
+
+@체력의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("체력의반지2"), 1;
+}
+
+@마력의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("마력의반지2"), 1;
+}
+
+@힘의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("힘의반지2"), 1;
+}
+
+@민첩의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("민첩의반지2"), 1;
+}
+
+@지력의돼지	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("지력의반지2"), 1;
+}
+
+@돈돈돈	{
+	callfunc "DROPITEM", objid(), 200, 10, name2itemid("금덩어리"), 10000;
+}
+
+@착한돼지	{
+	callfunc "DROPITEM", objid(), 400, 10, name2itemid("운의제삼검"), 1;
+}

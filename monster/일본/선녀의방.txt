@@ -1,0 +1,23 @@
+@파선녀	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("호박"), 1;
+}
+
+@단선녀	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("호박"), 1;
+}
+
+@하선녀	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("하선녀의실타래"), 1;
+}
+
+@견귀	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("진호박"), 1;
+}
+
+@견인귀	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("진호박"), 1;
+}
+
+@견원귀	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("갈호박"), 1;
+}

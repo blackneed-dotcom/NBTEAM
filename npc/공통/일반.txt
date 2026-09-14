@@ -1,0 +1,1241 @@
+/*부여->고균도*/
+
+부여섬선원	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "무엇을 도와드릴까요?", "출항시간에 대해서 알려주세요.", "배를 태워주세요.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "부여에서 고균도로 건너가는 배는 하루 총 12번입니다.");
+		if(@pos == 0) end;
+COS002:
+		set @pos, dialog(0, 1, 1, "2시부터 24시까지 매 2시간마다 고균도로 건너가는 배가 출항합니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS001;
+COS003:
+		set @pos, dialog(0, 1, 1, "출항하기전 미리 배에 오르고 있어야만 고균도로 갈 수 있음을 명심하시기 바랍니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS002;
+COS004:
+		set @pos, dialog(0, 1, 1, "감사합니다.");
+		if(@pos == -1) goto COS003;
+		end;
+	}
+	else if(@list == 2)
+	{
+		if(	gettime(2, 0) == 1 || gettime(2, 0) == 3 || gettime(2, 0) == 5 || gettime(2, 0) == 7 ||
+			gettime(2, 0) == 9 || gettime(2, 0) == 11 || gettime(2, 0) == 13 || gettime(2, 0) == 15 ||
+			gettime(2, 0) == 17 || gettime(2, 0) == 19 || gettime(2, 0) == 21 || gettime(2, 0) == 23)
+		{
+			if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+			{
+COS005:
+				set @pos, dialog(0, 0, 1, "배가 선착장에 정박해 있습니다.");
+				if(@pos == 0) end;
+COS006:
+				set @pos, list2(@list, 0, 1, "배에 승선하시길 원하십니까?", "네, 승선시켜 주시기 바랍니다.", "아니오, 타지 않겠습니다.");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS005;
+				else if(@list == 1)
+				{
+					if(get_level(@sd) < 21)
+					{
+						set @pos, dialog(0, 0, 1, "레벨 21이상만 이용 가능합니다.");
+						end;
+					}
+
+					if(countitem(name2itemid("부여-고균도승선권")) == 0)
+					{
+						set @pos, dialog(0, 0, 1, "승선권이 없으면 선실에 탑승하실 수 없습니다.");
+						end;
+					}
+					else
+					{
+						delitem @sd, name2itemid("부여-고균도승선권"), 1;
+						message @sd, 3, "부여-고균도승선권 주었습니다";
+COS007:
+						set @pos, dialog(0, 0, 1, "그럼, 선실에 승선시켜드리도록 하겠습니다.");
+						if(@pos == 0) end;
+COS008:
+						set @pos, dialog(0, 1, 1, "배가 출항한뒤 일정 시간 후에 고균도에 도착하게 됩니다. 즐거운 여행 되시길..");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto COS007;
+
+						warp @sd, name2mapid("부여-고균도배선실"), rand(2, 15), 7;
+						end;
+					}
+				}
+				else if(@list == 2)
+				{
+					set @pos, dialog(0, 0, 1, "네, 안녕히 가십시오.");
+					end;
+				}
+				else end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+			end;
+		}
+	}
+	else end;
+}
+
+부여섬선원배	{
+	if(	gettime(2, 0) == 1 || gettime(2, 0) == 3 || gettime(2, 0) == 5 || gettime(2, 0) == 7 ||
+		gettime(2, 0) == 9 || gettime(2, 0) == 11 || gettime(2, 0) == 13 || gettime(2, 0) == 15 ||
+		gettime(2, 0) == 17 || gettime(2, 0) == 19 || gettime(2, 0) == 21 || gettime(2, 0) == 23)
+	{
+		if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+		{
+			if(obj_getxy(21, 38) <= 0)
+			{
+				npcspawn 1744, 21, 38, 2, 80, "배";
+			}
+		}
+		else
+		{
+			if(obj_getxy(21, 38) > 0)
+			{
+				deletenpc obj_getxy(21, 38), 1744;
+			}
+		}
+	}
+	else
+	{
+		if(obj_getxy(21, 38) > 0)
+		{
+			deletenpc obj_getxy(21, 38), 1744;
+		}
+	}
+}
+
+부여섬뱃사공	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+	{
+		set @pos, dialog(0, 0, 1, "부여입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("부여-고균도선착장"), 14, 26;
+		end;
+	}
+	else if(gettime(1, 0) >= 0 && gettime(1, 0) <= 19)
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+	else if(gettime(1, 0) >= 20 && gettime(1, 0) <= 40)
+	{
+		set @pos, dialog(0, 0, 1, "고균도입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("부여-고균도선착장"), 14, 240;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+}
+
+
+/*고구려->고균도*/
+고구려섬선원	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "무엇을 도와드릴까요?", "출항시간에 대해서 알려주세요.", "배를 태워주세요.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "고구려에서 고균도로 건너가는 배는 하루 총 12번입니다.");
+		if(@pos == 0) end;
+COS002:
+		set @pos, dialog(0, 1, 1, "2시부터 24시까지 매 2시간마다 고균도로 건너가는 배가 출항합니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS001;
+COS003:
+		set @pos, dialog(0, 1, 1, "출항하기전 미리 배에 오르고 있어야만 고균도로 갈 수 있음을 명심하시기 바랍니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS002;
+COS004:
+		set @pos, dialog(0, 1, 1, "감사합니다.");
+		if(@pos == -1) goto COS003;
+		end;
+	}
+	else if(@list == 2)
+	{
+		if(	gettime(2, 0) == 1 || gettime(2, 0) == 3 || gettime(2, 0) == 5 || gettime(2, 0) == 7 ||
+			gettime(2, 0) == 9 || gettime(2, 0) == 11 || gettime(2, 0) == 13 || gettime(2, 0) == 15 ||
+			gettime(2, 0) == 17 || gettime(2, 0) == 19 || gettime(2, 0) == 21 || gettime(2, 0) == 23)
+		{
+			if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+			{
+COS005:
+				set @pos, dialog(0, 0, 1, "배가 선착장에 정박해 있습니다.");
+				if(@pos == 0) end;
+COS006:
+				set @pos, list2(@list, 0, 1, "배에 승선하시길 원하십니까?", "네, 승선시켜 주시기 바랍니다.", "아니오, 타지 않겠습니다.");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS005;
+				else if(@list == 1)
+				{
+					if(get_level(@sd) < 21)
+					{
+						set @pos, dialog(0, 0, 1, "레벨 21이상만 이용 가능합니다.");
+						end;
+					}
+
+					if(countitem(name2itemid("고구려-고균도승선권")) == 0)
+					{
+						set @pos, dialog(0, 0, 1, "승선권이 없으면 선실에 탑승하실 수 없습니다.");
+						end;
+					}
+					else
+					{
+						delitem @sd, name2itemid("고구려-고균도승선권"), 1;
+						message @sd, 3, "고구려-고균도승선권 주었습니다";
+COS007:
+						set @pos, dialog(0, 0, 1, "그럼, 선실에 승선시켜드리도록 하겠습니다.");
+						if(@pos == 0) end;
+COS008:
+						set @pos, dialog(0, 1, 1, "배가 출항한뒤 일정 시간 후에 고균도에 도착하게 됩니다. 즐거운 여행 되시길..");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto COS007;
+
+						warp @sd, name2mapid("고구려-고균도배선실"), rand(2, 15), 7;
+						end;
+					}
+				}
+				else if(@list == 2)
+				{
+					set @pos, dialog(0, 0, 1, "네, 안녕히 가십시오.");
+					end;
+				}
+				else end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+			end;
+		}
+	}
+	else end;
+}
+
+고구려섬선원배	{
+	if(	gettime(2, 0) == 1 || gettime(2, 0) == 3 || gettime(2, 0) == 5 || gettime(2, 0) == 7 ||
+		gettime(2, 0) == 9 || gettime(2, 0) == 11 || gettime(2, 0) == 13 || gettime(2, 0) == 15 ||
+		gettime(2, 0) == 17 || gettime(2, 0) == 19 || gettime(2, 0) == 21 || gettime(2, 0) == 23)
+	{
+		if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+		{
+			if(obj_getxy(21, 38) <= 0)
+			{
+				npcspawn 1746, 21, 38, 2, 80, "배";
+			}
+		}
+		else
+		{
+			if(obj_getxy(21, 38) > 0)
+			{
+				deletenpc obj_getxy(21, 38), 1746;
+			}
+		}
+	}
+	else
+	{
+		if(obj_getxy(21, 38) > 0)
+		{
+			deletenpc obj_getxy(21, 38), 1746;
+		}
+	}
+}
+
+고구려섬뱃사공	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+	{
+		set @pos, dialog(0, 0, 1, "고구려입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("고구려-고균도선착장"), 14, 26;
+		end;
+	}
+	else if(gettime(1, 0) >= 0 && gettime(1, 0) <= 19)
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+	else if(gettime(1, 0) >= 20 && gettime(1, 0) <= 40)
+	{
+		set @pos, dialog(0, 0, 1, "고균도입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("고구려-고균도선착장"), 14, 240;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+}
+
+고구려고균도매표상	{
+	set @mysd, mysd();
+	set @ret, list1("안녕하세요. 어떻게 오셨나요?", "물건 사기", "물건 팔기");
+	if(@ret == 1) { callshop 0, 85; }
+	else if(@ret == 2) { callshop 1, 86; }
+}
+
+부여고균도매표상	{
+	set @mysd, mysd();
+	set @ret, list1("안녕하세요. 어떻게 오셨나요?", "물건 사기", "물건 팔기");
+	if(@ret == 1) { callshop 0, 87; }
+	else if(@ret == 2) { callshop 1, 88; }
+}
+
+
+암표상	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	set @pos, dialog(0, 0, 1, "일본까지 가시려고? 내 표한장 드릴까? 싸게해드릴께..");
+	if(@pos == 0) end;
+COS002:
+	set @pos, list2(@list, 0, 1, "부여-일본쾌속승선권 한장 사시려나?", "네, 한장 주세요.", "혹시 사기꾼 아냐?");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS001;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list_2, 0, 0, "부여-일본쾌속승선권.. 한장에 8000원에 드리지. 어때?", "8000원에 사죠.", "너무 비싼데...");
+		if(@pos == 0) end;
+		else if(@list_2 == 1)
+		{
+			set @pos, dialog(0, 0, 1, "그래? 그럼 표 한장 드릴께..");
+			if(@pos == 0) end;
+
+			if(get_money(@sd) < 8000)
+			{
+				set @pos, dialog(0, 0, 1, "이 사람이! 돈이 없잖아 돈이!");
+				end;
+			}
+			else
+			{
+				additem @sd, name2itemid("부여-일본쾌속승선권"), 1;
+				set_money @sd, get_money(@sd)-8000;
+				updatestatus @sd, 2;
+				set @pos, dialog(0, 0, 1, "그럼 일본 잘갔다와~ 나중에 또 보자고..");
+				end;		
+			}
+		}
+		else if(@list_2 == 2)
+		{
+COS003:
+			set @pos, dialog(0, 0, 1, "너무 비싸다고? 얼마까지 알아보고 왔어? 에이.. 하나도 안 남는데..");
+			if(@pos == 0) end;
+COS004:
+			set @pos, dialog(0, 1, 1, "에이.. 좋다. 그럼 내 노란비서 하나 끼워 준다. 그럼 됐지?");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS003;
+COS005:
+			set @pos, list2(@list_3, 0, 1, "살꺼지?" ,"그러죠 그럼..", "안살래요.");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto COS004;
+			else if(@list_3 == 1)
+			{
+COS006:
+				set @pos, dialog(0, 0, 1, "그래그래. 잘 생각한거야. 그럼 볼까나....");
+				if(@pos == 0) end;
+
+				if(get_money(@sd) < 8000)
+				{
+					set @pos, dialog(0, 0, 1, "이 사람이! 돈이 없잖아 돈이!");
+					end;
+				}
+				else
+				{
+					additem @sd, name2itemid("노란비서"), 1;
+					additem @sd, name2itemid("부여-일본쾌속승선권"), 1;
+					set_money @sd, get_money(@sd)-8000;
+					updatestatus @sd, 2;
+					set @pos, dialog(0, 0, 1, "그럼 일본 잘갔다와~ 나중에 또 보자고..");
+					end;
+				}
+			}
+			else if(@list_3 == 2)
+			{
+				set @pos, dialog(0, 0, 1, "관심없음 그냥 가구.. 다른데 알아봐. 더 싼데 있나..");
+				end;
+			}
+			else end;
+			
+
+		}
+		else end;
+	}
+	else if(@list == 2)
+	{
+		set @pos, dialog(0, 0, 1, "어허.. 이 사람 보게? 안사면 안사는거지 왜 사람을 사기꾼으로 몰고 그래!");
+		if(@pos == 0) end;		
+	}
+	else end;
+}
+
+/*부여->일본*/
+
+부여-일본섬선원	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "무엇을 도와드릴까요?", "출항시간에 대해서 알려주세요.", "배를 태워주세요.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "부여에서 일본으로 건너가는 배는 하루 총 12번입니다.");
+		if(@pos == 0) end;
+COS002:
+		set @pos, dialog(0, 1, 1, "0시부터 24시까지 매 1시간마다 일본으로 건너가는 배가 출항합니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS001;
+COS003:
+		set @pos, dialog(0, 1, 1, "출항하기전 미리 배에 오르고 있어야만 일본으로 갈 수 있음을 명심하시기 바랍니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS002;
+COS004:
+		set @pos, dialog(0, 1, 1, "감사합니다.");
+		if(@pos == -1) goto COS003;
+		end;
+	}
+	else if(@list == 2)
+	{
+		if(	gettime(2, 0) == 1 || gettime(2, 0) == 2 || gettime(2, 0) == 3 || gettime(2, 0) == 4 ||
+			gettime(2, 0) == 5 || gettime(2, 0) == 6 || gettime(2, 0) == 7 || gettime(2, 0) == 8 ||
+			gettime(2, 0) == 9 || gettime(2, 0) == 10 || gettime(2, 0) == 11 || gettime(2, 0) == 12 ||
+			gettime(2, 0) == 13 || gettime(2, 0) == 14 || gettime(2, 0) == 15 || gettime(2, 0) == 16 ||
+			gettime(2, 0) == 17 || gettime(2, 0) == 18 || gettime(2, 0) == 19 || gettime(2, 0) == 20 ||
+			gettime(2, 0) == 21 || gettime(2, 0) == 22 || gettime(2, 0) == 23 || gettime(2, 0) == 24)
+		{
+			if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+			{
+COS005:
+				set @pos, dialog(0, 0, 1, "배가 선착장에 정박해 있습니다.");
+				if(@pos == 0) end;
+COS006:
+				set @pos, list2(@list, 0, 1, "배에 승선하시길 원하십니까?", "네, 승선시켜 주시기 바랍니다.", "아니오, 타지 않겠습니다.");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS005;
+				else if(@list == 1)
+				{
+					if(get_level(@sd) < 21)
+					{
+						set @pos, dialog(0, 0, 1, "레벨 21이상만 이용 가능합니다.");
+						end;
+					}
+
+					if(countitem(name2itemid("부여-일본쾌속승선권")) == 0)
+					{
+						set @pos, dialog(0, 0, 1, "승선권이 없으면 선실에 탑승하실 수 없습니다.");
+						end;
+					}
+					else
+					{
+						delitem @sd, name2itemid("부여-일본쾌속승선권"), 1;
+						message @sd, 3, "부여-일본쾌속승선권 주었습니다";
+COS007:
+						set @pos, dialog(0, 0, 1, "그럼, 선실에 승선시켜드리도록 하겠습니다.");
+						if(@pos == 0) end;
+COS008:
+						set @pos, dialog(0, 1, 1, "배가 출항한뒤 일정 시간 후에 일본에 도착하게 됩니다. 즐거운 여행 되시길..");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto COS007;
+
+						warp @sd, name2mapid("부여-일본배선실"), rand(2, 15), 7;
+						end;
+					}
+				}
+				else if(@list == 2)
+				{
+					set @pos, dialog(0, 0, 1, "네, 안녕히 가십시오.");
+					end;
+				}
+				else end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+			end;
+		}
+	}
+	else end;
+}
+
+부여일본섬선원배	{
+	if(	gettime(2, 0) == 1 || gettime(2, 0) == 2 || gettime(2, 0) == 3 || gettime(2, 0) == 4 ||
+		gettime(2, 0) == 5 || gettime(2, 0) == 6 || gettime(2, 0) == 7 || gettime(2, 0) == 8 ||
+		gettime(2, 0) == 9 || gettime(2, 0) == 10 || gettime(2, 0) == 11 || gettime(2, 0) == 12 ||
+		gettime(2, 0) == 13 || gettime(2, 0) == 14 || gettime(2, 0) == 15 || gettime(2, 0) == 16 ||
+		gettime(2, 0) == 17 || gettime(2, 0) == 18 || gettime(2, 0) == 19 || gettime(2, 0) == 20 ||
+		gettime(2, 0) == 21 || gettime(2, 0) == 22 || gettime(2, 0) == 23 || gettime(2, 0) == 24)
+		{
+		if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+		{
+			if(obj_getxy(63, 17) <= 0)
+			{
+				npcspawn 1822, 63, 17, 2, 80, "배";
+			}
+		}
+		else
+		{
+			if(obj_getxy(63, 17) > 0)
+			{
+				deletenpc obj_getxy(63, 17), 1822;
+			}
+		}
+	}
+	else
+	{
+		if(obj_getxy(63, 17) > 0)
+		{
+			deletenpc obj_getxy(63, 17), 1822;
+		}
+	}
+}
+
+부여-일본섬뱃사공	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+	{
+		set @pos, dialog(0, 0, 1, "부여입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("부여-일본선착장"), 54, 14;
+		end;
+	}
+	else if(gettime(1, 0) >= 0 && gettime(1, 0) <= 9)
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+	else if(gettime(1, 0) >= 10 && gettime(1, 0) <= 20)
+	{
+		set @pos, dialog(0, 0, 1, "일본입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("동쪽해안가"), 1, 44;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+}
+
+
+/*고구려->일본*/
+고구려-일본섬선원	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "무엇을 도와드릴까요?", "출항시간에 대해서 알려주세요.", "배를 태워주세요.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "고구려에서 일본으로 건너가는 배는 하루 총 12번입니다.");
+		if(@pos == 0) end;
+COS002:
+		set @pos, dialog(0, 1, 1, "2시부터 24시까지 매 2시간마다 일본으로 건너가는 배가 출항합니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS001;
+COS003:
+		set @pos, dialog(0, 1, 1, "출항하기전 미리 배에 오르고 있어야만 일본으로 갈 수 있음을 명심하시기 바랍니다.");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS002;
+COS004:
+		set @pos, dialog(0, 1, 1, "감사합니다.");
+		if(@pos == -1) goto COS003;
+		end;
+	}
+	else if(@list == 2)
+	{
+		if(	gettime(2, 0) == 1 || gettime(2, 0) == 3 || gettime(2, 0) == 5 || gettime(2, 0) == 7 ||
+			gettime(2, 0) == 9 || gettime(2, 0) == 11 || gettime(2, 0) == 13 || gettime(2, 0) == 15 ||
+			gettime(2, 0) == 17 || gettime(2, 0) == 19 || gettime(2, 0) == 21 || gettime(2, 0) == 23)
+		{
+			if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+			{
+COS005:
+				set @pos, dialog(0, 0, 1, "배가 선착장에 정박해 있습니다.");
+				if(@pos == 0) end;
+COS006:
+				set @pos, list2(@list, 0, 1, "배에 승선하시길 원하십니까?", "네, 승선시켜 주시기 바랍니다.", "아니오, 타지 않겠습니다.");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS005;
+				else if(@list == 1)
+				{
+					if(get_level(@sd) < 21)
+					{
+						set @pos, dialog(0, 0, 1, "레벨 21이상만 이용 가능합니다.");
+						end;
+					}
+
+					if(countitem(name2itemid("고구려-일본승선권")) == 0)
+					{
+						set @pos, dialog(0, 0, 1, "승선권이 없으면 선실에 탑승하실 수 없습니다.");
+						end;
+					}
+					else
+					{
+						delitem @sd, name2itemid("고구려-일본승선권"), 1;
+						message @sd, 3, "고구려-일본승선권 주었습니다";
+COS007:
+						set @pos, dialog(0, 0, 1, "그럼, 선실에 승선시켜드리도록 하겠습니다.");
+						if(@pos == 0) end;
+COS008:
+						set @pos, dialog(0, 1, 1, "배가 출항한뒤 일정 시간 후에 일본에 도착하게 됩니다. 즐거운 여행 되시길..");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto COS007;
+
+						warp @sd, name2mapid("고구려-일본배선실"), rand(2, 15), 7;
+						end;
+					}
+				}
+				else if(@list == 2)
+				{
+					set @pos, dialog(0, 0, 1, "네, 안녕히 가십시오.");
+					end;
+				}
+				else end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "배가 선착장에 없습니다.");
+			end;
+		}
+	}
+	else end;
+}
+
+고구려일본섬선원배	{
+	if(	gettime(2, 0) == 1 || gettime(2, 0) == 3 || gettime(2, 0) == 5 || gettime(2, 0) == 7 ||
+		gettime(2, 0) == 9 || gettime(2, 0) == 11 || gettime(2, 0) == 13 || gettime(2, 0) == 15 ||
+		gettime(2, 0) == 17 || gettime(2, 0) == 19 || gettime(2, 0) == 21 || gettime(2, 0) == 23)
+	{
+		if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+		{
+			if(obj_getxy(63, 17) <= 0)
+			{
+				npcspawn 1809, 63, 17, 2, 80, "배";
+			}
+		}
+		else
+		{
+			if(obj_getxy(63, 17) > 0)
+			{
+				deletenpc obj_getxy(63, 17), 1809;
+			}
+		}
+	}
+	else
+	{
+		if(obj_getxy(63, 17) > 0)
+		{
+			deletenpc obj_getxy(63, 17), 1809;
+		}
+	}
+}
+
+고구려-일본섬뱃사공	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(gettime(1, 0) >= 40 && gettime(1, 0) <= 59)
+	{
+		set @pos, dialog(0, 0, 1, "고구려입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("고구려-일본선착장"), 54, 14;
+		end;
+	}
+	else if(gettime(1, 0) >= 0 && gettime(1, 0) <= 19)
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+	else if(gettime(1, 0) >= 20 && gettime(1, 0) <= 40)
+	{
+		set @pos, dialog(0, 0, 1, "일본입니다. 안녕히 가십시오.");
+		if(@pos == 0) end;
+
+		warp @sd, name2mapid("동쪽해안가"), 1, 44;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 1, "지금 항해중입니다. 곧 도착할 예정이오니 잠시만 더 기다려 주시기 바랍니다.");
+		end;
+	}
+}
+
+배	{
+	set @id, objid();
+
+}
+
+나무꾼	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_level(@sd) < 30)
+	{
+		set @pos, dialog(0, 0, 1, "자네는 아직 나무를 하기엔 많이 부족해 보이는군.");
+		end;
+	}
+
+	if($tree_man == 0)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "나무를 하러 오셨소? 이 근처는 나무가 많지는 않지만 좋은 나무가 많아서 나무 하기에 제격이지.");
+		if(@pos == 0) end;
+
+		set @pos, dialog(0, 1, 1, "하지만 나무꾼치고는 옷차람이 특이하시구려. 어라, 게다가 도끼도 들고 오지 않은 것 같구려. 잠이 덜 깨셨소? 허허...");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS001;
+
+		set @pos, list2(@list, 0, 0, "괜찮다면 내 도끼를 주겠소이다. 나는 마침 나무를 다 하고 쉬는 중이라, 필요가 없다오. 집에 도끼는 잔뜩 있고 말이오.", "예, 빌려주세요.", "고맙지만 사양할께요.");
+		if(@pos == 1 && @list == 1)
+		{
+			set $tree_man, 1;
+			additem @sd, name2itemid("쇠도끼"), 1;
+			addlegend @sd, 28, 7, 0, 5, "쇠도끼로 나무를 하자.";
+			set @pos, dialog(0, 0, 1, "그럼 여기 도끼가 있으니 잘 쓰시오. 그럼 난 낮잠이나 자야겠구려. 나무 열심히 하시오...");
+			end;
+		}
+	}
+	if($tree_man == 1)
+	{
+		set @pos, list2(@list, 1, 0, "이미 한 번 쇠도끼를 빌려가지 않았소? 이제 별로 남은 수량이 없어서.. 다시 빌리려면 1만전을 내셔야 하오.", "다시 빌려주세요.", "필요없어요.");
+		if(@pos == 1 && @list == 1)
+		{
+			if(get_money(@sd) < 10000)
+			{
+				set @pos, dialog(0, 0, 0, "돈이 부족한 것은 아니오?");
+				end;
+			}
+			else
+			{
+				set_money @sd, get_money(@sd)-10000;
+				updatestatus @sd, 2;
+
+				additem @sd, name2itemid("쇠도끼"), 1;
+
+				set @pos, dialog(0, 0, 1, "자, 여기있소. 또 잃어버리지 않게 조심하시오.");
+				end;
+			}
+		}
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 0, "zzZ...zzZ...");
+		end;
+	}
+}
+
+영채	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @ret, list1("안녕하세요. 어떻게 오셨나요?", "방송쿠폰", "웨딩드레스 수선");
+	if(@ret == 1) goto COS001;
+	else if(@ret == 2) goto COS003;
+	else end;
+	end;
+COS001:
+	set @pos, dialog(0, 0, 1, "방송쿠폰은 나만이 팔고 있지. 호호홋...");
+	if(@pos == 0) end;
+COS002:
+	set @pos, list2(@list, 0, 0, "방송쿠폰의 가격은 100000 전 이라네. 방송쿠폰을 살텐가?", "예. 구입하고 싶습니다.", "아니오. 필요 없습니다.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		if(get_level(@sd) < 21)
+		{
+			set @pos, dialog(0, 0, 0, "21레벨 구매가 가능합니다.");
+			end;
+		}
+		if(#broadcast_card == 0)
+		{
+			if(get_money(@sd) < 100000)
+			{
+				set @pos, dialog(0, 0, 0, "방송쿠폰의 가격은 100000 전 이라네. 돈이 부족한 것 아닌가?");
+				end;
+			}
+			else
+			{
+				set #broadcast_card, 1;
+				set #broadcast_card_count, 0;
+				additem @sd, name2itemid("방송쿠폰"), 1;
+				updatestatus @sd, 2;
+				set @pos, dialog(0, 0, 1, "운이 좋군. 잘 쓰시게...");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "이미 다 떨어졌는데...");
+			end;
+		}
+	}
+	else end;
+	end;
+COS003:
+	set @pos, dialog(0, 0, 1, "웨딩드레스를 수선하고 싶다고? 그렇다면 웨딩드레스1,2,3,4,5,6,7 과 말린지네 7개를 가져온다면 수선해주도록 하지.");
+	if(@pos == 0) end;
+
+	set @list, list1("웨딩드레스를 수선하겠는가?", "예", "아뇨");
+	if(@list == 1)
+	{
+		if(countitem(name2itemid("말린지네")) < 7)
+		{
+			set @pos, dialog(0, 0, 0, "재료가 부족한데? 재료를 다 가져와야 수선해줄 수 있어.");
+			end;
+		}
+		else
+		{
+			setarray @item$[0], "웨딩드레스1", "웨딩드레스2", "웨딩드레스3", "웨딩드레스4", "웨딩드레스5", "웨딩드레스6", "웨딩드레스7";
+			for(set @loop, 0; @loop < 7; set @loop, @loop+1)
+			{
+				if(countitem(name2itemid(@item$[@loop])) == 0)
+				{
+					deletearray @item$[0], getarraysize(@item$);
+					set @pos, dialog(0, 0, 0, "재료가 부족한데? 재료를 다 가져와야 수선해줄 수 있어.");
+					end;
+				}
+			}
+			delitem @sd, name2itemid("말린지네"), 7;
+			message @sd, 3, "말린지네 주었습니다";
+			for(set @loop, 0; @loop < 7; set @loop, @loop+1)
+			{
+				delitem @sd, name2itemid(@item$[@loop]), 1;
+			}
+			for(set @loop, 0; @loop < 7; set @loop, @loop+1)
+			{
+				message @sd, 3, @item$[@loop] + " 주었습니다";
+			}
+			set @rand, rand(1, 4);
+			if(@rand == 1) { set @add$, "웨딩드레스8"; }
+			else if(@rand == 2) { set @add$, "웨딩드레스9"; }
+			else if(@rand == 3) { set @add$, "웨딩드레스10"; }
+			else { set @add$, "웨딩드레스11"; }
+			additem @sd, name2itemid(@add$), 1;
+			deletearray @item$[0], getarraysize(@item$);
+			set @pos, dialog(0, 0, 1, "여기 수선해 줬으니 잘 입으시게.");
+		}
+	}
+	deletearray @item$[0], getarraysize(@item$);
+}
+
+영채방송쿠폰충전	{
+	if(#broadcast_card == 1)
+	{
+		set #broadcast_card_count, #broadcast_card_count+1;
+		if(#broadcast_card_count >= 300)
+		{
+			set #broadcast_card, 0;
+		}
+	}
+}
+
+채희	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pos, dialog(0, 0, 1, "시원한 과일 화채를 만들어 드립니다.");
+	if(@pos == 0) end;
+
+	if(countitem(name2itemid("홍옥")) < 5 || countitem(name2itemid("국광")) < 5 || countitem(name2itemid("깨끗한얼음")) < 10 || countitem(name2itemid("참수박")) < 2)
+	{
+		set @pos, dialog(0, 0, 1, "과일 화채의 재료는 홍옥 5개, 국광 5개, 깨끗한얼음 10개, 참수박 2개가 필요합니다.");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("홍옥"), 5;
+		delitem @sd, name2itemid("국광"), 5;
+		delitem @sd, name2itemid("깨끗한얼음"), 10;
+		delitem @sd, name2itemid("참수박"), 2;
+		message @sd, 3, "홍옥 주었습니다";
+		message @sd, 3, "국광 주었습니다";
+		message @sd, 3, "깨끗한얼음 주었습니다";
+		message @sd, 3, "참수박 주었습니다";
+		additem @sd, name2itemid("과일화채"), 1;
+		set @pos, dialog(0, 0, 1, "정말 시원하고 맛있는 과일화채가 여기 나왔습니다.");
+		end;
+	}
+}
+
+
+선필대련심판	{
+	set @sd, mysd();
+
+	image 0, 564, 0;
+
+	returns:
+	set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "선필 대련이 무엇인가요?", "선필 마법", "선필 대련 신청");
+	if(@pos == 0) end;
+
+	if(@list == 1)
+	{
+		set @pos, dialog(1, 0, 0, "선필 대련이란?\\n\\n먼저 저에게서 '선필' 마법을 배우셔야 신청이 가능하고, 상대방과 일대일로 승부 신청 합의하에 대련을 하실 수 있습니다. '선필' 마법으로 상대방을 먼저 때리는 분이 승리합니다.");
+		if(@pos == 0) end;
+
+		goto returns;
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@spell, 0, 0, "어떻게 하시겠습니까?", "선필 마법을 배우고 싶습니다.", "선필 마법을 지우고 싶습니다.");
+		if(@pos == 0) end;
+
+		if(@spell == 1)
+		{
+			if(checkspell(name2spellid("선필")) == 52)
+			{
+				addspell name2spellid("선필");
+				set @pos, dialog(0, 0, 0, "선필 마법을 가르쳐 드렸습니다.");
+				end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "이미 배우셨습니다.");
+				end;
+			}
+		}
+		else if(@spell == 2)
+		{
+			for(set @i, 0; @i < 52; set @i, @i+1)
+			{
+				if(checkspell(name2spellid("선필")) == @i)
+				{
+					delspell @i;
+				}
+			}
+			set @pos, dialog(0, 0, 0, "선필 마법을 지웠습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+			set @pos, input2(@name$, 0, 6, "선필 대련 승부를 요청할 상대방의 이름은 무엇입니까?", "상대방의 이름은", "입니다.");
+			if(@pos == 0) end;
+
+			set @target_id, name2id(@name$);
+			if(validid(@target_id) == 1)
+			{
+				set @target_sd, id2sd(@target_id);
+
+				if(spellaethered(@target_sd, name2spellid("선필요청")) == 1)
+				{
+					message @sd, 8, "Please wait delay.";
+					end;
+				}
+				else if(get_level(@sd) < 99 || get_level(@target_sd) < 99)
+				{
+					set @pos, dialog(0, 0, 0, "신청자 또는 요청자가 레벨 99미만이라 선필 대련을 하실 수 없습니다.");
+					end;
+				}
+				else if(@name$ == get_name(@sd))
+				{
+					set @pos, dialog(0, 0, 0, "본인의 이름으로 신청하실 수 없습니다.");
+					end;
+				}
+					set #request, 1;
+					set #appname$, get_name(@sd);
+
+					spellcast @target_sd, name2spellid("선필요청");
+				}
+				else
+				{
+					set @pos, dialog(0, 0, 0, @name$+"님이 가까이에 계시지않아 요청할 수 없습니다.");
+					end;
+				}
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, @name$+"님은 향수서버에 접속중이 아닙니다.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, ($first_strike-@time)+"초 후에 요청 가능합니다.");
+			end;
+		}
+	}
+}
+
+@선필요청	{
+	set @id, myid();
+	set @sd, mysd();
+
+	if(#request == 1)
+	{
+		set @pos, list2(@list, 0, 0, #appname$+"님이 당신에게 선필 승부 대련을 요청하고자합니다.\\n수락하시겠습니까?", "수락", "거절");
+		if(@pos == 0 || @list == 2) set @ref, 1;
+
+		else if(@list == 1)
+		{
+			if(#request != 0)
+			{
+				set #request, 0;
+				set #agree, 1;
+				set #agrname$, get_name(@sd);
+
+				warp @sd, name2mapid("선필대련장"), 16, 5;
+				spellaether @sd, name2spellid("선필마감"), 180;
+
+				set @target_sd, name2sd(#appname$);
+				warp @target_sd, name2mapid("선필대련장"), 3, 5;
+				spellaether @target_sd, name2spellid("선필마감"), 180;
+
+				set @objid, obj_getxy(7, 10);
+				say @objid, 0, "선필대련심판: ["+#appname$+"]님과 ["+#agrname$+"]님의 일대일 선필 대련";
+				say @objid, 0, "선필대련심판: 3분내로 승부가 결정나지 않으면 두 분 모두 무승부!";
+				say @objid, 0, "선필대련심판: 그럼 이제 시작!!";
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "요청 받았던 시간이 초과되었습니다.");
+				end;
+			}
+		}
+		if(@ref == 1)
+		{
+			set @target_sd, name2sd(#appname$);
+			runscript @target_sd, "@선필요청취소";
+		}
+	}
+}
+
+@선필요청취소	{
+	set #request, 0;
+	set #appname$, "";
+	set #agrname$, "";
+
+	if(mysd() > 0)
+	{
+		message mysd(), 5, "[정보]: 선필 요청이 종료되었습니다.";
+	}
+}
+
+
+
+@선필	{
+	set @id, myid();
+	set @sd, mysd();
+	set @target_id, obj_getfront();
+	if(get_state(@sd) == 2 || get_state(@sd) == 5)
+	{
+		message @sd, 3, "투명 상태일땐 사용이 불가능합니다.";
+		end;
+	}
+	if(@target_id > 0)
+	{
+		if(#agree == 1 && get_mapname(@sd) == "선필대련장" && istype(@target_id) == 1)
+		{
+			if(get_x(@id) >= 1 && get_x(@id) <= 18 && get_y(@id) >= 2 && get_y(@id) <= 8)
+			{
+
+				callfunc "MANA_DELAY", 60, 0, @sd;
+				if(@target_id > 0) { message @sd, 3, "선필을 외웠습니다."; }
+				callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 60, "선필!!", 60, 35, 1;
+
+				sleep 1000;
+
+				set @target_sd, name2sd(#appname$);
+				set @sd, name2sd(#agrname$);
+
+				warp @sd, name2mapid("선필대련장"), 11, 11;
+				runscript @sd, "선필딜레이";
+				warp @target_sd, name2mapid("선필대련장"), 8, 11;
+				runscript @target_sd, "선필딜레이";
+
+				spelluncast @target_sd, name2spellid("선필마감");
+				spelluncast @target_sd, name2spellid("선필요청");
+
+				set @sd, mysd();
+				set @objid, obj_getxy(7, 10);
+				say @objid, 0, "선필대련심판: "+get_name(@sd)+"님 승리!!";
+
+				spelluncast @sd, name2spellid("선필마감");
+				spelluncast @sd, name2spellid("선필요청");
+
+				set #appname$, "";
+				set #refname$, "";
+				set #agrname$, "";
+				set #sp_wins, 0;
+				set #request, 0;
+				set #agree, 0;
+
+				end;
+			}
+			else
+			{
+				message @sd, 3, "대련장에 올라가지 않아 사용할 수 없습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "선필 대련 진행중이 아닙니다.";
+			end;
+		}
+	}
+}
+
+@선필마감	{
+	set @id, myid();
+	set @sd, mysd();
+
+	if(get_x(@id) >= 1 && get_x(@id) <= 18 && get_y(@id) >= 2 && get_y(@id) <= 8)
+	{
+		set @objid, obj_getxy(7, 10);
+		say @objid, 0, "선필대련심판: 3분내에 승부가 결정나지않아 두 분 모두 무승부!";
+
+		set #appname$, "";
+		set #refname$, "";
+		set #sp_wins, 0;
+		set #request, 0;
+		set #agree, 0;
+
+		set @target_sd, name2sd(#agrname$);
+
+		if(mapid() == name2mapid("선필대련장")) { warp @sd, name2mapid("선필대련장"), rand(3,13), 12; }
+		set #agrname$, "";
+	}
+}
+
+선필딜레이	{
+	set @time, callfunc("server_nowtime");
+	set $first_strike, @time+5;
+}
+
+
+
+경마관리인	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @pos, list2(@list, 0, 0, "경마 진행 하시겠어요?.", "경마준비", "경마시작", "경마끝");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			set @sd,mysd();
+			set @id, myid();
+				set #horse, 0;
+				npcspawn 1916, 36, 33, 2, 502, 0;
+				npcspawn 1916, 36, 34, 2, 502, 0;
+				npcspawn 1916, 36, 35, 2, 502, 0;
+				npcspawn 1916, 36, 36, 2, 502, 0;
+				npcspawn 1916, 36, 37, 2, 502, 0;
+				npcspawn 1916, 36, 38, 2, 502, 0;
+				npcspawn 1916, 36, 39, 2, 502, 0;
+				broadcast 5, "경마 준비 되었습니다 라인업해주세요.";
+				end;
+		}
+		else if(@list == 2)
+		{
+			set @sd,mysd();
+			set @id, myid();
+			set @rand_x, rand(50,57);
+			set @rand_x1, rand(6,12);
+			set @rand_y, rand(32,39);
+			set @rand_y1, rand(8,15);
+			set @horse_number, 0;
+					broadcast 5, "출발!!!!!!!";
+					set #horse, 1;
+					set #horse_number, 0;
+					deletenpc obj_getxy(36,33), 1916;
+					deletenpc obj_getxy(36,34), 1916;
+					deletenpc obj_getxy(36,35), 1916;
+					deletenpc obj_getxy(36,36), 1916;
+					deletenpc obj_getxy(36,37), 1916;
+					deletenpc obj_getxy(36,38), 1916;
+					deletenpc obj_getxy(36,39), 1916;
+
+					npcspawn 1916, 27, 33, 2, 502, 0;
+					npcspawn 1916, 27, 34, 2, 502, 0;
+					npcspawn 1916, 27, 35, 2, 502, 0;
+					npcspawn 1916, 27, 36, 2, 502, 0;
+					npcspawn 1916, 27, 37, 2, 502, 0;
+					npcspawn 1916, 27, 38, 2, 502, 0;
+					npcspawn 1916, 27, 39, 2, 502, 0;
+						mobspawn name2mapid("경마장4"), @rand_x, @rand_y, 2, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x, @rand_y1, 5, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 2, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 2, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 2, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 1, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 5, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 3, name2mobid("다람쥐");
+						mobspawn name2mapid("경마장4"), @rand_x1, @rand_y1, 4, name2mobid("다람쥐");
+		}
+		else if(@list == 3)
+		{
+		set @sd,mysd();
+		set @id, myid();
+		set #horse, 0;
+		
+		deletenpc obj_getxy(27,33), 1916;
+		deletenpc obj_getxy(27,34), 1916;
+		deletenpc obj_getxy(27,35), 1916;
+		deletenpc obj_getxy(27,36), 1916;
+		deletenpc obj_getxy(27,37), 1916;
+		deletenpc obj_getxy(27,38), 1916;
+		deletenpc obj_getxy(27,39), 1916;
+		broadcast 5, "경마종료!";
+		}
+		else if(#horse == 1)
+		{
+		set @pos, dialog(0, 0, 0, "경마가 진행되고 있습니다.\\n\\n게임이 종료될때까지 기다려주세요.");
+		end;
+		}
+}

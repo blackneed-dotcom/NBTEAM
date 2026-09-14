@@ -1,0 +1,7 @@
+@ÇØ°ñ¿Õ	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("ÇØ°ñ¿ÕÀÇ»À"), 1;
+}
+
+@ÇØ°ñ¿Õ°ø°Ý	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 5, 121, rand(200000, 250000), 2, "¾Æ°ø°£º£±â", 10, "¾Æ°ø°£º£±â!";
+}

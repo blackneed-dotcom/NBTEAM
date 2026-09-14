@@ -1,0 +1,835 @@
+// ----------------------------------------------- accessory script ---------------------------------------------------------------------------------------
+@*시력회복의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+ spellaether @sd, name2spellid("시귀기간"), 10;
+}
+
+@*시력회복의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@*보무의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+
+ spellcast @sd, (name2spellid("자동보호"));
+ spellcast @sd, (name2spellid("자동무장"));
+ spellaether @sd, name2spellid("보목기간"), 10;
+}
+
+@*보무의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ if(get_state(@sd) == 1) { end; }
+ if(get_equipitem(@sd, 6) != name2itemid("*보무의목걸이") || get_equipitem(@sd, 6) != name2itemid("*보무의목걸이")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 6) != name2itemid("*보무의목걸이") || get_equipitem(@sd, 6) != name2itemid("*보무의목걸이")) { spellaether @sd, name2spellid("자동무장"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("*보무의목걸이") || get_equipitem(@sd, 7) != name2itemid("*보무의목걸이")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("*보무의목걸이") || get_equipitem(@sd, 7) != name2itemid("*보무의목걸이")) { spellaether @sd, name2spellid("자동무장"), 1; }
+}
+
+@구리별목걸이착용	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)-2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_maxmp @sd, get_maxmp(@sd)+500;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@구리별목걸이해제	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)+2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_maxmp @sd, get_maxmp(@sd)-500;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+@은별목걸이착용	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)-3;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)+1000;
+ set_maxmp @sd, get_maxmp(@sd)+1000;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@은별목걸이해제	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)+3;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)-1000;
+ set_maxmp @sd, get_maxmp(@sd)-1000;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+@금별목걸이착용	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)-3;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)+get_purehp(@sd)*3/100;
+ set_maxmp @sd, get_maxmp(@sd)+get_puremp(@sd)*3/100;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@금별목걸이해제	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)+3;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)-get_purehp(@sd)*3/100;
+ set_maxmp @sd, get_maxmp(@sd)-get_puremp(@sd)*3/100;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+@구미호의꼬리착용	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)-3;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)+3000;
+ set_maxmp @sd, get_maxmp(@sd)+3000;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@구미호의꼬리해제	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)+3;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)-3000;
+ set_maxmp @sd, get_maxmp(@sd)-3000;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@초심자노리개착용	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set @id, myid();
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+ if(spellaethered(@sd, name2spellid("초보보호술")) == 0) { spellcast @sd, name2spellid("초보보호술"); }
+ if(get_state(@sd) == 1) { end; }
+}
+
+}
+
+@초심자노리개착용해제	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set @id, myid();
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+ if(spellaethered(@sd, name2spellid("초보보호술")) == 1) { spelluncast @sd, name2spellid("초보보호술"); }
+ if(get_state(@sd) == 1) { end; }
+ if(get_equipitem(@sd, 6) != name2itemid("초심자노리개") || get_equipitem(@sd, 6) != name2itemid("초심자노리개")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 6) != name2itemid("초심자노리개") || get_equipitem(@sd, 6) != name2itemid("초심자노리개")) { spellaether @sd, name2spellid("자동무장"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("초심자노리개") || get_equipitem(@sd, 7) != name2itemid("초심자노리개")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("초심자노리개") || get_equipitem(@sd, 7) != name2itemid("초심자노리개")) { spellaether @sd, name2spellid("자동무장"), 1; }
+}
+}
+
+//@초심자노리개착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set $ii, 1;
+	if(get_equipitem(@sd, 6) == name2itemid("초심자노리개") && get_equipitem(@sd, 7) == name2itemid("초심자노리개"))
+	{end;}
+
+
+ while($ii==1)
+{
+	sleep 2000;
+	if(get_equipitem(@sd, 6) != name2itemid("초심자노리개") && get_equipitem(@sd, 7) != name2itemid("초심자노리개"))
+	{
+		set $i, 0;
+	}
+	if(get_equipitem(@sd, 6) == name2itemid("초심자노리개") || get_equipitem(@sd, 7) == name2itemid("초심자노리개"))
+	{
+		set $i, 1;
+	}
+	if(get_equipitem(@sd, 6) == name2itemid("초심자노리개") && get_equipitem(@sd, 7) == name2itemid("초심자노리개"))
+	{
+		set $i, 2;
+	}
+	switch($i)
+	{
+		case 0: 
+			set $ii, 0;
+			break;
+		case 1: 
+			if(get_hp(@sd)+(get_maxhp(@sd)/10) > get_maxhp(@sd))
+			{
+				set_hp @sd, get_maxhp(@sd);
+				break;
+			}
+			else 
+			{
+			set_hp @sd, get_hp(@sd)+(get_maxhp(@sd)/10);
+			break;
+			}
+		case 2: 
+			if(get_hp(@sd)+((get_maxhp(@sd)/10)*2) > get_maxhp(@sd))
+			{
+				set_hp @sd, get_maxhp(@sd);
+				break;
+			}
+			else 
+			{
+				set_hp @sd, get_hp(@sd)+((get_maxhp(@sd)/10)*2);
+				break;
+			}
+	}
+}}
+
+//@초심자노리개착용해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+1;
+}
+
+@해골목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_grace @sd, get_grace(@sd)+1;
+ set_might @sd, get_might(@sd)+1;
+ set_will @sd, get_will(@sd)+1;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@해골목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_grace @sd, get_grace(@sd)-1;
+ set_might @sd, get_might(@sd)-1;
+ set_will @sd, get_will(@sd)-1;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@정령인형착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_maxhp @sd, get_maxhp(@sd)+350;
+ set_maxmp @sd, get_maxmp(@sd)+350;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@정령인형해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_hit @sd, get_hit(@sd)-2;
+ set_dam @sd, get_dam(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_maxhp @sd, get_maxhp(@sd)-350;
+ set_maxmp @sd, get_maxmp(@sd)-350;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@빨간고무신착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+150;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@빨간고무신해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-150;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@검정고무신착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+150;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@검정고무신해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-150;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+
+@강철의구두착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+150;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@강철의구두해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-150;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+
+
+@묘족의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@묘족의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@한족의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@한족의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@적월의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@적월의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)-2;
+ set_dam @sd, get_dam(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@일월의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@일월의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@봉마의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_maxmp @sd, get_maxmp(@sd)+200;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@봉마의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_maxmp @sd, get_maxmp(@sd)-200;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@해독의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@해독의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@수정의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_hit @sd, get_hit(@sd)+5;
+ set_dam @sd, get_dam(@sd)+5;
+ set_maxhp @sd, get_maxhp(@sd)+800;
+ set_maxmp @sd, get_maxmp(@sd)+400;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@수정의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_hit @sd, get_hit(@sd)-5;
+ set_dam @sd, get_dam(@sd)-5;
+ set_maxhp @sd, get_maxhp(@sd)-800;
+ set_maxmp @sd, get_maxmp(@sd)-400;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@시력회복의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@시력회복의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@활력의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+ if(get_equipitem(@sd, 6) == name2itemid("활력의목걸이") || get_equipitem(@sd, 7) == name2itemid("활력의목걸이"))
+ {
+	spelluncast @sd, name2spellid("마비");
+ }
+}
+
+@활력의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@청옥의귀걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_hit @sd, get_hit(@sd)+1;
+ set_dam @sd, get_dam(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@청옥의귀걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+1;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_hit @sd, get_hit(@sd)-1;
+ set_dam @sd, get_dam(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@금격의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxmp @sd, get_maxmp(@sd)+100;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@금격의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxmp @sd, get_maxmp(@sd)-100;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@혈충의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxmp @sd, get_maxmp(@sd)+100;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@혈충의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxmp @sd, get_maxmp(@sd)-100;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@봉마의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+10;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)+1000;
+ set_maxmp @sd, get_maxmp(@sd)+500;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@봉마의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-10;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)-1000;
+ set_maxmp @sd, get_maxmp(@sd)-500;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@주홍의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)+200;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@주홍의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)-200;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@수정의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)+600;
+ set_hit @sd, get_hit(@sd)+2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+3;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@수정의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)-600;
+ set_hit @sd, get_hit(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-3;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@비취의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_grace @sd, get_grace(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@비취의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ set_dam @sd, get_dam(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@적막의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)+200;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@적막의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)-200;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@금편의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-2;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_maxmp @sd, get_maxmp(@sd)+500;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_hit @sd, get_hit(@sd)+1;
+ set_dam @sd, get_dam(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@금편의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+2;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_maxmp @sd, get_maxmp(@sd)-500;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_hit @sd, get_hit(@sd)-1;
+ set_dam @sd, get_dam(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@청옥의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)-1;
+ set_grace @sd, get_grace(@sd)+5;
+ set_might @sd, get_might(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_hit @sd, get_hit(@sd)+1;
+ set_dam @sd, get_dam(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@청옥의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_ac @sd, get_ac(@sd)+1;
+ set_grace @sd, get_grace(@sd)-5;
+ set_might @sd, get_might(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_hit @sd, get_hit(@sd)-1;
+ set_dam @sd, get_dam(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@마반경착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_will @sd, get_will(@sd)+2;
+ set_protection @sd, get_protection(@sd)+3;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@마반경해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_will @sd, get_will(@sd)-2;
+ set_protection @sd, get_protection(@sd)-3;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@승리의증표착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ set_ac @sd, get_ac(@sd)-2;
+ spellcast @sd, (name2spellid("자동보호"));
+ spellcast @sd, (name2spellid("자동무장"));
+}
+
+@승리의증표해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ set_ac @sd, get_ac(@sd)+2;
+ if(get_state(@sd) == 1) { end; }
+ if(get_equipitem(@sd, 6) != name2itemid("승리의증표") || get_equipitem(@sd, 6) != name2itemid("승리의증표")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 6) != name2itemid("승리의증표") || get_equipitem(@sd, 6) != name2itemid("승리의증표")) { spellaether @sd, name2spellid("자동무장"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("승리의증표") || get_equipitem(@sd, 7) != name2itemid("승리의증표")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("승리의증표") || get_equipitem(@sd, 7) != name2itemid("승리의증표")) { spellaether @sd, name2spellid("자동무장"), 1; }
+}
+
+@보무의목걸이착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ spellcast @sd, (name2spellid("자동보호"));
+ spellcast @sd, (name2spellid("자동무장"));
+}
+
+@보무의목걸이해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ if(get_state(@sd) == 1) { end; }
+ if(get_equipitem(@sd, 6) != name2itemid("보무의목걸이") || get_equipitem(@sd, 6) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 6) != name2itemid("보무의목걸이") || get_equipitem(@sd, 6) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동무장"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("보무의목걸이") || get_equipitem(@sd, 7) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("보무의목걸이") || get_equipitem(@sd, 7) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동무장"), 1; }
+}
+
+@[기간]보무의목걸이착용	{
+ set @sd, mysd();
+ set @time, callfunc("Server_Nowtime");
+ if($gigan_time > @time) { spellcast @sd, name2spellid("이벤트딜레이");}
+ else { set $gigan_time, @time+20; }
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ spellcast @sd, (name2spellid("자동보호"));
+ spellcast @sd, (name2spellid("자동무장"));
+}
+
+@[기간]보무의목걸이해제	{
+ set @sd, mysd();
+ spellcast @sd, name2spellid("이벤트딜레이");
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set @id, myid();
+ if(get_state(@sd) == 1) { end; }
+ if(get_equipitem(@sd, 6) != name2itemid("보무의목걸이") || get_equipitem(@sd, 6) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 6) != name2itemid("보무의목걸이") || get_equipitem(@sd, 6) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동무장"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("보무의목걸이") || get_equipitem(@sd, 7) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동보호"), 1; }
+ if(get_equipitem(@sd, 7) != name2itemid("보무의목걸이") || get_equipitem(@sd, 7) != name2itemid("보무의목걸이")) { spellaether @sd, name2spellid("자동무장"), 1; }
+}
+
+@투명구두착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ spellcast @sd, (name2spellid("자동투명"));
+}
+
+@투명구두해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ if(get_equipitem(@sd, 6) != name2itemid("투명구두") && get_equipitem(@sd, 6) != name2itemid("투명구두")) { spellaether @sd, name2spellid("자동투명"), 1; }	
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	spellaether @sd, name2spellid("자동투명"), 1;
+	}
+}
+
+@강건부착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_maxhp @sd, get_maxhp(@sd)+1000;
+ set_will @sd, get_will(@sd)+5;
+ set_might @sd, get_might(@sd)+5;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@강건부해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_maxhp @sd, get_maxhp(@sd)-1000;
+ set_will @sd, get_will(@sd)-5;
+ set_might @sd, get_might(@sd)-5;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@명석부착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_maxmp @sd, get_maxmp(@sd)+800;
+ set_might @sd, get_grace(@sd)+10;
+}
+
+@명석부해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_maxmp @sd, get_maxmp(@sd)-800;
+ set_might @sd, get_grace(@sd)-10;
+}
+
+
+@전설의증표착용	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+ if(get_equipitem(@sd, 6) == name2itemid("약속의증표") || get_equipitem(@sd, 7) == name2itemid("약속의증표"))
+ {
+	spelluncast @sd, name2spellid("마비");
+ }
+}
+
+@전설의증표해제	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("전혈");
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}

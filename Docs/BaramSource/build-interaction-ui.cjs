@@ -1,0 +1,15 @@
+const fs=require('node:fs');
+const {UIBuilder}=require('../../.agents/skills/msw-ui-system/scripts/msw_ui_builder.cjs');
+const file='ui/BaramInteraction.ui';
+const b=fs.existsSync(file)?UIBuilder.read(file):new UIBuilder('BaramInteraction',35,true);
+b.empty('Frame',{rect_size:[640,480]});
+b.patchComponent('Frame','MOD.Core.UITransformComponent',{UIScale:{x:3,y:2.25,z:1},Scale:{x:3,y:2.25,z:1}});
+b.panel('Frame/Window',{pos:[-65,35],rect_size:[370,320],color:'#efdfb6',alpha:1,enable:false,raycast:true});
+b.text('Frame/Window/Title','',{pos:[0,139],rect_size:[330,24],size:12,color:'#241908'});
+b.text('Frame/Window/Body','',{pos:[0,3],rect_size:[338,246],size:10,color:'#241908',alignment:0,overflow:2});
+b.text('Frame/Window/Hint','',{pos:[0,-137],rect_size:[340,22],size:9,color:'#241908',overflow:2});
+b.button('Frame/Window/Close','닫기',{pos:[151,139],rect_size:[32,22],font_size:9,color:'#241908',bg_color:'#d1bd91'});
+b.addComponent('Frame/Window/Close','MOD.Core.UITouchReceiveComponent');
+for(const n of ['Title','Body','Hint','Close'])b.patchComponent('Frame/Window/'+n,'MOD.Core.TextGUIRendererComponent',{Font:'Galmuri9',IsRichText:false,Underlay:false});
+b.write(file);
+console.log('Interaction window: original 640x480 coordinate system, black text.');

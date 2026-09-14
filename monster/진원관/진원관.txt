@@ -1,0 +1,833 @@
+@진원관드랍	{
+	set @id, objid();
+	set @a, rand(1, 100);
+	set @b, rand(1, 100);
+	set @c, rand(1, 100);
+
+	if(@a <= 3 && @b == 1)
+	{
+		dropitem get_mobx(@id), get_moby(@id), name2itemid("황호박"), 1;
+	}
+
+	if(@a <= 5 && @b == 1 && @c == 1)
+	{
+		dropitem get_mobx(@id), get_moby(@id), name2itemid("청호박"), 1;
+	}
+}
+
+원숭이부족장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "이 안은 나와 우리 원숭이들의 보금자리와 같은 공간인데 원주민들이 와버리더니 모두 쫒아버렸네.. 부디 안에 있는 원주민들을 몰살시켜주게", "네 그러죠", "사람을 어떻게..");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list, 0, 0, "본 인던은 난이도사냥터로서 최소 4인 이상이 입장 가능하며, 2~4차의 합으로 결정을 합니다. 높을수록 쌘놈이 나오죠..", "그룹중입니다. 입장하겠습니다", "아직 준비가..");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			if(get_mapid(@sd) != 12174)
+			{
+				set @pos, dialog(0, 0, 1, "이미 누군가가 입장했거나, 알 수 없는 오류로 엔피시와 다른맵에 있어 처리할 수 없습니다.");
+				end;
+			}
+
+			if(party(@sd) == 1)
+			{
+				if(party_member(@sd, 0) != @sd)
+				{
+					set @pos, dialog(0, 0, 0, "그룹장만 신청이 가능합니다.");
+					end;
+				}
+
+				for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+				{
+					set @target_sd, party_member(@sd, @loop);
+					if(@target_sd > 0)
+					{
+						if(get_mapid(@sd) == get_mapid(@target_sd))
+						{
+							if(get_state(@target_sd) == 1) { set @errors, 1; goto errors; end; } //유령 캐릭터 확인
+							if(get_joblevel(@target_sd) < 2) { set @errors, 7; goto errors; end; } //1차 캐릭터 확인
+							if(@target_sd == ($prison_count > 0)) { set @errors, 8; goto errors; end; } // 전과범 캐릭터 확인
+							set @count, @count + 1; //그룹원 더해주기
+
+							set @balance, @balance + 1;
+							//밸런스: 승급번호^2 - 1
+						
+							if(@joblevel < get_joblevel(@target_sd))
+							{
+								set @joblevel, get_joblevel(@target_sd);
+							}
+							//가장 높은 승급번호 구해오기 (이걸로 난이도 맞춰짐)
+						}
+						else
+						{
+							set @errors, 2;
+
+							goto errors;
+							end;
+						}
+					}
+				}
+
+				if(@count < 4) { set @errors, 3; goto errors; end; }
+				else if(@count > 8) { set @errors, 4; goto errors; end; }
+				//그룹원 수 체크하고 삑이면 에러구문내기
+
+				//#jinwon_a_map, #jinwon_a_mobc, #jinwon_a_mobb, #jinwon_a_mobt ~ e까지 있음
+				//진원관 맵 A 번호 열림여부, 진원관 몹 카운트, 진원관 몹 밸런스, 진원관 몹 타입 (0 일반, 1 보스위주)
+
+				setarray @check_map_n[1], 12175, 12176, 12177, 12178, 12179;
+				setarray @check_open[1], #jinwon_a_map, #jinwon_b_map, #jinwon_c_map, #jinwon_d_map, #jinwon_e_map;
+
+				for(set @loop, 1; @loop < 4; set @loop, @loop+1)
+				{
+					if(@check_open[@loop] == 0)
+					{
+						set @warp_map, @check_map_n[@loop]; //워프 맵 번호 구해오기
+						set @warp_open_gate, @loop; //워프 게이트 타입 (1 a, 2 b, 3 c, 4 d, 5 e)
+
+						goto actions;
+						end;
+					}
+					else { set @trash, 1; }
+				}
+
+				if(@trash == 1)
+				{
+					deletearray @check_map_n[1], getarraysize(@check_map_n);
+					deletearray @check_open[1], getarraysize(@check_open);
+
+					set @errors, 5;
+
+					goto errors;
+					end;
+				}
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 1, "그룹중이 아닙니다.");
+			}
+		}
+		else end;
+	}
+	else if(@list == 2)
+	{
+		set @pos, dialog(0, 0, 1, "저 자들은 겉모습만 원주민이 속모습은 아니라네.. 사람의 역할을 전혀 하지 못하는 입에 담기 힘든 범죄자같은 몬스터지.");
+		end;
+	}
+	else end;
+	end;
+actions:
+	if(@warp_map >= 12175 && @warp_map <= 12179)
+	{
+		if(@warp_open_gate == 1) { set #jinwon_a_map, 1; set #jinwon_a_mobc, 30; set #jinwon_a_mobb, @balance; set #jinwon_a_mobt, @joblevel; }
+		else if(@warp_open_gate == 2) { set #jinwon_b_map, 1; set #jinwon_b_mobc, 30; set #jinwon_b_mobb, @balance; set #jinwon_b_mobt, @joblevel; }
+		else if(@warp_open_gate == 3) { set #jinwon_c_map, 1; set #jinwon_c_mobc, 30; set #jinwon_c_mobb, @balance; set #jinwon_c_mobt, @joblevel; }
+		else if(@warp_open_gate == 4) { set #jinwon_d_map, 1; set #jinwon_d_mobc, 30; set #jinwon_d_mobb, @balance; set #jinwon_d_mobt, @joblevel; }
+		else if(@warp_open_gate == 5) { set #jinwon_e_map, 1; set #jinwon_e_mobc, 30; set #jinwon_e_mobb, @balance; set #jinwon_e_mobt, @joblevel; }
+		//서버변수 설정 (중복입장 막기)
+
+		for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+		{
+			set @target_sd, party_member(@sd, @loop);
+			if(@target_sd > 0)
+			{
+				set @warp_add, @warp_add + 1;
+				warp @target_sd, @warp_map, 8+@warp_add, 20;
+
+				message @target_sd, 5, "★ 해당 맵에 있는 모든 몬스터를 처치하시오.";
+			}
+		}
+		//워프
+
+		// @joblevel, @balance 
+		if(@joblevel == 2)
+		{
+			if(@balance <= 4) { set @mobid, 1425; }
+			else if(@balance > 4 && @balance <= 5) { set @mobid, 1426; }
+			else { set @mobid, 1427; }
+		}
+		else if(@joblevel == 3)
+		{
+			if(@balance <= 4) { set @mobid, 1428; }
+			else if(@balance > 4 && @balance <= 5) { set @mobid, 1429; }
+			else { set @mobid, 1430; }
+		}
+		else if(@joblevel == 4)
+		{
+			if(@balance <= 4) { set @mobid, 1431; }
+			else if(@balance > 4 && @balance <= 5) { set @mobid, 1432; }
+			else { set @mobid, 1433; }
+		}
+		else
+		{
+			deletearray @check_map_n[1], getarraysize(@check_map_n);
+			deletearray @check_open[1], getarraysize(@check_open);
+
+			set @pos, dialog(0, 0, 1, "몹 설정 버그");
+			end;
+		}
+
+		mobspawn @warp_map, 6, 9, 2, @mobid; //1
+		mobspawn @warp_map, 7, 9, 2, @mobid; //2
+		mobspawn @warp_map, 8, 9, 2, @mobid; //3
+		mobspawn @warp_map, 9, 9, 2, @mobid; //4
+		mobspawn @warp_map, 10, 9, 2, @mobid; //5
+		mobspawn @warp_map, 11, 9, 2, @mobid; //6
+		mobspawn @warp_map, 12, 9, 2, @mobid; //7
+		mobspawn @warp_map, 13, 9, 2, @mobid; //8
+		mobspawn @warp_map, 14, 9, 2, @mobid; //9
+		mobspawn @warp_map, 15, 9, 2, @mobid; //10
+		mobspawn @warp_map, 16, 9, 2, @mobid; //11
+		mobspawn @warp_map, 17, 9, 2, @mobid; //12
+		mobspawn @warp_map, 8, 11, 2, @mobid; //13
+		mobspawn @warp_map, 9, 11, 2, @mobid; //14
+		mobspawn @warp_map, 10, 11, 2, @mobid; //15
+		mobspawn @warp_map, 11, 11, 2, @mobid; //16
+		mobspawn @warp_map, 12, 11, 2, @mobid; //17
+		mobspawn @warp_map, 13, 11, 2, @mobid; //18
+		mobspawn @warp_map, 14, 11, 2, @mobid; //19
+		mobspawn @warp_map, 15, 11, 2, @mobid; //20
+		mobspawn @warp_map, 8, 14, 2, @mobid; //21
+		mobspawn @warp_map, 9, 14, 2, @mobid; //22
+		mobspawn @warp_map, 10, 14, 2, @mobid; //23
+		mobspawn @warp_map, 11, 14, 2, @mobid; //24
+		mobspawn @warp_map, 12, 14, 2, @mobid; //25
+		mobspawn @warp_map, 13, 14, 2, @mobid; //26
+		mobspawn @warp_map, 14, 14, 2, @mobid; //27
+		mobspawn @warp_map, 15, 14, 2, @mobid; //28
+		mobspawn @warp_map, 16, 14, 2, @mobid; //29
+		mobspawn @warp_map, 17, 14, 2, @mobid; //30
+
+		deletearray @check_map_n[1], getarraysize(@check_map_n);
+		deletearray @check_open[1], getarraysize(@check_open);
+	}
+	else
+	{
+		set @errors, 6;
+		goto errors;
+		end;
+	}
+	end;
+errors:
+	if(@errors == 1) { set @pos, dialog(0, 0, 1, "입장할 수 없습니다.\\n\\n그룹원중에 유령상태인 그룹원이 있습니다."); end; }
+	else if(@errors == 2) { set @pos, dialog(0, 0, 1, "입장할 수 없습니다.\\n\\n같은 맵에 있지 않은 그룹원이 있습니다."); end; }
+	else if(@errors == 3) { set @pos, dialog(0, 0, 1, "입장할 수 없습니다.\\n\\n4명 미만의 그룹원이 있습니다."); end; }
+	else if(@errors == 4) { set @pos, dialog(0, 0, 1, "입장할 수 없습니다.\\n\\n9명 이상의 그룹원이 있습니다."); end; }
+	else if(@errors == 5) { set @pos, dialog(0, 0, 1, "현재 다른 그룹들이 모든 방에 입장하셨습니다. 잠시 후에 다시 해주시길 바랍니다."); end; }
+	else if(@errors == 6) { set @pos, dialog(0, 0, 1, "맵 정보 변수를 잘못 저장해 읽어올 수 없습니다."); end; }
+	else if(@errors == 7) { set @pos, dialog(0, 0, 1, "2차 승급 미만 그룹원이 있습니다."); end; }
+	else if(@errors == 8) { set @pos, dialog(0, 0, 1, "입장할 수 없습니다.\\n\\n그룹원중에 전과범이 있습니다."); end; }
+	else end;
+	end;
+}
+
+//2차
+@진원수령	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 91, rand(1800000, 2300000), 0, "멍석 말이!", "-1";
+
+}
+
+//3차
+@뇌수원령	{
+	set @id, myid();
+	set @side, get_side(@id);
+	set @rand, rand(1, 3);
+	if(@rand <= 3)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				if(istype(@target_id) != 3)
+				{
+					switch(@side)
+					{
+					case 0:
+						set_y @target_id, get_y(@id)-1;
+						set_side @target_id, 2; set @side, 2;
+						break;
+					case 1:
+						set_x @target_id, get_x(@id)+1;
+						set_side @target_id, 3; set @side, 3;
+						break;
+					case 2:
+						set_y @target_id, get_y(@id)+1;
+						set_side @target_id, 0; set @side, 0;
+						break;
+					case 3:
+						set_x @target_id, get_x(@id)-1;
+						set_side @target_id, 1; set @side, 1;
+						break;
+					}
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+//						updatexy @target_sd;
+//						updatelookpc @target_sd, 0;
+						updateallpc @target_sd;
+						say @id, 2, get_mobname(@id) + ": 여기가 어딘줄알고!";
+					}
+					else
+					{
+						move @target_id, @side;
+					}
+					callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 99, 175, rand(2500000, 2800000), 0, "흣~차!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+	else if(@rand <= 2)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+		
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				switch(@side)
+				{
+				case 0:
+					set_y @id, get_y(@target_id)+1;
+					break;
+				case 1:
+					set_x @id, get_x(@target_id)-1;
+					break;
+				case 2:
+					set_y @id, get_y(@target_id)-1;
+					break;
+				case 3:
+					set_x @id, get_x(@target_id)+1;
+					break;
+				}
+				updatelook @id;
+				say @id, 2, get_mobname(@id) + ": 내가 왔다고!";
+				callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 100, 100, rand(2300000, 2400000), 0, "진원환영술", 16, "-1";
+				}
+			}
+		}
+	}
+	else if(@rand <= 1)
+	{
+		set @target_id, obj_getfront();
+		if(@target_id <= 0) end;
+
+		switch(@side)
+		{
+		case 0:
+			set @val, canmove(@id, get_x(@id), get_y(@id)-2);
+			set_side @id, 2;
+			set @move_x, get_x(@id);
+			set @move_y, get_y(@id)-2;
+			if(@val == 1) // 안될때
+			{
+			set @val, canmove(@id, get_x(@id)+1, get_y(@id)-1);
+			set_side @id, 3;
+			set @move_x, get_x(@id)+1;
+			set @move_y, get_y(@id)-1;
+			if(@val == 1) // 안될때
+			{
+				set @val, canmove(@id, get_x(@id)-1, get_y(@id)-1);
+				set_side @id, 1;
+				set @move_x, get_x(@id)-1;
+				set @move_y, get_y(@id)-1;
+				if(@val == 1)
+				{
+					set_side @id, 0;
+					set @move_x, 0;
+					set @move_y, 0;
+				}
+			}
+		}
+		break;
+	case 1:
+		set @val, canmove(@id, get_x(@id)+2, get_y(@id));
+		set_side @id, 3;
+		set @move_x, get_x(@id)+2;
+		set @move_y, get_y(@id);
+		if(@val == 1) // 안될때
+		{
+			set @val, canmove(@id, get_x(@id)+1, get_y(@id)+1);
+			set_side @id, 0;
+			set @move_x, get_x(@id)+1;
+			set @move_y, get_y(@id)+1;
+			if(@val == 1) // 안될때
+			{
+				set @val, canmove(@id, get_x(@id)+1, get_y(@id)-1);
+				set_side @id, 2;
+				set @move_x, get_x(@id)+1;
+				set @move_y, get_y(@id)-1;
+				if(@val == 1)
+				{
+					set_side @id, 1;
+					set @move_x, 0;
+					set @move_y, 0;
+				}
+			}
+		}
+		break;
+	case 2:
+		set @val, canmove(@id, get_x(@id), get_y(@id)+2);
+		set_side @id, 0;
+		set @move_x, get_x(@id);
+		set @move_y, get_y(@id)+2;
+		if(@val == 1) // 안될때
+		{
+			set @val, canmove(@id, get_x(@id)-1, get_y(@id)+1);
+			set_side @id, 1;
+			set @move_x, get_x(@id)-1;
+			set @move_y, get_y(@id)+1;
+			if(@val == 1) // 안될때
+			{
+				set @val, canmove(@id, get_x(@id)+1, get_y(@id)+1);
+				set_side @id, 3;
+				set @move_x, get_x(@id)+1;
+				set @move_y, get_y(@id)+1;
+				if(@val == 1)
+				{
+					set_side @id, 2;
+					set @move_x, 0;
+					set @move_y, 0;
+				}
+			}
+		}
+		break;
+	case 3:
+		set @val, canmove(@id, get_x(@id)-2, get_y(@id));
+		set_side @id, 1;
+		set @move_x, get_x(@id)-2;
+		set @move_y, get_y(@id);
+		if(@val == 1) // 안될때
+		{
+			set @val, canmove(@id, get_x(@id)-1, get_y(@id)-1);
+			set_side @id, 2;
+			set @move_x, get_x(@id)-1;
+			set @move_y, get_y(@id)-1;
+			if(@val == 1) // 안될때
+			{
+				set @val, canmove(@id, get_x(@id)-1, get_y(@id)+1);
+				set_side @id, 0;
+				set @move_x, get_x(@id)-1;
+				set @move_y, get_y(@id)+1;
+				if(@val == 1)
+				{
+					set_side @id, 3;
+					set @move_x, 0;
+					set @move_y, 0;
+				}
+			}
+		}
+		break;
+	}
+	
+	if(@move_x != 0 && @move_y != 0)
+	{
+		if(rand(0, 100) < 25 && rand(0, 100) < 25)
+		{
+			set_side @id, @side;
+		}
+		else
+		{
+			set_xy @id, @move_x, @move_y;
+			damage @id, @target_id, 0, 1;
+		}
+		updatelook @id;
+
+		action @id, 1, 15, 30;
+		sound @target_id, 30;
+		}
+	}
+	if(rand(1, 2) == 1)
+	{
+		callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 3, -1, 18, 181, rand(3000000, 3100000), 2, "진원신령", "-1";
+	}
+}
+
+//4차
+@마수원령	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+	if(rand(1, 10) <= 2)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 104, rand(2300000, 2500000), 1, "지폭지술", 10, "-1";	
+	}
+	else
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rand <= 5 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 39;
+				sound @target_id, 79;
+				set_ac @target_sd, get_ac(@target_sd)+50;
+				spellaether @target_sd, name2spellid("혼마술"), 10;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 혼마술을 가합니다";
+			}
+		}
+	}
+	if(rand(1, 10) <= 7)
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rand <= 8 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 13;
+				sound @target_id, 69;
+				set_ac @target_sd, get_ac(@target_sd)+30;
+				spellaether @target_sd, name2spellid("저주"), 8;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 저주를 가합니다";
+			}
+		}
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 30;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 8)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 191, rand(2300000, 2750000), 0, "진원장", "-1";
+	}
+}
+
+@진마수원령	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+	if(rand(1, 10) <= 2)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 194, rand(3300000, 3500000), 1, "수직봉쇄", 10, "-1";	
+	}
+	else
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rand <= 5 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 39;
+				sound @target_id, 79;
+				set_ac @target_sd, get_ac(@target_sd)+50;
+				spellaether @target_sd, name2spellid("혼마술"), 10;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 혼마술을 가합니다";
+			}
+		}
+	}
+	if(rand(1, 10) <= 7)
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rand <= 8 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 13;
+				sound @target_id, 69;
+				set_ac @target_sd, get_ac(@target_sd)+30;
+				spellaether @target_sd, name2spellid("저주"), 8;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 저주를 가합니다";
+			}
+		}
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 30;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 8)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 177, rand(3000000, 3500000), 0, "마수령", "-1";
+	}
+	if(rand(1, 10) <= 3)
+	{
+	set @x1, get_x(@id)-13;
+	set @x2, get_x(@id)+13;
+	set @y1, get_y(@id)-13;
+	set @y2, get_y(@id)+13;
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j<=@y2; set @j, @j+1)
+			{
+				set @target_id, obj_getxy(@i, @j);
+				if(@target_id > 0)
+				{
+					if(istype(@target_id) == 2)
+					{
+						if(get_mobhp(@target_id) <= 2500000)
+						{
+							effect @id, 63;
+							effect @target_id, 63; //신령이펙트
+							sound @id, 97; //신령효과음
+							set_mobhp @target_id, get_mobhp(@target_id) + 1000000;
+							showgage @target_id; //체력바 표시
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+@부족의투구착용	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@부족의투구해제	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("전혈"))) { spelluncast @sd, name2spellid("전혈"); }
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+
+@진원족장	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*3; }
+
+	if(rand(1, 10) <= 4)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 149, rand(6000000, 6500000), 1, "원혼의복수", 30, "-1";
+		say @id, 2, get_mobname(@id) + ": 가소롭구나..";
+	}
+	else
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rand <= 5 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 181;
+				sound @target_id, 79;
+				set_ac @target_sd, get_ac(@target_sd)+55;
+				spellaether @target_sd, name2spellid("혼마술"), 10;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 극혼마술을 가합니다";
+				say @id, 1, get_mobname(@id) + ": 침입자놈들...!";
+			}
+		}
+	}
+	if(rand(1, 10) <= 7)
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rand <= 8 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 13;
+				sound @target_id, 69;
+				set_ac @target_sd, get_ac(@target_sd)+50;
+				spellaether @target_sd, name2spellid("저주"), 5;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 용의저주를 가합니다";;
+				say @id, 2, get_mobname(@id) + ": 크하하하하하하!!!!!!!!!!!!!";
+			}
+		}
+	}
+	if(rand(1, 10) <= 5)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 128, rand(7000000, 8000000), 0, "절망", -1;
+	say @id, 2, get_mobname(@id) + ": 이건 어떠냐";
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 25;
+				}
+			}
+		}
+	}
+}
+
+@진혼족장부활	{
+	set @id, objid();
+	set @rand, rand(1, 100);
+	if(@rand <= 50)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": 내가 쓰러질 줄 아는가..!";
+		set_mobhp @id, get_mobhp(@id)+300000000;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, get_mobname(@id) + ": 크흑..!!!!!!!";
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("정화의영혼조각"), 1;
+}
+
+@진원석	{
+	set @id, objid();
+	set @mapid, mapid();
+
+	if(@mapid == name2mapid("국내진원관1"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+
+	}
+	else if(@mapid == name2mapid("국내진원관2"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+	}
+	else if(@mapid == name2mapid("국내진원관2-1"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+	}
+	else if(@mapid == name2mapid("국내진원관2-2"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+	}
+	else if(@mapid == name2mapid("국내진원관3-1"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+	}
+	else if(@mapid == name2mapid("국내진원관3-2"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("진원관원주병");
+	}
+}

@@ -1,0 +1,11 @@
+@ºÒÅä³¢	{
+	callfunc "DROPITEM", objid(), 10, 4, name2itemid("Åä³¢°í±â"), 1;
+}
+
+@Åä³¢ºÎÇÏ	{
+	callfunc "DROPITEM", objid(), 10, 4, name2itemid("Åä³¢°í±â"), 1;
+}
+
+@Åä³¢¿Õ	{
+	callfunc "DROPITEM", objid(), 100, 100, name2itemid("°ï±¥"), 1;
+}

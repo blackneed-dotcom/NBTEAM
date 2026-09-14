@@ -1,0 +1,404 @@
+@ÅõÇ÷ºñ¹«	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 30, name2spellid("ÅõÇ÷ºñ¹«"), @sd;
+	set_mp @sd, get_mp(@sd)-30;
+
+	callfunc "BEGINFUNC", 57, 89, name2spellid("ÅõÇ÷ºñ¹«"), 300, 6, 0;
+}
+
+@ÅõÇ÷ºñ¹«ÇØÁ¦	{
+	set @sd, mysd();
+	set @id, myid();
+
+	message @sd, 3, "ÅõÇ÷ºñ¹« ÇØÁ¦";
+}
+
+@¹é¿­Àå	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // Å¸°Ù
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // ³» À§Ä¡¿Í °Å¸® °è»ê
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // °Å¸® Â÷°¡ À½¼öÀÏ°æ¿ì ¾ç¼ö·Î º¯°æ
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "¸¶·ÂÀÌ ¹ÌÄ¡Áö ¾Ê½À´Ï´Ù."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "MAGICIANSPELL", myid(), mysd(), 8, 280, 86, "¹é¿­Àå", 80;
+}
+
+//@¼±Ç³°¢	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // Å¸°Ù
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // ³» À§Ä¡¿Í °Å¸® °è»ê
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // °Å¸® Â÷°¡ À½¼öÀÏ°æ¿ì ¾ç¼ö·Î º¯°æ
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 8 || @gap_y > 8)
+	{
+		message @sd, 3, "¸¶·ÂÀÌ ¹ÌÄ¡Áö ¾Ê½À´Ï´Ù."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "TARGETMAGICIANCHOM", myid(), mysd(), 8, 320+get_grace(mysd()), 190, "¼±Ç³°¢", 80;
+}
+
+@¹é¿­Àå	{
+	callfunc "MAGICIANSPELL", myid(), mysd(), 8, 100000, 86, "¹é¿­Àå", 80;
+}
+
+@¼±Ç³°¢	{
+	callfunc "TARGETMAGICIANCHOM", myid(), mysd(), 40, 1500+get_grace(mysd()), 190, "¼±Ç³°¢", 80;
+}
+
+@Å»¸í»ç½Ä'¿°	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem_name(@sd, 1) == "°¡¸ªºó°¡ÀÇ³¯°³¿Ê") { set @delay, 90; }
+	else { set @delay, 180; }
+
+	callfunc "MANA_DELAY", 60, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-60;
+
+	set @value, callfunc("calculate_damage", get_hp(@sd), 2);
+	set @damage, callfunc("calc_multiply", @value);
+	set @save_damage, @damage;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1)
+			{
+				if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'¿°")) == 0 &&
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'³ú")) == 0 &&
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'Áö")) == 0)
+				{
+					spellaether @target_sd, name2spellid("Å»¸í»ç½Ä'¿°"), 2;
+				}
+
+				message @target_sd, 3, get_name(@sd) + "´ÔÀÌ Å»¸í»ç½Ä'¿°À» °¡ÇÕ´Ï´Ù.";
+			}
+			else
+			{
+				message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+				end;
+			}
+
+			effect @target_id, 154;
+			sound @target_id, 73;
+
+			callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'¿°")) == 0 &&
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'³ú")) == 0 &&
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'Áö")) == 0)
+			{
+				mobspellaether @target_id, name2spellid("Å»¸í»ç½Ä'¿°"), 2;
+			}
+
+			effect @target_id, 154;
+			sound @target_id, 73;
+
+			callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+		}
+		else
+		{
+			message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+			end;
+		}
+
+		set_hp @sd, get_hp(@sd)/2;
+
+		spelldelay @sd, name2spellid("Å»¸í»ç½Ä'¿°"), 150;
+		message @sd, 3, "Å»¸í»ç½Ä'¿°À» ¿Ü¿ü½À´Ï´Ù.";
+	}
+	else end;
+	end;
+}
+
+@Å»¸í»ç½Ä'³ú	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem_name(@sd, 1) == "°¡¸ªºó°¡ÀÇ³¯°³¿Ê") { set @delay, 90; }
+	else { set @delay, 180; }
+
+	callfunc "MANA_DELAY", 60, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-60;
+
+	set @value, callfunc("calculate_damage", get_hp(@sd), 2);
+	set @damage, callfunc("calc_multiply", @value);
+	set @save_damage, @damage;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1)
+			{
+				if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'¿°")) == 0 &&
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'³ú")) == 0 &&
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'Áö")) == 0)
+				{
+					spellaether @target_sd, name2spellid("Å»¸í»ç½Ä'¿°"), 2;
+				}
+
+				message @target_sd, 3, get_name(@sd) + "´ÔÀÌ Å»¸í»ç½Ä'³ú¸¦ °¡ÇÕ´Ï´Ù.";
+			}
+			else
+			{
+				message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+				end;
+			}
+
+			effect @target_id, 158;
+			sound @target_id, 73;
+
+			callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'¿°")) == 0 &&
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'³ú")) == 0 &&
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'Áö")) == 0)
+			{
+				mobspellaether @target_id, name2spellid("Å»¸í»ç½Ä'³ú"), 2;
+			}
+
+			effect @target_id, 158;
+			sound @target_id, 73;
+
+			callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+		}
+		else
+		{
+			message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+			end;
+		}
+
+		set_hp @sd, get_hp(@sd)/2;
+
+		spelldelay @sd, name2spellid("Å»¸í»ç½Ä'³ú"), 150;
+		message @sd, 3, "Å»¸í»ç½Ä'³ú¸¦ ¿Ü¿ü½À´Ï´Ù.";
+	}
+	else end;
+	end;
+}
+
+@Å»¸í»ç½Ä'Áö	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem_name(@sd, 1) == "°¡¸ªºó°¡ÀÇ³¯°³¿Ê") { set @delay, 90; }
+	else { set @delay, 180; }
+
+	callfunc "MANA_DELAY", 60, 0, @sd;
+
+	set @value, callfunc("calculate_damage", get_mp(@sd), 2);
+	set @damage, callfunc("calc_multiply", @value);
+	set @save_damage, @damage;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1)
+			{
+				if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'¿°")) == 0 &&
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'³ú")) == 0 &&
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'Áö")) == 0)
+				{
+					spellaether @target_sd, name2spellid("Å»¸í»ç½Ä'¿°"), 2;
+				}
+
+				message @target_sd, 3, get_name(@sd) + "´ÔÀÌ Å»¸í»ç½Ä'Áö¸¦ °¡ÇÕ´Ï´Ù.";
+			}
+			else
+			{
+				message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+				end;
+			}
+
+			effect @target_id, 156;
+			sound @target_id, 73;
+
+			callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'¿°")) == 0 &&
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'³ú")) == 0 &&
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'Áö")) == 0)
+			{
+				mobspellaether @target_id, name2spellid("Å»¸í»ç½Ä'Áö"), 2;
+			}
+
+			effect @target_id, 156;
+			sound @target_id, 73;
+
+			callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+		}
+		else
+		{
+			message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+			end;
+		}
+
+		set_mp @sd, 0;
+
+		spelldelay @sd, name2spellid("Å»¸í»ç½Ä'Áö"), 150;
+		message @sd, 3, "Å»¸í»ç½Ä'Áö¸¦ ¿Ü¿ü½À´Ï´Ù.";
+	}
+	else end;
+	end;
+}
+
+@Å»¸í»ç½Ä'Ç³	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem_name(@sd, 1) == "°¡¸ªºó°¡ÀÇ³¯°³¿Ê") { set @delay, 90; }
+	else { set @delay, 180; }
+
+	callfunc "MANA_DELAY", 60, 0, @sd;
+
+	set @value, callfunc("calculate_damage", get_hp(@sd)+(get_mp(@sd)*3), 2);
+	set @damage, callfunc("calc_multiply", @value);
+	set @save_damage, @damage;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1)
+			{
+				if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'¿°")) == 1 ||
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'³ú")) == 1 ||
+				spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'Áö")) == 1)
+				{
+					if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'¿°")) == 1) { set @effect, 155; }
+					else if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'³ú")) == 1) { set @effect, 159; }
+					else if(spellaethered(@target_sd, name2spellid("Å»¸í»ç½Ä'Áö")) == 1) { set @effect, 157; }
+
+					setarray @x[0], get_x(@target_id)-2, get_x(@target_id)-1, get_x(@target_id)  , get_x(@target_id)  , get_x(@target_id)+1, get_x(@target_id)+2, get_x(@target_id)  , get_x(@target_id)  , get_x(@target_id);
+					setarray @y[0], get_y(@target_id)  , get_y(@target_id)  , get_y(@target_id)-2, get_y(@target_id)-1, get_y(@target_id)  , get_y(@target_id)  , get_y(@target_id)+1, get_y(@target_id)+2, get_y(@target_id);
+
+					for(set @loop, 0; @loop < 9; set @loop, @loop+1)
+					{
+						if(@x[@loop] >= 0 && @x[@loop] < get_mapwidth(@sd) && @y[@loop] >= 0 && @y[@loop] < get_mapheight(@sd))
+						{
+							set @target_id, obj_getxy(@x[@loop], @y[@loop]);
+							if(@target_id > 0 && @target_id != @id)
+							{
+								if(istype(@target_id) == 1)
+								{
+									effect @target_id, @effect;
+									sound @target_id, 73;
+
+									callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+									message @target_sd, 3, get_name(@sd) + "´ÔÀÌ Å»¸í»ç½Ä'Ç³À» °¡ÇÕ´Ï´Ù.";
+								}
+							}
+						}
+					}
+
+					deletearray @x[0], getarraysize(@x);
+					deletearray @y[0], getarraysize(@y);
+				}
+				else
+				{
+					damage @id, @target_id, 1, 0;
+				}
+			}
+			else
+			{
+				message @sd, 3, "°É¸®Áö ¾Ê½À´Ï´Ù.";
+				end;
+			}
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'¿°")) == 1 ||
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'³ú")) == 1 ||
+			mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'Áö")) == 1)
+			{
+				if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'¿°")) == 1) { set @effect, 155; }
+				else if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'³ú")) == 1) { set @effect, 159; }
+				else if(mobspellaethered(@target_id, name2spellid("Å»¸í»ç½Ä'Áö")) == 1) { set @effect, 157; }
+
+				setarray @x[0], get_x(@target_id)-2, get_x(@target_id)-1, get_x(@target_id)  , get_x(@target_id)  , get_x(@target_id)+1, get_x(@target_id)+2, get_x(@target_id)  , get_x(@target_id)  , get_x(@target_id);
+				setarray @y[0], get_y(@target_id)  , get_y(@target_id)  , get_y(@target_id)-2, get_y(@target_id)-1, get_y(@target_id)  , get_y(@target_id)  , get_y(@target_id)+1, get_y(@target_id)+2, get_y(@target_id);
+
+				for(set @loop, 0; @loop < 9; set @loop, @loop+1)
+				{
+					if(@x[@loop] >= 0 && @x[@loop] < get_mapwidth(@sd) && @y[@loop] >= 0 && @y[@loop] < get_mapheight(@sd))
+					{
+						set @target_id, obj_getxy(@x[@loop], @y[@loop]);
+						if(@target_id > 0 && @target_id != @id)
+						{
+							if(istype(@target_id) == 2)
+							{
+								effect @target_id, @effect;
+								sound @target_id, 73;
+
+								callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+							}
+						}
+					}
+				}
+
+				deletearray @x[0], getarraysize(@x);
+				deletearray @y[0], getarraysize(@y);
+			}
+			else
+			{
+				damage @id, @target_id, 1, 0;
+			}
+		}
+		else
+		{
+			end;
+		}
+
+		set_mp @sd, 0;
+
+		spelldelay @sd, name2spellid("Å»¸í»ç½Ä'Ç³"), 150;
+		message @sd, 3, "Å»¸í»ç½Ä'Ç³À» ¿Ü¿ü½À´Ï´Ù.";
+	}
+	else end;
+	end;
+}

@@ -1,0 +1,7 @@
+@도삭산이쁘니인어	{
+	callfunc "DROPITEM", objid(), 100, 3, name2itemid("인어의방울"), 1;
+}
+
+@도삭산고양인어	{
+	callfunc "DROPITEM", objid(), 100, 3, name2itemid("인어의거울"), 1;
+}

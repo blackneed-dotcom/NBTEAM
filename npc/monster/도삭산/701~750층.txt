@@ -1,0 +1,23 @@
+@도삭산선비평민	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("나무가면"), 1;
+}
+
+@도삭산선비검객	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("나무가면"), 1;
+}
+
+@도삭산흉노전사	{
+	callfunc "DROPITEM", objid(), 25, 1, name2itemid("철의가면"), 1;
+}
+
+@도삭산흉노무사	{
+	callfunc "DROPITEM", objid(), 50, 1, name2itemid("금의가면"), 1;
+}
+
+@혼륜수렁'개	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 147, rand(1000, 1500), 0, "혼륜수령", "-1";
+}
+
+@뇌성빙목'개	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 147, rand(1500, 2000), 0, "뇌성빙목", "-1";
+}

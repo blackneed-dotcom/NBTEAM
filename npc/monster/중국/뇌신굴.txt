@@ -1,0 +1,11 @@
+@뇌신'자	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("자색구슬조각"), 1;
+}
+
+@뇌신'태	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("회색구슬조각"), 1;
+}
+
+@뇌신왕	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("회색보주"), 1;
+}

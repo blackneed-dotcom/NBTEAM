@@ -1,0 +1,934 @@
+@구양성딜레이	{
+	set @sd, mysd();
+	set $delay_indun_gooyang, get_nowtime()+3600;
+	spellaether @sd, name2spellid("구양성딜레이"), 3600;	
+}
+
+@구양성딜레이해제	{
+	set @sd, mysd();
+	set @now_time, get_nowtime();
+
+	if(@now_time < $delay_indun_gooyang)
+		spellaether @sd, name2spellid("구양성딜레이"), $delay_indun_gooyang-@now_time;
+	else
+		set $delay_indun_gooyang, 0;
+}
+@구양성병사공격	{
+	//90000 1800000
+	if(#ninedungeon_a_power == 2) { set @plus, 25000; }
+	else if(#ninedungeon_a_power == 3) { set @plus, 5000; }
+	else if(#ninedungeon_a_power == 4) { set @plus, 5000; }
+	else if(#ninedungeon_a_power == 5) { set @plus, 5000; }
+	else if(#ninedungeon_a_power == 6) { set @plus, 5000; }
+	else { set @plus, 25000; }
+
+	callfunc "mob_atlarge_spell", 300, "병사의일격", 176, 8, (10000+@plus), (20000+@plus), 1, 4, 3;
+}
+
+@구양성기마병사공격	{
+	//120000 240000
+	if(#ninedungeon_a_power == 2) { set @plus, 10000; }
+	else if(#ninedungeon_a_power == 3) { set @plus, 5000; }
+	else if(#ninedungeon_a_power == 4) { set @plus, 5000; }
+	else if(#ninedungeon_a_power == 5) { set @plus, 5000; }
+	else if(#ninedungeon_a_power == 6) { set @plus, 5000; }
+	else { set @plus, 25000; }
+
+	callfunc "mob_atlarge_spell", 300, "기마병사의일격", 176, 8, (10000+@plus), (20000+@plus), 1, 6, 5;
+}
+
+@구양성병사대장공격	{
+	//250000 500000
+	if(#ninedungeon_a_power == 2) { set @plus, 25000; }
+	else if(#ninedungeon_a_power == 3) { set @plus, 45000; }
+	else if(#ninedungeon_a_power == 4) { set @plus, 50000; }
+	else if(#ninedungeon_a_power == 5) { set @plus, 120000; }
+	else if(#ninedungeon_a_power == 6) { set @plus, 130000; }
+	else { set @plus, 25000; }
+
+	callfunc "mob_atlarge_spell", 300, "병사대장의일격", 176, 8, (150000+@plus), (350000+@plus), 1, 8, 7;
+}
+
+@구양성투석기공격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 54, rand(80000, 100000), 10, "구양성투석기공격", "-1";
+}
+
+@구양성탑	{
+	set @id, objid();
+	set @mapid, mapid();
+
+	if(@mapid == name2mapid("구양성1(1)"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+	}
+	else if(@mapid == name2mapid("구양성1(2)"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+	}
+	else if(@mapid == name2mapid("구양성2(1)"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성기마병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성기마병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+	}
+	else if(@mapid == name2mapid("구양성2(2)"))
+	{
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성기마병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성기마병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+		mobspawn @mapid, get_mobx(@id), get_moby(@id), 2, name2mobid("구양성병사");
+	}
+}
+
+FUNC_NineDungeonWarp	{
+	set @sd, mysd();
+	set @id, myid();
+	set @mapid, get_mapid(@sd);
+
+	if(@mapid == name2mapid("구양성1(1)") || @mapid == name2mapid("구양성2(1)") || @mapid == name2mapid("구양성3(1)"))
+	{
+		set #ninedungeon_a_mobc, 0;
+		set #ninedungeon_a_map, 0;
+		set #ninedungeon_a_level, 0;
+		set #ninedungeon_a_power, 0;
+
+		if(@mapid == name2mapid("구양성1(1)"))
+		{
+			deleteallmob name2mobid("구양성탑"), name2mapid("구양성1(1)");
+			deleteallmob name2mobid("구양성병사"), name2mapid("구양성1(1)");
+
+			warp_map name2mapid("구양성1(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성2(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성3(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+		}
+		else if(@mapid == name2mapid("구양성2(1)"))
+		{
+			deleteallmob name2mobid("구양성탑"), name2mapid("구양성2(1)");
+			deleteallmob name2mobid("구양성병사"), name2mapid("구양성2(1)");
+			deleteallmob name2mobid("구양성기마병사"), name2mapid("구양성2(1)");
+			deleteallmob name2mobid("구양성투석기"), name2mapid("구양성2(1)");
+
+			warp_map name2mapid("구양성1(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성2(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성3(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+		}
+		else if(@mapid == name2mapid("구양성3(1)"))
+		{
+			deleteallmob name2mobid("구양성기마병사"), name2mapid("구양성3(1)");
+			deleteallmob name2mobid("구양성병사대장"), name2mapid("구양성3(1)");
+
+			warp_map name2mapid("구양성1(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성2(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성3(1)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+		}
+		else end;
+		end;
+	}
+	else if(@mapid == name2mapid("구양성1(2)") || @mapid == name2mapid("구양성2(2)") || @mapid == name2mapid("구양성3(2)"))
+	{
+		set #ninedungeon_b_mobc, 0;
+		set #ninedungeon_b_map, 0;
+		set #ninedungeon_b_level, 0;
+		set #ninedungeon_b_power, 0;
+
+		if(@mapid == name2mapid("구양성1(2)"))
+		{
+			deleteallmob name2mobid("구양성탑"), name2mapid("구양성1(2)");
+			deleteallmob name2mobid("구양성병사"), name2mapid("구양성1(2)");
+
+			warp_map name2mapid("구양성1(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성2(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성3(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+		}
+		else if(@mapid == name2mapid("구양성2(2)"))
+		{
+			deleteallmob name2mobid("구양성탑"), name2mapid("구양성2(2)");
+			deleteallmob name2mobid("구양성병사"), name2mapid("구양성2(2)");
+			deleteallmob name2mobid("구양성기마병사"), name2mapid("구양성2(2)");
+			deleteallmob name2mobid("구양성투석기"), name2mapid("구양성2(1)");
+
+			warp_map name2mapid("구양성1(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성2(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성3(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+		}
+		else if(@mapid == name2mapid("구양성3(2)"))
+		{
+			deleteallmob name2mobid("구양성기마병사"), name2mapid("구양성3(2)");
+			deleteallmob name2mobid("구양성병사대장"), name2mapid("구양성3(2)");
+
+			warp_map name2mapid("구양성1(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성2(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+			warp_map name2mapid("구양성3(2)"), name2mapid("구양성입구"), 10, 5, 19, 8;
+		}
+		else end;
+		end;
+	}
+	return;
+}
+
+FUNC_NineDungeonKill	{
+	set @sd, mysd();
+	set @id, myid();
+	set @mapid, get_mapid(@sd);
+
+	if(@mapid == name2mapid("구양성1(1)") || @mapid == name2mapid("구양성2(1)") || @mapid == name2mapid("구양성3(1)"))
+	{
+		if(#ninedungeon_a_level == 1)
+		{
+			set #ninedungeon_a_mobc, #ninedungeon_a_mobc-1;
+			if(#ninedungeon_a_mobc <= 0)
+			{
+				set #ninedungeon_a_level, 2;
+
+				if(get_mapid(@sd) == name2mapid("구양성1(1)")) { set @s_map, name2mapid("구양성2(1)"); }
+				else if(get_mapid(@sd) == name2mapid("구양성1(2)")) { set @s_map, name2mapid("구양성2(2)"); }
+
+				set @mobid1, name2mobid("구양성병사");
+				set @mobid2, name2mobid("구양성기마병사");
+				set @mobid3, name2mobid("구양성투석기");
+
+				mobspawn @s_map, 26, 51, 2, @mobid1; //1
+				mobspawn @s_map, 27, 51, 2, @mobid1; //2
+				mobspawn @s_map, 28, 51, 2, @mobid1; //3
+				mobspawn @s_map, 26, 52, 2, @mobid2; //4
+				mobspawn @s_map, 27, 52, 2, @mobid2; //5
+				mobspawn @s_map, 28, 52, 2, @mobid2; //6
+				mobspawn @s_map, 18, 35, 2, @mobid1; //7
+				mobspawn @s_map, 19, 35, 2, @mobid1; //8
+				mobspawn @s_map, 20, 35, 2, @mobid1; //9
+				mobspawn @s_map, 18, 36, 2, @mobid2; //10
+				mobspawn @s_map, 19, 36, 2, @mobid2; //11
+				mobspawn @s_map, 20, 36, 2, @mobid2; //12
+				mobspawn @s_map, 29, 21, 2, @mobid1; //13
+				mobspawn @s_map, 30, 21, 2, @mobid1; //14
+				mobspawn @s_map, 31, 21, 2, @mobid1; //15
+				mobspawn @s_map, 29, 22, 2, @mobid2; //16
+				mobspawn @s_map, 30, 22, 2, @mobid2; //17
+				mobspawn @s_map, 31, 22, 2, @mobid2; //18
+				mobspawn @s_map, 27, 9, 2, name2mobid("구양성탑"); //19 (탑죽이면 3마리떠서 실상 27)
+				mobspawn @s_map, 33, 9, 2, name2mobid("구양성탑"); //20 (탑죽이면 3마리떠서 실상 36)
+				mobspawn @s_map, 31, 51, 2, @mobid1; //37
+				mobspawn @s_map, 32, 51, 2, @mobid1; //38
+				mobspawn @s_map, 33, 51, 2, @mobid1; //39
+				mobspawn @s_map, 31, 52, 2, @mobid2; //40
+				mobspawn @s_map, 32, 52, 2, @mobid2; //41
+				mobspawn @s_map, 33, 52, 2, @mobid2; //42
+				mobspawn @s_map, 18, 39, 2, @mobid1; //43
+				mobspawn @s_map, 19, 39, 2, @mobid1; //44
+				mobspawn @s_map, 20, 39, 2, @mobid1; //45
+				mobspawn @s_map, 18, 38, 2, @mobid2; //46
+				mobspawn @s_map, 19, 38, 2, @mobid2; //47
+				mobspawn @s_map, 20, 38, 2, @mobid2; //48
+
+				mobspawn @s_map, 26, 12, 2, @mobid3; //49
+				mobspawn @s_map, 27, 12, 2, @mobid3; //50
+				mobspawn @s_map, 28, 12, 2, @mobid3; //51
+				mobspawn @s_map, 29, 12, 2, @mobid3; //52
+				mobspawn @s_map, 30, 12, 2, @mobid3; //53
+				mobspawn @s_map, 31, 12, 2, @mobid3; //54
+				mobspawn @s_map, 32, 12, 2, @mobid3; //55
+				mobspawn @s_map, 33, 12, 2, @mobid3; //56
+				mobspawn @s_map, 34, 12, 2, @mobid3; //57
+
+				mobspawn @s_map, 26, 13, 2, @mobid3; //58
+				mobspawn @s_map, 27, 13, 2, @mobid3; //59
+				mobspawn @s_map, 28, 13, 2, @mobid3; //60
+				mobspawn @s_map, 29, 13, 2, @mobid3; //61
+				mobspawn @s_map, 30, 13, 2, @mobid3; //62
+				mobspawn @s_map, 31, 13, 2, @mobid3; //63
+				mobspawn @s_map, 32, 13, 2, @mobid3; //64
+				mobspawn @s_map, 33, 13, 2, @mobid3; //65
+				mobspawn @s_map, 34, 13, 2, @mobid3; //66
+
+				if(@s_map == name2mapid("구양성2(1)")) { set #ninedungeon_a_mobc, 66; }
+				else if(@s_map == name2mapid("구양성2(2)")) { set #ninedungeon_b_mobc, 66; }
+				end;
+			}
+		}
+		else if(#ninedungeon_a_level == 2)
+		{
+			set #ninedungeon_a_mobc, #ninedungeon_a_mobc-1;
+			if(#ninedungeon_a_mobc <= 0)
+			{
+				set #ninedungeon_a_level, 3;
+
+				if(get_mapid(@sd) == name2mapid("구양성2(1)")) { set @s_map, name2mapid("구양성3(1)"); }
+				else if(get_mapid(@sd) == name2mapid("구양성2(2)")) { set @s_map, name2mapid("구양성3(2)"); }
+
+				set @mobid, name2mobid("구양성기마병사");
+
+				mobspawn @s_map, 5, 28, 2, @mobid; //1
+				mobspawn @s_map, 6, 28, 2, @mobid; //2
+				mobspawn @s_map, 7, 28, 2, @mobid; //3
+				mobspawn @s_map, 5, 29, 2, @mobid; //4
+				mobspawn @s_map, 6, 29, 2, @mobid; //5
+				mobspawn @s_map, 7, 29, 2, @mobid; //6
+				mobspawn @s_map, 22, 28, 2, @mobid; //7
+				mobspawn @s_map, 23, 28, 2, @mobid; //8
+				mobspawn @s_map, 24, 28, 2, @mobid; //9
+				mobspawn @s_map, 22, 29, 2, @mobid; //10
+				mobspawn @s_map, 23, 29, 2, @mobid; //11
+				mobspawn @s_map, 24, 29, 2, @mobid; //12
+				mobspawn @s_map, 13, 14, 2, @mobid; //13
+				mobspawn @s_map, 14, 14, 2, @mobid; //14
+				mobspawn @s_map, 15, 14, 2, @mobid; //15
+				mobspawn @s_map, 16, 14, 2, @mobid; //16
+				mobspawn @s_map, 13, 15, 2, @mobid; //17
+				mobspawn @s_map, 14, 15, 2, @mobid; //18
+				mobspawn @s_map, 15, 15, 2, @mobid; //19
+				mobspawn @s_map, 16, 15, 2, @mobid; //20
+				mobspawn @s_map, 14, 11, 2, name2mobid("구양성병사대장"); //21 (보스)				
+				mobspawn @s_map, 7, 31, 2, @mobid; //22
+				mobspawn @s_map, 8, 31, 2, @mobid; //23
+				mobspawn @s_map, 9, 31, 2, @mobid; //24
+				mobspawn @s_map, 10, 31, 2, @mobid; //25
+				mobspawn @s_map, 11, 31, 2, @mobid; //26
+				mobspawn @s_map, 12, 31, 2, @mobid; //27
+				mobspawn @s_map, 13, 31, 2, @mobid; //28
+				mobspawn @s_map, 14, 31, 2, @mobid; //29
+				mobspawn @s_map, 15, 31, 2, @mobid; //30
+				mobspawn @s_map, 16, 31, 2, @mobid; //31
+				mobspawn @s_map, 17, 31, 2, @mobid; //32
+				mobspawn @s_map, 18, 31, 2, @mobid; //33
+				mobspawn @s_map, 19, 31, 2, @mobid; //34
+				mobspawn @s_map, 20, 31, 2, @mobid; //35
+				mobspawn @s_map, 21, 31, 2, @mobid; //36
+				mobspawn @s_map, 22, 31, 2, @mobid; //37
+				mobspawn @s_map, 7, 32, 2, @mobid; //38
+				mobspawn @s_map, 8, 32, 2, @mobid; //39
+				mobspawn @s_map, 9, 32, 2, @mobid; //40
+				mobspawn @s_map, 10, 32, 2, @mobid; //41
+				mobspawn @s_map, 11, 32, 2, @mobid; //42
+				mobspawn @s_map, 12, 32, 2, @mobid; //43
+				mobspawn @s_map, 13, 32, 2, @mobid; //44
+				mobspawn @s_map, 14, 32, 2, @mobid; //45
+				mobspawn @s_map, 15, 32, 2, @mobid; //46
+				mobspawn @s_map, 16, 32, 2, @mobid; //47
+				mobspawn @s_map, 17, 32, 2, @mobid; //48
+				mobspawn @s_map, 18, 32, 2, @mobid; //49
+				mobspawn @s_map, 19, 32, 2, @mobid; //50
+				mobspawn @s_map, 20, 32, 2, @mobid; //51
+				mobspawn @s_map, 21, 32, 2, @mobid; //52
+				mobspawn @s_map, 22, 32, 2, @mobid; //53
+				mobspawn @s_map, 7, 33, 2, @mobid; //54
+				mobspawn @s_map, 8, 33, 2, @mobid; //55
+				mobspawn @s_map, 9, 33, 2, @mobid; //56
+				mobspawn @s_map, 10, 33, 2, @mobid; //57
+				mobspawn @s_map, 11, 33, 2, @mobid; //58
+				mobspawn @s_map, 12, 33, 2, @mobid; //59
+				mobspawn @s_map, 13, 33, 2, @mobid; //60
+				mobspawn @s_map, 14, 31, 2, @mobid; //61
+				mobspawn @s_map, 15, 33, 2, @mobid; //62
+				mobspawn @s_map, 16, 33, 2, @mobid; //63
+				mobspawn @s_map, 17, 33, 2, @mobid; //64
+				mobspawn @s_map, 18, 33, 2, @mobid; //65
+				mobspawn @s_map, 19, 33, 2, @mobid; //66
+				mobspawn @s_map, 20, 33, 2, @mobid; //67
+				mobspawn @s_map, 21, 33, 2, @mobid; //68
+				mobspawn @s_map, 22, 33, 2, @mobid; //69
+
+				if(@s_map == name2mapid("구양성3(1)")) { set #ninedungeon_a_mobc, 69; }
+				else if(@s_map == name2mapid("구양성3(2)")) { set #ninedungeon_b_mobc, 69; }
+				end;
+			}
+		}
+		else if(#ninedungeon_a_level == 3)
+		{
+			if(lastkillmobid(@sd) == name2mobid("구양성병사대장"))
+			{
+				if(party(@sd) != 0)
+				{
+					for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+					{
+						set @target_sd, party_member(@sd, @loop);
+						set @mapid, get_mapid(@sd);
+						if(@target_sd > 0 && @target_sd != @sd)
+						{
+							if(@mapid == get_mapid(@target_sd))
+								spellaether @target_sd, name2spellid("구양성클리어"), 2;
+						}
+					}
+
+					deleteallmob name2mobid("구양성기마병사"), name2mapid("구양성3(1)");
+					deleteallmob name2mobid("구양성병사대장"), name2mapid("구양성3(1)");
+
+					spellaether @sd, name2spellid("구양성클리어"), 2;
+				}
+
+				set #ninedungeon_a_mobc, 0;
+				set #ninedungeon_a_map, 0;
+				set #ninedungeon_a_level, 0;
+				set #ninedungeon_a_power, 0;
+
+
+				warp_map get_mapid(@sd), name2mapid("구양성입구"), 10, 20, 5, 7;
+			}
+		}
+	}
+	else if(@mapid == name2mapid("구양성1(2)") || @mapid == name2mapid("구양성2(2)") || @mapid == name2mapid("구양성3(2)"))
+	{
+		if(#ninedungeon_b_level == 1)
+		{
+			set #ninedungeon_b_mobc, #ninedungeon_b_mobc-1;
+			if(#ninedungeon_b_mobc <= 0)
+			{
+				set #ninedungeon_b_level, 2;
+
+				if(get_mapid(@sd) == name2mapid("구양성1(1)")) { set @s_map, name2mapid("구양성2(1)"); }
+				else if(get_mapid(@sd) == name2mapid("구양성1(2)")) { set @s_map, name2mapid("구양성2(2)"); }
+
+				set @mobid1, name2mobid("구양성병사");
+				set @mobid2, name2mobid("구양성기마병사");
+				set @mobid3, name2mobid("구양성투석기");
+
+				mobspawn @s_map, 26, 51, 2, @mobid1; //1
+				mobspawn @s_map, 27, 51, 2, @mobid1; //2
+				mobspawn @s_map, 28, 51, 2, @mobid1; //3
+				mobspawn @s_map, 26, 52, 2, @mobid2; //4
+				mobspawn @s_map, 27, 52, 2, @mobid2; //5
+				mobspawn @s_map, 28, 52, 2, @mobid2; //6
+				mobspawn @s_map, 18, 35, 2, @mobid1; //7
+				mobspawn @s_map, 19, 35, 2, @mobid1; //8
+				mobspawn @s_map, 20, 35, 2, @mobid1; //9
+				mobspawn @s_map, 18, 36, 2, @mobid2; //10
+				mobspawn @s_map, 19, 36, 2, @mobid2; //11
+				mobspawn @s_map, 20, 36, 2, @mobid2; //12
+				mobspawn @s_map, 29, 21, 2, @mobid1; //13
+				mobspawn @s_map, 30, 21, 2, @mobid1; //14
+				mobspawn @s_map, 31, 21, 2, @mobid1; //15
+				mobspawn @s_map, 29, 22, 2, @mobid2; //16
+				mobspawn @s_map, 30, 22, 2, @mobid2; //17
+				mobspawn @s_map, 31, 22, 2, @mobid2; //18
+				mobspawn @s_map, 27, 9, 2, name2mobid("구양성탑"); //19 (탑죽이면 3마리떠서 실상 27)
+				mobspawn @s_map, 33, 9, 2, name2mobid("구양성탑"); //20 (탑죽이면 3마리떠서 실상 36)
+				mobspawn @s_map, 31, 51, 2, @mobid1; //37
+				mobspawn @s_map, 32, 51, 2, @mobid1; //38
+				mobspawn @s_map, 33, 51, 2, @mobid1; //39
+				mobspawn @s_map, 31, 52, 2, @mobid2; //40
+				mobspawn @s_map, 32, 52, 2, @mobid2; //41
+				mobspawn @s_map, 33, 52, 2, @mobid2; //42
+				mobspawn @s_map, 18, 39, 2, @mobid1; //43
+				mobspawn @s_map, 19, 39, 2, @mobid1; //44
+				mobspawn @s_map, 20, 39, 2, @mobid1; //45
+				mobspawn @s_map, 18, 38, 2, @mobid2; //46
+				mobspawn @s_map, 19, 38, 2, @mobid2; //47
+				mobspawn @s_map, 20, 38, 2, @mobid2; //48
+
+				mobspawn @s_map, 26, 12, 2, @mobid3; //49
+				mobspawn @s_map, 27, 12, 2, @mobid3; //50
+				mobspawn @s_map, 28, 12, 2, @mobid3; //51
+				mobspawn @s_map, 29, 12, 2, @mobid3; //52
+				mobspawn @s_map, 30, 12, 2, @mobid3; //53
+				mobspawn @s_map, 31, 12, 2, @mobid3; //54
+				mobspawn @s_map, 32, 12, 2, @mobid3; //55
+				mobspawn @s_map, 33, 12, 2, @mobid3; //56
+				mobspawn @s_map, 34, 12, 2, @mobid3; //57
+
+				mobspawn @s_map, 26, 13, 2, @mobid3; //58
+				mobspawn @s_map, 27, 13, 2, @mobid3; //59
+				mobspawn @s_map, 28, 13, 2, @mobid3; //60
+				mobspawn @s_map, 29, 13, 2, @mobid3; //61
+				mobspawn @s_map, 30, 13, 2, @mobid3; //62
+				mobspawn @s_map, 31, 13, 2, @mobid3; //63
+				mobspawn @s_map, 32, 13, 2, @mobid3; //64
+				mobspawn @s_map, 33, 13, 2, @mobid3; //65
+				mobspawn @s_map, 34, 13, 2, @mobid3; //66
+
+				set #ninedungeon_b_mobc, 66;
+				end;
+			}
+		}
+		else if(#ninedungeon_b_level == 2)
+		{
+			set #ninedungeon_b_mobc, #ninedungeon_b_mobc-1;
+			if(#ninedungeon_b_mobc <= 0)
+			{
+				set #ninedungeon_b_level, 3;
+
+				if(get_mapid(@sd) == name2mapid("구양성2(1)")) { set @s_map, name2mapid("구양성3(1)"); }
+				else if(get_mapid(@sd) == name2mapid("구양성2(2)")) { set @s_map, name2mapid("구양성3(2)"); }
+
+				set @mobid1, name2mobid("구양성병사");
+				set @mobid, name2mobid("구양성기마병사");
+
+				mobspawn @s_map, 5, 28, 2, @mobid; //1
+				mobspawn @s_map, 6, 28, 2, @mobid; //2
+				mobspawn @s_map, 7, 28, 2, @mobid; //3
+				mobspawn @s_map, 5, 29, 2, @mobid; //4
+				mobspawn @s_map, 6, 29, 2, @mobid; //5
+				mobspawn @s_map, 7, 29, 2, @mobid; //6
+				mobspawn @s_map, 22, 28, 2, @mobid; //7
+				mobspawn @s_map, 23, 28, 2, @mobid; //8
+				mobspawn @s_map, 24, 28, 2, @mobid; //9
+				mobspawn @s_map, 22, 29, 2, @mobid; //10
+				mobspawn @s_map, 23, 29, 2, @mobid; //11
+				mobspawn @s_map, 24, 29, 2, @mobid; //12
+				mobspawn @s_map, 13, 14, 2, @mobid; //13
+				mobspawn @s_map, 14, 14, 2, @mobid; //14
+				mobspawn @s_map, 15, 14, 2, @mobid; //15
+				mobspawn @s_map, 16, 14, 2, @mobid; //16
+				mobspawn @s_map, 13, 15, 2, @mobid; //17
+				mobspawn @s_map, 14, 15, 2, @mobid; //18
+				mobspawn @s_map, 15, 15, 2, @mobid; //19
+				mobspawn @s_map, 16, 15, 2, @mobid; //20
+				mobspawn @s_map, 14, 11, 2, name2mobid("구양성병사대장"); //21 (보스)
+				mobspawn @s_map, 7, 31, 2, @mobid; //22
+				mobspawn @s_map, 8, 31, 2, @mobid; //23
+				mobspawn @s_map, 9, 31, 2, @mobid; //24
+				mobspawn @s_map, 10, 31, 2, @mobid; //25
+				mobspawn @s_map, 11, 31, 2, @mobid; //26
+				mobspawn @s_map, 12, 31, 2, @mobid; //27
+				mobspawn @s_map, 13, 31, 2, @mobid; //28
+				mobspawn @s_map, 14, 31, 2, @mobid; //29
+				mobspawn @s_map, 15, 31, 2, @mobid; //30
+				mobspawn @s_map, 16, 31, 2, @mobid; //31
+				mobspawn @s_map, 17, 31, 2, @mobid; //32
+				mobspawn @s_map, 18, 31, 2, @mobid; //33
+				mobspawn @s_map, 19, 31, 2, @mobid; //34
+				mobspawn @s_map, 20, 31, 2, @mobid; //35
+				mobspawn @s_map, 21, 31, 2, @mobid; //36
+				mobspawn @s_map, 22, 31, 2, @mobid; //37
+				mobspawn @s_map, 7, 32, 2, @mobid; //38
+				mobspawn @s_map, 8, 32, 2, @mobid; //39
+				mobspawn @s_map, 9, 32, 2, @mobid; //40
+				mobspawn @s_map, 10, 32, 2, @mobid; //41
+				mobspawn @s_map, 11, 32, 2, @mobid; //42
+				mobspawn @s_map, 12, 32, 2, @mobid; //43
+				mobspawn @s_map, 13, 32, 2, @mobid; //44
+				mobspawn @s_map, 14, 32, 2, @mobid; //45
+				mobspawn @s_map, 15, 32, 2, @mobid; //46
+				mobspawn @s_map, 16, 32, 2, @mobid; //47
+				mobspawn @s_map, 17, 32, 2, @mobid; //48
+				mobspawn @s_map, 18, 32, 2, @mobid; //49
+				mobspawn @s_map, 19, 32, 2, @mobid; //50
+				mobspawn @s_map, 20, 32, 2, @mobid; //51
+				mobspawn @s_map, 21, 32, 2, @mobid; //52
+				mobspawn @s_map, 22, 32, 2, @mobid; //53
+				mobspawn @s_map, 7, 33, 2, @mobid; //54
+				mobspawn @s_map, 8, 33, 2, @mobid; //55
+				mobspawn @s_map, 9, 33, 2, @mobid; //56
+				mobspawn @s_map, 10, 33, 2, @mobid; //57
+				mobspawn @s_map, 11, 33, 2, @mobid; //58
+				mobspawn @s_map, 12, 33, 2, @mobid; //59
+				mobspawn @s_map, 13, 33, 2, @mobid; //60
+				mobspawn @s_map, 14, 31, 2, @mobid; //61
+				mobspawn @s_map, 15, 33, 2, @mobid; //62
+				mobspawn @s_map, 16, 33, 2, @mobid; //63
+				mobspawn @s_map, 17, 33, 2, @mobid; //64
+				mobspawn @s_map, 18, 33, 2, @mobid; //65
+				mobspawn @s_map, 19, 33, 2, @mobid; //66
+				mobspawn @s_map, 20, 33, 2, @mobid; //67
+				mobspawn @s_map, 21, 33, 2, @mobid; //68
+				mobspawn @s_map, 22, 33, 2, @mobid; //69
+				set #ninedungeon_b_mobc, 69;
+				end;
+			}
+		}
+		else if(#ninedungeon_b_level == 3)
+		{
+			if(lastkillmobid(@sd) == name2mobid("구양성병사대장"))
+			{
+				if(party(@sd) != 0)
+				{
+					for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+					{
+						set @target_sd, party_member(@sd, @loop);
+						set @mapid, get_mapid(@sd);
+						if(@target_sd > 0 && @target_sd != @sd)
+						{
+							if(@mapid == get_mapid(@target_sd))
+								spellaether @target_sd, name2spellid("구양성클리어"), 2;
+						}
+					}
+					spellaether @sd, name2spellid("구양성클리어"), 2;
+				}
+
+				deleteallmob name2mobid("구양성기마병사"), name2mapid("구양성3(1)");
+				deleteallmob name2mobid("구양성병사대장"), name2mapid("구양성3(1)");
+
+				set #ninedungeon_b_mobc, 0;
+				set #ninedungeon_b_map, 0;
+				set #ninedungeon_b_level, 0;
+				set #ninedungeon_b_power, 0;
+
+				warp_map get_mapid(@sd), name2mapid("구양성입구"), 10, 20, 5, 7;
+			}
+		}
+	}
+	return;
+}
+
+구양성입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_state(@sd) == 1) end;
+
+	if(#clan_fight_animal$ != "")
+	{
+		set @pos, dialog(0, 0, 0, "현재 공성전이 진행중입니다. 과부하 방지로 입장하실 수 없습니다.");
+		end;
+	}
+
+	set @pos, list2(@list, 0, 0, "구양성던전에 입장하시겠습니까?", "입장", "입장하지 않는다.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		if(party(@sd) != 0)
+		{
+			if(party_member(@sd, 0) != @sd)
+			{
+				set @pos, dialog(0, 0, 0, "그룹장만 입장 신청할 수 있습니다.");
+				end;
+			}
+
+			for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+			{
+				set @target_sd, party_member(@sd, @loop);
+				if(@target_sd > 0 && @target_sd != @sd)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(spellaethered(@target_sd, name2spellid("구양성딜레이")) == 1)
+						{
+							set @delay, @delay+1;
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "그룹이 없으면 입장할 수 없습니다.");
+			end;
+		}
+
+		if(@delay > 0 || spellaethered(@sd, name2spellid("구양성딜레이")) == 1)
+		{
+			set @pos, dialog(0, 0, 0, "그룹원중 입장딜레이가 존재합니다.");
+			end;
+		}
+		else
+		{
+			if(get_mapid(@sd) != name2mapid("구양성입구"))
+			{
+				set @pos, dialog(0, 0, 1, "알 수 없는 오류로 엔피시와 다른맵에 있어 처리할 수 없습니다.");
+				end;
+			}
+
+			if(party(@sd) != 0)
+			{
+				for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+				{
+					set @target_sd, party_member(@sd, @loop);
+					if(@target_sd > 0 && @target_sd != @sd)
+					{
+						if(get_mapid(@sd) == get_mapid(@target_sd))
+						{
+							set @member_count, @member_count+1;
+
+							if(get_state(@target_sd) == 1)
+							{
+								set @ghost, @ghost+1;
+							}
+							else if(@target_sd == ($prison_count > 0))
+							{
+								set @prison, @prison+1;
+							}
+						}
+						else
+						{
+							set @map_error, @map_error+1;
+						}
+					}
+				}
+
+				set @member_count, @member_count+1; //자신
+
+				if(@member_count < 2) { set @pos, dialog(0, 0, 0, "그룹원이 2명 이상일 경우 입장이 가능합니다."); end; }
+				else if(@member_count > 3) { set @pos, dialog(0, 0, 0, "그룹원이 3명 이상일 경우 입장이 불가능합니다."); end; }
+
+				if(@ghost > 0) { set @pos, dialog(0, 0, 0, "그룹원중 유령상태가 존재합니다."); end; }
+				if(@map_error > 0) { set @pos, dialog(0, 0, 0, "다른 맵에 존재하는 그룹원이 존재합니다."); end; }
+
+				setarray @check_map_n[1], name2mapid("구양성1(1)"), name2mapid("구양성1(2)"), 15;
+				setarray @check_open[1], #ninedungeon_a_map, #ninedungeon_b_map, 1;
+
+				for(set @loop, 1; @loop < 10; set @loop, @loop+1)
+				{
+					if(@check_open[@loop] == 0)
+					{
+						set @warp_map, @check_map_n[@loop];
+						set @warp_open_gate, @loop;
+
+						goto actions;
+						end;
+					}
+					else
+					{
+						set @trash, 1;
+					}
+				}
+
+				if(@trash == 1)
+				{
+					deletearray @check_map_n[1], getarraysize(@check_map_n);
+					deletearray @check_open[1], getarraysize(@check_open);
+
+					set @pos, dialog(0, 0, 0, "모든 던전이 진행중입니다. 잠시후 다시 입장해주세요.");
+					end;
+				}
+				end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "그룹중이 아닙니다.");
+				end;
+			}
+		}
+	}
+	else end;
+	end;
+actions:
+	if(@warp_map == name2mapid("구양성1(1)") || @warp_map == name2mapid("구양성1(2)"))
+	{
+		if(@warp_open_gate == 1) { set #ninedungeon_a_map, 1; set #ninedungeon_a_mobc, 89; set #ninedungeon_a_level, 1; set #ninedungeon_a_power, @member_count; }
+		else if(@warp_open_gate == 2) { set #ninedungeon_b_map, 1; set #ninedungeon_b_mobc, 89; set #ninedungeon_b_level, 1;  set #ninedungeon_b_power, @member_count; }
+
+		for(set @loop, 0; @loop < @member_count; set @loop, @loop+1)
+		{
+			set @target_sd, party_member(@sd, @loop);
+			if(@target_sd > 0)
+			{
+				set @x_plus, @x_plus+1;
+
+				warp @target_sd, @warp_map, (15+@x_plus), 60;
+			}
+		}
+
+		set @mobid, name2mobid("구양성병사");
+		set @mobid1, name2mobid("요동성성문1");
+		set @mobid2, name2mobid("요동성성문2");
+		set @mobid3, name2mobid("요동성성문3");
+		set @mobid4, name2mobid("요동성성문4");
+		set @mobid5, name2mobid("요동성성문5");
+		set @mobid6, name2mobid("요동성성문6");
+		set @mobid7, name2mobid("요동성성문7");
+		set @mobid8, name2mobid("요동성성문8");
+
+		mobspawn @warp_map, 11, 54, 2, @mobid; //1
+		mobspawn @warp_map, 12, 54, 2, @mobid; //2
+		mobspawn @warp_map, 13, 54, 2, @mobid; //3
+		mobspawn @warp_map, 11, 55, 2, @mobid; //4
+		mobspawn @warp_map, 12, 55, 2, @mobid; //5
+		mobspawn @warp_map, 13, 55, 2, @mobid; //6
+		mobspawn @warp_map, 17, 45, 2, @mobid; //7
+		mobspawn @warp_map, 18, 45, 2, @mobid; //8
+		mobspawn @warp_map, 19, 45, 2, @mobid; //9
+		mobspawn @warp_map, 17, 46, 2, @mobid; //10
+		mobspawn @warp_map, 18, 46, 2, @mobid; //11
+		mobspawn @warp_map, 19, 46, 2, @mobid; //12
+		mobspawn @warp_map, 22, 17, 2, @mobid; //13
+		mobspawn @warp_map, 23, 17, 2, @mobid; //14
+		mobspawn @warp_map, 24, 17, 2, @mobid; //15
+		mobspawn @warp_map, 22, 18, 2, @mobid; //16
+		mobspawn @warp_map, 23, 18, 2, @mobid; //17
+		mobspawn @warp_map, 24, 18, 2, @mobid; //18
+		mobspawn @warp_map, 15, 12, 2, name2mobid("구양성탑"); //19 (탑죽이면 9마리떠서 실상 27)
+		mobspawn @warp_map, 21, 12, 2, name2mobid("구양성탑"); //20 (탑죽이면 9마리떠서 실상 36)
+
+		mobspawn @warp_map, 14, 54, 2, @mobid; //37
+		mobspawn @warp_map, 15, 54, 2, @mobid; //38
+		mobspawn @warp_map, 16, 54, 2, @mobid; //39
+		mobspawn @warp_map, 17, 54, 2, @mobid; //40
+		mobspawn @warp_map, 18, 54, 2, @mobid; //41
+		mobspawn @warp_map, 19, 54, 2, @mobid; //42
+		mobspawn @warp_map, 20, 54, 2, @mobid; //43
+		mobspawn @warp_map, 21, 54, 2, @mobid; //44
+		mobspawn @warp_map, 22, 54, 2, @mobid; //45
+		mobspawn @warp_map, 23, 54, 2, @mobid; //46
+		mobspawn @warp_map, 24, 54, 2, @mobid; //47
+		mobspawn @warp_map, 14, 55, 2, @mobid; //48
+		mobspawn @warp_map, 15, 55, 2, @mobid; //49
+		mobspawn @warp_map, 16, 55, 2, @mobid; //50
+		mobspawn @warp_map, 17, 55, 2, @mobid; //51
+		mobspawn @warp_map, 18, 55, 2, @mobid; //52
+		mobspawn @warp_map, 19, 55, 2, @mobid; //53
+		mobspawn @warp_map, 20, 55, 2, @mobid; //54
+		mobspawn @warp_map, 21, 55, 2, @mobid; //55
+		mobspawn @warp_map, 22, 55, 2, @mobid; //56
+		mobspawn @warp_map, 23, 55, 2, @mobid; //57
+		mobspawn @warp_map, 24, 55, 2, @mobid; //58
+
+		mobspawn @warp_map, 14, 54, 2, @mobid; //59
+		mobspawn @warp_map, 15, 54, 2, @mobid; //60
+		mobspawn @warp_map, 16, 54, 2, @mobid; //61
+		mobspawn @warp_map, 17, 54, 2, @mobid; //62
+		mobspawn @warp_map, 18, 54, 2, @mobid; //63
+		mobspawn @warp_map, 19, 54, 2, @mobid; //64
+		mobspawn @warp_map, 20, 54, 2, @mobid; //65
+		mobspawn @warp_map, 21, 54, 2, @mobid; //66
+		mobspawn @warp_map, 22, 54, 2, @mobid; //67
+		mobspawn @warp_map, 23, 54, 2, @mobid; //68
+		mobspawn @warp_map, 24, 54, 2, @mobid; //69
+		mobspawn @warp_map, 14, 55, 2, @mobid; //70
+		mobspawn @warp_map, 15, 55, 2, @mobid; //71
+		mobspawn @warp_map, 16, 55, 2, @mobid; //72
+		mobspawn @warp_map, 17, 55, 2, @mobid; //73
+		mobspawn @warp_map, 18, 55, 2, @mobid; //74
+		mobspawn @warp_map, 19, 55, 2, @mobid; //75
+		mobspawn @warp_map, 20, 55, 2, @mobid; //76
+		mobspawn @warp_map, 21, 55, 2, @mobid; //77
+		mobspawn @warp_map, 22, 55, 2, @mobid; //78
+		mobspawn @warp_map, 23, 55, 2, @mobid; //79
+		mobspawn @warp_map, 24, 55, 2, @mobid; //80
+
+		mobspawn @warp_map, 14, 11, 2, @mobid1; //81
+		mobspawn @warp_map, 15, 11, 2, @mobid2; //82
+		mobspawn @warp_map, 16, 11, 2, @mobid3; //83
+		mobspawn @warp_map, 17, 11, 2, @mobid4; //84
+		mobspawn @warp_map, 18, 11, 2, @mobid5; //85
+		mobspawn @warp_map, 19, 11, 2, @mobid5; //86
+		mobspawn @warp_map, 20, 11, 2, @mobid6; //87
+		mobspawn @warp_map, 21, 11, 2, @mobid7; //88
+		mobspawn @warp_map, 22, 11, 2, @mobid8; //89
+
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 0, "맵 정보 변수 저장이 올바르지 않아 읽어올 수 없습니다.");
+		end;
+	}
+}
+
+구양성입장이펙트	{
+	effect objid(), 98;
+}
+
+@구양성입구입장	{
+	callfunc "LViiii", 3, 12165, 15, 13, 18, 18, "구양성입구";
+}
+
+@구양성2단계입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(#ninedungeon_a_level == 2)
+	{
+		if(party(@sd) != 0)
+		{
+			for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+			{
+				set @target_sd, party_member(@sd, @loop);
+				if(@target_sd > 0 && @target_sd != @sd)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						set @x_plus, @x_plus+1;
+
+						if(get_mapid(@sd) == name2mapid("구양성1(1)")) { warp @target_sd, name2mapid("구양성2(1)"), (28+@x_plus), 58; }
+						else if(get_mapid(@sd) == name2mapid("구양성1(2)")) { warp @target_sd, name2mapid("구양성2(2)"), (28+@x_plus), 58; }
+					}
+				}
+			}
+
+			if(get_mapid(@sd) == name2mapid("구양성1(1)")) { warp @sd, name2mapid("구양성2(1)"), (28+(@x_plus+1)), 58; }
+			else if(get_mapid(@sd) == name2mapid("구양성1(2)")) { warp @sd, name2mapid("구양성2(2)"), (28+(@x_plus+1)), 58; }
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "그룹이 없으면 다음 단계로 입장이 불가능합니다.");
+			end;
+		}
+	}
+}
+
+@구양성3단계입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(#ninedungeon_a_level == 3)
+	{
+		if(party(@sd) != 0)
+		{
+			for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+			{
+				set @target_sd, party_member(@sd, @loop);
+				if(@target_sd > 0 && @target_sd != @sd)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						set @x_plus, @x_plus+1;
+
+						if(get_mapid(@sd) == name2mapid("구양성2(1)")) { warp @target_sd, name2mapid("구양성3(1)"), (11+@x_plus), 35; }
+						else if(get_mapid(@sd) == name2mapid("구양성2(2)")) { warp @target_sd, name2mapid("구양성3(2)"), (11+@x_plus), 35; }
+					}
+				}
+			}
+
+			if(get_mapid(@sd) == name2mapid("구양성2(1)")) { warp @sd, name2mapid("구양성3(1)"), (11+(@x_plus+1)), 35; }
+			else if(get_mapid(@sd) == name2mapid("구양성2(2)")) { warp @sd, name2mapid("구양성3(2)"), (11+(@x_plus+1)), 35; }
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "그룹이 없으면 다음 단계로 입장이 불가능합니다.");
+			end;
+		}
+	}
+}
+
+@구양성클리어	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(party(@sd) != 0)
+	{
+		if(get_joblevel(@sd) == 1) { set @exp, 3; }
+		else if(get_joblevel(@sd) == 2) { set @exp, 5; }
+		else if(get_joblevel(@sd) == 3) { set @exp, 20; }
+		else if(get_joblevel(@sd) == 4) { set @exp, 50; }
+		else if(get_joblevel(@sd) == 5) { set @exp, 500; }
+		else if(get_joblevel(@sd) == 6) { set @exp, 700; }
+		else { set @exp, 0; }
+
+		if(@exp > 0)
+		{
+			set $saveexp_p, $saveexp_p+@exp;
+
+			message @sd, 3, "구양성 클리어보상으로 십억경 " + @exp + "개 획득";
+		}
+
+		updatexy @sd;
+		updatelookpc @sd, 0;
+		updateallpc @sd;
+
+		spellcast @sd, name2spellid("구양성딜레이");
+	}
+}

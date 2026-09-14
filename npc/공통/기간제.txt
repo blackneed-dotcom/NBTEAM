@@ -1,0 +1,199 @@
+허상장인	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(countitem(name2itemid("추억윤도")) == 0)
+	{
+		set @pos, dialog(0, 0, 0, "윤도가 없으면 강화를 해줄수없다네.");
+		end;
+	}
+START:
+	set @pos, list2(@list, 0, 0, "안녕하신가? 무엇을 도와줄까?", "허상 용무기를 각성시켜 주세요.");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "허상 용무기를 각성시키러 왔다고? 그렇다면 잘 찾아왔네.");
+		if(@pos == 0) { end; }
+COS002:
+		set @pos, dialog(0, 1, 1, "허상용무기는 성공확률이 높지만 강화를 할수록 내구도가 약해진다네.");
+		if(@pos == 0) end;
+		else if(@pos == -1) { goto COS001; }
+COS003:
+		set @pos, dialog(0, 1, 1, "하지만 아무리 나라도 가끔 실수할 때가 있는법.");
+		if(@pos == 0) end;
+		else if(@pos == -1) { goto COS002; }
+COS01:
+		set @pos, list2(@list, 0, 0, "그래. 그래도 나에게 용무기 각성을 맡기겠나?", "네. 용무기를 각성해주세요.");
+		if(@pos == 0) { end; }
+		else if(@list != 1) { end; }
+		else
+		{
+COS02:
+			set @pos, list2(@lst, 0, 0, "좋아. 각오가 대단하군. 그럼 각성시킬 용무기를 고르게.", "용마", "용천", "용랑", "용겸");
+			if(@pos == 0) { end; }
+			else if(@lst == 1)
+			{
+				set @pos, list2(@choose, 0, 1, "어떤 무기를 각성할건가?", "[허상]용마제칠검", "[허상]용마제팔검");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS02;
+
+				setarray @success$[1], "[허상]용마제팔검", "[허상]용마제구검";
+				setarray @failed$[1], "없어요", "없어요", "없어요";
+				setarray @check$[1], "[허상]용마제칠검", "[허상]용마제팔검";
+			}
+			else if(@lst == 2)
+			{
+				set @pos, list2(@choose, 0, 1, "어떤 무기를 각성할건가?", "[허상]용천제칠검", "[허상]용천제팔검");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS02;
+
+				setarray @success$[1], "[허상]용천제팔검", "[허상]용천제구검";
+				setarray @failed$[1], "없어요", "없어요", "없어요";
+				setarray @check$[1], "[허상]용천제칠검", "[허상]용천제팔검";
+			}
+			else if(@lst == 3)
+			{
+				set @pos, list2(@choose, 0, 1, "어떤 무기를 각성할건가?", "[허상]용랑제칠봉", "[허상]용랑제팔봉");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS02;
+
+				setarray @success$[1], "[허상]용랑제팔봉", "[허상]용랑제구봉";
+				setarray @failed$[1], "없어요", "없어요", "없어요";
+				setarray @check$[1], "[허상]용랑제칠봉", "[허상]용랑제팔봉";
+			}
+			else if(@lst == 4)
+			{
+				set @pos, list2(@choose, 0, 1, "어떤 무기를 각성할건가?", "[허상]용겸제칠봉", "[허상]용겸제팔봉");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS02;
+
+				setarray @success$[1], "[허상]용겸제팔봉", "[허상]용겸제구봉";
+				setarray @failed$[1], "없어요", "없어요", "없어요";
+				setarray @check$[1], "[허상]용겸제칠봉", "[허상]용겸제팔봉";
+			}
+		}
+		setarray @rand[1], 50, 30;
+		if(countitem(name2itemid("추억윤도")) == 0 || countitem(name2itemid("은나무가지")) == 0 || countitem(name2itemid(@check$[@choose])) == 0 || get_purehp(@sd) < 1000)
+		{
+			set @pos, dialog(0, 0, 0, "자네는 아직 허상용무기를 각성시킬 준비가 모자라군.");
+		}
+		else
+		{
+			if(rand(1, 100) <= @rand[@choose])
+			{
+				broadcast 5, get_name(@sd) + "님이 " + @check$[@choose] + " 강화에 성공하셨습니다.";
+				delitem @sd, name2itemid("추억윤도"), 1;
+				delitem @sd, name2itemid("은나무가지"), 1;
+				delitem @sd, name2itemid(@check$[@choose]), 1;
+				message @sd, 3, "추억윤도 주었습니다";
+				message @sd, 3, "은나무가지 주었습니다";
+				message @sd, 3, @check$[@choose] + " 주었습니다";
+				additem @sd, name2itemid(@success$[@choose]), 1;
+				set_hp @sd, get_maxhp(@sd);
+				set @pos, dialog(0, 0, 1, "축하하네. 하늘이 자네를 " + @success$[@choose] + "의 주인으로 인정하는군");
+			}
+			else
+			{
+				broadcast 5, get_name(@sd) + "님이 " + @check$[@choose] + " 강화에 실패하셨습니다.";
+				delitem @sd, name2itemid("추억윤도"), 1;
+				delitem @sd, name2itemid("은나무가지"), 1;
+				delitem @sd, name2itemid(@check$[@choose]), 1;
+				message @sd, 3, "추억윤도 주었습니다";
+				message @sd, 3, "은나무가지 주었습니다";
+				message @sd, 3, @check$[@choose] + " 주었습니다";
+				if(name2itemid(@failed$[@choose]) > 0) { additem @sd, name2itemid(@failed$[@choose]), 1; }
+				set_hp @sd, get_maxhp(@sd);
+				set @pos, dialog(0, 0, 0, "이런.. 용무기가 온도를 이기지 못하고 부숴저 버렸군..");
+			}
+		}
+		deletearray @success$[1], getarraysize(@success$);
+		deletearray @failed$[1], getarraysize(@failed$);
+		deletearray @check$[1], getarraysize(@check$);
+		deletearray @rand[1], getarraysize(@rand);
+	}
+}
+
+기간제	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "기간제 아이템입니다 황금이 필요합니다 .", "기간제용마제칠검(3일)황금300개", "기간제용천제칠검(3일)황금300개", "기간제용랑제칠봉(3일)황금300개", "기간제용겸제칠봉(3일)황금300개");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "황금 300개로 기간제용마상자를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "황금"; set @additem$, "기간제용마상자"; }
+		if(countitem(name2itemid(@needitem$)) < 299)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "황금300개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 300;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 300개로 기간제용천상자를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "기간제용천상자"; }
+		if(countitem(name2itemid(@needitem$)) < 299)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "황금300개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 300;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 300개로 기간제용랑상자를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "기간제용랑상자"; }
+		if(countitem(name2itemid(@needitem$)) < 299)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "황금300개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 300;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list2, 0, 1, "황금 300개로 기간제용겸상자를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list2 == 1) { set @needitem$, "황금"; set @additem$, "기간제용겸상자"; }
+		if(countitem(name2itemid(@needitem$)) < 299)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "황금300개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 300;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+}

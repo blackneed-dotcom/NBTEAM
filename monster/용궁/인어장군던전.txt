@@ -1,0 +1,11 @@
+@고양이인어	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("인어의심장"), 1;
+}
+
+@이쁘니인어	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("인어의심장"), 1;
+}
+
+@인어의포박	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 4, 3, 8, 141, rand(25000, 35000), 0, "인어의포박", "-1";
+}

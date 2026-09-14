@@ -1,0 +1,12 @@
+@인화늑대인간	{
+	callfunc "DROPITEM", objid(), 120, 30, name2itemid("늑대의송곳니"), 1;
+}
+
+@수화늑대인간	{
+	callfunc "DROPITEM", objid(), 120, 10, name2itemid("낭아투구"), 1;
+	callfunc "DROPITEM", objid(), 120, 30, name2itemid("늑대의송곳니"), 1;
+}
+
+@만월늑대인간	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("낭아극쇄검"), 1;
+}

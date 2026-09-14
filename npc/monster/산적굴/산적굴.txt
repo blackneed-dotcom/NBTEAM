@@ -1,0 +1,23 @@
+@청비	{
+	callfunc "DROPITEM", objid(), 250, 10, name2itemid("초록시약"), 1;
+}
+
+@적비	{
+	callfunc "DROPITEM", objid(), 300, 10, name2itemid("갈색시약"), 1;
+}
+
+@흑비	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("갈색시약"), 1;
+}
+
+@겁살수	{
+	callfunc "DROPITEM", objid(), 300, 10, name2itemid("갈색시약"), 1;
+}
+
+@겁살파수	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("일월대도"), 1;
+}
+
+@겁살파수꾼	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("도깨비방망이"), 1;
+}

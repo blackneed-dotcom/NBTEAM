@@ -1,0 +1,66 @@
+@아수라공격	{
+	if(rand(1, 2) == 1)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 149, rand(2000000, 3000000), 2, "수라진파", 10, "수라진파!!";
+	}
+	else
+	{
+		callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 3, -1, 8, 139, rand(2000000, 3000000), 2, "수라파", "수라파!!";
+	}
+}
+
+@아수라수하	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand <= 2)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", @id, 10, 2, -1, 107, 181, rand(130000, 150000), 2, "혼령지폭", 15, "-1";
+	}
+}
+
+@아수라검수하	{
+	callfunc "MONSTER_ATTACKS", 0, 10, 181, 115, 500000, 910000, "지옥안개", 3;
+}
+
+@아수라수하도	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand <= 8)
+	{
+	callfunc "MONSTER_FRONT_ATTACK", @id, 10, 8, -1, 164, 31, rand(7500000, 8500000), 0, "지옥개뜯기", "-1";
+	}
+}
+
+@아수라수하개	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand <= 8)
+	{
+	callfunc "MONSTER_FRONT_ATTACK", @id, 10, 8, -1, 164, 31, rand(7500000, 8500000), 0, "지옥개뜯기", "-1";
+	}
+}
+
+@아수라투구	{
+	set @id, objid();
+	if(rand(1, 30) <= 15)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, "아수라: 내가 이정도로 죽을것 같으냐!!";
+		set_mobhp @id, get_mobhp(@id)+100000000;
+		effect @id, 185;
+		sound @id, 8;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+	say @id, 0, "아수라: 으윽....";
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("아수라심장"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("아수라뿔"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("아수라눈"), 1;
+}
+
+@아수라보석	{
+	callfunc "DROPITEM", objid(), 1000, 10, name2itemid("아수라보석"), 1;
+}

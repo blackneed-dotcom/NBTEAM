@@ -1,0 +1,30 @@
+@흑혈후	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("후의뼈"), 1;
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("황호박단추"), 1;
+}
+
+@녹혈후	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("후의뼈"), 1;
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("황호박단추"), 1;
+}
+
+@흑선문후	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("후의뼈"), 1;
+}
+
+@녹선문후	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("후의뼈"), 1;
+}
+
+@흡혈비후	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("후의뼈"), 1;
+}
+
+@마계천신	{
+	callfunc "DROPITEM2", objid(), 100, 80, name2itemid("마계천신의뼈"), 1; 
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("동지패"), 1;
+}
+
+@나락혈풍	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 8, 139, rand(15000, 20000), 0, "나락혈풍", "-1";
+}

@@ -1,0 +1,23 @@
+@이가닌자'병	{
+
+	callfunc "DROPITEM", objid(), 20, 3, name2itemid("검조각"), 1;
+	callfunc "DROPITEM", objid(), 50, 5, name2itemid("홍옥"), 1;
+}
+
+@이가닌자'화	{
+	callfunc "DROPITEM", objid(), 20, 3, name2itemid("이가닌자의보패"), 1;
+}
+
+@이가닌자'마	{
+	callfunc "DROPITEM", objid(), 20, 3, name2itemid("이가닌자의독"), 1;
+	callfunc "DROPITEM", objid(), 50, 2, name2itemid("홍옥"), 1;
+}
+
+@이가닌자'영	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("흑룡철심"), 1;
+}
+
+@이가닌자'수	{
+	callfunc "DROPITEM", objid(), 20, 3, name2itemid("수리검"), 1;
+	callfunc "DROPITEM", objid(), 50, 5, name2itemid("홍옥"), 1;
+}

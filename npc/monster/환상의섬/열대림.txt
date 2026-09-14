@@ -1,0 +1,12 @@
+@식인종전사	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("노회"), 1;
+}
+
+@식인종추장후계자	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("향료가루"), 1;
+	callfunc "DROPITEM2", objid(), 100, 10, name2itemid("선장의일기8"), 1;
+}
+
+@식인종추장	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("번개의토템"), 1;
+}

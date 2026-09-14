@@ -1,0 +1,8 @@
+const fs=require('fs');
+const {png}=require('../BaramEntry/extract.cjs');
+const base='RootDesk/MyDesk/BaramCharacter/Source/';
+function frame(kind,index,paletteIndex=0){const b=fs.readFileSync(base+kind+'.EPF'),pal=fs.readFileSync(base+kind+'.PAL');const table=12+b.readUInt32LE(8),p=table+index*16,top=b.readInt16LE(p),left=b.readInt16LE(p+2),h=b.readInt16LE(p+4)-top,w=b.readInt16LE(p+6)-left,start=b.readUInt32LE(p+8);const blocks=[];for(let i=0;i<pal.length-9;i++)if(pal.subarray(i,i+9).toString()==='DLPalette')blocks.push(i);const block=blocks[paletteIndex],colors=block+32+pal.readUInt32LE(block+24)*2;const out=Buffer.alloc(w*h*4);for(let i=0;i<w*h;i++){const n=b[12+start+i],j=colors+n*4;out.set([pal[j],pal[j+1],pal[j+2],n?255:0],i*4);}return {w,h,left,top,rgba:out,blocks};}
+function sheet(kind,start,step,count,file){const cw=60,ch=65,cols=10,rows=Math.ceil(count/cols),out=Buffer.alloc(cols*cw*rows*ch*4);for(let y=0;y<rows*ch;y++)for(let x=0;x<cols*cw;x++){let p=(y*cols*cw+x)*4;out.set([65,65,65,255],p);}for(let i=0;i<count;i++){const f=frame(kind,start+i*step);for(let y=0;y<f.h;y++)for(let x=0;x<f.w;x++){const dx=i%cols*cw+30+f.left+x,dy=Math.floor(i/cols)*ch+50+f.top+y;if(dx<0||dy<0||dx>=cols*cw||dy>=rows*ch)continue;const s=(y*f.w+x)*4;if(f.rgba[s+3])f.rgba.copy(out,(dy*cols*cw+dx)*4,s,s+4);}}fs.writeFileSync(file,png(cols*cw,rows*ch,out));}
+fs.mkdirSync('Docs/BaramAppearance',{recursive:true});
+if(require.main===module){sheet('BODY',0,12,100,'Docs/BaramAppearance/body-12.png');sheet('Head',0,12,100,'Docs/BaramAppearance/head-12.png');console.log('palette blocks',frame('BODY',0).blocks,frame('Head',0).blocks);}
+module.exports={frame,sheet,png};

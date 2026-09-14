@@ -1,0 +1,11 @@
+@외눈녹천구	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("적호박단추"), 1;
+}
+
+@외눈황천구	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("적호박단추"), 1;
+}
+
+@불의천신	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("동천패"), 1;
+}

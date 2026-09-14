@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "directory://792aec1565d047ad8088a883a9f2ca7d",
+  "ContentType": "x-mod/directory",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "entry_id": "directory://792aec1565d047ad8088a883a9f2ca7d",
+      "name": "StatusDigits",
+      "lock": false,
+      "folding": false,
+      "nameEditable": true
+    }
+  }
+}

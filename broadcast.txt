@@ -1,0 +1,89 @@
+FUNC_BROADCAST	{
+	set @r, rand(1, 7);
+	if(@r == 1) { announce 5, "과도한 게임은 건강에 해를 끼칠 수 있습니다."; }
+	else if(@r == 2) { announce 5, "도움말을 보시려면 /? 를 대화창에 써주세요."; }
+	else if(@r == 3) { announce 5, "업데이트 게시판 공지사항 매일매일 필독!."; }
+	else if(@r == 4) { announce 5, "운영자 아이디는 (마스터, 환영)입니다."; }
+	else if(@r == 5) { announce 5, "현재 경험치 배율은 " + #server_exprate + "배 입니다"; }
+	else { announce 5, "현금거래 적발시 (아이디) 제재 대상입니다."; }
+	return;
+}
+FUNC_SERVERBROAD	{
+	setarray @broad$[1], #BROAD_TEXT_01$, #BROAD_TEXT_02$, #BROAD_TEXT_03$, #BROAD_TEXT_04$, #BROAD_TEXT_05$, #BROAD_TEXT_06$, #BROAD_TEXT_07$, #BROAD_TEXT_08$, #BROAD_TEXT_09$, #BROAD_TEXT_10$;
+	for(set @i, 1; @i < 11; set @i, @i+1)
+		if(@broad$[@i] != "") set @len, @len+1;
+	if(@len > 0)
+	{
+		set @r, rand(1,@len);
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+		if(@broad$[@r] == "")
+			set @r, @r+1;
+		else
+		{
+			announce 5, @broad$[@r];
+			end; 
+		}
+	}
+}

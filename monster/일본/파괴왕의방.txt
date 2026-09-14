@@ -1,0 +1,9 @@
+@ÆÄ±«¿Õ	{
+	npcspawn 1842, 14, 3, 2, 93, "ÆÄ±«¿Õ";
+	say objid(), 0, "ÆÄ±«¿Õ: Å©À¸À¹..";
+	callfunc "DROPITEM", objid(), 200, 20, name2itemid("¼ø¼öÀÇ°­Ã¶"), 1;
+}
+
+@Æø·æ¼ÒÈ¯	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 8, 118, rand(250000, 400000), 2, "Æø·æ¼ÒÈ¯", 10, "Æø·æ¼ÒÈ¯!";
+}

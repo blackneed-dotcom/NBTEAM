@@ -1,0 +1,794 @@
+//------	마탑
+
+@마력의주인	{
+	callfunc "MONSTER_ATTACK_MULTI", 2, 10, 182, 113, 150000, 200000, "마력파!!", 2;
+}
+@주작주	{
+	callfunc "MONSTER_ATTACK", 0, 10, 81, 20, 100000, 120000, "주작주", 3;
+}
+@백호주	{
+	callfunc "MONSTER_ATTACK", 0, 10, 82, 20, 100000, 120000, "백호주", 3;
+}
+@현무주	{
+	callfunc "MONSTER_ATTACK", 0, 10, 80, 20, 100000, 120000, "현무주", 3;
+}
+@청룡주	{
+	callfunc "MONSTER_ATTACK", 0, 10, 83, 20, 100000, 120000, "청룡주", 3;
+}
+@마력의저주	{
+	callfunc "MONSTER_ATTACK_MULTI", 2, 10, 79, 7, 130000, 150000, "마력의저주!!", 2;
+}
+@마력의검	{
+	callfunc "MONSTER_ATTACK_MULTI", 2, 10, 32, 9, 130000, 150000, "마력의검!", 2;
+}
+
+//------	빙룡
+@빙룡의일격	{
+	callfunc "MONSTER_ATTACK", 0, 10, 169, 8, 50000, 60000, "빙룡의일격", 3;
+}
+@빙룡폭풍	{
+	callfunc "MONSTER_ATTACK_MULTI", 2, 100, 60, 72, 150000, 200000, "용의외침!", 10;
+}
+
+
+------차우
+@옥화	{
+	callfunc "MONSTER_ATTACK", 0, 10, 74, 8, 20000, 30000, "옥화", 3;
+}
+@금촉	{
+	callfunc "MONSTER_ATTACK", 0, 10, 78, 8, 20000, 30000, "금촉", 3;
+}
+@팔한빙우	{
+	callfunc "MONSTER_ATTACK_MULTI", 2, 10, 151, 8, 1100000, 1200000, "팔한빙우!", 7;
+}
+@일취악사	{
+	callfunc "MONSTER_ATTACK", 0, 10, 84, 8, 600000, 600001, "일취악사", 5;
+}
+
+///////////////////
+
+추가몹 사망
+//------	마력의탑
+
+@저주받은무녀	{
+	callfunc "DROPITEMS", 10, "진호박",3;
+}
+@저주받은무사	{
+	callfunc "DROPITEMS", 10, "진호박",3;
+}
+@마력귀	{
+	callfunc "DROPITEMS", 10, "진호박",3;
+}
+@마력의백호	{
+	callfunc "DROPITEMS", 10, "청호박",5;
+}
+@마력의주작	{
+	callfunc "DROPITEMS", 10, "청호박",5;
+}
+@마력의현무	{
+	callfunc "DROPITEMS", 10, "청호박",5;
+}
+@마력의청룡	{
+	callfunc "DROPITEMS", 10, "청호박",5;
+}
+@마력의괴물	{
+	callfunc "DROPITEMS", 10, "청호박보석",1;
+	callfunc "DROPITEMS", 10, "소원석의거울",0;
+	callfunc "DROPITEMS", 10, "해골목걸이",1;
+	callfunc "DROPITEMS", 5, "흑옥석",0;
+}
+---------------------------------------------------------
+@구룡	{
+	callfunc "DROPITEMS", 10, "적호박",3;
+	callfunc "DROPITEMS", 30, "얼음",0;
+}
+@신룡	{
+	callfunc "DROPITEMS", 10, "적호박",3;
+	callfunc "DROPITEMS", 30, "얼음",0;
+}
+@빙룡신	{
+	callfunc "DROPITEMS", 20, "진호박",10;
+	callfunc "DROPITEMS", 20, "적호박보석",1;
+	callfunc "DROPITEMS", 20, "흑옥석",0;
+}
+
+//------	해저터널
+@해저터널들쥐	{
+	callfunc "DROPITEMS", 10, "진호박",10;
+}
+@해저터널왕쥐	{
+	callfunc "DROPITEMS", 10, "진호박",10;
+}
+
+//----------------	석동악굴
+@석동수하	{
+	callfunc "DROPITEMS", 25, "금강석조각",1;
+}
+@구지모악녀	{
+	callfunc "DROPITEMS", 25, "금강석조각",1;
+}
+@미쳐진사육군	{
+	callfunc "DROPITEMS", 25, "금강석조각",1;
+}
+@버림받은후레뱀	{
+	callfunc "DROPITEMS", 25, "금강석조각",1;
+}
+@석동	{
+	callfunc "DROPITEMS", 7, "불의옥",1;
+	callfunc "DROPITEMS", 7, "구름의옥",1;
+	callfunc "DROPITEMS", 7, "물의옥",1;
+	callfunc "DROPITEMS", 7, "산의옥",1;
+}
+
+@영령사망	{
+	set @id, objid();
+	set @rand, rand(1, 100);
+	if(@rand <= 70)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": 크르르..";
+		set_mobhp @id, get_mobhp(@id)+300000000;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, get_mobname(@id) + ": !!!.....크르르르";
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("정화의영혼조각"), 1;
+}
+
+
+
+@주작영령공격	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*5; }
+
+	if(rand(1, 10) <= 4)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 81, rand(2000000, 2500000), 1, "주작폭풍", 30, "-1";
+		say @id, 2, get_mobname(@id) + ": 크르르르...";
+	}
+	if(rand(1, 10) <= 5)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 8, rand(4000000, 5000000), 0, "헬파이어", -1;
+	say @id, 2, get_mobname(@id) + ": 헬파이어..!";
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 25;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 3)
+	{
+			set @type, istype(@target_id);
+				
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @id, 1;
+					break;
+				}
+				if(!canmove(@id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y) ) { goto LOOP; }
+			}
+LOOP:
+			if(@i != 4) 
+			{
+				set_xy @id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y;
+				updateobject @id;
+				effect @id, 16;
+				sound @id, 29;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+
+
+@현무영령공격	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*5; }
+
+	if(rand(1, 10) <= 4)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 80, rand(2000000, 2500000), 1, "현무폭풍", 30, "-1";
+		say @id, 2, get_mobname(@id) + ": 크르르르...";
+	}
+	if(rand(1, 10) <= 5)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 114, rand(4000000, 5000000), 0, "모래폭풍", -1;
+	say @id, 2, get_mobname(@id) + ": 폭풍..!!";
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 25;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 3)
+	{
+			set @type, istype(@target_id);
+				
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @id, 1;
+					break;
+				}
+				if(!canmove(@id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y) ) { goto LOOP; }
+			}
+LOOP:
+			if(@i != 4) 
+			{
+				set_xy @id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y;
+				updateobject @id;
+				effect @id, 16;
+				sound @id, 29;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+
+@백호영령공격	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*5; }
+
+	if(rand(1, 10) <= 4)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 82, rand(2000000, 2500000), 1, "백호의혼", 30, "-1";
+		say @id, 2, get_mobname(@id) + ": 크르르르...";
+	}
+	if(rand(1, 10) <= 5)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 150, rand(4000000, 5000000), 0, "헬파이어", -1;
+	say @id, 2, get_mobname(@id) + ": 크르르..!";
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 84;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 25;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 3)
+	{
+			set @type, istype(@target_id);
+				
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @id, 1;
+					break;
+				}
+				if(!canmove(@id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y) ) { goto LOOP; }
+			}
+LOOP:
+			if(@i != 4) 
+			{
+				set_xy @id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y;
+				updateobject @id;
+				effect @id, 16;
+				sound @id, 29;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+
+@청룡영령공격	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*5; }
+
+	if(rand(1, 10) <= 4)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 83, rand(2000000, 2500000), 1, "청룡의혼", 30, "-1";
+		say @id, 2, get_mobname(@id) + ": 크르르르...";
+	}
+	if(rand(1, 10) <= 5)
+	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 178, rand(4000000, 5000000), 0, "청룡장", -1;
+	say @id, 2, get_mobname(@id) + ": 용의혼..!!";
+	}
+	if(rand(1, 10) <= 8)
+	{
+			set @target_id, get_mobtarget(@id);
+			set @target_sd, id2sd(@target_id);
+			if(@target_sd > 0)
+			{
+				if(!spellaethered(@target_sd, name2spellid("절망")))
+				{
+					if(get_equipitem_name(@target_sd, 6) == "시력회복의귀걸이" || get_equipitem_name(@target_sd, 7) == "시력회복의귀걸이" || spellaethered(@target_sd, name2spellid("정화의눈")) == 1) { end; }
+
+					set_siya @target_sd, 1, 0;
+					effect @target_id, 14;
+					sound @target_id, 71;
+					spellaether @target_sd, name2spellid("절망"), 25;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 3)
+	{
+			set @type, istype(@target_id);
+				
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @id, 1;
+					break;
+				}
+				if(!canmove(@id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y) ) { goto LOOP; }
+			}
+LOOP:
+			if(@i != 4) 
+			{
+				set_xy @id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y;
+				updateobject @id;
+				effect @id, 16;
+				sound @id, 29;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+
+@죽음의손짓	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($check_spell_type != 2)
+	{
+		for(set @i, 0; @i < 52; set @i, @i+1)
+		{
+			if(checkspell(name2spellid("죽음의손짓")) == @i) { delspell @i; }
+		}
+		callfunc "GMSendMail", "* 마법 배우기 악용자를 발견했습니다.", "죽음의손짓";
+		end;
+	}
+
+	callfunc "SPELL_MOMENT";
+	callfunc "MANA_DELAY", 7000, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-7000;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(ismapoption(@target_sd, 6) && @target_sd != @sd && get_state(@target_sd) != 1)
+			{
+				if(spellaethered(@target_sd, name2spellid("죽음의손짓")) == 0)
+				{
+					effect @target_id, 146;
+					sound @target_id, 8;
+
+					set_ac @target_sd, get_ac(@target_sd)+5;
+
+					spellaether @target_sd, name2spellid("죽음의손짓"), 6;
+					message @target_sd, 3, get_name(@sd) + "님이 죽음의손짓을 시전하였습니다.";
+				}
+				else
+				{
+					message @sd, 3, "이미 걸려있습니다.";
+					end;
+				}
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(mobspellaethered(@target_id, name2spellid("몹죽음의손짓")) == 0)
+			{
+				effect @target_id, 146;
+				sound @target_id, 8;
+
+				set_mobac @target_id, get_mobac(@target_id)+5;
+
+				mobspellaether @target_id, name2spellid("몹죽음의손짓"), 6;
+			}
+		}
+		else
+		{
+			message @sd, 3, "걸리지 않습니다.";
+		}
+
+		action @id, 6, 30, 0;
+
+		spelldelay @sd, name2spellid("죽음의손짓"), 40;
+		message @sd, 3, "죽음의손짓을 시전하였습니다.";
+	}
+	else end;
+	end;
+}
+
+@죽음의손짓지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("죽음의손짓")) == 0) end;
+
+	effect @id, 146;
+}
+
+@몹죽음의손짓지속	{
+	set @id, objid();
+
+	effect @id, 146;
+}
+
+@죽음의손짓해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-5;
+	message @sd, 3, "죽음의손짓 해제.";
+}
+
+@몹죽음의손짓해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-5;
+}
+
+@마기금성술	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($check_spell_type != 2)
+	{
+		for(set @i, 0; @i < 52; set @i, @i+1)
+		{
+			if(checkspell(name2spellid("마기금성술")) == @i) { delspell @i; }
+		}
+		callfunc "GMSendMail", "* 마법 배우기 악용자를 발견했습니다.", "마기금성술";
+		end;
+	}
+
+	callfunc "SPELL_MOMENT";
+	callfunc "MANA_DELAY", 60000, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-60000;
+
+	if(get_job(@sd) != 3) end;
+
+	set @target_id, script_target(@sd);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1 && @target_sd != @sd)
+			{
+				if(spellaethered(@target_sd, name2spellid("마기금성술")) == 0)
+				{
+					action @id, 6, 30, 0;
+					effect @target_id, 76;
+					sound @target_id, 10;
+
+					spellaether @target_sd, name2spellid("마기금성술"), 7;
+					spelldelay @sd, name2spellid("마기금성술"), 125;
+
+					if(@target_sd != @sd) { message @target_sd, 3, get_name(@sd) + "님이 마기금성술을 시전하였습니다."; }
+
+					message @sd, 3, "마기금성술을 외웠습니다.";
+					end;
+				}
+				else
+				{
+					message @sd, 3, "이미 걸려있습니다.";
+					end;
+				}
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(mobspellaethered(@target_id, name2spellid("몹마기금성술")) == 0)
+			{
+				action @id, 6, 30, 0;
+				effect @target_id, 76;
+				sound @target_id, 10;
+
+				mobspellaether @target_id, name2spellid("몹마기금성술"), 7;
+				spelldelay @sd, name2spellid("몹마기금성술"), 125;
+
+				message @sd, 3, "마기금성술을 외웠습니다.";
+				end;
+			}
+			else
+			{
+				message @sd, 3, "이미 걸려있습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "걸리지 않습니다.";
+			end;
+		}
+	}
+}
+
+@마기금성술해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	message @sd, 3, "마기금성술 해제.";
+}
+
+
+@피의결계	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @mp, 84000+(get_mp(@sd)/10);
+
+	if($check_spell_type != 3)
+	{
+		for(set @i, 0; @i < 52; set @i, @i+1)
+		{
+			if(checkspell(name2spellid("피의결계")) == @i) { delspell @i; }
+		}
+		callfunc "GMSendMail", "* 마법 배우기 악용자를 발견했습니다.", "피의결계";
+		end;
+	}
+
+	callfunc "SPELL_MOMENT";
+	callfunc "MANA_DELAY", @mp, 0, @sd;
+	//set_mp @sd, get_mp(@sd)-@mp;
+
+	set_hp @sd, get_hp(@sd)/2;
+
+	action @id, 6, 30, 0;
+	sound @id, 510;
+	effect @id, 61;
+	effect @id, 55;
+
+	if(ismapoption(@sd, 6)) { set @delay, 325; }
+	else { set @delay, 150; }
+
+	spelldelay @sd, name2spellid("피의결계"), @delay;
+
+	if(#clan_fight_animal$ != "")
+	{
+		if(get_mapname(@sd) == #clan_fight_animal$ + "의심장")
+		{
+			if(get_x(@id) >= 15 && get_x(@id) <= 25 && get_y(@id) >= 6 && get_y(@id) <= 14)
+			{
+				message @sd, 3, "피의결계 시전에 실패하였습니다.";
+				end;
+			}
+		}
+	}
+
+	if(party(@sd) != 0)
+	{
+		setarray @party$[0], "", "", "", "", "", "", "", "", "", "", "", "", "";
+
+		for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
+		{
+			set @target_sd, party_member(@sd, @loop);
+			if(@target_sd > 0)
+			{
+				set @party$[@loop], get_name(@target_sd);
+			}
+		}
+
+		set @x, get_x(@id);
+		set @y, get_y(@id);
+
+		setarray @x[0], @x-3, @x-2, @x-1, @x+0, @x+1, @x+2, @x+3, @x-3, @x-2, @x-1, @x+0, @x+1, @x+2, @x+3, @x-3, @x-2, @x-1, @x+1, @x+2, @x+3, @x-3, @x-2, @x-1, @x+0, @x+1, @x+2, @x+3, @x-3, @x-2, @x-1, @x+0, @x+1, @x+2, @x-4, @x-3, @x-2, @x-1, @x  , @x+1, @x+2, @x+3, @x+4, @x-4, @x-3, @x-2, @x-1, @x  , @x+1, @x+2, @x+3, @x+4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4; 
+		setarray @y[0], @y-2, @y-2, @y-2, @y-2, @y-2, @y-2, @y-2, @y-1, @y-1, @y-1, @y-1, @y-1, @y-1, @y+0, @y+0, @y+0, @y+0, @y+0, @y+0, @y+0, @y+1, @y+1, @y+1, @y+1, @y+1, @y+1, @y+1, @y+2, @y+2, @y+2, @y+2, @y+2, @y+2, @y-3, @y-3, @y-3, @y-3, @y-3, @y-3, @y-3, @y-3, @y-3, @y+3, @y+3, @y+3, @y+3, @y+3, @y+3, @y+3, @y+3, @y+3, @y-2, @y-1, @y  , @y+1, @y+2, @y-2, @y-1, @y  , @y+1, @y+2;
+
+		for(set @loop, 0; @loop < getarraysize(@x); set @loop, @loop+1)
+		{
+			if(@x[@loop] >= 0 && @x[@loop] <= get_mapwidth(@sd) && @y[@loop] >= 0 && @y[@loop] <= get_mapheight(@sd))
+			{
+				set @target_id, obj_getxy(@x[@loop], @y[@loop]);
+				if(@target_id > 0 && @target_id != @id)
+				{
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+
+						for(set @i, 0; @i < partymax(); set @i, @i+1)
+						{
+							set @party_member, party_member(@sd, @i);
+							if(@party_member > 0 && @party_member != @sd)
+							{
+								if(get_name(@target_sd) == get_name(@party_member))
+								{
+									if(spellaethered(@target_sd, name2spellid("피의결계")) == 0 && spellaethered(@target_sd, name2spellid("금강불체")) == 0)
+									{
+										if(spellaethered(@target_sd, name2spellid("폭설")) == 1 ||
+										spellaethered(@target_sd, name2spellid("폭염")) == 1 ||
+										spellaethered(@target_sd, name2spellid("뇌전운무")) == 1 ||
+										spellaethered(@target_sd, name2spellid("무간지옥")) == 1 ||
+										spellaethered(@target_sd, name2spellid("대지진")) == 1 ||
+										spellaethered(@target_sd, name2spellid("텔레포트")) == 1 ||
+										spellaethered(@target_sd, name2spellid("발도")) == 1) { continue; }
+
+										effect @target_id, 55;
+
+										set_damstate @target_sd, 2;
+										spellaether @target_sd, name2spellid("피의결계"), 5;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		set_damstate @sd, 2;
+		spellaether @sd, name2spellid("피의결계"), 5;
+
+		deletearray @party$[0], getarraysize(@party$);
+	}
+	else
+	{
+		set_damstate @sd, 2;
+		spellaether @sd, name2spellid("피의결계"), 5;
+	}
+
+	message @sd, 3, "피의결계를 외웠습니다.";
+}
+
+@피의결계해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_damstate @sd, 0;
+	message @sd, 3, "피의결계 해제.";
+}

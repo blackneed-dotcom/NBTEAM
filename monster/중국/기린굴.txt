@@ -1,0 +1,21 @@
+@염구	{
+	callfunc "DROPITEM", objid(), 40, 1, name2itemid("기린의피"), 1;
+}
+
+@용고	{
+	callfunc "DROPITEM", objid(), 1000, 10, name2itemid("남도"), 1;
+}
+
+@각단	{
+	callfunc "DROPITEM", objid(), 1000, 12, name2itemid("남도"), 1;
+}
+
+@흑마기린	{
+	callfunc "DROPITEM2", objid(), 1000, 15, name2itemid("남도"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("회색구슬조각"), 1;
+}
+
+@기린염왕	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("남도"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("청색보주"), 1;
+}

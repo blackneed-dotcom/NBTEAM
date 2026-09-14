@@ -1,0 +1,1816 @@
+@반짝반짝_바닥	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_mapname(@sd) == "달맞이다리")
+	{
+		if(get_equipitem_name(@sd, 1) == "남자설빔" || get_equipitem_name(@sd, 1) == "여자설빔") { spellaether @sd, name2spellid("반짝반짝"), 180; }
+	}
+	else if(get_mapname(@sd) == "길림성")
+	{
+		set @pos, list1("몸을 씻으시겠습니까?", "네. 씻을래요.", "아니오.");
+		if(@pos == 0) end;
+
+		else if(@pos == 1)
+		{
+			spellaether @sd, name2spellid("반짝반짝"), 300;
+			addlegend @sd, 6, 7, 0, 16, "길림 폭포에서 목욕을 하다.";
+		}
+		else end;
+	}
+}
+
+
+@진원관선택	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @ti, party_member(@sd,@i);
+			if(@ts > 0)
+			{
+				set @ts, id2sd(@ts);
+				set @count, @count+1;
+
+				if(get_mapid(@sd) != get_mapid(@ts))
+				{
+					dialog 0,0,1, "일행이 모두 한곳에 있어야합니다.";
+					end;
+				}
+				if(@count > 5)
+				{
+					dialog 0,0,1, "일행은 5명이하만 입장 가능합니다.";
+					end;
+				}
+			}
+		}		
+	}
+	set @pos, list2(@list, 0, 0, "어디로 가시겠어요?", "진원관1지입장", "진원관2지입장", "진원관3지입장");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	callfunc "LViiii", 5, 12167, 8, 11, 38, 38, "진원관1지";
+	}
+	else if(@list == 2)
+	{
+	callfunc "LViiii", 5, 12267, 8, 11, 38, 38, "진원관2지";
+	}
+	else if(@list == 3)
+	{
+	callfunc "LViiii", 5, 12367, 8, 11, 38, 38, "진원관3지";
+	}
+}
+
+@진원관입구	{
+	set @id, myid();
+	set @sd, mysd();
+	
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @ts, party_member(@sd,@i);
+			if(@ti > 0)
+			{
+				if(@i == 0)
+				{
+					if(checkitem(@ts,name2itemid("노란비서")) == 0)
+					{
+						dialog 0,0,1, "파티장은 노란비서를 가지고 있어야합니다.";
+						end;
+					}
+				}
+				set @job, get_job(@ts);
+				set @count, @count+1;
+
+				if(@job == 1 || @job == 2) { set @maxhp, 3500000; set @maxmp, 500000; }
+				else if(@job == 3 || @job == 4) { set @maxhp, 1800000; set @maxmp, 2200000; }
+				else	
+				{
+					dialog 0,0,1, "일행 중 평민이 있습니다.";
+					end;
+				}
+				if(get_mapid(@sd) != get_mapid(@ts))
+				{
+					dialog 0,0,1, "일행이 모두 한곳에 있어야합니다.";
+					end;
+				}
+				if(@count > 5)
+				{
+					dialog 0,0,1, "일행은 5명이하만 입장 가능합니다.";
+					end;
+				}
+				if(get_purehp(@ts) < @maxhp || get_puremp(@ts) < @maxmp)
+				{
+					dialog 0,0,1, "일행 중 체력,마력 조건이 되지 않는 일행이 있습니다.";
+					dialog 0,0,1, "[격수]: 체력 350만, 마력 50만 이상부터 입장하실 수 있습니다.";
+					dialog 0,0,1, "[비격수]: 체력 180만, 마력 220만 이상부터 입장하실 수 있습니다.";
+					end;
+				}
+
+			}
+		}
+		for(set @i, 0; @i < @count; set @i, @i+1)
+		{
+
+			set @ts, party_member(@sd,@i);
+			if(@ts > 0)
+			warp @ts, name2mapid("국내진원관1"), rand(9, 12), 14;
+		}					
+	}
+	else
+	{
+		if(get_job(@sd) == 1 || get_job(@sd) == 2)
+		{
+			if(get_purehp(@sd) >= 3500000 && get_puremp(@sd) >=500000)
+			{
+				if(name2mapid("진원관대기실") > 0) { warp @sd, name2mapid("진원관대기실"), rand(9, 12), 14; end; }
+			}
+			else
+			{
+				message @sd, 5, "[알림]: 체력 350만, 마력 50만 이상부터 입장하실 수 있습니다.";
+				warp @sd, get_mapid(@sd), get_x(@id)-2, get_y(@id);
+				end;
+			}
+		}
+		else if(get_job(@sd) == 3 || get_job(@sd) == 4)
+		{
+			if(get_purehp(@sd) >= 1800000 && get_puremp(@sd) >= 2200000)
+			{
+				if(name2mapid("진원관대기실") > 0) { warp @sd, name2mapid("진원관대기실"), rand(9, 12), 14; end; }
+			}
+			else
+			{
+				message @sd, 5, "[알림]: 체력 180만, 마력 220만 이상부터 입장하실 수 있습니다.";
+				warp @sd, get_mapid(@sd), get_x(@id)-2, get_y(@id);
+				end;
+			}
+		}
+		else
+		{
+			warp @sd, get_mapid(@sd), get_x(@id)-2, get_y(@id);
+			message @sd, 3, "감히 들어갈 수 없습니다.";		
+			end;
+		}
+	}
+}
+
+
+
+@옥좌	{
+	set @sd, mysd();
+	set @id, myid();
+
+	message @sd, 4, "[알림] 옥좌를 점령하였습니다.";
+	spellaether @sd, name2spellid("옥좌점령"), 310;
+}
+
+@3차승급주작	{
+	image 0, 0, 0;
+	set @sd, mysd();
+	set @id, myid();
+	if(get_totem(@sd) == 0 && countitem(name2itemid("승급의서장")) > 0)
+	{
+		if(countitem(name2itemid("구름의옥")) > 0) { delitem @sd, name2itemid("구름의옥"), 1; message @sd, 3, "구름의옥 주었습니다"; additem @sd, name2itemid("동문열쇠"), 1; }
+		if(countitem(name2itemid("물의옥")) > 0) { delitem @sd, name2itemid("물의옥"), 1; message @sd, 3, "물의옥 주었습니다"; additem @sd, name2itemid("서문열쇠"), 1; }
+		if(countitem(name2itemid("불의옥")) > 0) { delitem @sd, name2itemid("불의옥"), 1; message @sd, 3, "불의옥 주었습니다"; additem @sd, name2itemid("고대마법서'하"), 1; }
+		if(countitem(name2itemid("산의옥")) > 0) { delitem @sd, name2itemid("산의옥"), 1; message @sd, 3, "산의옥 주었습니다"; additem @sd, name2itemid("고대마법서'상"), 1; }
+		if(countitem(name2itemid("고대마법서'상")) > 0 && countitem(name2itemid("고대마법서'하")) > 0) { set $thirdclass, 2; set @pos, dialog(0, 0, 1, "이제 모든 조건이 가춰졌으니 천성현에게 가져가세요."); }
+	}
+}
+
+@3차승급백호	{
+	image 0, 0, 0;
+	set @sd, mysd();
+	set @id, myid();
+	if(get_totem(@sd) == 1 && countitem(name2itemid("승급의서장")) > 0)
+	{
+		if(countitem(name2itemid("구름의옥")) > 0) { delitem @sd, name2itemid("구름의옥"), 1; message @sd, 3, "구름의옥 주었습니다"; additem @sd, name2itemid("동문열쇠"), 1; }
+		if(countitem(name2itemid("물의옥")) > 0) { delitem @sd, name2itemid("물의옥"), 1; message @sd, 3, "물의옥 주었습니다"; additem @sd, name2itemid("서문열쇠"), 1; }
+		if(countitem(name2itemid("불의옥")) > 0) { delitem @sd, name2itemid("불의옥"), 1; message @sd, 3, "불의옥 주었습니다"; additem @sd, name2itemid("고대마법서'하"), 1; }
+		if(countitem(name2itemid("산의옥")) > 0) { delitem @sd, name2itemid("산의옥"), 1; message @sd, 3, "산의옥 주었습니다"; additem @sd, name2itemid("고대마법서'상"), 1; }
+		if(countitem(name2itemid("고대마법서'상")) > 0 && countitem(name2itemid("고대마법서'하")) > 0) { set $thirdclass, 2; set @pos, dialog(0, 0, 1, "이제 모든 조건이 가춰졌으니 천성현에게 가져가세요."); }
+	}
+}
+
+@3차승급현무	{
+	image 0, 0, 0;
+	set @sd, mysd();
+	set @id, myid();
+	if(get_totem(@sd) == 2 && countitem(name2itemid("승급의서장")) > 0)
+	{
+		if(countitem(name2itemid("구름의옥")) > 0) { delitem @sd, name2itemid("구름의옥"), 1; message @sd, 3, "구름의옥 주었습니다"; additem @sd, name2itemid("동문열쇠"), 1; }
+		if(countitem(name2itemid("물의옥")) > 0) { delitem @sd, name2itemid("물의옥"), 1; message @sd, 3, "물의옥 주었습니다"; additem @sd, name2itemid("서문열쇠"), 1; }
+		if(countitem(name2itemid("불의옥")) > 0) { delitem @sd, name2itemid("불의옥"), 1; message @sd, 3, "불의옥 주었습니다"; additem @sd, name2itemid("고대마법서'하"), 1; }
+		if(countitem(name2itemid("산의옥")) > 0) { delitem @sd, name2itemid("산의옥"), 1; message @sd, 3, "산의옥 주었습니다"; additem @sd, name2itemid("고대마법서'상"), 1; }
+		if(countitem(name2itemid("고대마법서'상")) > 0 && countitem(name2itemid("고대마법서'하")) > 0) { set $thirdclass, 2; set @pos, dialog(0, 0, 1, "이제 모든 조건이 가춰졌으니 천성현에게 가져가세요."); }
+	}
+}
+
+@3차승급청룡	{
+	image 0, 0, 0;
+	set @sd, mysd();
+	set @id, myid();
+	if(get_totem(@sd) == 3 && countitem(name2itemid("승급의서장")) > 0)
+	{
+		if(countitem(name2itemid("구름의옥")) > 0) { delitem @sd, name2itemid("구름의옥"), 1; message @sd, 3, "구름의옥 주었습니다"; additem @sd, name2itemid("동문열쇠"), 1; }
+		if(countitem(name2itemid("물의옥")) > 0) { delitem @sd, name2itemid("물의옥"), 1; message @sd, 3, "물의옥 주었습니다"; additem @sd, name2itemid("서문열쇠"), 1; }
+		if(countitem(name2itemid("불의옥")) > 0) { delitem @sd, name2itemid("불의옥"), 1; message @sd, 3, "불의옥 주었습니다"; additem @sd, name2itemid("고대마법서'하"), 1; }
+		if(countitem(name2itemid("산의옥")) > 0) { delitem @sd, name2itemid("산의옥"), 1; message @sd, 3, "산의옥 주었습니다"; additem @sd, name2itemid("고대마법서'상"), 1; }
+		if(countitem(name2itemid("고대마법서'상")) > 0 && countitem(name2itemid("고대마법서'하")) > 0) { set $thirdclass, 2; set @pos, dialog(0, 0, 1, "이제 모든 조건이 가춰졌으니 천성현에게 가져가세요."); }
+	}
+}
+
+@동태극던전	{
+	set @sd, mysd();
+	set @id, myid();
+	image 0, 0, 0;
+	set @pos, menu("동태극던전으로 가시겠습니까?", "네, 가겠습니다.", "아니오, 안갈래요.");
+	if(@pos == 2) { end; }
+	if(countitem(name2itemid("동문열쇠")) == 0) { set @pos, dialog(0, 0, 1, "동문열쇠가 없으면 들어갈 수 없습니다."); end; }
+	delitem @sd, name2itemid("동문열쇠"), 1;
+	set @pos, dialog(0, 0, 1, "이동하겠습니다.");
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0 && @target_sd != @sd)
+			{
+				if(get_mapid(@sd) == get_mapid(@target_sd))
+				{
+					warp @target_sd, 1772, 13, 13;
+				}
+			}
+		}
+		warp @sd, 1772, 13, 13;
+	}
+	else { warp @sd, 1772, 13, 13; }
+}
+
+@서태극던전	{
+	set @sd, mysd();
+	set @id, myid();
+	image 0, 0, 0;
+	set @pos, menu("서태극던전으로 가시겠습니까?", "네, 가겠습니다.", "아니오, 안갈래요.");
+	if(@pos == 2) { end; }
+	if(countitem(name2itemid("서문열쇠")) == 0) { set @pos, dialog(0, 0, 1, "서문열쇠가 없으면 들어갈 수 없습니다."); end; }
+	delitem @sd, name2itemid("서문열쇠"), 1;
+	set @pos, dialog(0, 0, 1, "이동하겠습니다.");
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0 && @target_sd != @sd)
+			{
+				if(get_mapid(@sd) == get_mapid(@target_sd))
+				{
+					warp @target_sd, 1773, 13, 13;
+				}
+			}
+		}
+		warp @sd, 1773, 13, 13;
+	}
+	else { warp @sd, 1773, 13, 13; }
+}
+
+@본성입구7_1	{
+	callfunc "JAPAN_WARP";
+}
+
+@본성입구7_2	{
+	callfunc "JAPAN_WARP";
+}
+
+@본성입구7_3	{
+	callfunc "JAPAN_WARP";
+}
+
+@본성입구7_4	{
+	callfunc "JAPAN_WARP";
+}
+
+//@소호의방	{
+	callfunc "FOURCLASS_WARP", 1, 2009, rand(11, 18), 28, "소호", "가";
+}
+
+@소호의방	{
+	callfunc "LViiii", 3, 2009, 11, 18, 28, 28, "소호";
+}
+
+//@전욱의방	{
+	callfunc "FOURCLASS_WARP", 2, 2008, rand(12, 17), 2, "전욱", "이";
+}
+
+@전욱의방	{
+	callfunc "LViiii", 3, 2008, 12, 17, 2, 2, "순제";
+}
+
+//@제곡의방	{
+	callfunc "FOURCLASS_WARP", 3, 1964, 2, rand(12, 17), "제곡", "이";
+}
+
+@제곡의방	{
+	callfunc "LViiii", 3, 1964, 2, 2, 17, 17, "제곡";
+}
+
+//@요제의방	{
+	callfunc "FOURCLASS_WARP", 4, 2007, 27, rand(12, 17), "요제", "가";
+}
+
+@요제의방	{
+	callfunc "LViiii", 3, 2007, 27, 27, 12, 12, "요제";
+}
+
+//@순제의방	{
+	callfunc "FOURCLASS_WARP", 5, 2006, rand(12, 17), 27, "순제", "가";
+}
+
+@순제의방	{
+	callfunc "LViiii", 3, 2006, 14, 14, 28, 28, "순제";
+}
+
+@반고의방	{
+	callfunc "FOURCLASS_WARP", 6, 2010, rand(9, 16), 23, "반고", "가";
+}
+
+@반고의방	{
+	callfunc "LViiii", 3, 2010, 9, 16, 23, 23, "반고";
+}
+
+@벼락맞은가지	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 4, 4;
+
+	if(get_state(@sd) != 1)
+	{
+		if(rand(1, 100) <= 80)
+		{
+			if($thunder_tree == 0)
+			{
+COS001:
+				set @pos, dialog(0, 0, 1, "어서오시게, 나는 이 오동나무의 수호신일세.\\n\\n보시는 바와 같이 이 나무는 벼락을 맞았다네. 가슴아픈 일이지...");
+				if(@pos == 0) end;
+COS002:
+				set @pos, dialog(0, 1, 1, "그 대신 벼락을 맞은 나무의 가지는 특별한 쓸모가 있다네...\\n\\n\\n혹시 자네가 이 나무를 소생시킬 수 있는 회복의 샘물을 구해온다면, 나뭇가지 하나 정도는 내어줌세.");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS001;
+COS003:
+				set @pos, dialog(0, 1, 1, "소생천이 있다면, 그 물을 떠오면 될걸세... 행운을 비네...");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto COS002;
+
+				set $thunder_tree, 1;
+				addlegend @sd, 2, 7, 0, 4, "회복의 샘물을 구하러....";
+			}
+			else if($thunder_tree == 1)
+			{
+				if(countitem(name2itemid("회복의샘물")) > 0)
+				{
+					set @pos, dialog(0, 0, 1, "고맙네. 아주 시원한 물일세...\\n약속한대로 여기 가지 하나를 내어줌세. 요긴하게 쓰게나...");
+					if(@pos == 0) end;
+
+					delitem @sd, name2itemid("회복의샘물"), 1;
+					message @sd, 3, "회복의샘물 주었습니다.";
+					additem @sd, name2itemid("벼락나뭇가지"), 1;
+					set $thunder_tree, 2;
+					addlegend @sd, 2, 7, 0, 4, "회복의 샘물을 수호신에게 가져다 주었다.";
+				}
+			}
+			else end;
+		}
+	}
+}
+
+@소생천물뜨기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if(get_state(@sd) != 1)
+	{
+		if(countitem(name2itemid("물병")) > 0)
+		{
+			set @pos, dialog(0, 0, 1, "물병에 회복의 샘물을 가득 채웠습니다.");
+			if(@pos == 0) end;
+
+			delitem @sd, name2itemid("물병"), 1;
+			message @sd, 3, "물병 주었습니다";
+			additem @sd, name2itemid("회복의샘물"), 1;
+			addlegend @sd, 2, 7, 0, 4, "소생천에서 회복의 샘물을 가득 채웠다.";
+		}
+	}
+}
+
+@난파선선장의방	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if(countitem(name2itemid("봉래산전설")) > 0)
+	{
+		warp @sd, name2mapid("난파선선장의방"), 1, rand(10, 13);
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 0, "불길한 기운에 가로막혀 들어갈 수 없다.");
+		set_x @id, get_x(@id)-1;
+		updatexy @sd;
+		updatelookpc @sd, 0;
+		updateallpc @sd;
+	}
+}
+
+@주작팔괘방	{
+	callfunc "EIGHTROOM", "주작", #bird_castle$;
+}
+
+@현무팔괘방	{
+	callfunc "EIGHTROOM", "현무", #turtle_castle$;
+}
+
+@청룡팔괘방	{
+	callfunc "EIGHTROOM", "청룡", #dragon_castle$;
+}
+
+@백호팔괘방	{
+	callfunc "EIGHTROOM", "백호", #tiger_castle$;
+}
+
+@주작팔괘방퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	warp @sd, name2mapid("주작성입구"), rand(16, 17), 31;
+}
+
+@청룡팔괘방퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	warp @sd, name2mapid("청룡성입구"), rand(16, 17), 31;
+}
+
+@백호팔괘방퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	warp @sd, name2mapid("백호성입구"), rand(71, 74), 1;
+}
+
+@현무팔괘방퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	warp @sd, name2mapid("현무성입구"), rand(16, 17), 31;
+}
+
+@주작지하수로	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) < 3) {
+		message @sd, 2, "3차승급 이하는 입장 불가합니다";
+	}
+	else{
+	callfunc "CLANDOWNROOM", "주작", #bird_castle$;
+	}
+}
+
+}
+
+@현무지하수로	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) < 3) {
+		message @sd, 2, "3차승급 이하는 입장 불가합니다";
+	}
+	else{
+	callfunc "CLANDOWNROOM", "현무", #turtle_castle$;
+	}
+}
+
+@청룡지하수로	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) < 3) {
+		message @sd, 2, "3차승급 이하는 입장 불가합니다";
+	}
+	else{
+	callfunc "CLANDOWNROOM", "청룡", #dragon_castle$;
+	}
+}
+
+
+@백호지하수로	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) < 3) {
+		message @sd, 2, "3차승급 이하는 입장 불가합니다";
+	}
+	else{
+	callfunc "CLANDOWNROOM", "백호", #tiger_castle$;
+	}
+}
+
+
+@주작지하수로퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+	if(rand(1, 2) == 1) { set @x, rand(3, 6); }
+	else { set @x, rand(34, 37); }
+
+	warp @sd, name2mapid("주작의심장"), @x, 6;
+}
+
+@현무지하수로퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+	if(rand(1, 2) == 1) { set @x, rand(3, 6); }
+	else { set @x, rand(34, 37); }
+
+	warp @sd, name2mapid("현무의심장"), @x, 6;
+}
+
+@청룡지하수로퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+	if(rand(1, 2) == 1) { set @x, rand(3, 6); }
+	else { set @x, rand(34, 37); }
+
+	warp @sd, name2mapid("청룡의심장"), @x, 6;
+}
+
+@백호지하수로퇴장	{
+	set @sd, mysd();
+	set @id, myid();
+	if(rand(1, 2) == 1) { set @x, rand(3, 6); }
+	else { set @x, rand(34, 37); }
+
+	warp @sd, name2mapid("백호의심장"), @x, 6;
+}
+
+//@보물지도	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_mapname(@sd) == $mountain_name$ && get_x(@id) == $mountain_x && get_y(@id) == $mountain_y && countitem(name2itemid("산신의보물지도")) > 0)
+	{
+		delitem @sd, name2itemid("산신의보물지도"), 1;
+		message @sd, 3, "산신의보물지도 주었습니다";
+		additem @sd, name2itemid("산신의비단"), 1;
+	}
+}
+
+FUNC_LViiii	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) < getarg(0)) {
+		message @sd, 0, getarg(0)+"차승급 미만자는 입장할 수 없습니다.";
+		end;
+	}
+	warp @sd, getarg(1), rand(getarg(2),getarg(3)), rand(getarg(4),getarg(5));
+	}
+		else{
+			end;
+		}
+	}
+}
+
+FUNC_LViiiii	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) > getarg(0)) {
+		message @sd, 0, getarg(0)+"차승급 초과 입장할 수 없습니다.";
+		end;
+	}
+	warp @sd, getarg(1), rand(getarg(2),getarg(3)), rand(getarg(4),getarg(5));
+	}
+		else{
+			end;
+		}
+	}
+}
+
+
+//FUNC_LViiii	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) > getarg(0)) {
+		message @sd, 0, getarg(0)+"차승급 이자는 입장할 수 없습니다.";
+		end;
+	}
+	else {
+		set @pos, list2(@list, 0, 0, getarg(6)+"에 입장하시겠습니까?", "예", "아뇨");
+		if( @pos == 0 ) end;
+		if( @list== 1 ){
+			warp @sd, getarg(1), rand(getarg(2),getarg(3)), rand(getarg(4),getarg(5));
+		}
+		else{
+			end;
+		}
+	}
+}
+
+@백두봉	{
+	callfunc "LViiii", 4, 53332, 14, 15, 21, 21, "백두봉";
+}
+
+//@비밀산적소굴	{
+	callfunc "LViiii", 4, 53388, 8, 9, 4, 4, "비밀산적소굴";
+}
+
+
+@비밀산적소굴	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @pos, list2(@list, 0, 0, "5지까지 추가됬다네,", "1지입장", "2지입장", "3지입장", "4지입장", "5지입장");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	callfunc "LViiii", 3, 53388, 8, 9, 4, 4, "비밀산적소굴";
+	}
+	else if(@list == 2)
+	{
+	callfunc "LViiii", 3, 53493, 8, 9, 4, 4, "비밀산적소굴2지";
+	}
+	else if(@list == 3)
+	{
+	callfunc "LViiii", 3, 53593, 8, 9, 4, 4, "비밀산적소굴3지";
+	}
+	else if(@list == 4)
+	{
+	callfunc "LViiii", 3, 53693, 8, 9, 4, 4, "비밀산적소굴4지";
+	}
+	else if(@list == 5)
+	{
+	callfunc "LViiii", 3, 53793, 8, 9, 4, 4, "비밀산적소굴5지";
+	}
+}
+
+@설원	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @pos, list2(@list, 0, 0, "어디로 가시겠어요?", "1지입장", "2지입장", "3지입장", "4지입장", "5지입장");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	callfunc "LViiii", 4, 53216, 4, 5, 20, 20, "설원";
+	}
+	else if(@list == 2)
+	{
+	callfunc "LViiii", 4, 60001, 4, 5, 20, 20, "설원2지";
+	}
+	else if(@list == 3)
+	{
+	callfunc "LViiii", 4, 60011, 4, 5, 20, 20, "설원3지";
+	}
+	else if(@list == 4)
+	{
+	callfunc "LViiii", 4, 60021, 4, 5, 20, 20, "설원4지";
+	}
+	else if(@list == 5)
+	{
+	callfunc "LViiii", 4, 60031, 4, 5, 20, 20, "설원5지";
+	}
+}
+
+@망천후	{
+	callfunc "LViiii", 1, 53398, 19, 19, 9, 10, "망천후";
+}
+
+//@대초원	{
+	callfunc "LViiii", 4, 53418, 0, 0, 103, 106, "대초원";
+}
+
+@대초원	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @pos, list2(@list, 0, 0, "", "1지입장", "2지입장");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	callfunc "LViiii", 4, 53418, 0, 0, 103, 106, "대초원";
+	}
+	else if(@list == 2)
+	callfunc "LViiii", 4, 53510, 0, 0, 103, 106, "대초원";
+	}
+}
+
+@대도둑의집	{
+	callfunc "LViiii", 4, 43836, 8, 9, 12, 13, "대도둑의집";
+}
+
+@월요동굴	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	set @pos, list2(@list, 0, 0, "", "월요입장", "화요입장", "수요입장", "목요입장", "금요입장", "토요입장", "일요입장");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	callfunc "LViiii", 4, 53419, 13, 15, 22, 22, "월요동굴";
+	}
+	else if(@list == 2)
+	{
+	callfunc "LViiii", 4, 53420, 13, 15, 22, 22, "화요동굴";
+	}
+	else if(@list == 3)
+	{
+	callfunc "LViiii", 4, 53421, 13, 15, 22, 22, "수요동굴";
+	}
+	else if(@list == 4)
+	{
+	callfunc "LViiii", 4, 53422, 13, 15, 22, 22, "목요동굴";
+	}
+	else if(@list == 5)
+	{
+	callfunc "LViiii", 4, 53423, 13, 15, 22, 22, "금요동굴";
+	}
+	else if(@list == 6)
+	{
+	callfunc "LViiii", 4, 53424, 13, 15, 22, 22, "토요동굴";
+	}
+	else if(@list == 7)
+	{
+	callfunc "LViiii", 4, 53425, 13, 15, 22, 22, "일요동굴";
+	}
+}
+
+@화요동굴	{
+	callfunc "LViiii", 2, 53420, 13, 15, 22, 22, "화요동굴";
+}
+
+@수요동굴	{
+	callfunc "LViiii", 2, 53421, 13, 15, 22, 22, "수요동굴";
+}
+
+@목요동굴	{
+	callfunc "LViiii", 2, 53422, 13, 15, 22, 22, "목요동굴";
+}
+
+@금요동굴	{
+	callfunc "LViiii", 2, 53423, 13, 15, 22, 22, "금요동굴";
+}
+
+@토요동굴	{
+	callfunc "LViiii", 2, 53424, 13, 15, 22, 22, "토요동굴";
+}
+
+@일요동굴	{
+	callfunc "LViiii", 2, 53425, 13, 15, 22, 22, "일요동굴";
+}
+
+//@귀문혈마동입구	{
+	set @id, myid();
+	set @sd, mysd();
+
+	if(get_joblevel(@sd) >= 6)
+	{
+		if(get_job(@sd) == 1 || get_job(@sd) == 2)
+		{
+			if(get_purehp(@sd) >= 28000000 && get_puremp(@sd) >=1000000)
+			{
+				if(name2mapid("귀문혈마동대기") > 0) { warp @sd, name2mapid("귀문혈마동대기"), rand(18, 22), 16; }
+			}
+			else
+			{
+				message @sd, 5, "[알림]: 체력 2800만, 마력 100만 이상부터 입장하실 수 있습니다.";
+				warp @sd, get_mapid(@sd), get_x(@id)+2, get_y(@id);
+			}
+		}
+		else if(get_job(@sd) == 3 || get_job(@sd) == 4)
+		{
+			if(get_purehp(@sd) >= 12000000 && get_puremp(@sd) >= 14000000)
+			{
+				if(name2mapid("귀문혈마동대기") > 0) { warp @sd, name2mapid("귀문혈마동대기"), rand(2, 4), 10; }
+			}
+			else
+			{
+				message @sd, 5, "[알림]: 체력 1200만, 마력 1400만 이상부터 입장하실 수 있습니다.";
+				warp @sd, get_mapid(@sd), get_x(@id)+2, get_y(@id);
+			}
+		}
+	}
+	else
+	{
+		warp @sd, get_mapid(@sd), get_x(@id)+2, get_y(@id);
+		message @sd, 3, "감히 들어갈 수 없습니다.";
+	}
+}
+
+@귀문혈마동입구	{
+	callfunc "LViiii", 5, 53343, 18, 22, 17, 17, "귀문혈마동입구";
+}
+@메마른섬	{
+	callfunc "LViiii", 4, 53513, 0, 1, 93, 97, "메마른섬";
+}
+@지옥	{
+	callfunc "LViiii", 5, 41999, 11, 12, 18, 18, "지옥";
+}
+
+@귀문혈동입구	{
+	callfunc "LViiiii", 3, 53133, 18, 22, 17, 17, "귀문혈동입구";
+}
+
+//@흉선연합입구	{
+	callfunc "LViiii", 6, 53469, 27, 31, 1, 1, "흉선연합입구";
+}
+
+@흉선연합입구	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @ti, party_member(@sd,@i);
+			if(@ti > 0)
+			{
+				set @ts, id2sd(@ti);
+				set @count, @count+1;
+
+				if(get_mapid(@sd) != get_mapid(@ts))
+				{
+					dialog 0,0,1, "일행이 모두 한곳에 있어야합니다.";
+					end;
+				}
+				if(@count > 3)
+				{
+					dialog 0,0,1, "일행은 3명이하만 입장 가능합니다.";
+					end;
+				}
+			}
+		}		
+	}
+
+	set @pos, list2(@list, 0, 0, "흉선연합 5차승급이상 추천합니다.", "1지입장", "2지입장", "3지입장");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	callfunc "LViiii", 5, 53469, 27, 31, 1, 1, "흉선연합1지";
+	}
+	else if(@list == 2)
+	{
+	callfunc "LViiii", 5, 53569, 27, 31, 1, 1, "흉선연합2지";
+	}
+	else if(@list == 3)
+	{
+	callfunc "LViiii", 5, 53669, 27, 31, 1, 1, "흉선연합3지";
+	}
+}
+
+@지하감옥입구	{
+	set @id, myid();
+	set @sd, mysd();
+	
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @ts, party_member(@sd,@i);
+			if(@ts > 0)
+			{
+				set @job, get_job(@ts);
+				set @count, @count+1;
+
+				if(@job == 1 || @job == 2) { set @maxhp, 3200000; set @maxmp, 200000; }
+				else if(@job == 3 || @job == 4) { set @maxhp, 1200000; set @maxmp, 1700000; }
+				else	
+				{
+					dialog 0,0,1, "일행 중 평민이 있습니다.";
+					end;
+				}
+				if(get_mapid(@sd) != get_mapid(@ts))
+				{
+					dialog 0,0,1, "일행이 모두 한곳에 있어야합니다.";
+					end;
+				}
+				if(@count > 5)
+				{
+					dialog 0,0,1, "일행은 5명이하만 입장 가능합니다.";
+					end;
+				}
+				if(get_purehp(@ts) < @maxhp || get_puremp(@ts) < @maxmp)
+				{
+					dialog 0,0,1, "일행 중 체력,마력 조건이 되지 않는 일행이 있습니다.";
+					dialog 0,0,1, "[격수]: 체력 320만, 마력 20만 이상부터 입장하실 수 있습니다.";
+					dialog 0,0,1, "[비격수]: 체력 120만, 마력 170만 이상부터 입장하실 수 있습니다.";
+					end;
+				}
+
+			}
+		}
+		for(set @i, 0; @i < @count; set @i, @i+1)
+		{
+
+			set @ts, party_member(@sd,@i);
+			if(@ts > 0)
+				warp @ts, name2mapid("지하감옥입구"), rand(9, 12), 14;
+		}					
+	}
+	else
+	{
+		if(get_job(@sd) == 1 || get_job(@sd) == 2)
+		{
+			if(get_purehp(@sd) >= 3200000 && get_puremp(@sd) >=200000)
+			{
+				if(name2mapid("지하감옥입구") > 0) { warp @sd, name2mapid("지하감옥입구"), rand(9, 12), 14; end; }
+			}
+			else
+			{
+				message @sd, 5, "[알림]: 체력 300만, 마력 20만 이상부터 입장하실 수 있습니다.";
+				warp @sd, get_mapid(@sd), get_x(@id)-2, get_y(@id);
+				end;
+			}
+		}
+		else if(get_job(@sd) == 3 || get_job(@sd) == 4)
+		{
+			if(get_purehp(@sd) >= 1200000 && get_puremp(@sd) >= 1700000)
+			{
+				if(name2mapid("지하감옥입구") > 0) { warp @sd, name2mapid("지하감옥입구"), rand(9, 12), 14; end; }
+			}
+			else
+			{
+				message @sd, 5, "[알림]: 체력 120만, 마력 180만 이상부터 입장하실 수 있습니다.";
+				warp @sd, get_mapid(@sd), get_x(@id)-2, get_y(@id);
+				end;
+			}
+		}
+		else
+		{
+			warp @sd, get_mapid(@sd), get_x(@id)-2, get_y(@id);
+			message @sd, 3, "감히 들어갈 수 없습니다.";		
+			end;
+		}
+	}
+}
+
+
+@고래입장1	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 0, 12; } else end;
+}
+@고래입장2	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 1, 12; } else end;
+}
+@고래입장3	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 2, 12; } else end;
+}
+@고래입장4	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 3, 12; } else end;
+}
+@고래입장5	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 4, 12; } else end;
+}
+@고래입장6	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 5, 12; } else end;
+}
+@고래입장7	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 6, 12; } else end;
+}
+@고래입장8	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 7, 12; } else end;
+}
+@고래입장9	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 8, 12; } else end;
+}
+@고래입장10	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 9, 12; } else end;
+}
+@고래입장11	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 10, 12; } else end;
+}
+@고래입장12	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 11, 12; } else end;
+}
+@고래입장13	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 12, 12; } else end;
+}
+@고래입장14	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 13, 12; } else end;
+}
+@고래입장15	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 14, 12; } else end;
+}
+@고래입장16	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 15, 12; } else end;
+}
+@고래입장17	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 16, 12; } else end;
+}
+@고래입장18	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 17, 12; } else end;
+}
+@고래입장19	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("고래를 소탕하러 가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 18, 12; } else end;
+}
+//고래퇴장
+@고래퇴장1	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 0, 16; } else end;
+}
+@고래퇴장2	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 1, 16; } else end;
+}
+@고래퇴장3	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 2, 16; } else end;
+}
+@고래퇴장4	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 3, 16; } else end;
+}
+@고래퇴장5	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 4, 16; } else end;
+}
+@고래퇴장6	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 5, 16; } else end;
+}
+@고래퇴장7	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 6, 16; } else end;
+}
+@고래퇴장8	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 7, 16; } else end;
+}
+@고래퇴장9	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 8, 16; } else end;
+}
+@고래퇴장10	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 9, 16; } else end;
+}
+@고래퇴장11	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 10, 16; } else end;
+}
+@고래퇴장12	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 11, 16; } else end;
+}
+@고래퇴장13	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 12, 16; } else end;
+}
+@고래퇴장14	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 13, 16; } else end;
+}
+@고래퇴장15	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 14, 16; } else end;
+}
+@고래퇴장16	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 15, 16; } else end;
+}
+@고래퇴장17	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 16, 16; } else end;
+}
+@고래퇴장18	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 17, 16; } else end;
+}
+@고래퇴장19	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @list, list1("갑판 위로 올라가시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+	
+	if(@list == 1) { warp @sd, name2mapid("고래갑판"), 18, 16; } else end;
+}
+
+오엑스이벤트_오_warp	{
+	set @sd, mysd();
+
+	spellaether @sd, name2spellid("정답:O"), 999;
+	warp @sd, 1480, 7, 16;
+}
+
+오엑스이벤트_엑스_warp	{
+	set @sd, mysd();
+
+	spellaether @sd, name2spellid("정답:X"), 999;
+	warp @sd, 1480, 21, 16;
+}
+
+마력의탑입장1	{
+	set @mysd, mysd();
+	set @myid, myid();
+	set @pos, list2(@list, 0, 1, "어디로 이동하시겠습니까 ?", "마력의탑魔", "마력의탑惡", "마력의탑鬼");
+	if( @pos == 0 ) end;
+	if(@list == 1)
+	{
+		warp @mysd, 4010, rand(3,5), rand(35,37);
+		end;
+	}
+	if(@list == 2)
+	{
+		warp @mysd, 4020, rand(3,5), rand(35,37);
+		end;
+	}
+	if(@list == 3)
+	{
+		warp @mysd, 4030, rand(3,5), rand(35,37);
+		end;
+		}
+	else { end; }
+}
+
+마력의탑입장	{
+	callfunc "DOOR_WARP", 4, 2386, 9, 11, 6, 9, "마력의탑 대기실";
+}
+
+FUNC_DOOR_WARP	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_joblevel(@sd) < getarg(0)) {
+		message @sd, 0, getarg(0)+"차승급 미만자는 입장할 수 없습니다.";
+		end;
+	}
+	else {
+		set @pos, list2(@list, 0, 0, getarg(6)+"에 입장하시겠습니까?", "예", "아뇨");
+		if( @pos == 0 ) end;
+		if( @list== 1 ){
+			warp @sd, getarg(1), rand(getarg(2),getarg(3)), rand(getarg(4),getarg(5));
+		}
+		else{
+			end;
+		}
+	}
+}
+
+
+
+@900층	{
+	callfunc "LViiii", 3, 1380, 1, 4, 38, 38, "도삭산901층";
+}
+
+@경마이벤트	{
+	set @sd, mysd();
+	set @id, myid();
+if(#horse == 1){
+	set #horse_number, #horse_number +1;
+	set @rand, rand(30,33);
+	broadcast 5, "(( [" + get_name(@sd) + "] 님 도착!!! "+ #horse_number +" 위 ))";
+	warp @sd, 1916, @rand, 31;
+	end;
+		}
+
+}
+
+
+
+
+
+@적태자의방입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "적의태자의방으로 가려면, 사신수의심장이 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("사신수의심장")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "사신수의 심장이 필요하다네");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 53000; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("사신수의심장")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "사신수의 심장이 필요하다네!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("사신수의심장"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "적태자의방으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 적태자의방으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(4, 5), rand(4, 5);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "적태자의방으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+	}
+}
+
+@적태자의방입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "적의태자의방으로 가려면, 사신수의심장이 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("사신수의심장")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "사신수의 심장이 필요하다네");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 53000; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("사신수의심장")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "사신수의 심장이 필요하다네!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("사신수의심장"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "적태자의방으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 적태자의방으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(4, 5), rand(4, 5);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "적태자의방으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+	}
+}
+
+@흑태자의방입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "흑태자의방으로 가려면, 적태자의심장이 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("적태자의심장")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "적태자의심장이 필요하다네");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 53001; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("적태자의심장")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "적태자의심장이 필요하다네!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("적태자의심장"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "흑태자의방으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 흑태자의방으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(4, 5), rand(4, 5);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "흑태자의방으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+	}
+}
+
+@백태자의방입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "백태자의방으로 가려면, 흑태자의심장이 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("흑태자의심장")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "흑태자의심장이 필요하다네");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 53002; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("흑태자의심장")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "흑태자의심장이 필요하다네!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("흑태자의심장"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "백태자의방으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 백태자의방으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(4, 5), rand(4, 5);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "백태자의방으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+	}
+}
+
+@황태자의방입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "황태자의방으로 가려면, 백태자의심장이 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("백태자의심장")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "백태자의심장이 필요하다네");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 53003; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("백태자의심장")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "백태자의심장이 필요하다네!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("백태자의심장"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "황태자의방으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 황태자의방으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(4, 5), rand(4, 5);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "황태자의방으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(4, 5), rand(4, 5);
+			end;
+		}
+	}
+}
+
+
+@최후의전장입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "최후의전장으로 가려면, 황태자의심장이 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("황태자의심장")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "황태자의심장이 필요하다네");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 53004; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("황태자의심장")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "황태자의심장이 필요하다네!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("황태자의심장"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "최후의전장으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(2, 38), rand(5, 38);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 최후의전장으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(4, 5), rand(4, 5);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "최후의전장으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(2, 38), rand(5, 38);
+			end;
+		}
+	}
+}
+

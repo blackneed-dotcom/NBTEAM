@@ -1,0 +1,6 @@
+@소혼강신	{
+	set @sd, mysd();
+	set @id, myid();
+	message @sd, 3, "소환 할 수 없습니다.";
+	end;
+}

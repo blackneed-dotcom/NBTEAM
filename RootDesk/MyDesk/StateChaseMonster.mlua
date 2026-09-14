@@ -1,0 +1,157 @@
+@Component
+script StateChaseMonster extends StateComponent
+
+	@HideFromInspector
+	property number MoveSpeedFactor = 0.5
+
+	@HideFromInspector
+	property any TargetEntityRef = nil
+
+	property boolean IsChaseNearPlayer = true
+
+	property number DetectionRange = 5
+
+	property boolean SpriteFacesLeftByDefault = true
+
+	@HideFromInspector
+	property number walkTimeLeft = 0
+
+	@HideFromInspector
+	property number flipTimeLeft = 0
+
+	@HideFromInspector
+	property number jumpTimeLeft = 0
+
+	@HideFromInspector
+	property boolean jumpArmed = false
+
+	@HideFromInspector
+	property Vector2 movingDirection = Vector2(0, 0)
+
+	@HideFromInspector
+	property any tileMapModeCache = nil
+
+	@HideFromInspector
+	property any currentTarget = nil
+
+	@ExecSpace("ServerOnly")
+	method void OnBeginPlay()
+		-- Bootstrap only. Transitions live in the StateSet (StateSetId).
+		local pos = self.Entity.TransformComponent.WorldPosition
+		math.randomseed(math.floor(pos.x * 100.0))
+		
+		local map = self.Entity.CurrentMap
+		if isvalid(map) and isvalid(map.MapComponent) then
+			self.tileMapModeCache = map.MapComponent.TileMapMode
+		end
+		
+		local rigidInit = self.Entity.RigidbodyComponent
+		if isvalid(rigidInit) then
+			rigidInit.IsolatedMove = true
+		end
+		
+		local mvInit = self.Entity.MovementComponent
+		if isvalid(mvInit) then
+			mvInit.InputSpeed = mvInit.InputSpeed * self.MoveSpeedFactor
+		end
+		
+		if isvalid(self.TargetEntityRef) then
+			self.currentTarget = self.TargetEntityRef
+		end
+	end
+
+	@ExecSpace("ServerOnly")
+	method void OnUpdate(number delta)
+		-- Feed currentTarget for ConditionHasTarget / ConditionNoTarget; never ChangeState.
+		local state = self.CurrentStateName
+		if state == "DEAD" or state == "HIT" then
+			return
+		end
+		
+		if state == "IDLE" then
+			if not isvalid(self.currentTarget) then
+				local target = self:AcquireTarget()
+				if isvalid(target) then
+					self.currentTarget = target
+				end
+			end
+		elseif state == "CHASE" then
+			if not self:IsTargetValid() then
+				self.currentTarget = nil
+			end
+		end
+	end
+
+	@ExecSpace("ServerOnly")
+	method boolean IsTargetValid()
+		-- IsChaseNearPlayer=false locks the target and skips the range check.
+		local tgt = self.currentTarget
+		if not isvalid(tgt) then return false end
+		
+		local myTr = self.Entity.TransformComponent
+		local myMap = self.Entity.CurrentMap
+		local tMap = tgt.CurrentMap
+		local tTr = tgt.TransformComponent
+		if not isvalid(myTr) or not isvalid(myMap) or not isvalid(tMap) or not isvalid(tTr) or tMap ~= myMap then
+			return false
+		end
+		
+		if not self.IsChaseNearPlayer then
+			return true
+		end
+		
+		local myPos = myTr.WorldPosition
+		local tPos = tTr.WorldPosition
+		local dx = tPos.x - myPos.x
+		local dy = tPos.y - myPos.y
+		return math.sqrt(dx * dx + dy * dy) < self.DetectionRange
+	end
+
+	@ExecSpace("ServerOnly")
+	method any AcquireTarget()
+		-- Nearest-player scan within DetectionRange; SetTarget-only mode returns nil.
+		if not self.IsChaseNearPlayer then
+			return nil
+		end
+		local myMap = self.Entity.CurrentMap
+		local myTr = self.Entity.TransformComponent
+		if not isvalid(myMap) or not isvalid(myTr) then
+			return nil
+		end
+		local users = _UserService:GetUsersByMapComponent(myMap.MapComponent)
+		if users == nil then return nil end
+		
+		local myPos = myTr.WorldPosition
+		local shortestDist = self.DetectionRange
+		local best = nil
+		for _, u in ipairs(users) do
+			if isvalid(u) then
+				local utr = u.TransformComponent
+				if isvalid(utr) then
+					local upos = utr.WorldPosition
+					local dx = upos.x - myPos.x
+					local dy = upos.y - myPos.y
+					local d = math.sqrt(dx * dx + dy * dy)
+					if d < shortestDist then
+						shortestDist = d
+						best = u
+					end
+				end
+			end
+		end
+		return best
+	end
+
+	@ExecSpace("ServerOnly")
+	method void SetTarget(Entity target)
+		-- External lock; disables auto-scan so the target sticks.
+		self.currentTarget = target
+		self.IsChaseNearPlayer = false
+	end
+
+	method any GetCurrentTarget()
+		-- Returns the current chase target, or nil.
+		return self.currentTarget
+	end
+
+end

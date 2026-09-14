@@ -1,0 +1,80 @@
+@신검합일	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 0, name2spellid("신검합일"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("검신검귀"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("대력검신"), @sd;
+	set @damrate1, $damrate/2;
+	if(@damrate1 <= 0) { set @damrate1, 1; }
+	set $sword1, $damrate+@damrate1;
+	callfunc "SWORDDAMAGE", $sword1, name2spellid("신검합일"), 100, 60;
+}
+
+@신검합일해제	{
+	set @sd, mysd();
+	set_damrate @sd, get_damrate(@sd)-$damrate;
+	message @sd, 3, "무기의 푸른빛이 사라집니다.";
+}
+
+@검신검귀	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 0, name2spellid("신검합일"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("검신검귀"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("대력검신"), @sd;
+	set @damrate1, (($damrate*3)/2);
+	if(@damrate1 <= 0) { set @damrate1, 1; }
+	set $sword2, @damrate1;
+	callfunc "SWORDDAMAGE", (@damrate+((@damrate/2)*3)), name2spellid("검신검귀"), 100, 60;
+}
+
+@검신검귀해제	{
+	set @sd, mysd();
+	set_damrate @sd, get_damrate(@sd)-$damrate;
+	message @sd, 3, "무기의 푸른빛이 사라집니다.";
+}
+
+@대력검신	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 0, name2spellid("신검합일"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("검신검귀"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("대력검신"), @sd;
+	set @damrate1, @damrate+(@damrate*2);
+	if(@damrate1 <= 0) { set @damrate1, 1; }
+	set $sword3, @damrate1;
+	callfunc "SWORDDAMAGE", (@damrate+(@damrate*2)), name2spellid("대력검신"), 200, 90;
+}
+
+@대력검신해제	{
+	set @sd, mysd();
+	set_damrate @sd, get_damrate(@sd)-$damrate;
+	message @sd, 3, "무기의 푸른빛이 사라집니다.";
+}
+
+@유인	{
+	set @id, myid();
+	set @sd, mysd();
+	
+	callfunc "MANA_DELAY", 50, name2spellid("유인"), @sd;
+	set_mp @sd, get_mp(@sd)-50;
+
+	set @target_id, script_target(@sd);
+
+	if(istype(@target) == 2)
+	{
+		set_siya @target_id, 1, 1; // 시작
+		damage @id, @target_id, 0, 2;
+		//set_mobtarget @target_id, @id;
+		set_siya @target_id, 0, 1; // 종료
+
+		callfunc "BEGINFUNC", 0, 40, name2spellid("유인"), 3, 6, 0;
+
+		effect @target, 88;
+		sound @id, 2;
+
+		message @sd, 3, "유인을 외웠습니다.";
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+}

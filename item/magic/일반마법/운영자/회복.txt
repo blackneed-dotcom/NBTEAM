@@ -1,0 +1,51 @@
+@압록지정	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_name(@sd) == "전설" || get_name(@sd) == "지원팀" || get_name(@sd) == "운영자GM" || get_name(@sd) == "GM" || get_name(@sd) == "낙랑GM" || get_name(@sd) == "하자GM" || get_name(@sd) == "호동GM" || get_name(@sd) == "주몽GM" || get_name(@sd) == "낙랑GM" || get_name(@sd) == "괴유GM")
+	{
+		set @x1, get_x(@id)-8;
+		set @x2, get_x(@id)+8;
+		set @y1, get_y(@id)-7;
+		set @y2, get_y(@id)+7;
+	
+		if(@x1 < 0) { set @x1, 0; }
+		if(@x2 > get_mapwidth(@sd)-1) { set @x2, get_mapwidth(@sd)-1; }
+		if(@y1 < 0) { set @y1, 0; }
+		if(@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd)-1; }
+	
+		for(set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for(set @j, @y1; @j <= @y2; set @j, @j+1)
+			{
+				set @target_id, obj_getxy(@i, @j);
+				if(@target_id > 0)
+				{
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+						if(get_state(@target_sd) == 1)
+						{
+							set_state @target_sd, 0;
+							if(get_equipitem(@target_sd, 6) == name2spellid("보무의목걸이") || get_equipitem(@target_sd, 7) == name2itemid("보무의목걸이"))
+							{
+
+							}
+						}
+						set_hp @target_sd, get_maxhp(@target_sd);
+						set_mp @target_sd, get_maxmp(@target_sd);
+
+						if(@target_sd != @sd) { message @target_sd, 3, get_name(@sd) + "님이 압록지정을 외워주셨습니다."; }
+
+						updatelookpc @target_sd, 1;
+						effect @target_id, 58;
+						showgage @target_id;
+					}
+				}
+			}
+		}
+		action @id, 6, 30, 0;
+		sound @id, 8;
+		message @sd, 3, "압록지정을 외웠습니다.";
+	}
+}

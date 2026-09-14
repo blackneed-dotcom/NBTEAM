@@ -1,0 +1,12 @@
+@딱총파리	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("식용벌레"), 1;
+}
+
+@마비가시말미잘	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("다랑어살코기"), 1;
+}
+
+@철갑거북	{
+	callfunc "DROPITEM2", objid(), 100, 60, name2itemid("바다거북의알"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("선장의일기6"), 1;
+}

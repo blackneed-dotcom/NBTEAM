@@ -1,0 +1,79 @@
+@State
+script StateTypeWander extends StateType
+
+	method void OnEnter()
+		-- Pick a new wander direction; duration comes from StateSet's NCHasTimePassed.
+		if not self.ParentComponent:IsServer() then return end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return end
+		local ai = entity.StateMoveMonster
+		if not isvalid(ai) then return end
+		
+		local mode = ai.tileMapModeCache
+		if mode == TileMapMode.MapleTile or mode == TileMapMode.SideViewRectTile then
+			ai.wanderDirLeft = not ai.wanderDirLeft
+		elseif mode == TileMapMode.RectTile then
+			local x = math.random() * 2.0 - 1.0
+			local y = math.random() * 2.0 - 1.0
+			local len = math.sqrt(x * x + y * y)
+			if len > 0 then
+				ai.movingDirection = Vector2(x / len, y / len)
+			else
+				ai.movingDirection = Vector2(1, 0)
+			end
+			ai.wanderDirLeft = ai.movingDirection.x < 0
+		end
+	end
+
+	method void OnUpdate()
+		-- Per-frame wander motion. MapleTile guards the foothold edge;
+		-- SideViewRectTile gates on ground; RectTile is free 4-directional.
+		if not self.ParentComponent:IsServer() then return end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return end
+		local ai = entity.StateMoveMonster
+		if not isvalid(ai) then return end
+		
+		local movement = entity.MovementComponent
+		if not isvalid(movement) then return end
+		
+		-- FlipX XOR SpriteFacesLeftByDefault handles both sprite orientations.
+		local sprite = entity.SpriteRendererComponent
+		if isvalid(sprite) then
+			sprite.FlipX = ai.wanderDirLeft ~= ai.SpriteFacesLeftByDefault
+		end
+		
+		local mode = ai.tileMapModeCache
+		if mode == TileMapMode.MapleTile then
+			local mDir = ai.wanderDirLeft and -1.0 or 1.0
+			local rigid = entity.RigidbodyComponent
+			local canGo = isvalid(rigid)
+				and rigid:PredictFootholdEnd(0.3, not ai.wanderDirLeft)
+			if canGo then
+				movement:MoveToDirection(Vector2(mDir, 0), 0)
+			else
+				movement:Stop()
+			end
+		elseif mode == TileMapMode.RectTile then
+			movement:MoveToDirection(ai.movingDirection, 0)
+		elseif mode == TileMapMode.SideViewRectTile then
+			local mDir = ai.wanderDirLeft and -1.0 or 1.0
+			local sv = entity.SideviewbodyComponent
+			if isvalid(sv) and sv:IsOnGround() then
+				movement:MoveToDirection(Vector2(mDir, 0), 0)
+			else
+				movement:Stop()
+			end
+		end
+	end
+
+	method void OnExit()
+		-- Stop movement; the between-wander pause is timed by the StateSet.
+		if not self.ParentComponent:IsServer() then return end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return end
+		local movement = entity.MovementComponent
+		if isvalid(movement) then movement:Stop() end
+	end
+
+end

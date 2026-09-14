@@ -1,0 +1,31 @@
+@용왕용마	{
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("용마제이검"), 1;
+}
+
+@용마의침격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 72, 8, rand(100000, 200000), 0, "용마의침격", "크와아앙!";
+}
+
+@용왕용천	{
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("용천제이검"), 1;
+}
+
+@용천의침격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 72, 8, rand(100000, 200000), 0, "용천의침격", "크와아앙!";
+}
+
+@용왕용랑	{
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("용랑제이봉"), 1;
+}
+
+@용랑의침격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 72, 8, rand(100000, 200000), 0, "용랑의침격", "크와아앙!";
+}
+
+@용왕용겸	{
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("용겸제이봉"), 1;
+}
+
+@용겸의침격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 72, 8, rand(100000, 200000), 0, "용겸의침격", "크와아앙!";
+}

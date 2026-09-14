@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "directory://acf49e51d55c47529c8a0747bdcb803b",
+  "ContentType": "x-mod/directory",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "entry_id": "directory://acf49e51d55c47529c8a0747bdcb803b",
+      "name": "Analysis",
+      "lock": false,
+      "folding": false,
+      "nameEditable": true
+    }
+  }
+}

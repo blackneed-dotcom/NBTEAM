@@ -1,0 +1,32 @@
+@귀응	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("장인의돌"), 1;
+}
+
+@태산	{
+	callfunc "DROPITEM", objid(), 10000, 1300, name2itemid("운모"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1300, name2itemid("마노"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1300, name2itemid("석영"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1300, name2itemid("장석"), 1;
+}
+
+@백보	{
+	callfunc "DROPITEM", objid(), 10000, 2500, name2itemid("청동조각"), 1;
+}
+
+@최가	{
+	callfunc "DROPITEM", objid(), 10000, 2500, name2itemid("청동조각"), 1;
+}
+
+@청웅	{
+	callfunc "DROPITEM", objid(), 10000, 1500, name2itemid("태독"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1500, name2itemid("건독"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1500, name2itemid("진독"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1500, name2itemid("곤독"), 1;
+	callfunc "DROPITEM", objid(), 10000, 1500, name2itemid("선독"), 1;
+}
+
+@황웅	{
+	callfunc "DROPITEM", objid(), 10000, 2500, name2itemid("적령초"), 1;
+	callfunc "DROPITEM", objid(), 10000, 2500, name2itemid("월로초"), 1;
+	callfunc "DROPITEM", objid(), 10000, 2500, name2itemid("일양초"), 1;
+}

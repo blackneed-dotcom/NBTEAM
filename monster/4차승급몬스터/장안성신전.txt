@@ -1,0 +1,9 @@
+//@소호	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 어리석은 인간들이여...";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("소호의증표"), 1;
+}
+@소호공격	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 18, 9, rand(250000, 300000), 2, "태형검파", 16, "태형검파~!!";
+}

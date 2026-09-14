@@ -1,0 +1,14 @@
+@Condition
+script ConditionHasTarget extends ConditionType
+
+	method boolean OnConditionCheck(string nextStateName)
+		-- True when StateChaseMonster has locked a valid chase target.
+		if not self.ParentComponent:IsServer() then return false end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return false end
+		local ai = entity.StateChaseMonster
+		if not isvalid(ai) then return false end
+		return isvalid(ai.currentTarget)
+	end
+
+end

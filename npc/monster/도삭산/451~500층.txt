@@ -1,0 +1,15 @@
+@도삭산흑코뿔소	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("도삭산코뿔소발톱"), 1;
+}
+
+@도삭산백코뿔소	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("도삭산코뿔소발톱"), 1;
+}
+
+@도삭산황선코뿔소	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("도삭산코뿔소이빨"), 1;
+}
+
+@도삭산코뿔소제독	{
+	callfunc "DROPITEM", objid(), 10, 5, name2itemid("도삭산코뿔소뿔"), 1;
+}

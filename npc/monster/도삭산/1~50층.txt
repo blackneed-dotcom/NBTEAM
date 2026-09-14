@@ -1,0 +1,11 @@
+@도삭산황소	{
+	callfunc "DROPITEM", objid(), 1000, 8, name2itemid("동인각"), 1;
+}
+
+@도삭산까만소	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("금덩어리"), 100;
+}
+
+@도삭산하얀소	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("금덩어리"), 100;
+}

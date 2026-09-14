@@ -1,0 +1,854 @@
+@누리의빛	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set @target_id, obj_getfront();
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_job(@target_sd) == 0)
+		{
+			set @classname$, "평민";
+		}
+		else if(get_job(@target_sd) == 1) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "전사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "검객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "검제"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "검황"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "검성"; }
+		}
+		else if(get_job(@target_sd) == 2) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도적"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "자객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "진검"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "귀검"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "태성"; }
+		}
+		else if(get_job(@target_sd) == 3) 
+		{
+			if(get_joblevel(@target_sd)==0) { set @classname$, "주술사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "술사"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "현사"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "현인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "현자"; }
+		}
+		else if(get_job(@target_sd) == 4) {
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "도인"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "명인"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "진인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "진선"; }
+		}
+		else if(get_job(@target_sd) == 5) { message @sd, 8, "훔쳐보지 말것!"; end; }
+		callfunc "BEGINFUNC", 0, 19, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+		set @title$, get_title(@target_sd);
+		message @sd, 8, @classname$+" "+get_name(@target_sd)+"  레벨 "+get_level(@target_sd)+"\\n"+@title$+"\\n힘 : "+get_might(@target_sd)+" 민첩성 : "+get_will(@target_sd)+" 지능 : "+get_grace(@target_sd);
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 0, 19, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+}
+
+@금수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("금수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("경수");
+	spelluncast @sd, name2spellid("야수");
+	spelluncast @sd, name2spellid("맹수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "고양이"))
+	{
+		set_disguiselook @sd, 183;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "새끼돼지"))
+	{
+		set_disguiselook @sd, 21;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "돼지"))
+	{
+		set_disguiselook @sd, 20;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "강아지"))
+	{
+		set_disguiselook @sd, 19;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "누렁이"))
+	{
+		set_disguiselook @sd, 104;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "고양이";
+		message @sd, 3, "새끼돼지";
+		message @sd, 3, "돼지";
+		message @sd, 3, "강아지";
+		message @sd, 3, "누렁이";
+		end;
+	}
+	
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("금수"), 60, 6, myid();
+}
+
+@금수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "금수 해제.";
+}
+
+@대지의빛	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set @target_id, script_target(@sd);
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_job(@target_sd) == 0)
+		{
+			set @classname$, "평민";
+		}
+		else if(get_job(@target_sd) == 1) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "전사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "검객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "검제"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "검황"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "검성"; }
+		}
+		else if(get_job(@target_sd) == 2) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도적"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "자객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "진검"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "귀검"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "태성"; }
+		}
+		else if(get_job(@target_sd) == 3) 
+		{
+			if(get_joblevel(@target_sd)==0) { set @classname$, "주술사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "술사"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "현사"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "현인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "현자"; }
+		}
+		else if(get_job(@target_sd) == 4) {
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "도인"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "명인"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "진인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "진선"; }
+		}
+		else if(get_job(@target_sd) == 5) { message @sd, 8, "훔쳐보지 말것!"; end; }
+		callfunc "BEGINFUNC", 0, 22, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+		set @title$, get_title(@target_sd);
+		message @sd, 8, @classname$+" "+get_name(@target_sd)+"  레벨 "+get_level(@target_sd)+"\\n"+@title$+"\\n힘 : "+get_might(@target_sd)+" 민첩성 : "+get_will(@target_sd)+" 지능 : "+get_grace(@target_sd);
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 0, 22, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+}
+
+@경수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("경수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("금수");
+	spelluncast @sd, name2spellid("야수");
+	spelluncast @sd, name2spellid("맹수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "토끼"))
+	{
+		set_disguiselook @sd, 22;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "다람쥐"))
+	{
+		set_disguiselook @sd, 26;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "토끼";
+		message @sd, 3, "다람쥐";
+		end;
+	}
+
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("경수"), 60, 6, myid();
+}
+
+@경수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "경수 해제.";
+}
+
+@바다의빛	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set @target_id, script_target(@sd);
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_job(@target_sd) == 0)
+		{
+			set @classname$, "평민";
+		}
+		else if(get_job(@target_sd) == 1) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "전사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "검객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "검제"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "검황"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "검성"; }
+		}
+		else if(get_job(@target_sd) == 2) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도적"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "자객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "진검"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "귀검"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "태성"; }
+		}
+		else if(get_job(@target_sd) == 3) 
+		{
+			if(get_joblevel(@target_sd)==0) { set @classname$, "주술사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "술사"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "현사"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "현인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "현자"; }
+		}
+		else if(get_job(@target_sd) == 4) {
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "도인"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "명인"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "진인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "진선"; }
+		}
+		else if(get_job(@target_sd) == 5) { message @sd, 8, "훔쳐보지 말것!"; end; }
+		if(get_gmlevel(@sd) == 0) { callfunc "BEGINFUNC", 0, 26, 0, 0, 6, 0; }
+		set_mp @sd, get_mp(@sd)-30;
+		set @title$, get_title(@target_sd);
+		message @sd, 8, @classname$+" "+get_name(@target_sd)+"  레벨 "+get_level(@target_sd)+"\\n"+@title$+"\\n힘 : "+get_might(@target_sd)+" 민첩성 : "+get_will(@target_sd)+" 지능 : "+get_grace(@target_sd)+"\\n"+get_itemlist(@target_sd);
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 0, 26, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+}
+
+@야수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("야수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("경수");
+	spelluncast @sd, name2spellid("금수");
+	spelluncast @sd, name2spellid("맹수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "여우"))
+	{
+		set_disguiselook @sd, 23;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "늑대"))
+	{
+		set_disguiselook @sd, 24;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "여우";
+		message @sd, 3, "늑대";
+		end;
+	}
+	
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("야수"), 60, 6, myid();
+}
+
+@야수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "야수 해제.";
+}
+
+@맹수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("맹수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("경수");
+	spelluncast @sd, name2spellid("야수");
+	spelluncast @sd, name2spellid("금수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "곰"))
+	{
+		set_disguiselook @sd, 25;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "호랑이"))
+	{
+		set_disguiselook @sd, 30;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "곰";
+		message @sd, 3, "호랑이";
+		end;
+	}
+	
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("맹수"), 60, 6, myid();
+}
+
+@맹수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "맹수 해제.";
+}
+
+@노획	{
+	set @sd, mysd();
+	set @id, myid();
+	set @x, get_x(@id);
+	set @y, get_y(@id);
+
+	if(get_mapid(@sd) == 2190)
+	{
+		message @sd, 3, "고래갑판에서는 사용할 수 없습니다.";
+		end;
+	}
+
+	callfunc "MANA_DELAY", 30, 5, @sd;
+	
+	switch( get_side(@id) )
+	{
+	case 0:
+		set @y, @y-1;
+		set @val, canmove(@id, get_x(@id), get_y(@id)-1);
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2 || get_mobname(@target_id) == "말") { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	case 1:
+		set @x, @x+1;
+		set @val, canmove(@id, get_x(@id)+1, get_y(@id));
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2 || get_mobname(@target_id) == "말") { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	case 2:
+		set @y, @y+1;
+		set @val, canmove(@id, get_x(@id), get_y(@id)+1);
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2 || get_mobname(@target_id) == "말") { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	case 3:
+		set @x, @x-1;
+		set @val, canmove(@id, get_x(@id)-1, get_y(@id));
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2 || get_mobname(@target_id) == "말") { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	}
+	getitem @sd, @x, @y;
+NOTGET:
+	callfunc "BEGINFUNC", 0, 37, 0, 0, 6, 0;
+	say @id, 2, "노획!~~";
+	//set_mp @sd, get_mp(@sd)-30;	
+}
+
+//@망각	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	
+	callfunc "MANA_DELAY", 60, 0, @sd;
+	spelldelay @sd, name2spellid("망각"), 4;
+	
+	if(istype(@target_id) == 2) 
+	{
+		callfunc "BEGINFUNC", 0, 32, 0, 0, 6, 0;
+		effect @target_id, 34;
+		set_mp @sd, get_mp(@sd)-60;
+		if(mobspellaethered(@target_id, name2spellid("망각")) == 0)
+		{
+			mobspellaether @target_id, name2spellid("망각"), 2;
+			if(rand(0, 100) > 30 && rand(0, 100) > 30) { set_siya @target_id, 1, 1; }
+		}
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다";
+	}
+}@누리의빛	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set @target_id, obj_getfront();
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_job(@target_sd) == 0)
+		{
+			set @classname$, "평민";
+		}
+		else if(get_job(@target_sd) == 1) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "전사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "검객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "검제"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "검황"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "검성"; }
+		}
+		else if(get_job(@target_sd) == 2) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도적"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "자객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "진검"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "귀검"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "태성"; }
+		}
+		else if(get_job(@target_sd) == 3) 
+		{
+			if(get_joblevel(@target_sd)==0) { set @classname$, "주술사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "술사"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "현사"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "현인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "현자"; }
+		}
+		else if(get_job(@target_sd) == 4) {
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "도인"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "명인"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "진인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "진선"; }
+		}
+		else if(get_job(@target_sd) == 5) { message @sd, 8, "훔쳐보지 말것!"; end; }
+		callfunc "BEGINFUNC", 0, 19, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+		set @title$, get_title(@target_sd);
+		message @sd, 8, @classname$+" "+get_name(@target_sd)+"  레벨 "+get_level(@target_sd)+"\\n"+@title$+"\\n힘 : "+get_might(@target_sd)+" 민첩성 : "+get_will(@target_sd)+" 지능 : "+get_grace(@target_sd);
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 0, 19, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+}
+
+@금수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("금수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("경수");
+	spelluncast @sd, name2spellid("야수");
+	spelluncast @sd, name2spellid("맹수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "고양이"))
+	{
+		set_disguiselook @sd, 183;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "새끼돼지"))
+	{
+		set_disguiselook @sd, 21;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "돼지"))
+	{
+		set_disguiselook @sd, 20;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "강아지"))
+	{
+		set_disguiselook @sd, 19;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "누렁이"))
+	{
+		set_disguiselook @sd, 104;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "고양이";
+		message @sd, 3, "새끼돼지";
+		message @sd, 3, "돼지";
+		message @sd, 3, "강아지";
+		message @sd, 3, "누렁이";
+		end;
+	}
+	
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("금수"), 60, 6, myid();
+}
+
+@금수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "금수 해제.";
+}
+
+@대지의빛	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set @target_id, script_target(@sd);
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_job(@target_sd) == 0)
+		{
+			set @classname$, "평민";
+		}
+		else if(get_job(@target_sd) == 1) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "전사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "검객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "검제"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "검황"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "검성"; }
+		}
+		else if(get_job(@target_sd) == 2) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도적"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "자객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "진검"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "귀검"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "태성"; }
+		}
+		else if(get_job(@target_sd) == 3) 
+		{
+			if(get_joblevel(@target_sd)==0) { set @classname$, "주술사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "술사"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "현사"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "현인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "현자"; }
+		}
+		else if(get_job(@target_sd) == 4) {
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "도인"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "명인"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "진인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "진선"; }
+		}
+		else if(get_job(@target_sd) == 5) { message @sd, 8, "훔쳐보지 말것!"; end; }
+		callfunc "BEGINFUNC", 0, 22, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+		set @title$, get_title(@target_sd);
+		message @sd, 8, @classname$+" "+get_name(@target_sd)+"  레벨 "+get_level(@target_sd)+"\\n"+@title$+"\\n힘 : "+get_might(@target_sd)+" 민첩성 : "+get_will(@target_sd)+" 지능 : "+get_grace(@target_sd);
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 0, 22, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+}
+
+@경수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("경수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("금수");
+	spelluncast @sd, name2spellid("야수");
+	spelluncast @sd, name2spellid("맹수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "토끼"))
+	{
+		set_disguiselook @sd, 22;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "다람쥐"))
+	{
+		set_disguiselook @sd, 26;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "토끼";
+		message @sd, 3, "다람쥐";
+		end;
+	}
+
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("경수"), 60, 6, myid();
+}
+
+@경수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "경수 해제.";
+}
+
+@바다의빛	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set @target_id, script_target(@sd);
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_job(@target_sd) == 0)
+		{
+			set @classname$, "평민";
+		}
+		else if(get_job(@target_sd) == 1) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "전사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "검객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "검제"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "검황"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "검성"; }
+		}
+		else if(get_job(@target_sd) == 2) 
+		{ 
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도적"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "자객"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "진검"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "귀검"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "태성"; }
+		}
+		else if(get_job(@target_sd) == 3) 
+		{
+			if(get_joblevel(@target_sd)==0) { set @classname$, "주술사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "술사"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "현사"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "현인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "현자"; }
+		}
+		else if(get_job(@target_sd) == 4) {
+			if(get_joblevel(@target_sd)==0) { set @classname$, "도사"; } 
+			if(get_joblevel(@target_sd)==1) { set @classname$, "도인"; }
+			if(get_joblevel(@target_sd)==2) { set @classname$, "명인"; }
+			if(get_joblevel(@target_sd)==3) { set @classname$, "진인"; }
+			if(get_joblevel(@target_sd)==4) { set @classname$, "진선"; }
+		}
+		else if(get_job(@target_sd) == 5) { message @sd, 8, "훔쳐보지 말것!"; end; }
+		if(get_gmlevel(@sd) == 0) { callfunc "BEGINFUNC", 0, 26, 0, 0, 6, 0; }
+		set_mp @sd, get_mp(@sd)-30;
+		set @title$, get_title(@target_sd);
+		message @sd, 8, @classname$+" "+get_name(@target_sd)+"  레벨 "+get_level(@target_sd)+"\\n"+@title$+"\\n힘 : "+get_might(@target_sd)+" 민첩성 : "+get_will(@target_sd)+" 지능 : "+get_grace(@target_sd)+"\\n"+get_itemlist(@target_sd);
+	}
+	else
+	{
+		callfunc "BEGINFUNC", 0, 26, 0, 0, 6, 0;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+}
+
+@야수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("야수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("경수");
+	spelluncast @sd, name2spellid("금수");
+	spelluncast @sd, name2spellid("맹수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "여우"))
+	{
+		set_disguiselook @sd, 23;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "늑대"))
+	{
+		set_disguiselook @sd, 24;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "여우";
+		message @sd, 3, "늑대";
+		end;
+	}
+	
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("야수"), 60, 6, myid();
+}
+
+@야수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "야수 해제.";
+}
+
+@맹수	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("맹수"), @sd;
+	
+	spelluncast @sd, name2spellid("변신시약");
+	spelluncast @sd, name2spellid("경수");
+	spelluncast @sd, name2spellid("야수");
+	spelluncast @sd, name2spellid("금수");
+	spelluncast @sd, name2spellid("투명");
+	
+	if(!strcmp(script_input(@sd), "곰"))
+	{
+		set_disguiselook @sd, 25;
+		set_state @sd, 4;
+	}
+	else if(!strcmp(script_input(@sd), "호랑이"))
+	{
+		set_disguiselook @sd, 30;
+		set_state @sd, 4;
+	}
+	else
+	{
+		message @sd, 3, "변신 가능한 동물";
+		message @sd, 3, "곰";
+		message @sd, 3, "호랑이";
+		end;
+	}
+	
+	updatelookpc @sd, 1;
+	set_mp @sd, get_mp(@sd)-30;
+	callfunc "BEGINFUNC", 3, 25, name2spellid("맹수"), 60, 6, myid();
+}
+
+@맹수해제	{
+	set @sd, mysd();
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+	message @sd, 3, "맹수 해제.";
+}
+
+@노획	{
+	set @sd, mysd();
+	set @id, myid();
+	set @x, get_x(@id);
+	set @y, get_y(@id);
+	
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	
+	switch( get_side(@id) )
+	{
+	case 0:
+		set @y, @y-1;
+		set @val, canmove(@id, get_x(@id), get_y(@id)-1);
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2) { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	case 1:
+		set @x, @x+1;
+		set @val, canmove(@id, get_x(@id)+1, get_y(@id));
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2) { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	case 2:
+		set @y, @y+1;
+		set @val, canmove(@id, get_x(@id), get_y(@id)+1);
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2) { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	case 3:
+		set @x, @x-1;
+		set @val, canmove(@id, get_x(@id)-1, get_y(@id));
+		if(@val)
+		{
+			set @target_id, obj_getfront();
+			if(@target_id > 0) { if(istype(@target_id) != 2) { goto NOTGET; } }
+			else { goto NOTGET; }
+		}
+		break;
+	}
+	getitem @sd, @x, @y;
+NOTGET:
+	callfunc "BEGINFUNC", 0, 37, 0, 0, 6, 0;
+	say @id, 2, "노획!~~";
+	set_mp @sd, get_mp(@sd)-30;	
+}
+
+//@망각	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	
+	callfunc "MANA_DELAY", 60, 0, @sd;
+	
+	if(istype(@target_id) == 2) 
+	{
+		callfunc "BEGINFUNC", 0, 32, 0, 0, 6, 0;
+		effect @target_id, 34;
+		set_mp @sd, get_mp(@sd)-60;
+		if(mobspellaethered(@target_id, name2spellid("망각")) == 0)
+		{
+			mobspellaether @target_id, name2spellid("망각"), 2;
+			if(rand(0, 100) > 30 && rand(0, 100) > 30) { set_siya @target_id, 1, 1; }
+		}
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다";
+	}
+}

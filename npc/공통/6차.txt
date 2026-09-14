@@ -1,0 +1,69 @@
+이무기의방입장	{
+	set @sd, mysd();
+	set @id, myid();
+
+POS00000:
+	set @pos, dialog(0, 0, 1, "이무기의방으로 가기 위해서는, 여의주가 필요하다네.");
+	if(@pos == 0) { end; }
+POS00001:
+	set @pos, dialog(0, 1, 1, "이 곳은 정말이지 위험한 곳이라네.. 그래도 들어가겠는가?");
+	if(@pos == -1) { goto POS00000; }
+	else if(@pos == 0) { end; }
+POS00002:
+	set @pos, list2(@list, 0, 0, "지금 준비되어 있나?\\n그룹원이 있으면 같이 이동된다네.", "네", "아니요");
+	if(@pos == 0) { end; }
+	else if(@list == 1)
+	{
+POS00003:
+			if(countitem(name2itemid("여의주")) < 1)
+		{
+			set @pos, dialog(0, 0, 1, "예끼 이놈! 여의주를 가져오거라!");
+			end;
+		}
+
+		set @pos, list2(@list, 0, 0, "자!! 보내주겠네", "꼭 물리치고 오겠습니다!");
+		if(@pos == 0) { end; }
+		else if(@list == 1) { set @warp_id, 904; goto MAP; }
+		end;
+	}
+	end;
+
+MAP:
+	if(countitem(name2itemid("여의주")) < 1)
+	{
+		set @pos, dialog(0, 0, 1, "예끼 이놈! 여의주를 가져오거라!");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("여의주"), 1;
+
+		if(party(@sd) == 0)
+		{
+			set @pos, dialog(0, 0, 0, "이무기의방으로 이동하였습니다.");
+			warp @sd, @warp_id, rand(16, 19), rand(16, 19);
+			end;
+		}
+		else
+		{
+			for(set @i, 0; @i < partymax(); set @i, @i+1)
+			{
+				set @target_sd, party_member(@sd, @i);
+				if(@target_sd > 0)
+				{
+					if(get_mapid(@sd) == get_mapid(@target_sd))
+					{
+						if(@sd != @target_sd)
+						{
+							message @target_sd, 8, get_name(@sd) + "님에 의해 이무기의방으로 이동하였습니다.";
+							warp @target_sd, @warp_id, rand(16, 19), rand(16, 19);
+						}
+					}
+				}
+			}
+			set @pos, dialog(0, 0, 0, "이무기의방으로 그룹원과 함께 이동하였습니다.");
+			warp @sd, @warp_id, rand(16, 19), rand(16, 19);
+			end;
+		}
+	}
+}

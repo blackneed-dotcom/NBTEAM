@@ -1,0 +1,233 @@
+벌목장인	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($produce_level == 0)
+	{
+		set @pos, dialog(0,0,0, "일단 생산장인에게 기초적인 생산 기술부터 전수받고 오게.");
+		end;
+	}
+Produce:
+	if($produce_level_3 == 0) { set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "벌목술 배우기"); }
+	else { set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "벌목술 배우기", "현재 나의 벌목 정보", "벌목 단계 진급하기", "벌목 기술 습득", "아이템 제작"); }
+
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		if($produce_level_3 != 0)
+		{
+			set @pos, dialog(0,0,0, "자네는 이미 벌목술을 익혔군.");
+			end;
+		}
+		if(get_equipitem(@sd, 0) == name2itemid("도끼"))
+		{
+			set @pos, dialog(0,0,1, "벌목술을 익히기 위해선 노란비서 100장과 금전 3000전이 필요하네.");
+			if(@pos == 0) end;
+			set @study, list1("정말 벌목술을 배우겠나?", "예", "아뇨");
+			if(@study == 1)
+			{
+				if(get_money(@sd) < 3000 || countitem(name2itemid("노란비서")) < 100)
+				{
+					set @pos, dialog(0,0,0, "벌목술을 배우기 위한 기본적인 준비가 되어있지 않군.");
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0,0,1, "좋아. 자네에게 벌목술을 전수해주지. 앞으로 열심히 하게");
+					if(@pos == 0) end;
+
+					set $produce_level_3, 1;
+					addspell name2spellid("벌목술");
+					delitem @sd, name2itemid("노란비서"), 100;
+					set_money @sd, get_money(@sd)-3000;
+					updatestatus @sd, 2;
+					broadcast 4, "※ " + get_name(@sd) + "님이 벌목술을 습득하셨습니다.";
+					end;
+				}
+			}
+			else if(@study == 2)
+			{
+				set @pos, dialog(0,0,0, "그럼 배우고 싶을때 다시오게.");
+				end;
+			}
+			else end;
+		}
+		else
+		{
+			set @pos, dialog(0,0,0, "벌목술을 배우기 위한 기본적인 준비가 되어있지 않군.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		setarray @produce_level_check[0], 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+		setarray @produce_fullexp[0], 1500, 4000, 10000, 25000, 40000, 60000, 90000, 120000, 150000, 200000, 300000, 500000;
+		for(set @loop, 0; @loop <= 12; set @loop, @loop+1)
+		{
+			if($produce_level_3 == @produce_level_check[@loop])
+			{
+				set @pos, dialog(0,0,1, "< 생산 정보 >\\n\\n생산 레벨 : " + $produce_level_3 + "\\n생산 경험 : " + $produce_exp_3 + "/" + @produce_fullexp[@loop]);
+				deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+				deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);		
+				if(@pos == 0) end;
+				else if(@pos == 1) goto Produce;
+				else end;
+				end;
+			}
+		}
+	}
+	else if(@list == 3)
+	{
+		setarray @produce_level_check[0], 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+		setarray @produce_fullexp[0], 1500, 4000, 10000, 25000, 40000, 60000, 90000, 120000, 150000, 200000, 300000, 500000;
+		setarray @money[0], 1000, 3000, 5000, 10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000, 1000000;
+		setarray @number[0], 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120;
+		for(set @loop, 0; @loop <= 12; set @loop, @loop+1)
+		{
+			if($produce_level_3 == @produce_level_check[@loop])
+			{
+				if($produce_exp_3 < @produce_fullexp[@loop])
+				{
+					set @pos, dialog(0,0,0, "아직 생산 경험이 부족한것 같은데?\\n\\n현재 생산 경험 : " + $produce_exp_3 + "\\n필요 생산 경험 : " + @produce_fullexp[@loop]);
+					deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+					deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+					deletearray @money[0], getarraysize(@money);
+					deletearray @number[0], getarraysize(@number);
+					end;
+				}
+				else
+				{
+					set @level_up, list1("놀라보게 성장했군. 다음 레벨로 진급하기 위해선 노란비서 " + @number[@loop] + "개, 금전 " + @money[@loop] + "전이 필요하네. 정말 진급할텐가?", "예", "아뇨");
+					if(@level_up == 1)
+					{
+						if(get_money(@sd) < @money[@loop] || countitem(name2itemid("노란비서")) < @number[@loop])
+						{
+							set @pos, dialog(0,0,0, "진급하기 위한 성의가 부족한것 같군.");
+							deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+							deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+							deletearray @money[0], getarraysize(@money);
+							deletearray @number[0], getarraysize(@number);
+							end;
+						}
+						else
+						{
+							set @pos, dialog(0,0,1, "정말 구해왔군. 좋아. 자네를 다음 레벨로 진급시켜 주겠네.");
+							if(@pos == 0) end;
+
+							set $produce_level_3, $produce_level_3+1;
+							set $produce_exp_3, 0;
+							delitem @sd, name2itemid("노란비서"), @number[@loop];
+							set_money @sd, get_money(@sd)-@money[@loop];
+							updatestatus @sd, 2;
+							broadcast 4, "※ " + get_name(@sd) + "님의 벌목술레벨이 " + $produce_level_3 + "단계로 진급하셨습니다.";
+							deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+							deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+							deletearray @money[0], getarraysize(@money);
+							deletearray @number[0], getarraysize(@number);
+							end;
+						}
+					}
+					else if(@level_up == 2)
+					{
+						set @pos, dialog(0,0,0, "아직 진급은 필요 없는것인가?");
+						deletearray @produce_level_check[0], getarraysize(@produce_level_check);
+						deletearray @produce_fullexp[0], getarraysize(@produce_fullexp);
+						deletearray @money[0], getarraysize(@money);
+						deletearray @number[0], getarraysize(@number);
+						end;
+					}
+				}
+			}
+		}
+	}
+	else if(@list == 4)
+	{
+		if(checkspell(name2spellid("벌목술")) == 52)
+		{
+			set @p_study, list1("벌목술을 다시 배우기 위해선 30000만전이 필요하네. 다시 배우겠나?", "예", "아뇨");
+			if(@p_study == 1)
+			{
+				if(get_money(@sd) < 30000)
+				{
+					set @pos, dialog(0,0,0, "금전이 부족한것 같네.");
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0,0,1, "다시 가르쳐주었네. 다시는 이런일이 발생하지 않도록 주의하게.");
+					if(@pos == 0) end;
+
+					addspell name2spellid("벌목술");
+					set_money @sd, get_money(@sd)-30000;
+					updatestatus @sd, 2;
+					end;
+				}
+			}
+			else if(@p_study == 2)
+			{
+				set @pos, dialog(0,0,0, "마음대로 하게. 벌목술이 없다면 벌목을 할 수 없으니 말이지.");
+				end;
+			}
+			else end;
+		}
+		else
+		{
+			set @pos, dialog(0,0,0, "자네는 현재 벌목술을 보유하고 있군.");
+			end;
+		}
+	}
+	else if(@list == 5)
+	{
+	Make:
+		set @tree_rand, rand(1,100);
+		set @pos, list2(@ret, 0, 0, "몇 단계의 아이템을 만들건가?", "1단계", "2단계", "3단계", "4단계", "5단계", "6단계", "7단계", "8단계", "9단계", "10단계", "11단계");
+		if(@pos == 0) end;
+		else if(@ret == 1)
+		{
+			if($produce_level_3 < 1) { set @pos, dialog(0,0,0, "아직 생산 레벨이 부족한걸?"); end; }
+
+			set @pos, list2(@one, 0, 1, "어떤 아이템을 만들겠나?", "대나무방패");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto Make;
+			else if(@one == 1)
+			{
+				set @pos, dialog(0,0,1, "만들 아이템 : 대나무방패 1개\\n\\n필요 아이템 : 대나무묶음 2개\\n\\n성공확률 : 50%");
+				if(@pos == 0) end;
+
+				set @list, list1("정말 만들겠나?", "예", "아뇨");
+				if(@list == 1)
+				{
+					if(countitem(name2itemid("대나무묶음")) < 2)
+					{
+						set @pos, dialog(0,0,0, "대나무방패 1개를 만들기 위해선 대나무묶음 2개가 필요하네.");
+						end;
+					}
+					else
+					{
+						if(@tree_rand <= 50)
+						{
+							set @pos, dialog(0,0,1, "< 생산 성공 >\\n\\n성공 아이템 : 대나무방패");
+							set $produce_exp_3, $produce_exp_3+30;
+							message @sd, 3, "벌목 경험 30 획득!";
+							delitem @sd, name2itemid("대나무묶음"), 2;
+							additem @sd, name2itemid("대나무방패"), 1;
+							end;
+						}
+						else
+						{
+							set @pos, dialog(0,0,0, "< 생산 실패 >\\n\\n실패 아이템 : 대나무방패");
+							delitem @sd, name2itemid("대나무묶음"), 2;
+							end;
+						}
+					}
+				}
+				else end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0,0,0, "준비중 입니다.");
+			end;
+		}	
+	}
+}

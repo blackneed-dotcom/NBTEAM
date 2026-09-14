@@ -1,0 +1,317 @@
+@채광술	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("채광술"), @sd;
+
+	set @target_id, obj_getfront();
+	if(istype(@target_id) == 2)
+	{
+		setarray @mob_name$[0], "돌무더기", "연옥석무더기", "황동석무더기", "청동석무더기", "황옥석무더기", "적옥석무더기", "철광석무더기", "청옥석무더기", "은광석무더기", "백옥석무더기", "금광석무더기";
+		setarray @item_name$[0], "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치", "단단한망치";
+		setarray @add_item$[0], "돌맹이", "연옥석", "황동석", "청동석", "황옥석", "적옥석", "철광석", "청옥석", "은광석", "백옥석", "금광석";
+		setarray @produce_exp[0], 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13;
+		setarray @produce_level[0], 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11;
+		setarray @produce_level_check[0], 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11;
+		setarray @produce_fullexp[0], 1500, 4000, 10000, 25000, 40000, 60000, 90000, 120000, 150000, 200000, 300000;
+		for(set @loop, 0; @loop < 11; set @loop, @loop+1)
+		{
+			if(get_mobname(@target_id) == @mob_name$[@loop])
+			{
+				if(get_equipitem(@sd, 0) == name2itemid(@item_name$[@loop]))
+				{
+					if($produce_level_1 < @produce_level[@loop])
+					{
+						message @sd, 3, "생산 경험이 부족하므로 채집할 수 없습니다.";
+						end;
+					}
+					action @id, 1, 30, 0;
+					sound @id, 347;
+					if(get_mobhp(@target_id) <= 100)
+					{
+						if($produce_level_1 == @produce_level_check[@loop])
+						{
+							if($produce_exp_1+@produce_exp[@loop] >= @produce_fullexp[@loop])
+							{
+								message @sd, 3, "채광 생산 경험을 더이상 올릴 수 없습니다.";
+								set $produce_exp_1, @produce_fullexp[@loop];
+								additem @sd, name2itemid(@add_item$[@loop]), 1;
+								deletemob @target_id, mapid();
+								end;
+							}							
+						}
+						set $produce_exp_1, $produce_exp_1+@produce_exp[@loop];
+						message @sd, 3, "채광 생산 레벨 : " + $produce_level_1;
+						message @sd, 3, "채광 생산 경험 : " + $produce_exp_1 + "/" + @produce_fullexp[@loop];
+						additem @sd, name2itemid(@add_item$[@loop]), 1;
+						deletemob @target_id, mapid();
+						end;
+					}
+					set_mobac @target_id, 0;
+					damage @id, @target_id, 100, 0;
+					callfunc "Produce_Delete_Array";
+					spelldelay @sd, name2spellid("채광술"), 1;
+					end;
+				}
+				else
+				{
+					message @sd, 3, "해당 무기로는 채집을 할 수 없습니다.";
+					callfunc "Produce_Delete_Array";
+					end;
+				}
+			}
+		}
+		message @sd, 3, "채집 가능한 몬스터가 아닙니다.";
+		callfunc "Produce_Delete_Array";
+		end;
+	}
+	else end;
+}
+
+@직조술	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("직조술"), @sd;
+
+	set @target_id, obj_getfront();
+	if(istype(@target_id) == 2)
+	{
+		setarray @mob_name$[0], "논벼", "보리", "쪽풀", "황마풀", "모시풀", "아마풀", "목화", "양모", "명주", "홍화", "치자나무";
+		setarray @item_name$[0], "낫", "낫", "낫", "낫", "낫", "낫", "낫", "낫", "낫", "낫", "낫";
+		setarray @add_item$[0], "쌀", "보리", "쪽실", "황마실", "모시실", "아마실", "목화솜", "양모실", "명주실", "홍화실", "치자실";
+		setarray @produce_exp[0], 3, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11;
+		setarray @produce_level[0], 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9;
+		setarray @produce_level_check[0], 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9;
+		setarray @produce_fullexp[0], 1500, 1500, 1500, 4000, 10000, 25000, 40000, 60000, 90000, 120000, 150000;
+		for(set @loop, 0; @loop < 11; set @loop, @loop+1)
+		{
+			if(get_mobname(@target_id) == @mob_name$[@loop])
+			{
+				if(get_equipitem(@sd, 0) == name2itemid(@item_name$[@loop]))
+				{
+					if($produce_level_2 < @produce_level[@loop])
+					{
+						message @sd, 3, "생산 경험이 부족하므로 채집할 수 없습니다.";
+						end;
+					}
+					action @id, 1, 30, 0;
+					sound @id, 347;
+					if(get_mobhp(@target_id) <= 100)
+					{
+						if($produce_level_2 == @produce_level_check[@loop])
+						{
+							if($produce_exp_2+@produce_exp[@loop] >= @produce_fullexp[@loop])
+							{		
+								message @sd, 3, "직조 생산 경험을 더이상 올릴 수 없습니다.";
+								set $produce_exp_2, @produce_fullexp[@loop];
+								additem @sd, name2itemid(@add_item$[@loop]), 1;
+								deletemob @target_id, mapid();
+								end;
+							}
+						}
+						set $produce_exp_2, $produce_exp_2+@produce_exp[@loop];
+						message @sd, 3, "직조 생산 레벨 : " + $produce_level_2;
+						message @sd, 3, "직조 생산 경험 : " + $produce_exp_2 + "/" + @produce_fullexp[@loop];
+						additem @sd, name2itemid(@add_item$[@loop]), 1;
+						deletemob @target_id, mapid();
+						end;
+					}
+					set_mobac @target_id, 0;
+					damage @id, @target_id, 100, 0;
+					callfunc "Produce_Delete_Array";
+					spelldelay @sd, name2spellid("직조술"), 1;
+					end;
+				}
+				else
+				{
+					message @sd, 3, "해당 무기로는 채집을 할 수 없습니다.";
+					callfunc "Produce_Delete_Array";
+					end;
+				}
+			}
+		}
+		message @sd, 3, "채집 가능한 몬스터가 아닙니다.";
+		callfunc "Produce_Delete_Array";
+		end;
+	}
+	else end;
+}
+
+@벌목술	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("벌목술"), @sd;
+
+	set @target_id, obj_getfront();
+	if(istype(@target_id) == 2)
+	{
+		setarray @mob_name$[0], "화살나무", "삼나무", "소나무", "은행나무", "참대나무", "단풍나무", "떡갈나무", "반송", "금강송", "백송", "황금송";
+		setarray @item_name$[0], "도끼", "도끼", "도끼", "도끼", "도끼", "도끼", "도끼", "도끼", "도끼", "도끼", "도끼";
+		setarray @add_item$[0], "화살나무가지", "삼나무가지", "소나무가지", "은행나무가지", "참대나무가지", "단풍나무가지", "떡갈나무가지", "반송가지", "금강송가지", "백송가지", "황금송가지";
+		setarray @produce_exp[0], 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13;
+		setarray @produce_level[0], 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11;
+		setarray @produce_level_check[0], 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11;
+		setarray @produce_fullexp[0], 1500, 4000, 10000, 25000, 40000, 60000, 90000, 120000, 150000, 200000, 300000;
+		for(set @loop, 0; @loop < 11; set @loop, @loop+1)
+		{
+			if(get_mobname(@target_id) == @mob_name$[@loop])
+			{
+				if(get_equipitem(@sd, 0) == name2itemid(@item_name$[@loop]))
+				{
+					if($produce_level_3 < @produce_level[@loop])
+					{
+						message @sd, 3, "생산 경험이 부족하므로 채집할 수 없습니다.";
+						end;
+					}
+					action @id, 1, 30, 0;
+					sound @id, 347;
+					if(get_mobhp(@target_id) <= 100)
+					{
+						if($produce_level_3 == @produce_level_check[@i])
+						{
+							if($produce_exp_3+@produce_exp[@loop] >= @produce_fullexp[@loop])
+							{
+								message @sd, 3, "벌목 생산 경험을 더이상 올릴 수 없습니다.";
+								set $produce_exp_3, @produce_fullexp[@loop];
+								additem @sd, name2itemid(@add_item$[@loop]), 1;
+								deletemob @target_id, mapid();
+								end;
+							}							
+						}
+						set $produce_exp_3, $produce_exp_3+@produce_exp[@loop];
+						message @sd, 3, "벌목 생산 레벨 : " + $produce_level_3;
+						message @sd, 3, "벌목 생산 경험 : " + $produce_exp_3 + "/" + @produce_fullexp[@loop];
+						additem @sd, name2itemid(@add_item$[@loop]), 1;
+						deletemob @target_id, mapid();
+						end;
+					}
+					set_mobac @target_id, 0;
+					damage @id, @target_id, 100, 0;
+					callfunc "Produce_Delete_Array";
+					spelldelay @sd, name2spellid("벌목술"), 1;
+					end;
+				}
+				else
+				{
+					message @sd, 3, "해당 무기로는 채집을 할 수 없습니다.";
+					callfunc "Produce_Delete_Array";
+					end;
+				}
+			}
+		}
+		message @sd, 3, "채집 가능한 몬스터가 아닙니다.";
+		callfunc "Produce_Delete_Array";
+		end;
+	}
+	else end;
+}
+
+@채광중	{
+	set @sd, mysd();
+	set @id, myid();
+
+	setarray @map_name$[0], "채광장1", "채광장2", "채광장3", "채광장4", "채광장5", "채광65", "채광장7", "채광장8", "채광장9", "채광장10", "채광장11";
+	for(set @i, 0; @i <= 11; set @i, @i+1)
+	{
+		if(get_mapname(@sd) == @map_name$[@i])
+		{
+			setarray @item_name$[0], "단단한망치";
+			for(set @loop, 0; @loop < 1; set @loop, @loop+1)
+			{
+				if(get_equipitem(@sd, 0) == name2itemid(@item_name$[@loop]))
+				{
+					set_mp @sd, 0;
+					deletearray @map_name$[0], getarraysize(@map_name$);
+					deletearray @item_name$[0], getarraysize(@item_name$);
+					end;
+				}
+			}
+		}
+	}
+	spelluncast @sd, name2spellid("채광중");
+	warp @sd, 2390, rand(22,24), rand(2,8);
+	deletearray @map_name$[0], getarraysize(@map_name$);
+	deletearray @item_name$[0], getarraysize(@item_name$);
+	end;
+}
+
+@직조중	{
+	set @sd, mysd();
+	set @id, myid();
+
+	setarray @map_name$[0], "직조장1", "직조장2", "직조장3", "직조장4", "직조장5", "직조장6", "직조장7", "직조장8", "직조장9";
+	for(set @i, 0; @i <= 9; set @i, @i+1)
+	{
+		if(get_mapname(@sd) == @map_name$[@i])
+		{
+			setarray @item_name$[0], "낫";
+			for(set @loop, 0; @loop < 1; set @loop, @loop+1)
+			{
+				if(get_equipitem(@sd, 0) == name2itemid(@item_name$[@loop]))
+				{
+					set_mp @sd, 0;
+					deletearray @map_name$[0], getarraysize(@map_name$);
+					deletearray @item_name$[0], getarraysize(@item_name$);
+					end;
+				}
+			}
+		}
+	}
+	spelluncast @sd, name2spellid("직조중");
+	warp @sd, 2390, rand(22,24), rand(2,8);
+	deletearray @map_name$[0], getarraysize(@map_name$);
+	deletearray @item_name$[0], getarraysize(@item_name$);
+	end;
+}
+
+@벌목중	{
+	set @sd, mysd();
+	set @id, myid();
+
+	setarray @map_name$[0], "벌목장1", "벌목장2", "벌목장3", "벌목장4", "벌목장5", "벌목장6", "벌목장7", "벌목장8", "벌목장9", "벌목장10", "벌목장11";
+	for(set @i, 0; @i <= 11; set @i, @i+1)
+	{
+		if(get_mapname(@sd) == @map_name$[@i])
+		{
+			setarray @item_name$[0], "도끼";
+			for(set @loop, 0; @loop < 1; set @loop, @loop+1)
+			{
+				if(get_equipitem(@sd, 0) == name2itemid(@item_name$[@loop]))
+				{
+					set_mp @sd, 0;
+					deletearray @map_name$[0], getarraysize(@map_name$);
+					deletearray @item_name$[0], getarraysize(@item_name$);
+					end;
+				}
+			}
+		}
+	}
+	spelluncast @sd, name2spellid("벌목중");
+	warp @sd, 2390, rand(22,24), rand(2,8);
+	deletearray @map_name$[0], getarraysize(@map_name$);
+	deletearray @item_name$[0], getarraysize(@item_name$);
+	end;
+}
+
+@채광중끝	{
+	set @sd, mysd();
+	set @id, myid();
+	message @sd, 0, "채광장에 다시 입장하시려면 엔피시를 통해 재입장 해주세요.";
+	warp @sd, 15, 5, 5;
+}
+
+@직조중끝	{
+	set @sd, mysd();
+	set @id, myid();
+	message @sd, 0, "직조장에 다시 입장하시려면 엔피시를 통해 재입장 해주세요.";
+	warp @sd, 15, 5, 5;
+}
+
+@벌목중끝	{
+	set @sd, mysd();
+	set @id, myid();
+	message @sd, 0, "벌목장에 다시 입장하시려면 엔피시를 통해 재입장 해주세요.";
+	warp @sd, 15, 5, 5;
+}

@@ -1,0 +1,28 @@
+@인면충	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("쇠조각"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("쇠가루"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("인면충의알"), 1;
+}
+
+@인면벌	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("쇠조각"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("쇠가루"), 1;
+	callfunc "DROPITEM", objid(), 10000, 700, name2itemid("인면충의알"), 1;
+}
+
+@문비	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("쇠조각"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("쇠가루"), 1;
+}
+
+@박가	{
+	callfunc "DROPITEM", objid(), 10000, 700, name2itemid("나무막대"), 1;
+}
+
+@왕가	{
+	callfunc "DROPITEM", objid(), 10000, 700, name2itemid("구미호꼬리"), 1;
+}
+
+@대나무	{
+	callfunc "DROPITEM", objid(), 10000, 1000, name2itemid("대나무가지"), 1;
+}

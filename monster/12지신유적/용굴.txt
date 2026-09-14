@@ -1,0 +1,43 @@
+@용마	{
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("은나무가지"), 1;
+}
+
+@용천	{
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("은나무가지"), 1;
+}
+
+@용랑	{
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("은나무가지"), 1;
+}
+
+@용겸	{
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("은나무가지"), 1;
+}
+
+@묵룡	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("묵룡의어금니"), 1;
+}
+
+@감룡	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("감룡의어금니"), 1;
+}
+
+@흑룡	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("흑룡의어금니"), 1;
+}
+
+@진룡	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진룡의어금니"), 1;
+}
+
+@용의분노	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 2, -1, 72, 8, rand(20000, 30000), 0, "용의분노", "크와아앙!";
+}
+
+@용의분노1	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 72, 8, rand(80000, 100000), 0, "용의분노", "크와아앙!";
+}
+
+@건룡	{
+	callfunc "DROPITEM", objid(), 100, 5, name2itemid("금나무가지"), 1;
+}

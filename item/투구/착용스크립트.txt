@@ -1,0 +1,1922 @@
+// ----------------------------------------------- helmet script ---------------------------------------------------------------------------------------
+@¿ä¸®»çÀÇ¿¬·ûÂø¿ë	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("ÀüÇ÷"))) { spelluncast @sd, name2spellid("ÀüÇ÷"); }
+ set_dam @sd, get_dam(@sd)+4;
+ set_will @sd, get_will(@sd)+20;
+ set_grace @sd, get_grace(@sd)+20;
+ set_might @sd, get_might(@sd)+20;
+ set_healrecycling @sd, get_healrecycling(@sd)+1;
+ set_protection @sd, get_protection(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿ä¸®»çÀÇ¿¬·ûÇØÁ¦	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("ÀüÇ÷"))) { spelluncast @sd, name2spellid("ÀüÇ÷"); }
+ set_dam @sd, get_dam(@sd)-4;
+ set_will @sd, get_will(@sd)-20;
+ set_grace @sd, get_grace(@sd)-20;
+ set_might @sd, get_might(@sd)-20;
+ set_healrecycling @sd, get_healrecycling(@sd)-1;
+ set_protection @sd, get_protection(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÃÊ½ÉÀÚÀÇ±Í¸¶°³Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÃÊ½ÉÀÚÀÇ±Í¸¶°³ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÁÖ¼úÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_dam @sd, get_dam(@sd)+8;
+ set_hit @sd, get_hit(@sd)+5;
+ set_will @sd, get_will(@sd)+2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÁÖ¼úÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ set_dam @sd, get_dam(@sd)-8;
+ set_hit @sd, get_hit(@sd)-5;
+ set_will @sd, get_will(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@³¶¾ÆÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+400;
+ set_maxmp @sd, get_maxmp(@sd)+400;
+ set_will @sd, get_will(@sd)+5;
+ set_grace @sd, get_grace(@sd)+5;
+ set_might @sd, get_might(@sd)+5;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@³¶¾ÆÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-400;
+ set_maxmp @sd, get_maxmp(@sd)-400;
+ set_will @sd, get_will(@sd)-5;
+ set_grace @sd, get_grace(@sd)-5;
+ set_might @sd, get_might(@sd)-5;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÁøÃë¾ç¸ðÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+2000;
+ set_maxmp @sd, get_maxmp(@sd)+1000;
+ set_dam @sd, get_dam(@sd)+3;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+4;
+ set_might @sd, get_might(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÁøÃë¾ç¸ðÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-2000;
+ set_maxmp @sd, get_maxmp(@sd)-1000;
+ set_dam @sd, get_dam(@sd)-3;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-4;
+ set_might @sd, get_might(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÇöÃë¿ù¸ðÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+2000;
+ set_maxmp @sd, get_maxmp(@sd)+1000;
+ set_dam @sd, get_dam(@sd)+3;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+4;
+ set_might @sd, get_might(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÇöÃë¿ù¸ðÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-2000;
+ set_maxmp @sd, get_maxmp(@sd)-1000;
+ set_dam @sd, get_dam(@sd)-3;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-4;
+ set_might @sd, get_might(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÅÂ°øÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+2000;
+ set_maxmp @sd, get_maxmp(@sd)+1000;
+ set_dam @sd, get_dam(@sd)+3;
+ set_hit @sd, get_hit(@sd)+3;
+ set_will @sd, get_will(@sd)+4;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÅÂ°øÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-2000;
+ set_maxmp @sd, get_maxmp(@sd)-1000;
+ set_dam @sd, get_dam(@sd)-3;
+ set_hit @sd, get_hit(@sd)-3;
+ set_will @sd, get_will(@sd)-4;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°Ë½ÅÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+2000;
+ set_maxmp @sd, get_maxmp(@sd)+1000;
+ set_dam @sd, get_dam(@sd)+3;
+ set_hit @sd, get_hit(@sd)+3;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+4;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°Ë½ÅÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-2000;
+ set_maxmp @sd, get_maxmp(@sd)-1000;
+ set_dam @sd, get_dam(@sd)-3;
+ set_hit @sd, get_hit(@sd)-3;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-4;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°Ý¶û¸ðÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-9;
+ set_maxmp @sd, get_maxmp(@sd)+500;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+1;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°Ý¶û¸ðÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+9;
+ set_maxmp @sd, get_maxmp(@sd)-500;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-1;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ýºñ¸ðÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxmp @sd, get_maxmp(@sd)+500;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+1;
+ set_grace @sd, get_grace(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ýºñ¸ðÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxmp @sd, get_maxmp(@sd)-500;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-1;
+ set_grace @sd, get_grace(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°­¸¶µÎ°ÇÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-6;
+ set_maxhp @sd, get_maxhp(@sd)+200;
+ set_maxmp @sd, get_maxmp(@sd)+200;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°­¸¶µÎ°ÇÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+6;
+ set_maxhp @sd, get_maxhp(@sd)-200;
+ set_maxmp @sd, get_maxmp(@sd)-200;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°­¸¶Åõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-6;
+ set_maxhp @sd, get_maxhp(@sd)+200;
+ set_maxmp @sd, get_maxmp(@sd)+200;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°­¸¶Åõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+6;
+ set_maxhp @sd, get_maxhp(@sd)-200;
+ set_maxmp @sd, get_maxmp(@sd)-200;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°æºñÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_dam @sd, get_dam(@sd)+3;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°æºñÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_dam @sd, get_dam(@sd)-3;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°æ¶ûÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-9;
+ set_maxhp @sd, get_maxhp(@sd)+1000;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+1;
+ set_might @sd, get_might(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°æ¶ûÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+9;
+ set_maxhp @sd, get_maxhp(@sd)-1000;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-1;
+ set_might @sd, get_might(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÁøºñÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_dam @sd, get_dam(@sd)+3;
+ set_hit @sd, get_hit(@sd)+2;
+ set_might @sd, get_might(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÁøºñÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_dam @sd, get_dam(@sd)-3;
+ set_hit @sd, get_hit(@sd)-2;
+ set_might @sd, get_might(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áø¶ûÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-9;
+ set_maxhp @sd, get_maxhp(@sd)+1000;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+1;
+ set_might @sd, get_might(@sd)+3;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áø¶ûÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+9;
+ set_maxhp @sd, get_maxhp(@sd)-1000;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-1;
+ set_might @sd, get_might(@sd)-3;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿¬³ìÈ£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_dam @sd, get_dam(@sd)+1;
+ set_will @sd, get_will(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿¬³ìÈ£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_dam @sd, get_dam(@sd)-1;
+ set_will @sd, get_will(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@È²±ÝÈ£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_dam @sd, get_dam(@sd)+2;
+ set_hit @sd, get_hit(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@È²±ÝÈ£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_dam @sd, get_dam(@sd)-2;
+ set_hit @sd, get_hit(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÀÚÈ£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_hit @sd, get_hit(@sd)+1;
+ set_grace @sd, get_grace(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÀÚÈ£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_hit @sd, get_hit(@sd)-1;
+ set_grace @sd, get_grace(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿¬ÀÚÈ£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+100;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿¬ÀÚÈ£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-100;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿¬°¥È£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-7;
+ set_dam @sd, get_dam(@sd)+1;
+ set_hit @sd, get_hit(@sd)+1;
+ set_might @sd, get_might(@sd)+2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿¬°¥È£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+7;
+ set_dam @sd, get_dam(@sd)-1;
+ set_hit @sd, get_hit(@sd)-1;
+ set_might @sd, get_might(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿¬Ã»È£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-7;
+ set_dam @sd, get_dam(@sd)+1;
+ set_will @sd, get_will(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿¬Ã»È£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+7;
+ set_dam @sd, get_dam(@sd)-1;
+ set_will @sd, get_will(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@³ìÈ£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_dam @sd, get_dam(@sd)+1;
+ set_hit @sd, get_hit(@sd)+1;
+ set_grace @sd, get_grace(@sd)+2;
+ set_will @sd, get_will(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@³ìÈ£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_dam @sd, get_dam(@sd)-1;
+ set_hit @sd, get_hit(@sd)-1;
+ set_grace @sd, get_grace(@sd)-2;
+ set_will @sd, get_will(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÀûÈ£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-7;
+ set_hit @sd, get_hit(@sd)+1;
+ set_grace @sd, get_grace(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÀûÈ£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+7;
+ set_hit @sd, get_hit(@sd)-1;
+ set_grace @sd, get_grace(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@È²È£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+100;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@È²È£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-100;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿ë¿ÕÀÇÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+900;
+ set_maxmp @sd, get_maxmp(@sd)+900;
+ set_hit @sd, get_hit(@sd)+4;
+ set_dam @sd, get_dam(@sd)+4;
+ set_will @sd, get_will(@sd)+5;
+ set_grace @sd, get_grace(@sd)+4;
+ set_might @sd, get_might(@sd)+6;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿ë¿ÕÀÇÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-900;
+ set_maxmp @sd, get_maxmp(@sd)-900;
+ set_hit @sd, get_hit(@sd)-4;
+ set_dam @sd, get_dam(@sd)-4;
+ set_will @sd, get_will(@sd)-5;
+ set_grace @sd, get_grace(@sd)-4;
+ set_might @sd, get_might(@sd)-6;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@*¿ë¿ÕÀÇÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-11;
+ set_maxhp @sd, get_maxhp(@sd)+900;
+ set_maxmp @sd, get_maxmp(@sd)+900;
+ set_hit @sd, get_hit(@sd)+4;
+ set_dam @sd, get_dam(@sd)+4;
+ set_will @sd, get_will(@sd)+5;
+ set_grace @sd, get_grace(@sd)+4;
+ set_might @sd, get_might(@sd)+6;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@*¿ë¿ÕÀÇÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+11;
+ set_maxhp @sd, get_maxhp(@sd)-900;
+ set_maxmp @sd, get_maxmp(@sd)-900;
+ set_hit @sd, get_hit(@sd)-4;
+ set_dam @sd, get_dam(@sd)-4;
+ set_will @sd, get_will(@sd)-5;
+ set_grace @sd, get_grace(@sd)-4;
+ set_might @sd, get_might(@sd)-6;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÁÖÈ«Åõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-9;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_maxmp @sd, get_maxmp(@sd)+500;
+ set_hit @sd, get_hit(@sd)+3;
+ set_dam @sd, get_dam(@sd)+3;
+ set_will @sd, get_will(@sd)+2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÁÖÈ«Åõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+9;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_maxmp @sd, get_maxmp(@sd)-500;
+ set_hit @sd, get_hit(@sd)-3;
+ set_dam @sd, get_dam(@sd)-3;
+ set_will @sd, get_will(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¼âÀÚÈ²±ÝÅõ±¸Âø¿ë	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("ÀüÇ÷"))) { spelluncast @sd, name2spellid("ÀüÇ÷"); }
+ set_ac @sd, get_ac(@sd)-14;
+ set_maxhp @sd, get_maxhp(@sd)+5000;
+ set_maxmp @sd, get_maxmp(@sd)+5000;
+ set_hit @sd, get_hit(@sd)+9;
+ set_dam @sd, get_dam(@sd)+9;
+ set_will @sd, get_will(@sd)+12;
+ set_grace @sd, get_grace(@sd)+12;
+ set_might @sd, get_might(@sd)+12;
+ set $item_helmet_hp, get_maxhp(@sd)*7/100;
+ set_maxhp @sd, get_maxhp(@sd)+$item_helmet_hp;
+ set $item_helmet_mp, get_maxmp(@sd)*7/100;
+ set_maxmp @sd, get_maxmp(@sd)+$item_helmet_mp;
+ set $plus_magic_damage2, 20;
+ set $unplus_consume_hp, 10;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¼âÀÚÈ²±ÝÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("ÀüÇ÷"))) { spelluncast @sd, name2spellid("ÀüÇ÷"); }
+ set_ac @sd, get_ac(@sd)+14;
+ set_maxhp @sd, get_maxhp(@sd)-5000;
+ set_maxmp @sd, get_maxmp(@sd)-5000;
+ set_hit @sd, get_hit(@sd)-9;
+ set_dam @sd, get_dam(@sd)-9;
+ set_will @sd, get_will(@sd)-12;
+ set_grace @sd, get_grace(@sd)-12;
+ set_might @sd, get_might(@sd)-12;
+ set_maxhp @sd, get_maxhp(@sd)-$item_helmet_hp;
+ set_maxmp @sd, get_maxmp(@sd)-$item_helmet_mp;
+ set $plus_magic_damage2, 0;
+ set $unplus_consume_hp, 0;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Ã»¿¬½ÅÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-11;
+ set_maxhp @sd, get_maxhp(@sd)+750;
+ set_maxmp @sd, get_maxmp(@sd)+750;
+ set_hit @sd, get_hit(@sd)+5;
+ set_dam @sd, get_dam(@sd)+3;
+ set_will @sd, get_will(@sd)+8;
+ set_grace @sd, get_grace(@sd)+8;
+ set_might @sd, get_might(@sd)+8;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Ã»¿¬½ÅÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+11;
+ set_maxhp @sd, get_maxhp(@sd)-750;
+ set_maxmp @sd, get_maxmp(@sd)-750;
+ set_hit @sd, get_hit(@sd)-5;
+ set_dam @sd, get_dam(@sd)-3;
+ set_will @sd, get_will(@sd)-8;
+ set_grace @sd, get_grace(@sd)-8;
+ set_might @sd, get_might(@sd)-8;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@È²±ÝÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-12;
+ set_maxhp @sd, get_maxhp(@sd)+800;
+ set_maxmp @sd, get_maxmp(@sd)+800;
+ set_hit @sd, get_hit(@sd)+4;
+ set_dam @sd, get_dam(@sd)+4;
+ set_will @sd, get_will(@sd)+5;
+ set_grace @sd, get_grace(@sd)+5;
+ set_might @sd, get_might(@sd)+5;
+ set $item_helmet_hp, get_maxhp(@sd)*3/100;
+ set_maxhp @sd, get_maxhp(@sd)+$item_helmet_hp;
+ set $item_helmet_mp, get_maxmp(@sd)*3/100;
+ set_maxmp @sd, get_maxmp(@sd)+$item_helmet_mp;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@È²±ÝÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+12;
+ set_maxhp @sd, get_maxhp(@sd)-800;
+ set_maxmp @sd, get_maxmp(@sd)-800;
+ set_hit @sd, get_hit(@sd)-4;
+ set_dam @sd, get_dam(@sd)-4;
+ set_will @sd, get_will(@sd)-5;
+ set_grace @sd, get_grace(@sd)-5;
+ set_might @sd, get_might(@sd)-5;
+ set_maxhp @sd, get_maxhp(@sd)-$item_helmet_hp;
+ set_maxmp @sd, get_maxmp(@sd)-$item_helmet_mp;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@»ç¿¬°¥Åõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-7;
+ set_maxhp @sd, get_maxhp(@sd)+350;
+ set_maxmp @sd, get_maxmp(@sd)+350;
+ set_hit @sd, get_hit(@sd)+4;
+ set_dam @sd, get_dam(@sd)+2;
+ set_will @sd, get_will(@sd)+4;
+ set_grace @sd, get_grace(@sd)+4;
+ set_might @sd, get_might(@sd)+4;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@»ç¿¬°¥Åõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+7;
+ set_maxhp @sd, get_maxhp(@sd)-350;
+ set_maxmp @sd, get_maxmp(@sd)-350;
+ set_hit @sd, get_hit(@sd)-4;
+ set_dam @sd, get_dam(@sd)-2;
+ set_will @sd, get_will(@sd)-4;
+ set_grace @sd, get_grace(@sd)-4;
+ set_might @sd, get_might(@sd)-4;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ºñ·æÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+400;
+ set_maxmp @sd, get_maxmp(@sd)+400;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_will @sd, get_will(@sd)+4;
+ set_grace @sd, get_grace(@sd)+4;
+ set_might @sd, get_might(@sd)+4;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ºñ·æÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-400;
+ set_maxmp @sd, get_maxmp(@sd)-400;
+ set_hit @sd, get_hit(@sd)-2;
+ set_dam @sd, get_dam(@sd)-2;
+ set_will @sd, get_will(@sd)-4;
+ set_grace @sd, get_grace(@sd)-4;
+ set_might @sd, get_might(@sd)-4;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Èæ¼±Åõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-10;
+ set_maxhp @sd, get_maxhp(@sd)+800;
+ set_maxmp @sd, get_maxmp(@sd)+800;
+ set_hit @sd, get_hit(@sd)+3;
+ set_dam @sd, get_dam(@sd)+3;
+ set_will @sd, get_will(@sd)+7;
+ set_grace @sd, get_grace(@sd)+7;
+ set_might @sd, get_might(@sd)+7;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Èæ¼±Åõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+10;
+ set_maxhp @sd, get_maxhp(@sd)-800;
+ set_maxmp @sd, get_maxmp(@sd)-800;
+ set_hit @sd, get_hit(@sd)-3;
+ set_dam @sd, get_dam(@sd)-3;
+ set_will @sd, get_will(@sd)-7;
+ set_grace @sd, get_grace(@sd)-7;
+ set_might @sd, get_might(@sd)-7;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Ãµ°øÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-9;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Ãµ°øÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+9;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ set_hit @sd, get_hit(@sd)-2;
+ set_dam @sd, get_dam(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¾Æ¹ÌÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-6;
+ set_maxhp @sd, get_maxhp(@sd)+400;
+ set_maxmp @sd, get_maxmp(@sd)+400;
+ set_hit @sd, get_hit(@sd)+3;
+ set_dam @sd, get_dam(@sd)+3;
+ set_will @sd, get_will(@sd)+5;
+ set_grace @sd, get_grace(@sd)+5;
+ set_might @sd, get_might(@sd)+5;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¾Æ¹ÌÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+6;
+ set_maxhp @sd, get_maxhp(@sd)-400;
+ set_maxmp @sd, get_maxmp(@sd)-400;
+ set_hit @sd, get_hit(@sd)-3;
+ set_dam @sd, get_dam(@sd)-3;
+ set_will @sd, get_will(@sd)-5;
+ set_grace @sd, get_grace(@sd)-5;
+ set_might @sd, get_might(@sd)-5;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@½ÅÀåÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+200;
+ set_maxmp @sd, get_maxmp(@sd)+200;
+ set_hit @sd, get_hit(@sd)+1;
+ set_dam @sd, get_dam(@sd)+1;
+ set_will @sd, get_will(@sd)+2;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+2;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@½ÅÀåÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-200;
+ set_maxmp @sd, get_maxmp(@sd)-200;
+ set_hit @sd, get_hit(@sd)-1;
+ set_dam @sd, get_dam(@sd)-1;
+ set_will @sd, get_will(@sd)-2;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-2;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÀÏ¿ùÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-4;
+ set_maxhp @sd, get_maxhp(@sd)+300;
+ set_maxmp @sd, get_maxmp(@sd)+300;
+ set_hit @sd, get_hit(@sd)+2;
+ set_dam @sd, get_dam(@sd)+2;
+ set_will @sd, get_will(@sd)+3;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÀÏ¿ùÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+4;
+ set_maxhp @sd, get_maxhp(@sd)-300;
+ set_maxmp @sd, get_maxmp(@sd)-300;
+ set_hit @sd, get_hit(@sd)-2;
+ set_dam @sd, get_dam(@sd)-2;
+ set_will @sd, get_will(@sd)-3;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÅëÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-7;
+ set_maxhp @sd, get_maxhp(@sd)+100;
+ set_maxmp @sd, get_maxmp(@sd)+100;
+ set_will @sd, get_will(@sd)+1;
+ set_grace @sd, get_grace(@sd)+1;
+ set_might @sd, get_might(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÅëÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+7;
+ set_maxhp @sd, get_maxhp(@sd)-100;
+ set_maxmp @sd, get_maxmp(@sd)-100;
+ set_will @sd, get_will(@sd)-1;
+ set_grace @sd, get_grace(@sd)-1;
+ set_might @sd, get_might(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸9Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+9;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸9ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-9;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸8Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+8;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸8ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-8;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸7Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+7;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸7ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-7;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸6Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+6;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸6ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-6;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸5Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+5;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸5ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-5;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸4Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+4;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸4ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-4;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸3Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸3ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸2Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+2;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸2ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-2;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Áö·ÂÀÇÅõ±¸1Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_grace @sd, get_grace(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Áö·ÂÀÇÅõ±¸1ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_grace @sd, get_grace(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸9Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+9;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸9ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-9;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸8Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+8;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸8ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-8;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸7Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+7;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸7ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-7;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸6Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+6;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸6ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-6;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸5Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+5;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸5ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-5;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸4Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+4;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸4ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-4;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸3Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸3ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸2Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+2;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸2ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-2;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸1Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_will @sd, get_will(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ÎÃ¸ÀÇÅõ±¸1ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_will @sd, get_will(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸9Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+9;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸9ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-9;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸8Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+8;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸8ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-8;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸7Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+7;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸7ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-7;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸6Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)-6;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸6ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-6;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸5Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+5;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸5ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-5;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸4Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+4;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸4ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-4;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸3Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸3ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸2Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+2;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸2ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-2;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÈûÀÇÅõ±¸1Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_might @sd, get_might(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÈûÀÇÅõ±¸1ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_might @sd, get_might(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¼¼½ÃÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-7;
+ set_maxhp @sd, get_maxhp(@sd)+100;
+ set_maxmp @sd, get_maxmp(@sd)+100;
+ set_will @sd, get_will(@sd)+1;
+ set_grace @sd, get_grace(@sd)+1;
+ set_might @sd, get_might(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¼¼½ÃÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+7;
+ set_maxhp @sd, get_maxhp(@sd)-100;
+ set_maxmp @sd, get_maxmp(@sd)-100;
+ set_will @sd, get_will(@sd)-1;
+ set_grace @sd, get_grace(@sd)-1;
+ set_might @sd, get_might(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@±ÝÀå³²ÀÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@±ÝÀå³²ÀÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÃÊ·Ï»ö³²ÀÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-2;
+ set_healrecycling @sd, get_healrecycling(@sd)+12;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÃÊ·Ï»ö³²ÀÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+2;
+ set_healrecycling @sd, get_healrecycling(@sd)-12;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿¬µÎ»ö³²ÀÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)+10;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿¬µÎ»ö³²ÀÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)-10;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@±ÝÀå¿©ÀÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-5;
+ set_healrecycling @sd, get_healrecycling(@sd)+20;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@±ÝÀå¿©ÀÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+5;
+ set_healrecycling @sd, get_healrecycling(@sd)-20;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@ÃÊ·Ï»ö¿©ÀÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-2;
+ set_healrecycling @sd, get_healrecycling(@sd)+12;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@ÃÊ·Ï»ö¿©ÀÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+2;
+ set_healrecycling @sd, get_healrecycling(@sd)-12;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¿¬µÎ»ö¿©ÀÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)+10;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¿¬µÎ»ö¿©ÀÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)-10;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°Ýºñ¸ðÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+250;
+ set_hit @sd, get_hit(@sd)+1;
+ set_dam @sd, get_dam(@sd)+2;
+ set_grace @sd, get_grace(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°Ýºñ¸ðÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-250;
+ set_hit @sd, get_hit(@sd)-1;
+ set_dam @sd, get_dam(@sd)-2;
+ set_grace @sd, get_grace(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¹ý¶û¸ðÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-9;
+ set_maxhp @sd, get_maxhp(@sd)+500;
+ set_hit @sd, get_hit(@sd)+1;
+ set_dam @sd, get_dam(@sd)+2;
+ set_grace @sd, get_grace(@sd)+3;
+ set_might @sd, get_might(@sd)+1;
+ set_will @sd, get_will(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¹ý¶û¸ðÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+9;
+ set_maxhp @sd, get_maxhp(@sd)-500;
+ set_hit @sd, get_hit(@sd)-1;
+ set_dam @sd, get_dam(@sd)-2;
+ set_grace @sd, get_grace(@sd)-3;
+ set_might @sd, get_might(@sd)-1;
+ set_will @sd, get_will(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@¼ö¼±µµ»çÀÇ¸Ó¸®¶ìÂø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_hit @sd, get_hit(@sd)+5;
+ set_dam @sd, get_dam(@sd)+5;
+ set_will @sd, get_will(@sd)+5;
+ set_grace @sd, get_grace(@sd)+2;
+ set_might @sd, get_might(@sd)+3;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@¼ö¼±µµ»çÀÇ¸Ó¸®¶ìÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_hit @sd, get_hit(@sd)-5;
+ set_dam @sd, get_dam(@sd)-5;
+ set_will @sd, get_will(@sd)-5;
+ set_grace @sd, get_grace(@sd)-2;
+ set_might @sd, get_might(@sd)-3;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@Ã»È£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxmp @sd, get_maxmp(@sd)+200;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@Ã»È£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxmp @sd, get_maxmp(@sd)-200;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°¥È£¹ÚÅõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-8;
+ set_maxhp @sd, get_maxhp(@sd)+400;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°¥È£¹ÚÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+8;
+ set_maxhp @sd, get_maxhp(@sd)-400;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@°­Ã¶Åõ±¸Âø¿ë	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)-6;
+ set_maxhp @sd, get_maxhp(@sd)+200;
+ set_maxmp @sd, get_maxmp(@sd)+100;
+ set_protection @sd, get_protection(@sd)+1;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@°­Ã¶Åõ±¸ÇØÁ¦	{
+ set @sd, mysd(); spelluncast @sd, name2spellid("ÀüÇ÷");
+ set_ac @sd, get_ac(@sd)+6;
+ set_maxhp @sd, get_maxhp(@sd)-200;
+ set_maxmp @sd, get_maxmp(@sd)-100;
+ set_protection @sd, get_protection(@sd)-1;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}
+
+@»çµµÀÇÅõ±¸Âø¿ë	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("ÀüÇ÷"))) { spelluncast @sd, name2spellid("ÀüÇ÷"); }
+ set_ac @sd, get_ac(@sd)-13;
+ set_maxhp @sd, get_maxhp(@sd)+5000;
+ set_maxmp @sd, get_maxmp(@sd)+5000;
+ set_hit @sd, get_hit(@sd)+9;
+ set_dam @sd, get_dam(@sd)+9;
+ set_will @sd, get_will(@sd)+12;
+ set_grace @sd, get_grace(@sd)+12;
+ set_might @sd, get_might(@sd)+12;
+ set $item_helmet_hp, get_purehp(@sd)*2/100;
+ set_maxhp @sd, get_maxhp(@sd)+$item_helmet_hp;
+ set $item_helmet_mp, get_puremp(@sd)*2/100;
+ set_maxmp @sd, get_maxmp(@sd)+$item_helmet_mp;
+ set_healrecycling @sd, get_healrecycling(@sd)+2;
+ set_protection @sd, get_protection(@sd)+1;
+ set_hp @sd, get_hp(@sd)+1; set_hp @sd, get_hp(@sd)-1;
+ set_mp @sd, get_mp(@sd)+1; set_mp @sd, get_mp(@sd)-1;
+}
+
+@»çµµÀÇÅõ±¸ÇØÁ¦	{
+ set @sd, mysd(); if(spellaethered(@sd, name2spellid("ÀüÇ÷"))) { spelluncast @sd, name2spellid("ÀüÇ÷"); }
+ set_ac @sd, get_ac(@sd)+13;
+ set_maxhp @sd, get_maxhp(@sd)-5000;
+ set_maxmp @sd, get_maxmp(@sd)-5000;
+ set_hit @sd, get_hit(@sd)-9;
+ set_dam @sd, get_dam(@sd)-9;
+ set_will @sd, get_will(@sd)-12;
+ set_grace @sd, get_grace(@sd)-12;
+ set_might @sd, get_might(@sd)-12;
+ set_maxhp @sd, get_maxhp(@sd)-$item_helmet_hp;
+ set_maxmp @sd, get_maxmp(@sd)-$item_helmet_mp;
+ set_healrecycling @sd, get_healrecycling(@sd)-2;
+ set_protection @sd, get_protection(@sd)-1;
+ if(get_hp(@sd) > get_maxhp(@sd)) set_hp @sd, get_maxhp(@sd); else { set_hp @sd, get_hp(@sd)-1; set_hp @sd, get_hp(@sd)+1; }
+ if(get_mp(@sd) > get_maxmp(@sd)) set_mp @sd, get_maxmp(@sd); else { set_mp @sd, get_mp(@sd)-1; set_mp @sd, get_mp(@sd)+1; }
+}

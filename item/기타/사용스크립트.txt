@@ -1,0 +1,4097 @@
+// ----------------------------------------------- consumption script ---------------------------------------------------------------------------------------
+@세계전도	{
+	set @id, myid();
+	set @sd, mysd();
+	set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "선비족이동[1-2차]", "장안성황궁이동(왕퀘)[1-3차]", "도삭산900층(빽)이동[1-2차]", "귀문혈동이동[1-2차]", "오녀산성1문이동[2차이상]", "천명이동[2차이상]", "흉노족이동[3차-4차]","오녀산성2문이동[3차이상]", "비밀산적소굴이동[높3차-4차이상]","설원이동[4차이상]","대도둑이동[4차이상]","오녀산성3문이동[4차이상]","흉선연합이동[5차이상]","지옥전방이동[5차이상]","귀문혈마동이동[5차이상]","오녀산성4문이동[5차이상]","지하감옥이동[기준확인]");
+	if(@pos == 0) end;
+			else if(@list == 1)
+			{
+				warp @sd, 674, 9+rand(1, 1), 22+rand(1, 1);
+			}
+			else if(@list == 2)
+			{
+				warp @sd, 887, 15+rand(1, 1), 11+rand(1, 1);
+			}
+			else if(@list == 3)
+			{
+				warp @sd, 985, 30+rand(1, 1), 48+rand(1, 1);
+			}
+			else if(@list == 4)
+			{
+				warp @sd, 53154, 32+rand(1, 1), 59+rand(1, 1);
+			}
+			else if(@list == 5)
+			{
+				warp @sd, 7440, 39+rand(1, 1), 59+rand(1, 1);
+			}
+			else if(@list == 6)
+			{
+				warp @sd, 670, 8+rand(1, 1), 6+rand(1, 1);
+			}
+			else if(@list == 7)
+			{
+				warp @sd, 1489, 19+rand(1, 1), 15+rand(1, 1);
+			}
+			else if(@list == 8)
+			{
+				warp @sd, 7440, 47+rand(1, 1), 44+rand(1, 1);
+			}
+			else if(@list == 9)
+			{
+				warp @sd, 622, 10+rand(1, 1), 25+rand(1, 1);
+			}
+			else if(@list == 10)
+			{
+				warp @sd, 53215, 13+rand(1, 1), 3+rand(1, 1);
+			}
+			else if(@list == 11)
+			{
+				warp @sd, 53408, 1+rand(1, 1), 51+rand(1, 1);
+			}
+			else if(@list == 12)
+			{
+				warp @sd, 7440, 13+rand(1, 1), 56+rand(1, 1);
+			}
+			else if(@list == 13)
+			{
+				warp @sd, 1489, 20+rand(1, 1), 18+rand(1, 1);
+			}
+			else if(@list == 14)
+			{
+				warp @sd, 53408, 118+rand(1, 1), 44+rand(1, 1);
+			}
+			else if(@list == 15)
+			{
+				warp @sd, 53154, 53+rand(1, 1), 40+rand(1, 1);
+			}
+			else if(@list == 16)
+			{
+				warp @sd, 7440, 48+rand(1, 1), 60+rand(1, 1);
+			}
+			else if(@list == 17)
+			{
+				warp @sd, 53526, 26+rand(1, 1), 8+rand(1, 1);
+			}
+}
+
+@보물상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,678);
+	set @pos, list2(@list, 0, 0, "보물상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("보물상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "보물상자"; }
+	else if(@r > 10 && @r <= 20) { set @item$, "천공투구"; }
+	else if(@r > 20 && @r <= 30) { set @item$, "천공반지"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "천공팔찌"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "천공장갑"; }
+	else if(@r > 50 && @r <= 60) { set @item$, "천공선류"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "양첨목봉"; }
+	else if(@r > 70 && @r <= 80) { set @item$, "진백화검"; }
+	else if(@r > 80 && @r <= 90) { set @item$, "인풍죽선"; }
+	else if(@r > 90 && @r <= 100) { set @item$, "칠교칠선"; }
+	else if(@r > 100 && @r <= 110) { set @item$, "오철"; }
+	else if(@r > 110 && @r <= 120) { set @item$, "만지초"; }
+	else if(@r > 120 && @r <= 130) { set @item$, "오독산"; }
+	else if(@r > 130 && @r <= 140) { set @item$, "용왕의투구"; }
+	else if(@r > 140 && @r <= 150) { set @item$, "용왕의반지"; }
+	else if(@r > 150 && @r <= 160) { set @item$, "정화의방패"; }
+	else if(@r > 160 && @r <= 170) { set @item$, "용마제일검"; }
+	else if(@r > 170 && @r <= 180) { set @item$, "용천제일검"; }
+	else if(@r > 180 && @r <= 190) { set @item$, "용랑제일봉"; }
+	else if(@r > 190 && @r <= 200) { set @item$, "은나무가지"; }
+	else if(@r > 200 && @r <= 210) { set @item$, "은나무가지"; }
+	else if(@r > 210 && @r <= 220) { set @item$, "남자치파오"; }
+	else if(@r > 220 && @r <= 230) { set @item$, "여자치파오"; }
+	else if(@r > 230 && @r <= 240) { set @item$, "연등"; }
+	else if(@r > 240 && @r <= 250) { set @item$, "이가닌자의검"; }
+	else if(@r > 250 && @r <= 260) { set @item$, "은나무가지"; }
+	else if(@r > 260 && @r <= 270) { set @item$, "오철"; }
+	else if(@r > 270 && @r <= 280) { set @item$, "은나무가지"; }
+	else if(@r > 280 && @r <= 290) { set @item$, "은나무가지"; }
+	else if(@r > 290 && @r <= 300) { set @item$, "용설봉"; }
+	else if(@r > 300 && @r <= 310) { set @item$, "진선장"; }
+	else if(@r > 310 && @r <= 320) { set @item$, "은나무가지"; }
+	else if(@r > 320 && @r <= 330) { set @item$, "용마제이검"; }
+	else if(@r > 330 && @r <= 340) { set @item$, "용천제이검"; }
+	else if(@r > 340 && @r <= 350) { set @item$, "용랑제이봉"; }
+	else if(@r > 350 && @r <= 360) { set @item$, "용겸제이봉"; }
+	else if(@r > 360 && @r <= 370) { set @item$, "남자설빔"; }
+	else if(@r > 370 && @r <= 380) { set @item$, "여자설빔"; }
+	else if(@r > 380 && @r <= 390) { set @item$, "장인의돌"; }
+	else if(@r > 390 && @r <= 400) { set @item$, "장인의뼈"; }
+	else if(@r > 400 && @r <= 410) { set @item$, "도깨비가죽"; }
+	else if(@r > 410 && @r <= 420) { set @item$, "연등"; }
+	else if(@r > 420 && @r <= 430) { set @item$, "차이나드레스"; }
+	else if(@r > 430 && @r <= 440) { set @item$, "은나무가지"; }
+	else if(@r > 440 && @r <= 450) { set @item$, "양첨목봉"; }
+	else if(@r > 450 && @r <= 460) { set @item$, "여자기모노"; }
+	else if(@r > 460 && @r <= 470) { set @item$, "남자기모노"; }
+	else if(@r > 470 && @r <= 480) { set @item$, "장석"; }
+	else if(@r > 480 && @r <= 490) { set @item$, "운모"; }
+	else if(@r > 490 && @r <= 500) { set @item$, "칠교칠선"; }
+	else if(@r > 500 && @r <= 510) { set @item$, "은나무가지"; }
+	else if(@r > 510 && @r <= 520) { set @item$, "은나무가지"; }
+	else if(@r > 520 && @r <= 525) { set @item$, "유성지의보패"; }
+	else if(@r > 525 && @r <= 530) { set @item$, "흑룡의어금니"; }
+	else if(@r > 530 && @r <= 535) { set @item$, "묵룡의어금니"; }
+	else if(@r > 535 && @r <= 540) { set @item$, "진룡의어금니"; }
+	else if(@r > 540 && @r <= 545) { set @item$, "감룡의어금니"; }
+	else if(@r > 545 && @r <= 548) { set @item$, "보무의목걸이"; }
+	else if(@r > 548 && @r <= 551) { set @item$, "시력회복의귀걸이"; }
+	else if(@r > 551 && @r <= 554) { set @item$, "활력의목걸이"; }
+	else if(@r > 554 && @r <= 557) { set @item$, "비룡투구"; }
+	else if(@r > 557 && @r <= 560) { set @item$, "비룡장갑"; }
+	else if(@r > 560 && @r <= 563) { set @item$, "비룡팔찌"; }
+	else if(@r > 563 && @r <= 566) { set @item$, "비룡선류"; }
+	else if(@r > 566 && @r <= 570) { set @item$, "타라의남자옷"; }
+	else if(@r > 570 && @r <= 575) { set @item$, "타라의여자옷"; }
+	else if(@r > 575 && @r <= 577) { set @item$, "용마제사검"; }
+	else if(@r > 577 && @r <= 579) { set @item$, "용천제사검"; }
+	else if(@r > 579 && @r <= 581) { set @item$, "용랑제사봉"; }
+	else if(@r > 581 && @r <= 583) { set @item$, "용겸제사봉"; }
+	else if(@r > 583 && @r <= 584) { set @item$, "용마제오검"; }
+	else if(@r > 584 && @r <= 585) { set @item$, "용천제오검"; }
+	else if(@r > 585 && @r <= 586) { set @item$, "용랑제오봉"; }
+	else if(@r > 586 && @r <= 587) { set @item$, "용겸제오봉"; }
+	else if(@r > 587 && @r <= 588) { set @item$, "해골왕의뼈"; }
+	else if(@r > 588 && @r <= 589) { set @item$, "팔세지도"; }
+	else if(@r > 589 && @r <= 590) { set @item$, "금조각"; }
+	else if(@r > 590 && @r <= 600) { set @item$, "오철"; }
+	else if(@r > 600 && @r <= 610) { set @item$, "진성검"; }
+	else if(@r > 610 && @r <= 620) { set @item$, "백진도"; }
+	else if(@r > 620 && @r <= 630) { set @item$, "용설봉"; }
+	else if(@r > 630 && @r <= 640) { set @item$, "진선장"; }
+	else if(@r > 640 && @r <= 650) { set @item$, "황금"; }
+	else if(@r > 650 && @r <= 660) { set @item$, "황금"; }
+	else if(@r > 660 && @r <= 665) { set @item$, "월아검"; }
+	else if(@r > 665 && @r <= 670) { set @item$, "보무의목걸이"; }
+	else if(@r > 670 && @r <= 675) { set @item$, "여자기모노"; }
+	else if(@r > 675 && @r <= 677) { set @item$, "여신의방패"; }
+	else if(@r > 677 && @r <= 678) { set @item$, "크리스탈"; }
+
+	additem @sd, name2itemid(@item$), 1;
+	broadcast 5, get_name(@sd) + "님이 보물상자에서 " + @item$ + "을 획득 하셨습니다.";
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+기간제해갑상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_haegab, @nt+259200;
+	additem @sd, name2itemid("*해골갑옷"), 1; 
+	delitem @sd, name2itemid("기간제해갑상자"), 1;
+	message @sd, 3, "*해골갑옷 아이템을 얻었습니다.";
+	message @sd, 3, "기간제해갑상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제철갑상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_chulgab, @nt+604800;
+	additem @sd, name2itemid("*철갑안장"), 1;
+	delitem @sd, name2itemid("기간제철갑상자"), 1;
+	message @sd, 3, "*철갑안장 아이템을 얻었습니다.";
+	message @sd, 3, "기간제철갑상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제보목상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_bomoo, @nt+604800;
+	additem @sd, name2itemid("*보무의목걸이"), 1;
+	delitem @sd, name2itemid("기간제보목상자"), 1;
+	message @sd, 3, "*보무의목걸이 아이템을 얻었습니다.";
+	message @sd, 3, "기간제보목상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제시귀상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_sigwee, @nt+604800;
+	additem @sd, name2itemid("*시력회복의귀걸이"), 1;
+	delitem @sd, name2itemid("기간제시귀상자"), 1;
+	message @sd, 3, "*시력회복의귀걸이 아이템을 얻었습니다.";
+	message @sd, 3, "기간제시귀상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제용마상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_yongma, @nt+259200;
+	additem @sd, name2itemid("기간용마제칠검"), 1;
+	delitem @sd, name2itemid("기간제용마상자"), 1;
+	message @sd, 3, "기간용마제칠검 아이템을 얻었습니다.";
+	message @sd, 3, "기간제용마상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제용천상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_yongchun, @nt+259200;
+	additem @sd, name2itemid("기간용천제칠검"), 1;
+	delitem @sd, name2itemid("기간제용천상자"), 1;
+	message @sd, 3, "기간용천제칠검 아이템을 얻었습니다.";
+	message @sd, 3, "기간제용천상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제용랑상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_yongrang, @nt+259200;
+	additem @sd, name2itemid("기간용랑제칠봉"), 1;
+	delitem @sd, name2itemid("기간제용랑상자"), 1;
+	message @sd, 3, "기간용랑제칠봉 아이템을 얻었습니다.";
+	message @sd, 3, "기간제용랑상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+기간제용겸상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $gigan_yonggyum, @nt+259200;
+	additem @sd, name2itemid("기간용겸제칠봉"), 1;
+	delitem @sd, name2itemid("기간제용겸상자"), 1;
+	message @sd, 3, "기간용겸제칠봉 아이템을 얻었습니다.";
+	message @sd, 3, "기간제용겸상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+@캐쉬관리비령	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_gmlevel(@sd) < 1)
+	{
+		set @pos, dialog(0,0,1, "운영자가 아니면 사용할수 없습니다.");
+		end;
+	}
+ 
+	set @pos, dialog(0,0,1, "※ 주의 ※\\n반드시 유저를 관리할때 유저의 장비템을 모두 벗었을때 사용해주세요. 주의사항을 지키지않고 유저를 관리시 불이익은 책임지지 않습니다.");
+	if(@pos == 0) end;
+
+	set @user, input1(@username$, "관리할 유저의 이름을 입력해주세요.");
+	set @target_id, name2id(@username$);
+	set @target_sd, name2sd(@username$);
+	if(@target_id > 0)
+	{
+		set @pos, list2(@list, 0, 0, "기능을 선택해주세요.", "캐쉬 관리");
+		if(@pos == 0) end;
+		else if(@list == 1) goto cash;
+cash:
+		runscript @target_sd, "유저캐쉬";
+		set @user_cash, #user_cash_p;
+		set #user_cash_p, 0;
+		set @pos, list2(@select_re, 0, 1, get_name(@target_sd)+"님의 캐쉬는 "+@user_cash+" 입니다. 변경하시겠습니까?", "예", "아니오");
+		if(!@pos) end;
+		if(@select_re == 2) { end; }
+		else if(@select_re == 1) {
+			set @pos, input1(@c_cash, "변경할 캐쉬금액를 써주세요.");
+			set #change_cash, @c_cash;
+			runscript @target_sd, "유저캐쉬변경";
+			message @sd, 8, get_name(@target_sd)+" 님의 캐쉬를"+@c_cash+"(으)로 변경하였습니다.";
+			end;
+		}
+	}
+	else { message @sd, 8, @username$ + "님은 현재 접속중이지 않습니다."; end; }
+}
+
+이벤트게시판	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "이벤트게시판", "쓰기", "쓰기종료");
+	if(@pos == 0) end;
+	if(@list == 1)
+	{
+		set_level @sd, 100;
+	}
+	else if(@list == 2)
+	{
+		set_level @sd, 99;
+	}
+}
+
+유저캐쉬	{
+	set @sd, mysd();
+	set @id, myid();
+	set #user_cash_p, $cash_p;
+}
+유저캐쉬변경	{
+	set @sd, mysd();
+	set @id, myid();
+	set $cash_p, #change_cash;
+	set #change_cash, 0;
+	message @sd, 8, "캐쉬가 "+$cash_p+"로 변경되었습니다.";
+}
+
+@진백호령비서	{
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 30, name2spellid("진백호령"), @sd;
+	callfunc "BEGINFUNC", 57, 89, name2spellid("진백호령"), 10, 6, 0;
+	set_mp @sd, get_mp(@sd)-30;
+	set $finalattack, 1;
+	delitem @sd, name2itemid("진백호령비서"), 1;
+}
+
+@진백호령비서해제	{
+	set @sd, mysd();
+	set $finalattack, 0;
+	spelldelay @sd, name2spellid("진백호령"), 40;
+	message @sd, 3, "진백호령 해제";
+}
+
+@강제이혼비서	{
+	set @sd, mysd();
+	set @id, myid();
+	delitem @sd, name2itemid("이혼서류"), 1;
+	callfunc "Item_Heal", 0, 150;
+}
+
+//@강제이혼비서	{
+	set @sd, mysd();
+	set @id, myid();
+	delitem @sd, name2itemid("이혼서류"), 1;
+	set @pos, dialog(0, 0, 0, $marry_name$ + "님과 이혼하였습니다. 다음엔 좀 더 신중히 결혼을 하시길 바랍니다.");
+	set $marry_check, 0;
+	set $marry_name$, "";
+	set $divorce, $divorce+1;
+	dellegend @sd, 33;
+	addlegend @sd, 34, 14, 0, 5, "생에 " + $divorce + "번 이혼을 하다.";
+}
+
+@퀴즈상자	{
+	set @id, myid();
+	set @sd, mysd();
+	set @item, rand(1,100);	{	
+		delitem @sd, name2itemid("퀴즈상자"), 1;
+		if(@item >= 1 && @item <= 98) {
+			additem @sd, name2itemid("노란비서"), 1;
+			broadcast 4, "" +get_name(@sd) + "님은 퀴즈상자에서 노란비서가 나왔습니다. 아쉽네요!";
+			dialog 1, 0, 1, "'꽝꽝꽝.";
+			end;
+		}
+		if(@item >= 100 && @item <= 100){
+			additem @sd, name2itemid("상품권"), 1;
+			broadcast 4, "" +get_name(@mysd) + "님은 퀴즈상자에서 상품권이 나왔습니다. 축하합니다!";
+			dialog 1, 0, 1, "'상품권.";
+			end;
+		}
+	}
+}
+
+@고래상자	{
+	set @sd, mysd();
+
+	image 1, 1510, 0;
+
+	set @list, list1("고래상자를 사용하시겠습니까?", "네", "아니오");
+	if(@list == 0) end;
+
+	if(@list == 1)
+	{
+		set @r, rand(1,1800);	
+		set @rand, rand(1,5);
+
+		if(@r <= 10) { set @item$, "해골왕의뼈";  }
+		else if(@r >= 11 && @r <= 20) { set @item$, "이벤트상자";  }
+		else if(@r >= 21 && @r <= 30) { set @item$, "금조각";  }
+		else if(@r >= 31 && @r <= 40) { set @item$, "천풍선";  }
+		else if(@r >= 41 && @r <= 50) { set @item$, "천공투구";  }
+		else if(@r >= 51 && @r <= 60) { set @item$, "비룡투구";  }
+		
+		else if(@r >= 61 && @r <= 90)
+		{
+			if(get_gender(@sd) == 0)
+			{
+				set @item$, "남자기모노";	
+			}
+			else if(get_gender(@sd) == 1)
+			{
+				set @item$, "여자기모노";
+			}
+		}
+		else if(@r >= 91 && @r <= 120)
+		{
+			if(get_gender(@sd) == 0)
+			{
+				set @item$, "남자설빔";
+			}
+			else if(get_gender(@sd) == 1)
+			{
+				set @item$, "여자설빔";
+			}
+		}
+		else if(@r >= 121 && @r <= 150)
+		{
+			if(get_gender(@sd) == 0)
+			{
+				set @item$, "남자치파오";	
+			}
+			else if(get_gender(@sd) == 1)
+			{
+				set @item$, "여자치파오";	
+			}
+		}
+		else if(@r >= 151 && @r <= 180) { set @item$, "심판의낫";  }
+		else if(@r >= 181 && @r <= 210) { set @item$, "장석";  }
+		else if(@r >= 211 && @r <= 240) { set @item$, "오독산";  }
+		else if(@r >= 241 && @r <= 270) { set @item$, "어금니상자";  }
+		else if(@r >= 271 && @r <= 300) { set @item$, "낡은망치";  }
+		else if(@r >= 301 && @r <= 330) { set @item$, "용왕의투구";  }
+		else if(@r >= 331 && @r <= 360) { set @item$, "용왕의반지";  }
+		else if(@r >= 361 && @r <= 390) { set @item$, "정화의방패";  }
+		else if(@r >= 391 && @r <= 420) { set @item$, "파티성장시약";  }
+		else if(@r >= 421 && @r <= 450) { set @item$, "해독의귀걸이";  }
+		else if(@r >= 451 && @r <= 480) { set @item$, "봉마의목걸이";  }
+		else if(@r >= 481 && @r <= 510) { set @item$, "망또1";  }
+		else if(@r >= 511 && @r <= 540) { set @item$, "환두대도";  }
+		else if(@r >= 541 && @r <= 570) { set @item$, "환두대도";  }
+		else if(@r >= 571 && @r <= 600) { set @item$, "가시철단도";  }
+		else if(@r >= 601 && @r <= 630) { set @item$, "가시철단도";  }
+		else if(@r >= 631 && @r <= 660) { set @item$, "대마령봉";  }
+		else if(@r >= 631 && @r <= 660) { set @item$, "대마령봉";  }
+		else if(@r >= 661 && @r <= 690) { set @item$, "삼촉현창";  }
+		else if(@r >= 691 && @r <= 720) { set @item$, "삼촉현창";  }
+		
+		else if(@r >= 721 && @r <= 770)
+		{
+			if(get_gender(@sd) == 0)
+			{
+				set @item$, "남자원주민의옷";
+			}
+			else if(get_gender(@sd) == 1)
+			{
+				set @item$, "여자원주민의옷";
+			}
+		}
+		else if(@r >= 771 && @r <= 820) { set @item$, "천공투구";  }
+		else if(@r >= 821 && @r <= 870) { set @item$, "노송의가지";  }
+		else if(@r >= 871 && @r <= 920) { set @item$, "천년묵은가지";  }
+		else if(@r >= 921 && @r <= 970) { set @item$, "연등";  }
+		else if(@r >= 971 && @r <= 1020) { set @item$, "노란연등";  }
+		else if(@r >= 1021 && @r <= 1070) { set @item$, "어금니상자";  }
+		else if(@r >= 1071 && @r <= 1120) { set @item$, "수정";  }
+		else if(@r >= 1121 && @r <= 1170) { set @item$, "진백화검";  }
+		else if(@r >= 1171 && @r <= 1220) { set @item$, "진꼬마별봉";  }
+		else if(@r >= 1221 && @r <= 1270) { set @item$, "진아광검";  }
+		else if(@r >= 1271 && @r <= 1320) { set @item$, "일월대도";  }
+		else if(@r >= 1321 && @r <= 1370) { set @item$, "인풍죽선";  }
+		else if(@r >= 1371 && @r <= 1420) { set @item$, "가시철도";  }
+		else if(@r >= 1421 && @r <= 1470) { set @item$, "환두대검";  }
+		else if(@r >= 1471 && @r <= 1520) { set @item$, "대마혼봉";  }
+		else if(@r >= 1521 && @r <= 1570) { set @item$, "삼촉현선";  }
+		else if(@r >= 1571 && @r <= 1620)
+		{
+			if(@rand == 1) { set @item$, "하늘개비";  }
+			else if(@rand == 2) { set @item$, "초록개비";  }
+			else if(@rand == 3) { set @item$, "연두개비";  }
+			else if(@rand == 4) { set @item$, "파랑개비";  }
+			else { set @item$, "분홍개비";  }
+		}
+		
+		else if(@r >= 1621 && @r <= 1700) { set @item$, "십억경";  }
+		else if(@r >= 1701 && @r <= 1730) { set @item$, "십억경변환비서";  }
+		else { set @item$, "똥";  }
+
+		delitem @sd, name2itemid("고래상자"), 1;
+		additem @sd, name2itemid(""+@item$+""), 1;
+		
+		message @sd, 3, "고래상자에서 "+@item$+"를 획득하였습니다.";
+		
+		broadcast 5, ""+get_name(@sd)+"님께서 고래상자에서 "+@item$+"를 획득하였습니다.";
+		end;
+	} else end;
+}
+
+@잡초파괴	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "현재 잡초 " + countitem(name2itemid("잡초")) + "개를 가지고 있습니다. 모두 파괴하시겠습니까?", "네", "아니요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		delitem @sd, name2itemid("잡초"), countitem(name2itemid("잡초"));
+	}
+	else end;
+}
+
+@송편	{
+	set @sd, mysd();
+	set @id, myid();
+
+	delitem @sd, name2itemid("송편"), 1;
+	set $saveexp_p, $saveexp_p + 2;
+	message @sd, 3, "십억경이 상승하였습니다! (2)";
+}
+
+@천명초기화비령	{
+	set @sd, mysd();
+	set @id, myid();
+
+	delitem @sd, name2itemid("천명초기화비령"), 1;
+
+	set $save_chunmyung_c, 0;
+	set $save_chunmyung_mob, 0;
+	set $save_instance_t, 0;
+	set #chunmyung_on, 0;
+	set #chunmyung_sc, 0;
+	set #chunmyung_io, 0;
+	set #chunmyung_it, 0;
+	set #chunmyung_nb, 0;
+	set #chunmyung_mv, 0;
+	set #chunmyung_bs, 0;
+	set #chunmyung_ch, 0;
+	set #chunmyung_say, 0;
+	set #chunmyung_hp, 0;
+	set #chunmyung_mob, 0;
+	message @sd, 3, "초기화 완료!";
+}
+
+@의태시약	{
+	spellcast mysd(), name2spellid("의태시약");
+}
+
+@의태시약마법	{
+	set @sd, mysd();
+	set @target_id, obj_getfront();
+
+	if(spellaethered(@sd, name2spellid("의태시약")) == 1) { spelluncast @sd, name2spellid("의태시약"); }
+
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set $hair_num, get_face(@sd);
+			set $hair_c_num, get_haircolor(@sd);
+
+			set_imitation @sd, @target_id, 1;
+			spellaether @sd, name2spellid("의태시약"), 180;
+
+			updatelookpc @sd, 1;
+
+			message @sd, 3, "의태시약을 외웠습니다.";
+		}
+	}
+}
+
+@의태시약마법해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_imitation @sd, @id, 0;
+	set_face @sd, $hair_num;
+	set_haircolor @sd, $hair_c_num;
+
+	set $hair_num, 1;
+	set $hair_c_num, 0;
+
+	updatelookpc @sd, 1;
+
+	message @sd, 3, "의태시약 해제";
+}
+
+@성장시약	{
+	set @sd, mysd();
+	set @id, myid();
+
+	spelluncast @sd, 36;
+	spelluncast @sd, 37;
+	spelluncast @sd, 173; //파티
+	sound @id, 705;
+
+	spellaether @sd, name2spellid("성장시약"), 3600;
+	message @sd, 3, "성장시약의 효과가 시작됩니다.";
+}
+
+@성장시약해제	{
+	set @sd, mysd();
+	message @sd, 3, "성장시약의 효과가 끝났습니다.";
+}
+
+@파티성장시약	{
+	set @sd, mysd();
+	set @id, myid();
+
+	spelluncast @sd, 36; //성장
+	spelluncast @sd, 37; //파티
+	spelluncast @sd, 173; //파티
+	sound @id, 705;
+
+	spellaether @sd, name2spellid("파티성장시약"), 3600;
+	message @sd, 3, "파티성장시약의 효과가 시작됩니다.";
+}
+
+@파티성장시약해제	{
+	set @sd, mysd();
+	message @sd, 3, "파티성장시약의 효과가 끝났습니다.";
+}
+
+@경험치버프	{
+	set @sd, mysd();
+	set @id, myid();
+
+	spelluncast @sd, 36; //성장
+	spelluncast @sd, 37; //파티
+	sound @id, 705;
+
+	spellaether @sd, name2spellid("경험치버프"), 3600;
+	message @sd, 3, "경험치버프의 효과가 시작됩니다.";
+}
+
+@경험치버프해제	{
+	set @sd, mysd();
+	message @sd, 3, "경험치버프의 효과가 끝났습니다.";
+}
+
+성장시약	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pos, list2(@list, 0, 0, "성장시약 사용하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("성장시약"), 1;
+	spellcast @sd, name2spellid("성장시약");
+	message @sd, 3, "성장시약을 먹었습니다.";
+	}
+}
+
+파티성장시약	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pos, list2(@list, 0, 0, "파티성장시약 사용하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("파티성장시약"), 1;
+	spellcast @sd, name2spellid("파티성장시약");
+	message @sd, 3, "파티성장시약을 먹었습니다.";
+	}
+}
+
+경험치버프상자	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	set $buf_siyak, @nt+172800;
+	additem @sd, name2itemid("경험치버프"), 1;
+	delitem @sd, name2itemid("경험치버프상자"), 1;
+	message @sd, 3, "경험치버프 아이템을 얻었습니다.";
+	message @sd, 3, "경험치버프상자 아이템을 잃었습니다.";
+	end;
+	}
+}
+
+경험치버프	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	if($buf_siyak < @nt)
+	{
+		delitem @sd, name2itemid("경험치버프"), 1;
+		message @sd, 3, "경험치버프 기간이 만료되었습니다.";
+		end;
+	}
+	else
+	{
+		set @pos, list2(@list, 0, 0, "경험치버프 사용하시겠습니까?", "예", "아뇨");
+		if(@pos == 0) end;
+		else if(@list != 1) end;
+		else
+		{
+		spellcast @sd, name2spellid("경험치버프");
+		message @sd, 3, "경험치 버프가 시작됨니다.";
+		}
+	}
+}
+
+지원성장시약	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pos, list2(@list, 0, 0, "지원성장시약 사용하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("[지원]성장시약"), 1;
+	spellcast @sd, name2spellid("성장시약");
+	message @sd, 3, "성장시약을 먹었습니다.";
+	}
+}
+
+지원파티성장시약	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pos, list2(@list, 0, 0, "지원파티성장시약 사용하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("[지원]파티성장시약"), 1;
+	spellcast @sd, name2spellid("파티성장시약");
+	message @sd, 3, "파티성장시약을 먹었습니다.";
+	}
+}
+
+@어금니상자	{
+	set @sd, mysd();
+	set @rand, rand(0,3);
+
+	image 1, 431, 3;
+
+	effect myid(), 93;
+	delitem @sd, name2itemid("어금니상자"), 1;
+
+	if(@rand == 0) { additem @sd, name2itemid("묵룡의어금니"), 1; message @sd, 3, "묵룡의어금니 획득"; }
+	else if(@rand == 1) { additem @sd, name2itemid("흑룡의어금니"), 1; message @sd, 3, "흑룡의어금니 획득"; }
+	else if(@rand == 2) { additem @sd, name2itemid("진룡의어금니"), 1; message @sd, 3, "진룡의어금니 획득"; }
+	else if(@rand == 3) { additem @sd, name2itemid("감룡의어금니"), 1; message @sd, 3, "감룡의어금니 획득"; }
+}
+
+@북방항아리	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "북방 재료 보관", "북방 재료 찾기", "북방 주머니 설명");
+	if(@pos == 0) { goto Failed; end; }
+	else if(@list == 1)
+	{
+COS002:
+		setarray @item$[1], "인면충의알", "쇠가루", "나무막대", "구미호꼬리", "쇠조각", "대나무가지", "장인의돌", "적령초", "일양초", "월로초", "만지초", "장석", "태독", "건독", "진독", "곤독", "선독", "오독산", "운모", "청동조각", "석영", "마노", "장인의뼈", "자현목", "방울뱀꼬리", "노송의가지", "천년묵은가지", "백현목", "매의깃털", "물소의뿔", "반짝이는돌", "금조각", "오철", "현철";
+		setarray @count[1], $north_1, $north_2, $north_3, $north_4, $north_5, $north_6, $north_7, $north_8, $north_9, $north_10, $north_11, $north_12, $north_13, $north_14, $north_15, $north_16, $north_17, $north_18, $north_19, $north_20, $north_21, $north_22, $north_23, $north_24, $north_25, $north_26, $north_27, $north_28, $north_29, $north_30, $north_31, $north_32, $north_33, $north_34;
+
+		set @pos, input2(@leave$, 1, 10, "어떤 아이템을 보관하시겠습니까?", " ", "(북방 재료만 가능)");
+		if(@pos == 0) { goto Failed; end; }
+		else if(@pos == -1) { goto COS001; }
+
+		for(set @loop, 1; @loop <= getarraysize(@item$); set @loop, @loop+1)
+		{
+			if(@leave$ == @item$[@loop])
+			{
+				set @pos, input2(@number, 1, 10, "몇개 보관하시겠습니까?", " ", "(최대 200개)");
+				if(@pos == 0) { goto Failed; end; }
+				else if(@pos == -1) { goto COS002; }
+				if(@number <= 0 || @number > 200)
+				{
+					set @pos, dialog(0,0,0, "재료는 최소 1개, 최대 200개 까지 보관이 가능합니다.");
+					goto Failed;
+					end;
+				}
+				else if(countitem(name2itemid(@leave$)) < @number)
+				{
+					set @pos, dialog(0,0,0, "북방 재료가 부족합니다.");
+					goto Failed;
+					end;
+				}
+				else
+				{
+					if(get_money(@sd) < 0)
+					{
+						set @pos, dialog(0,0,0, "수수료 0전이 부족합니다.");
+						goto Failed;
+						end;
+					}
+					else
+					{
+						if(@count[@loop]+@number <= 9999)
+						{
+							for(set @i, 0; @i < @number; set @i, @i+1)
+							{
+								delitem @sd, name2itemid(@leave$), 1;
+							}
+							set @count[@loop], @count[@loop]+@number;
+							set @message, 0;
+							set_money @sd, get_money(@sd)-0;
+							updatestatus @sd, 2;
+							goto Success;
+							end;
+						}
+						else
+						{
+							set @pos, dialog(0,0,0, "북방 재료는 10000개 이상 보관하실 수 없습니다.");
+							goto Failed;
+							end;
+						}
+					}
+				}
+			}
+		}
+		set @pos, dialog(0,0,0, "북방 재료가 아닙니다.");
+		goto Failed;
+		end;
+	}
+	else if(@list == 2)
+	{
+COS003:
+		setarray @item$[1], "인면충의알", "쇠가루", "나무막대", "구미호꼬리", "쇠조각", "대나무가지", "장인의돌", "적령초", "일양초", "월로초", "만지초", "장석", "태독", "건독", "진독", "곤독", "선독", "오독산", "운모", "청동조각", "석영", "마노", "장인의뼈", "자현목", "방울뱀꼬리", "노송의가지", "천년묵은가지", "백현목", "매의깃털", "물소의뿔", "반짝이는돌", "금조각", "오철", "현철";
+		setarray @count[1], $north_1, $north_2, $north_3, $north_4, $north_5, $north_6, $north_7, $north_8, $north_9, $north_10, $north_11, $north_12, $north_13, $north_14, $north_15, $north_16, $north_17, $north_18, $north_19, $north_20, $north_21, $north_22, $north_23, $north_24, $north_25, $north_26, $north_27, $north_28, $north_29, $north_30, $north_31, $north_32, $north_33, $north_34;
+		set @pos, list2(@find, 0, 1, "어떤 재료를 찾으시겠습니까?", @item$[1] + "(" + @count[1] + ")", @item$[2] + "(" + @count[2] + ")", @item$[3] + "(" + @count[3] + ")", @item$[4] + "(" + @count[4] + ")", @item$[5] + "(" + @count[5] + ")", @item$[6] + "(" + @count[6] + ")", @item$[7] + "(" + @count[7] + ")", @item$[8] + "(" + @count[8] + ")", @item$[9] + "(" + @count[9] + ")", @item$[10] + "(" + @count[10] + ")", @item$[11] + "(" + @count[11] + ")", @item$[12] + "(" + @count[12] + ")", @item$[13] + "(" + @count[13] + ")", @item$[14] + "(" + @count[14] + ")", @item$[15] + "(" + @count[15] + ")", @item$[16] + "(" + @count[16] + ")", @item$[17] + "(" + @count[17] + ")", @item$[18] + "(" + @count[18] + ")", @item$[19] + "(" + @count[19] + ")", @item$[20] + "(" + @count[20] + ")", @item$[21] + "(" + @count[21] + ")", @item$[22] + "(" + @count[22] + ")", @item$[23] + "(" + @count[23] + ")", @item$[24] + "(" + @count[24] + ")", @item$[25] + "(" + @count[25] + ")", @item$[26] + "(" + @count[26] + ")", @item$[27] + "(" + @count[27] + ")", @item$[28] + "(" + @count[28] + ")", @item$[29] + "(" + @count[29] + ")", @item$[30] + "(" + @count[30] + ")", @item$[31] + "(" + @count[31] + ")", @item$[32] + "(" + @count[32] + ")", @item$[33] + "(" + @count[33] + ")", @item$[34] + "(" + @count[34] + ")");
+		if(@pos == 0) { goto Failed; end; }
+		else if(@pos == -1) { goto COS001; }
+		if(@find > 0)
+		{
+			for(set @loop, 1; @loop <= getarraysize(@item$); set @loop, @loop+1)
+			{
+				if(@find == @loop)
+				{
+					if(@count[@loop] <= 0)
+					{
+						set @pos, dialog(0,0,0, "보관하신 재료가 없습니다.");
+						goto Failed;
+						end;
+					}
+					else
+					{
+						set @pos, input2(@number, 1, 3, "재료를 몇개 찾으시겠습니까?", " ", "(최대 200개)");
+						if(@pos == 0) { goto Failed; end; }
+						else if(@pos == -1) { goto COS003; }
+						if(@number <= 0 || @number > 200)
+						{
+							set @pos, dialog(0,0,0, "재료는 최소 1개, 최대 200개 까지 찾으실 수 있습니다.");
+							goto Failed;
+							end;
+						} 
+						else if(@count[@loop] < @number)
+						{
+							set @pos, dialog(0,0,0, "보관하신 재료가 부족합니다.");
+							goto Failed;
+							end;
+						}
+						else
+						{
+							if(get_money(@sd) < 0)
+							{
+								set @pos, dialog(0,0,0, "수수료 0전이 부족합니다.");
+								goto Failed;
+								end;
+							}
+							else
+							{
+								for(set @i, 0; @i < @number; set @i, @i+1)
+								{
+									additem @sd, name2itemid(@item$[@loop]), 1;
+								}
+								set @count[@loop], @count[@loop]-@number;
+								set @message, 1;
+								set_money @sd, get_money(@sd)-0;
+								updatestatus @sd, 2;
+								goto Success;
+								end;
+							}
+						}
+					}
+				}
+			}
+		}
+		else { goto Failed; end; }
+	}
+	else if(@list == 3)
+	{
+COS004:
+		set @pos, dialog(0,0,1, "북방 주머니는, 20만원에 사시면 ,북방 재료를 보관, 찾기가 어디서든 가능한 주머니입니다.");
+		if(@pos == 0) { goto Failed; end; }
+COS005:
+		set @pos, dialog(0,1,1, "아이템은 최대 9999개 까지 보관이 가능하며, 재료를 보관하거나 찾을때 수수료 0전 필요합니다.");
+		if(@pos == 0) { goto Failed; end; }
+		else if(@pos == -1) { goto COS004; }
+COS006:
+		set @pos, dialog(0,1,1, "단, 한번 보관하거나 찾을때는 최대 200개까지 가능하며 찾으려는 재료 갯수와 현재 가지고 있는 재료 갯수를 합한 갯수가 최대치를 초과시 재료가 손실될 수 있습니다.");
+		if(@pos == 0) { goto Failed; }
+		else if(@pos == -1) { goto COS005; }
+		else if(@pos == 1) { goto COS001; }
+		else { goto Failed; end; }
+	}
+	else { goto Failed; end; }
+
+Success:
+	set $north_1, @count[1];
+	set $north_2, @count[2];
+	set $north_3, @count[3];
+	set $north_4, @count[4];
+	set $north_5, @count[5];
+	set $north_6, @count[6];
+	set $north_7, @count[7];
+	set $north_8, @count[8];
+	set $north_9, @count[9];
+	set $north_10, @count[10];
+	set $north_11, @count[11];
+	set $north_12, @count[12];
+	set $north_13, @count[13];
+	set $north_14, @count[14];
+	set $north_15, @count[15];
+	set $north_16, @count[16];
+	set $north_17, @count[17];
+	set $north_18, @count[18];
+	set $north_19, @count[19];
+	set $north_20, @count[20];
+	set $north_21, @count[21];
+	set $north_22, @count[22];
+	set $north_23, @count[23];
+	set $north_24, @count[24];
+	set $north_25, @count[25];
+	set $north_26, @count[26];
+	set $north_27, @count[27];
+	set $north_28, @count[28];
+	set $north_29, @count[29];
+	set $north_30, @count[30];
+	set $north_31, @count[31];
+	set $north_32, @count[32];
+	set $north_33, @count[33];
+	set $north_34, @count[34];
+
+	if(getarraysize(@item$) > 0) { deletearray @item$[1], getarraysize(@item$); }
+	if(getarraysize(@count) > 0) { deletearray @count[1], getarraysize(@count); }
+
+	if(@message == 0)
+            set @pos, dialog(0,0,1, @leave$ + " " + @number + "개 보관하였습니다.");
+	else
+            set @pos, dialog(0,0,1, "아이템을 정상적으로 찾았습니다.");
+	end;
+
+Failed:
+	if(getarraysize(@item$) > 0) { deletearray @item$[1], getarraysize(@item$); }
+	if(getarraysize(@count) > 0) { deletearray @count[1], getarraysize(@count); }
+	end;
+}
+
+FUNC_MAKER	{
+	set @sd, mysd();
+	set @exp, get_exp(@sd);
+	set @need_money, 250;
+	set @my_money, get_money(@sd);
+	
+	if(@exp < 0 && @exp < (-1147483648)){ // 중간 음수처리
+	if(@my_money < @need_money) {end;}
+	set_exp @sd, @exp + 2147483648 - 1000000000;
+	additem @sd, name2itemid("십억경"), 1;
+	updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp > 0 && @exp >= 1000000000){ // 양수 처리
+	set_exp @sd, @exp - 1000000000;
+	additem @sd, name2itemid("십억경"), 1;
+	updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp < 0 && @exp >= (-1147483648)){ // 나머지 음수 처리
+	set_exp @sd, @exp - 1000000000;
+	additem @sd, name2itemid("십억경"), 1;
+	updatestatus @sd, 2; //상태창 업데이트
+	}
+	else{
+	}
+}
+
+@십억경메이커	{
+	set @sd, mysd();
+	set @exp, get_exp(@sd);
+	
+	if(@exp < 0 && @exp < (-1147483648)){ // 중간 음수처리
+	if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+	set_exp @sd, @exp + 2147483648 - 1000000000;
+	additem @sd, name2itemid("십억경"), 1;
+	updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp > 0 && @exp >= 1000000000){ // 양수 처리
+	set_exp @sd, @exp - 1000000000;
+	additem @sd, name2itemid("십억경"), 1;
+	updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp < 0 && @exp >= (-1147483648)){ // 나머지 음수 처리
+	set_exp @sd, @exp - 1000000000;
+	additem @sd, name2itemid("십억경"), 1;
+	updatestatus @sd, 2; //상태창 업데이트
+	}
+	else{
+	message @sd, 3, "경험치가 부족합니다.";
+	}
+}
+
+@자동십억경메이커	{
+	set @sd, mysd();
+	set @id, myid();
+	set @my_money, get_money(@sd);
+	set @need_money, 150;
+	set @exp, get_exp(@sd);
+
+	set @pos, list2(@list, 0, 0, "십억경을 자동으로 변환합니다.\\n(십억경 1개당 " + @need_money + "전 필요)", "적용", "해제");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+	spellaether @sd, name2spellid("십억경자동변환"), 36000;
+	}
+	else
+	{
+		spelluncast @sd, name2spellid("십억경자동변환");
+		message @sd, 3, "해제되었습니다.";
+		end;
+	}
+}
+
+@십억경사용	{
+	set @sd, mysd();
+	set @id, myid();
+
+	delitem @sd, name2itemid("십억경"), 1;
+	set $saveexp_p, $saveexp_p + 1;
+	message @sd, 3, "십억경이 상승하였습니다! (1)";
+}
+
+@유저관리비령	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_gmlevel(@sd) < 1)
+	{
+		set @pos, dialog(0,0,1, "운영자가 아니면 사용할수 없습니다.");
+		end;
+	}
+ 
+	set @pos, dialog(0,0,1, "※ 주의 ※\\n반드시 유저를 관리할때 유저의 장비템을 모두 벗었을때 사용해주세요. 주의사항을 지키지않고 유저를 관리시 불이익은 책임지지 않습니다.");
+	if(@pos == 0) end;
+
+	set @user, input1(@username$, "관리할 유저의 이름을 입력해주세요.");
+	set @target_id, name2id(@username$);
+	set @target_sd, name2sd(@username$);
+	if(@target_id > 0)
+	{
+		set @pos, list2(@list, 0, 0, "기능을 선택해주세요.", "체력마력 관리", "힘민지 관리", "레벨 관리", "방어력 관리", "경험치 관리", "금전 관리", "십억경 관리");
+		if(@pos == 0) end;
+		else if(@list == 1) goto hpmp;
+		else if(@list == 2) goto mwg;
+		else if(@list == 3) goto level;
+		else if(@list == 4) goto ac;
+		else if(@list == 5) goto exp;
+		else if(@list == 6) goto money;
+		else if(@list == 7) goto reset;
+		else end;
+hpmp:
+		a1:
+			set @pos, dialog(1,0,1, "현재 " + @username$ + "님의 체력마력 정보\\n순체력: " + get_purehp(@target_sd) + "\\n순마력: " + get_puremp(@target_sd) + "\\n템체력: " + get_maxhp(@target_sd) + "\\n템마력: " + get_maxmp(@target_sd) + "\\n현재체력: " + get_hp(@target_sd) + "\\n현재마력: " + get_mp(@target_sd) + "");
+			if(@pos == 0) end;
+		a2:
+			set @pos, list2(@hpmp, 0, 1, "선택하세요.", "체력더해주기", "마력더해주기", "체력지정하기", "마력지정하기", "체력깎기", "마력깎기");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto a1;
+			else if(@hpmp == 1)
+			{
+				set @pos, input2(@plushp, 0, 15, "더해줄 만큼의 체력(순체력)을 써주세요", " ", " ");
+				if(@pos == 0) end;
+
+				set_purehp @target_sd, get_purehp(@target_sd) + @plushp;
+				message @target_sd, 8, "체력이 " + @plushp + "만큼 올랐습니다.";
+				end;
+			}
+			else if(@hpmp == 2)
+			{
+				set @pos, input2(@plusmp, 0, 15, "더해줄 만큼의 마력(마체력)을 써주세요", " ", " ");
+				if(@pos == 0) end;
+
+				set_puremp @target_sd, get_puremp(@target_sd) + @plusmp;
+				message @target_sd, 8, "마력이 " + @plusmp + "만큼 올랐습니다.";
+				end;
+			}
+			else if(@hpmp == 3)
+			{
+				set @pos, input2(@sethp, 0, 15, "지정할 만큼의 체력(순체력)을 써주세요\\n예)1000 입력시 유저체력 1000됨", " ", " ");
+				if(@pos == 0) end;
+
+				set_purehp @target_sd, @sethp;
+				message @target_sd, 8, "체력이 " + @sethp + "만큼 지정되었습니다.";
+				end;
+			}
+			else if(@hpmp == 4)
+			{
+				set @pos, input2(@setmp, 0, 15, "지정할 만큼의 마력(마체력)을 써주세요\\n예)1000 입력시 유저마력 1000됨", " ", " ");
+				if(@pos == 0) end;
+
+				set_puremp @target_sd, @setmp;
+				message @target_sd, 8, "체력이 " + @setmp + "만큼 지정되었습니다.";
+				end;
+			}
+			else if(@hpmp == 5)
+			{
+				set @pos, input2(@mnushp, 0, 15, "깎을 만큼의 체력(순체력)을 써주세요", " ", " ");
+				if(@pos == 0) end;
+
+				set_purehp @target_sd, get_purehp(@target_sd) - @mnushp;
+				message @target_sd, 8, "체력이 " + @mnushp + "만큼 깎였습니다.";
+				end;
+			}
+			else if(@hpmp == 6)
+			{
+				set @pos, input2(@mnusmp, 0, 15, "깎을 만큼의 마력(순마력)을 써주세요", " ", " ");
+				if(@pos == 0) end;
+
+				set_puremp @target_sd, get_puremp(@target_sd) - @mnusmp;
+				message @target_sd, 8, "체력이 " + @mnusmp + "만큼 깎였습니다.";
+				end;
+			}
+			
+mwg:
+		b1:
+			set @pos, dialog(1,0,1, "현재 " + @username$ + "님의 힘민지 정보\\n힘: " + get_might(@target_sd) + "\\n민: " + get_will(@target_sd) + "\\n지: " + get_grace(@target_sd) + "");
+			if(@pos == 0) end;
+		b2:
+			set @pos, list2(@mwg, 0, 1, "선택하세요.", "힘 지정하기", "민 지정하기", "지 지정하기");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto mwg;
+			else if(@mwg == 1)
+			{
+				set @pos, input2(@m, 0, 15, "지정할 힘(힘)을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_might @target_sd, @m;
+				message @target_sd, 8, "힘이 " + @m + "만큼 지정되었습니다.";
+				end;
+			}
+			else if(@mwg == 2)
+			{
+				set @pos, input2(@w, 0, 15, "지정할 민(민첩)을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_will @target_sd, @w;
+				message @target_sd, 8, "민첩이 " + @w + "만큼 지정되었습니다.";
+				end;
+			}
+			else if(@mwg == 3)
+			{
+				set @pos, input2(@g, 0, 15, "지정할 지(지력)를 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_grace @target_sd, @g;
+				message @target_sd, 8, "지력이 " + @g + "만큼 지정되었습니다.";
+				end;
+			}
+level:
+		c1:
+			set @pos, dialog(1,0,1, "현재 " + @username$ + "님의 레벨 정보\\n레벨: " + get_level(@target_sd) + "\\n승급차수: " + get_joblevel(@target_sd) + "");
+			if(@pos == 0) end;			
+		c2:
+			set @pos, list2(@level, 0, 1, "선택하세요.", "레벨 바꾸기", "승급차수 바꾸기");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto c1;
+			else if(@level == 1)
+			{
+				set @pos, input2(@level, 0, 15, "바꿀 레벨을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_level @target_sd, @level;
+				message @target_sd, 8, "레벨이 " + @level + "로 바뀌셨습니다.";
+				end;
+			}
+			else if(@level == 2)
+			{
+				set @pos, input2(@upgrade, 0, 15, "바꿀 승급차수를 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_joblevel @target_sd, @upgrade;
+				message @target_sd, 8, "승급차수가 " + @upgrade + "로 바뀌셨습니다.";
+				end;
+			}
+ac:
+		d1:
+			set @pos, dialog(1,0,1, "현재 " + @username$ + "님의 방어력 정보\\n방어력: " + get_ac(@target_sd) + "");
+			if(@pos == 0) end;
+		d2:
+			set @pos, list2(@ac, 0, 1, "선택하세요.", "방어력 지정하기");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto d1;
+			else if(@ac == 1)
+			{
+				set @pos, input2(@ac, 0, 15, "지정할 방어력을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_ac @target_sd, @ac;
+				message @target_sd, 8, "방어력이 " + @ac + "로 지정되었습니다.";
+				end;
+			}
+exp:
+		e1:
+			set @pos, dialog(1,0,1, "현재 " + @username$ + "님의 경험치 정보\\n경험치: " + get_exp(@target_sd) + "");
+			if(@pos == 0) end;
+		e2:
+			set @pos, list2(@exp, 0, 1, "선택하세요.", "경험치 지정하기", "경험치 더해주기", "경험치 깎기");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto e1;
+			else if(@exp == 1)
+			{
+				set @pos, input2(@setexp, 0, 15, "지정할 경험치을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_exp @target_sd, @setexp;
+				message @target_sd, 8, "경험치가 " + @setexp + "로 지정되었습니다.";
+				end;
+			}
+			else if(@exp == 2)
+			{
+				set @pos, input2(@plusexp, 0, 15, "더해줄 경험치을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_exp @target_sd, get_exp(@target_sd) + @plusexp;
+				message @target_sd, 8, "경험치가 " + @plusexp + "만큼 올랐습니다.";
+				end;
+			}
+			else if(@exp == 3)
+			{
+				set @pos, input2(@mnusexp, 0, 15, "깎을 경험치을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_exp @target_sd, get_exp(@target_sd) - @mnusexp;
+				message @target_sd, 8, "경험치가 " + @mnusexp + "만큼 깎였습니다.";
+				end;
+			}
+money:
+		f1:
+			set @pos, dialog(1,0,1, "현재 " + @username$ + "님의 금전 정보\\n금전: " + get_money(@target_sd) + "");
+			if(@pos == 0) end;
+		f2:
+			set @pos, list2(@money, 0, 1, "선택하세요.", "금전 지정하기", "금전 더해주기", "금전 깎기");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto f1;
+			else if(@money == 1)
+			{
+				set @pos, input2(@setmoney, 0, 15, "지정할 금전을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_money @target_sd, @setmoney;
+				message @target_sd, 8, "금전이 " + @setmoney + "로 지정되었습니다.";
+				end;
+			}
+			else if(@money == 2)
+			{
+				set @pos, input2(@plusmoney, 0, 15, "더해줄 금전을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_money @target_sd, get_money(@target_sd) + @plusmoney;
+				message @target_sd, 8, "금전이 " + @plusmoney + "만큼 올랐습니다.";
+				end;
+			}
+			else if(@money == 3)
+			{
+				set @pos, input2(@mnusmoney, 0, 15, "깎을 금전을 써주세요.", " ", " ");
+				if(@pos == 0) end;
+
+				set_money @target_sd, get_money(@target_sd) - @mnusmoney;
+				message @target_sd, 8, "금전이 " + @mnusmoney + "만큼 깎였습니다.";
+				end;
+			}
+reset:
+		reset01:
+//			
+			runscript @target_sd, "유저경험치";
+			set @user_exp, #user_exp_p;
+			set #user_exp_p, 0;
+			set @pos, list2(@select_re, 0, 1, get_name(@target_sd)+"님의 십억경은" +@user_exp+"입니다. 변경하시겠습니까?", "예", "아니오");
+			if(!@pos) end;
+			if(@select_re == 2) { end; }
+			else if(@select_re == 1) {
+				set @pos, input1(@c_exp, "변경할 십억경를 써주세요.");
+				set #change_exp, @c_exp;
+				runscript @target_sd, "유저경험치변경";
+				message @sd, 8, get_name(@target_sd)+" 님의 십억경을"+@c_exp+"(으)로 변경하였습니다.";
+				end;
+			}
+	}
+	else { message @sd, 8, @username$ + "님은 현재 접속중이지 않습니다."; end; }
+}
+유저경험치	{
+	set @sd, mysd();
+	set @id, myid();
+	set #user_exp_p, $saveexp_p;
+}
+유저경험치변경	{
+	set @sd, mysd();
+	set @id, myid();
+	set $saveexp_p, #change_exp;
+	set #change_exp, 0;
+	message @sd, 8, "십억경이 "+$saveexp_p+"로 변경되었습니다.";
+}
+
+@동동주	{
+	set @sd, mysd();
+	if(get_hp(@sd) > 1)
+	{
+		set_hp @sd, get_hp(@sd)-1;
+	}
+	else
+	{
+		set_hp @sd, get_hp(@sd);
+	}
+
+	if(get_mp(@sd)+30 > get_maxmp(@sd))
+	{
+		set_mp @sd, get_maxmp(@sd);
+	}
+	else
+	{
+		set_mp @sd, get_mp(@sd)+30;
+	}
+	updatestatus @sd, 0;
+}
+
+@막걸리	{
+	set @sd, mysd();
+	if(get_hp(@sd) > 1)
+	{
+		set_hp @sd, get_hp(@sd)-1;
+	}
+	else
+	{
+		set_hp @sd, get_hp(@sd);
+	}
+
+	if(get_mp(@sd)+30 > get_maxmp(@sd))
+	{
+		set_mp @sd, get_maxmp(@sd);
+	}
+	else
+	{
+		set_mp @sd, get_mp(@sd)+30;
+	}
+	updatestatus @sd, 0;
+}
+
+@오십세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@팔십세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@백세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@천세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@이백세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@삼백세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@오백세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@진백세주	{
+	callfunc "Item_Heal", 0, 150;
+}
+
+@홍주	{
+	callfunc "Item_Heal", 0, 300;
+}
+
+@비둘기고기	{
+	callfunc "Item_Heal", 150, 0;
+}
+
+@구기자	{
+	callfunc "Item_Heal", 300, 0;
+}
+
+@동충하초	{
+	callfunc "Item_Heal", 15, 0;
+}
+
+@청심사주	{
+	callfunc "Item_Heal", 150, 100;
+}
+
+@팔과탕	{
+	callfunc "Item_Heal", 1000, 1000;
+}
+
+@노란비서	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(ismapoption(@sd,1))
+	{
+		message @sd, 3, "여기선 사용할 수 없습니다.";
+		end;
+	}
+	if(get_nation(@sd) == 1)
+	{
+		setarray @mapid[0], 29, 30, 31, 8016, 8017, 8018, 8043, 8044, 8045, 8070, 8071, 8072, 8097, 8098, 8099, 8124, 8125, 8126, 8151, 8152, 8153, 8178, 8179, 8180, 8205, 8206, 8207, 8232, 8233, 8234, 8259, 8260, 8261;
+		setarray @x[0], 3, 4, 7, 8, 3, 4, 7, 8;
+		setarray @y[0], 5, 5, 5, 5, 9, 9, 9, 9;
+	}
+	else
+	{
+		setarray @mapid[0], 15, 16, 17, 7716, 7717, 7718, 7743, 7744, 7745, 7770, 7771, 7772, 7797, 7798, 7799, 7824, 7825, 7826, 7851, 7852, 7853, 7878, 7879, 7880, 7905, 7906, 7907, 7932, 7933, 7934, 7959, 7960, 7961;
+		setarray @x[0], 3, 4, 7, 8, 3, 4, 7, 8;
+		setarray @y[0], 5, 5, 5, 5, 9, 9, 9, 9;
+	}
+
+	delitem @sd, name2itemid("노란비서"), 1;
+
+	sound @id, 412;
+
+	set @warp_mapid, @mapid[rand(0, getarraysize(@mapid)-1)];
+	set @warp_x, @x[rand(0, getarraysize(@x)-1)];
+	set @warp_y, @y[rand(0, getarraysize(@y)-1)];
+
+	deletearray @mapid[0], getarraysize(@mapid);
+	deletearray @x[0], getarraysize(@x);
+	deletearray @y[0], getarraysize(@y);
+
+	warp @sd, @warp_mapid, @warp_x, @warp_y;
+}
+
+@소환비서	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @target_id, obj_getfront();
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(get_level(@target_sd) == 50)
+		{
+			if(get_level(@target_sd) < get_level(@sd))
+			{
+				set_xy @target_id, get_x(@id), get_y(@id);
+				updatexy @target_sd;
+				updatelookpc @target_sd, 0;
+			}
+		}
+	}
+	delitem @sd, name2itemid("소환비서"), 1;
+}
+
+@국내성비서	{
+	callfunc "Warp_Map_Item", name2mapid("국내성"), rand(201, 207), rand(106, 110), 412, name2itemid("국내성비서");
+}
+
+@부여성비서	{
+	callfunc "Warp_Map_Item", name2mapid("부여성"), rand(131, 136), rand(86, 90), 412, name2itemid("부여성비서");
+}
+
+@장안성비서	{
+	callfunc "Warp_Map_Item", name2mapid("장안성"), rand(109, 116), rand(104, 108), 412, name2itemid("장안성비서");
+}
+
+@광동성비서	{
+	callfunc "Warp_Map_Item", name2mapid("광동성"), rand(13, 15), rand(13, 15), 412, name2itemid("광동성비서");
+}
+
+@낙양성비서	{
+	callfunc "Warp_Map_Item", name2mapid("낙양성"), rand(13, 15), rand(13, 15), 412, name2itemid("낙양성비서");
+}
+
+@강서성비서	{
+	callfunc "Warp_Map_Item", name2mapid("강서성"), rand(13, 15), rand(13, 15), 412, name2itemid("강서성비서");
+}
+
+@대방성비서	{
+	callfunc "Warp_Map_Item", name2mapid("대방성"), rand(13, 15), rand(13, 15), 412, name2itemid("대방성비서");
+}
+
+@복건성비서	{
+	callfunc "Warp_Map_Item", name2mapid("복건성"), 72, 76, 412, name2itemid("복건성비서");
+}
+
+@북방대초원1층비서	{
+	callfunc "Warp_Map_Item", name2mapid("북방대초원1"), rand(140, 144), rand(7, 9), 412, name2itemid("북방대초원1층비서");
+}
+
+@왕궁비서	{
+	callfunc "Warp_Map_Item", name2mapid("부여성"), 73, 57, 412, name2itemid("왕궁비서");
+}
+
+@사냥이벤트비서	{
+	callfunc "Warp_Map_Item", name2mapid("사냥이벤트대기실"), 24, 10, 412, name2itemid("사냥이벤트비서");
+}
+
+@순제입구	{
+	callfunc "Warp_Map_Item", name2mapid("순제의방"), 14, 28, 412, name2itemid("순제입구비서");
+}
+
+@반고입구	{
+	callfunc "Warp_Map_Item", name2mapid("반고의방"), 12, 23, 412, name2itemid("반고입구비서");
+}
+@오녀산성이동	{
+	callfunc "Warp_Map_Item", name2mapid("오녀산성"), 34, 12, 412, name2itemid("오녀산성비서");
+}
+
+@초코바나나	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@새콤달콤구이	{
+	callfunc "Item_Heal", 800, 0;
+}
+
+@생명보존음료	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@생명보존반찬	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@생장촉진통구이	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@생장촉진음료	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@생장촉진반찬	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@달콤새콤구이	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@생명보존통구이	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@도토리	{
+	callfunc "Item_Heal", 8, 0;
+}
+
+@고기조각	{
+	callfunc "Item_Heal", 8, 0;
+}
+
+@고기	{
+	callfunc "Item_Heal", 10, 0;
+}
+
+@돼지고기	{
+	callfunc "Item_Heal", 62, 0;
+}
+
+@토끼고기	{
+	callfunc "Item_Heal", 48, 0;
+}
+
+@쥐고기	{
+	callfunc "Item_Heal", 28, 0;
+}
+
+@뱀고기	{
+	callfunc "Item_Heal", 54, 0;
+}
+
+@여우고기	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@여우모피	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@곰가죽	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@호랑이가죽	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@호랑이고기	{
+	callfunc "Item_Heal", 32, 0;
+}
+
+@적호의가죽	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@닭고기	{
+	callfunc "Item_Heal", 78, 0;
+}
+
+@자호의가죽	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@말고기	{
+	callfunc "Item_Heal", 108, 0;
+}
+
+@쇠고기	{
+	callfunc "Item_Heal", 108, 0;
+}
+
+@녹용	{
+	callfunc "Item_Heal", 148, 0;
+}
+
+@웅담	{
+	callfunc "Item_Heal", 500, 0;
+}
+
+@참수박	{
+	callfunc "Item_Heal", 312, 0;
+}
+
+@인삼	{
+	callfunc "Item_Heal", 12, 0;
+}
+
+@산삼	{
+	callfunc "Item_Heal", 12, 0;
+}
+
+@진호의가죽	{
+	callfunc "Item_Heal", 18, 0;
+}
+
+@사슴고기	{
+	callfunc "Item_Heal", 20, 0;
+}
+
+@산돼지고기	{
+	callfunc "Item_Heal", 78, 0;
+}
+
+@숲돼지고기	{
+	callfunc "Item_Heal", 148, 0;
+}
+
+@뱀꼬리	{
+	callfunc "Item_Heal", 78, 0;
+}
+
+@이리고기	{
+	callfunc "Item_Heal", 78, 0;
+}
+
+@감자	{
+	callfunc "Item_Heal", 50, 0;
+}
+
+@고구마	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@야자수액	{
+	callfunc "Item_Heal", 5, 0;
+}
+
+@구운감자	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@구운고구마	{
+	callfunc "Item_Heal", 150, 0;
+}
+
+@좋은뱀고기	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@활력충전통구이	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@활력충전음료	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@활력충전반찬	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@환약	{
+	callfunc "Item_Heal", 10, 0;
+}
+
+@환상의도시락	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@포도	{
+	callfunc "Item_Heal", 5, 0;
+}
+
+@파수다지오	{
+	callfunc "Item_Heal", 10, 0;
+}
+
+@초보도시락	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@전설의도시락	{
+	callfunc "Item_Heal", 600, 0;
+}
+@인어의심장	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@열대땅콩	{
+	callfunc "Item_Heal", 30, 0;
+}
+
+@오도독망고과편	{
+	callfunc "Item_Heal", 800, 0;
+}
+
+@영양통구이	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@영양음료	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@영양반찬	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@산해진미	{
+	set_purehp mysd(), get_purehp(mysd())+200;
+	set_puremp mysd(), get_puremp(mysd())+100;
+}
+
+@자양강장요리	{
+	set_purehp mysd(), get_purehp(mysd())+100;
+	set_puremp mysd(), get_puremp(mysd())+50;
+}
+
+@상어의심장	{
+	callfunc "Item_Heal", 500, 0;
+}
+
+@식용벌레	{
+	callfunc "Item_Heal", 30, 0;
+}
+
+@실패한요리	{
+	callfunc "Item_Heal", 5, 0;
+}
+
+@박쥐고기	{
+	callfunc "Item_Heal", 58, 0;
+}
+
+@백두웅담	{
+	callfunc "Item_Heal", 650, 0;
+}
+
+@복어의심장	{
+	callfunc "Item_Heal", 150, 0;
+}
+
+@바다거북알	{
+	callfunc "Item_Heal", 500, 0;
+}
+
+@바나나	{
+	callfunc "Item_Heal", 30, 0;
+}
+
+@망고	{
+	callfunc "Item_Heal", 5, 0;
+}
+
+@다랑어살코기	{
+	callfunc "Item_Heal", 30, 0;
+}
+
+@노회	{
+	callfunc "Item_Heal", 30, 0;
+}
+
+@늑대고기	{
+	callfunc "Item_Heal", 30, 0;
+}
+
+@궁극의도시락	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@기분전환음료	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@기분전환반찬	{
+	callfunc "Item_Heal", 600, 0;
+}
+
+@끔찍한요리	{
+	callfunc "Item_Heal", 5, 0;
+}
+
+@1차도시락	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@2차도시락	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@3차도시락	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@4차도시락	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@노란시약	{
+	callfunc "Item_Heal", 50, 0;
+}
+
+@파란시약	{
+	callfunc "Item_Heal", 100, 0;
+}
+
+@보라시약	{
+	callfunc "Item_Heal", 200, 0;
+}
+
+@갈색시약	{
+	set @sd, mysd();
+	if(spellaethered(@sd, name2spellid("자동무장")) == 0 ||
+	spellaethered(@sd, name2spellid("무장")) == 0)
+	{
+		spellcast @sd, name2spellid("무장");
+	}
+}
+
+@빨간시약	{
+	set @sd, mysd();
+	set @id, myid();
+	set @mapid, get_mapid(@sd);
+	set @mapname$, get_mapname(@sd);
+
+	if(@mapname$ == "부여감옥") || (@mapname$ == "생존이벤트") || (@mapname$ == "OX퀴즈장") || (@mapname$ == "청룡성입구") || (@mapname$ == "청룡의심장") || (@mapname$ == "주작성입구") || (@mapname$ == "주작의심장") || (@mapname$ == "현무성입구") || (@mapname$ == "현무의심장") || (@mapname$ == "백호성입구") || (@mapname$ == "백호의심장") {
+		set @pos, dialog(0, 0, 0, "공성전에서는 시약 사용이 불가능합니다.");
+		end;
+		}
+	else{
+		callfunc "Item_Heal", get_maxhp(mysd())/3, 0;
+}
+}
+
+@초록시약	{
+	set @sd, mysd();
+	if(spellaethered(@sd, name2spellid("자동보호")) == 0 ||
+	spellaethered(@sd, name2spellid("신령지익진")) == 0 ||
+	spellaethered(@sd, name2spellid("보호")) == 0)
+	{
+		spellcast @sd, name2spellid("보호");
+	}
+}
+
+@맑은시약	{
+	callfunc "Item_Heal", get_maxhp(mysd()), 0;
+}
+
+@마법의시약	{
+	callfunc "Item_Heal", 0, get_maxmp(mysd());
+}
+
+@도삭산100층비서	{
+	callfunc "Warp_Map_Item", 986, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산100층비서");
+}
+
+@도삭산200층비서	{
+	callfunc "Warp_Map_Item", 992, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산200층비서");
+}
+
+@도삭산300층비서	{
+	callfunc "Warp_Map_Item", 998, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산300층비서");
+}
+
+@도삭산400층비서	{
+	callfunc "Warp_Map_Item", 1004, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산400층비서");
+}
+
+@도삭산500층비서	{
+	callfunc "Warp_Map_Item", 1010, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산500층비서");
+}
+
+@도삭산600층비서	{
+	callfunc "Warp_Map_Item", 1016, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산600층비서");
+}
+
+@도삭산700층비서	{
+	callfunc "Warp_Map_Item", 1022, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산700층비서");
+}
+
+@도삭산800층비서	{
+	callfunc "Warp_Map_Item", 1028, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산800층비서");
+}
+
+@도삭산900층비서	{
+	callfunc "Warp_Map_Item", 1034, rand(13, 15), rand(13, 15), 412, name2itemid("도삭산900층비서");
+}
+@도삭산1000층상점비서	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 1, 8, 0;
+
+	set @list, list1("도삭산1000층상점으로 이동하시겠습니까?", "예", "아뇨");
+	if(@list != 1) { end; }
+	else
+	{
+		warp @sd, 14502, rand(7,7), rand(8,8);
+		delitem @sd, name2itemid("도삭산1000층상점비서"), 1;
+		broadcast 5, "▶▶ " + get_name(@sd) + "님이 도삭산1000층상점에 들어가셨습니다. ◀◀";
+		set @pos, dialog(0,0,1, "이동되었습니다.");
+		end;
+	}
+}
+// ----------------------------------------------- consumption script ---------------------------------------------------------------------------------------
+
+@표신궁고문서1~6	{
+	image 1, 2083, 3;
+	set @pos, dialog(1, 0, 0, "알아볼 수 없는 문자로 쓰여 있어 읽을 수 없다.");
+}
+
+@대장군의일기1	{
+	image 1, 2083, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기 전야\\n이미 천왕은 통치자로서의 분별력을 잃은 지 오래, 사리사욕을 채우기 급급하여 백성들의 피를 빠는 폭군이 되고 말았다.\\n다른 영지를 통치하는 영주들도 백성들이 마음놓고 살 수 있도록 영지를 잘 다스리기는 커녕, 오히려 서로 영지를 빼앗으려는 크고 작은 전쟁을 일으켜 천하의 백성들을 슬프게 하고 있다. 천하는 이미 전쟁으로 가득한, 이른바 전국시대에 접어들었다.");
+	if(@pos == 0) end;
+COS002:
+	set $imperator_book_1, 1;
+	set @pos, dialog(1, 1, 0, "이런 시대에 대장군인 내가 할 수 있는 일은 단 하나, 난세를 평정해 천하통일을 이룩하는 것 뿐.\\n\\n그렇게 하면 더 이상의 전쟁의 고통에 괴로워하는 이도 없을터");
+	if(@pos == -1) goto COS001;
+}
+
+@대장군의일기2	{
+	image 1, 2083, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기한지 27일째\\n천황이 나의 반역 사실을 눈치채고 대비하기 전에\\n최대한 빨리 다른 영지를 무력화시킨다는 작전은 주효했다.\\n대부분의 영지는 무력화시키거나 우리 편으로 만들었고, 남은 영지들은 뿔뿔이 흩어져 있어 천황이 남은 영지를 규합하여 우리 군에 대항하기도 힘들 것이다.");
+	if(@pos == 0) end;
+COS002:
+	set $imperator_book_1, 2;
+	set @pos, dialog(1, 1, 0, "이제 천하통일의 그날까지 얼마 남지 않았다. 하지만 어쩐지 불안한 것은 왜일까? 좋지 않은 예감이 든다...");
+	if(@pos == -1) goto COS001;
+}
+
+@대장군의일기3	{
+	image 1, 2083, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기한지 31일째\\n예감은 적중했다.\\n천황은 남은 영지에 밀사를 보내 연합군을 조직, 우리를 사방에서 포위하고 공격해왔다.\\n천황의 지독한 폭정에 모두 반발하고 있었으니, 천황의 명을 따르지 않을 것이라고 생각했건만. 분명 많은 부와 더 좋은 지위를 미끼로 유혹했겠지...");
+	if(@pos == 0) end;
+COS002:
+	set $imperator_book_1, 3;
+	set @pos, dialog(1, 1, 0, "일기를 쓰고 있을 시간이 없다.\\n오늘 밤에 있을 전투가 우리 군의 미래를 결정할 것이다.");
+	if(@pos == -1) goto COS001;
+}
+
+@대장군의일기4	{
+	image 1, 2083, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기한지 34일째\\n절망적인 상황이다.\\n3일 전의 전투에서 대패한 결과, 병사는 모두 뿔뿔이 흩어졌고, 남은 병력은 원래의 절반도 되지 않는다.\\n고통받는 이가 없는 세상은 커녕,\\n나는 지금 우리 병사들 하나하나에게 더할 나위 없는 고통을 주고 있는 것은 아닌가....\\n오늘만 해도 도망치는 병사를 셋이나 베었다.");
+	if(@pos == 0) end;
+COS002:
+	set $imperator_book_1, 4;
+	set @pos, dialog(1, 1, 0, "그들을 이해할 수 없는 것은 아니지만, 남은 병사의 사기를 위해 벨 수밖에 없었다.\\n내 손으로 벤 병사 중 한 명의 짐 속에서 이상한 물건을 발견했다.\\n사악한 기운이 느껴지는 부적이다.\\n평소 같았으면 이런 사악한 물건은 당장 불태워 없앴겠지만...\\n지금은 이런 하찮은 부적에라도 의지하고 싶다....");
+	if(@pos == -1) goto COS001;
+}
+
+@대장군의일기5	{
+	image 1, 2083, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기한지 35일째\\n이상한 꿈을 꾸었다.\\n기괴한 생김새의 악마가,\\n내가 죄없는 목숨을 많이 베면 벨 수록 더 강대한 힘을 얻을 수 있도록 해 주고,\\n10만명의 목숨을 베는 날, 나에게 영원한 생명을 주겠다는 이야기를 했다.\\n그리고 계약의 증거로, 다음 전투에서 우리 군이 반드시 이기게 해 줄 것이라고 했다.");
+	if(@pos == 0) end;
+COS002:
+	set $imperator_book_1, 5;
+	set @pos, dialog(1, 1, 0, "꿈이여서 그랬는지, 나는 홀린 듯이 그러겠다고 말했고, 그 순간 꿈에서 깨어났다.\\n내가 본 것은 정말 꿈이었을까?\\n모든 것은 내일 있을 전투가 증명해 줄 것이다. 꿈에서 한 악마와의 계약이 만약 진짜였다고 해도,\\n그것이 고통받는 사람이 없는 세상을 만들기 위해서라면...");
+	if(@pos == -1) goto COS001;
+}
+
+@대장군의일기6	{
+	image 1, 2083, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기한지...??일째\\n오늘은 146명. 아니, 148명이였던가?\\n악마와 약속한 숫자까지 얼마 남지 않았다.\\n사실 그런 건 아무래도 좋다.\\n어떻게 하면 더 많은 피를 볼 수 있을까? 어떻게 하면...?\\n그래, 더 커다란 전쟁을 일으키는 것은 어떨까? 악마와 계약한 대로 영원한 생명을 얻게 된다면 더 큰 전쟁을 일으켜 보는 것도 좋겠다...");
+	if(@pos == 0) end;
+COS002:
+	set $imperator_book_1, 6;
+	set @pos, dialog(1, 1, 0, "아...\\n그러고 보니... 뭐였더라.\\n내가 왜 반란군을 일으켰는지 생각이 잘 나지 않는다.\\n고통받는 사람들을... 어떻게 한다는 생각이였던거 같은데...\\n역시 기억이 잘 나지 않는다. 별로 생각하고 싶지도 않고...\\n뭐, 아무려면 어떠랴, 더 많은 피를 볼 수 있다면야...흐흐흐...");
+	if(@pos == -1) goto COS001;
+}
+
+@대장군의일기통합본	{
+	image 1, 2081, 3;
+COS001:
+	set @pos, dialog(1, 0, 1, "-궐기 전야\\n이미 천왕은 통치자로서의 분별력을 잃은 지 오래, 사리사욕을 채우기 급급하여 백성들의 피를 빠는 폭군이 되고 말았다.\\n다른 영지를 통치하는 영주들도 백성들이 마음놓고 살 수 있도록 영지를 잘 다스리기는 커녕, 오히려 서로 영지를 빼앗으려는 크고 작은 전쟁을 일으켜 천하의 백성들을 슬프게 하고 있다. 천하는 이미 전쟁으로 가득한, 이른바 전국시대에 접어들었다.");
+	if(@pos == 0) end;
+COS002:
+	set @pos, dialog(1, 1, 1, "이런 시대에 대장군인 내가 할 수 있는 일은 단 하나, 난세를 평정해 천하통일을 이룩하는 것 뿐.\\n\\n그렇게 하면 더 이상의 전쟁의 고통에 괴로워하는 이도 없을터");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS001;
+COS003:
+	set @pos, dialog(1, 1, 1, "-궐기한지 27일째\\n천황이 나의 반역 사실을 눈치채고 대비하기 전에\\n최대한 빨리 다른 영지를 무력화시킨다는 작전은 주효했다.\\n대부분의 영지는 무력화시키거나 우리 편으로 만들었고, 남은 영지들은 뿔뿔이 흩어져 있어 천황이 남은 영지를 규합하여 우리 군에 대항하기도 힘들 것이다.");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS002;
+COS004:
+	set @pos, dialog(1, 1, 1, "이제 천하통일의 그날까지 얼마 남지 않았다. 하지만 어쩐지 불안한 것은 왜일까? 좋지 않은 예감이 든다...");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS003;
+COS005:
+	set @pos, dialog(1, 1, 1, "-궐기한지 31일째\\n예감은 적중했다.\\n천황은 남은 영지에 밀사를 보내 연합군을 조직, 우리를 사방에서 포위하고 공격해왔다.\\n천황의 지독한 폭정에 모두 반발하고 있었으니, 천황의 명을 따르지 않을 것이라고 생각했건만. 분명 많은 부와 더 좋은 지위를 미끼로 유혹했겠지...");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS004;
+COS006:
+	set @pos, dialog(1, 1, 1, "일기를 쓰고 있을 시간이 없다.\\n오늘 밤에 있을 전투가 우리 군의 미래를 결정할 것이다.");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS005;
+COS007:
+	set @pos, dialog(1, 1, 1, "-궐기한지 34일째\\n절망적인 상황이다.\\n3일 전의 전투에서 대패한 결과, 병사는 모두 뿔뿔이 흩어졌고, 남은 병력은 원래의 절반도 되지 않는다.\\n고통받는 이가 없는 세상은 커녕,\\n나는 지금 우리 병사들 하나하나에게 더할 나위 없는 고통을 주고 있는 것은 아닌가....\\n오늘만 해도 도망치는 병사를 셋이나 베었다.");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS006;
+COS008:
+	set @pos, dialog(1, 1, 1, "그들을 이해할 수 없는 것은 아니지만, 남은 병사의 사기를 위해 벨 수밖에 없었다.\\n내 손으로 벤 병사 중 한 명의 짐 속에서 이상한 물건을 발견했다.\\n사악한 기운이 느껴지는 부적이다.\\n평소 같았으면 이런 사악한 물건은 당장 불태워 없앴겠지만...\\n지금은 이런 하찮은 부적에라도 의지하고 싶다....");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS007;
+COS009:
+	set @pos, dialog(1, 1, 1, "-궐기한지 35일째\\n이상한 꿈을 꾸었다.\\n기괴한 생김새의 악마가,\\n내가 죄없는 목숨을 많이 베면 벨 수록 더 강대한 힘을 얻을 수 있도록 해 주고,\\n10만명의 목숨을 베는 날, 나에게 영원한 생명을 주겠다는 이야기를 했다.\\n그리고 계약의 증거로, 다음 전투에서 우리 군이 반드시 이기게 해 줄 것이라고 했다.");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS008;
+COS010:
+	set @pos, dialog(1, 1, 1, "꿈이여서 그랬는지, 나는 홀린 듯이 그러겠다고 말했고, 그 순간 꿈에서 깨어났다.\\n내가 본 것은 정말 꿈이었을까?\\n모든 것은 내일 있을 전투가 증명해 줄 것이다. 꿈에서 한 악마와의 계약이 만약 진짜였다고 해도,\\n그것이 고통받는 사람이 없는 세상을 만들기 위해서라면...");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS009;
+COS011:
+	set @pos, dialog(1, 1, 1, "-궐기한지...??일째\\n오늘은 146명. 아니, 148명이였던가?\\n악마와 약속한 숫자까지 얼마 남지 않았다.\\n사실 그런 건 아무래도 좋다.\\n어떻게 하면 더 많은 피를 볼 수 있을까? 어떻게 하면...?\\n그래, 더 커다란 전쟁을 일으키는 것은 어떨까? 악마와 계약한 대로 영원한 생명을 얻게 된다면 더 큰 전쟁을 일으켜 보는 것도 좋겠다...");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS010;
+COS012:
+	set @pos, dialog(1, 1, 0, "아...\\n그러고 보니... 뭐였더라.\\n내가 왜 반란군을 일으켰는지 생각이 잘 나지 않는다.\\n고통받는 사람들을... 어떻게 한다는 생각이였던거 같은데...\\n역시 기억이 잘 나지 않는다. 별로 생각하고 싶지도 않고...\\n뭐, 아무려면 어떠랴, 더 많은 피를 볼 수 있다면야...흐흐흐...");
+	if(@pos == -1) goto COS001;
+}
+
+@낡은금고	{
+	set @sd, mysd();
+	set @id, myid();
+	image 1, 1956, 0;
+	if(countitem(name2itemid("무쇠망치")) == 0)
+	{
+		set @pos, dialog(0, 0, 0, "자세히 살펴보니, 무쇠망치가 있으면 부술 수 있을 것 같다.");
+		end;
+	}
+	else
+	{
+		delitem @sd, name2itemid("낡은금고"), 1;
+		delitem @sd, name2itemid("무쇠망치"), 1;
+		message @sd, 3, "낡은금고 주었습니다";
+		message @sd, 3, "무쇠망치 주었습니다";
+		additem @sd, name2itemid("낡은봉투"), 1;
+		addlegend @sd, 27, 7, 0, 1, "낡은금고를 부쉈다!";
+		set @pos, dialog(0, 0, 0, "무쇠망치로 낡은 금고를 깨뜨리니, 안에서 낡은 봉투가 나왔군.");
+		end;
+	}
+}
+
+@낡은봉투	{
+	set @sd, mysd();
+	set @id, myid();
+	image 1, 1644, 0;
+	set @pos, list2(@list, 0, 0, "봉투를 여시겠습니까?", "열지 않겠어. 약속은 지켜야해.", "열어봐야지. 약속보다는 궁금함이 먼저야.");
+	if(@pos == 0) end;
+	else if(@list == 2)
+	{
+		delitem @sd, name2itemid("낡은봉투"), 1;
+		message @sd, 3, "낡은봉투 주었습니다";
+		additem @sd, name2itemid("낡은연애편지"), 1;
+COS001:
+		image 1, 1645, 0;
+		set @pos, dialog(0, 0, 1, "봉투를 열었더니, 안에서는 낡은 연애 편지 한장이 나왔다.");
+		if(@pos == 0) end;
+COS002:
+		set @pos, dialog(0, 1, 1, "청하.. 이 겨울날에 나의 옆구리는 아주 따뜻하다오. 당신의 따뜻한 체온이 나를 감싸안아서 그런가보오. 나는 이 세상 끝나는 날까지 당신만 있으면 행복하다오. 청하! 나의 귀여운 꽃사슴. 사랑하오~!");
+		if(@pos == 0) end;
+		else if(@pos == -1) goto COS002;
+COS003:
+		set @pos, dialog(0, 1, 0, "...라고 쓰여져 있군");
+		if(@pos == -1) goto COS002;
+		end;
+	}
+	else end;
+}
+
+@낡은연애편지	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	image 1, 1645, 0;
+	set @pos, dialog(0, 0, 1, "봉투를 열었더니, 안에서는 낡은 연애 편지 한장이 나왔다.");
+	if(@pos == 0) end;
+COS002:
+	set @pos, dialog(0, 1, 1, "청하.. 이 겨울날에 나의 옆구리는 아주 따뜻하다오. 당신의 따뜻한 체온이 나를 감싸안아서 그런가보오. 나는 이 세상 끝나는 날까지 당신만 있으면 행복하다오. 청하! 나의 귀여운 꽃사슴. 사랑하오~!");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS002;
+COS003:
+	set @pos, dialog(0, 1, 0, "...라고 쓰여져 있군");
+	if(@pos == -1) goto COS002;
+}
+
+@내사랑소다수	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	image 1, 1645, 0;
+	set @pos, dialog(0, 0, 1, "봉투를 열었더니, 안에서는 낡은 연애 편지 한장이 나왔다.");
+	if(@pos == 0) end;
+COS002:
+	set @pos, dialog(0, 1, 1, "비리 ㄴㄴ");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS002;
+COS003:
+	set @pos, dialog(0, 1, 0, "제발");
+	if(@pos == -1) goto COS002;
+}
+
+@내사랑소다	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	image 1, 1645, 0;
+	set @pos, dialog(0, 0, 1, "봉투를 열었더니, 안에서는 낡은 연애 편지 한장이 나왔다.");
+	if(@pos == 0) end;
+COS002:
+	set @pos, dialog(0, 1, 1, "이 편지는 영국에서 부터 시작되었으며.....");
+	if(@pos == 0) end;
+	else if(@pos == -1) goto COS002;
+COS003:
+	set @pos, dialog(0, 1, 0, "느금 김치장인");
+	if(@pos == -1) goto COS002;
+}
+
+@토깽이변신시약	{
+	callfunc "Item_Transform", 442, 3, 25;
+}
+
+@암흑왕변신시약	{
+	callfunc "Item_Transform", 323, 3, 25;
+}
+
+@청의태자변신시약	{
+	callfunc "Item_Transform", 404, 3, 25;
+}
+@보노보노변신시약	{
+	callfunc "Item_Transform", 296, 3, 25;
+}
+
+@해골왕변신시약	{
+	callfunc "Item_Transform", 315, 3, 25;
+}
+
+@북천황변신시약	{
+	callfunc "Item_Transform", 250, 3, 25;
+}
+
+@파괴왕변신시약	{
+	callfunc "Item_Transform", 297, 3, 25;
+}
+
+@반고변신시약	{
+	callfunc "Item_Transform", 499, 3, 25;
+}
+
+@고래변신시약	{
+	callfunc "Item_Transform", 337, 3, 25;
+}
+
+@수련승변신시약	{
+	callfunc "Item_Transform", 507, 3, 25;
+}
+
+@백호변신시약	{
+	callfunc "Item_Transform", 163, 3, 25;
+}
+
+@현무변신시약	{
+	callfunc "Item_Transform", 165, 3, 25;
+}
+
+@주작변신시약	{
+	callfunc "Item_Transform", 164, 3, 25;
+}
+
+@잡초변신시약	{
+	callfunc "Item_Transform", 338, 3, 25;
+}
+
+@달변신시약	{
+	callfunc "Item_Transform", 394, 3, 25;
+}
+@파리변신시약	{
+	callfunc "Item_Transform", 570, 3, 25;
+}
+@동명왕변신시약	{
+	callfunc "Item_Transform", 507, 3, 25;
+}
+@청룡변신시약	{
+	callfunc "Item_Transform", 166, 3, 25;
+}
+
+@신부여성비서	{
+	set @sd, mysd();
+	set @id, myid();
+
+	delitem @sd, name2itemid("신부여성비서"), 1;
+	sound @id, 412;
+
+	if(rand(1, 3) == 1) { set @y, 5; }
+	else if(rand(1, 3) == 2) { set @y, 8; }
+	else { set @y, 11; }
+
+	warp @sd, rand(15205, 15206), rand(3, 4), @y;
+}
+
+@잔치떡	{
+	callfunc "Item_Heal", 500, 0;
+}
+
+@사랑의호출기	{
+	set @sd, mysd();
+	set @id, myid();
+	set @mapid, get_mapid(@sd);
+	set @mapname$, get_mapname(@sd);
+
+	if(@mapname$ == "부여감옥") || (@mapname$ == "생존이벤트") || (@mapname$ == "OX퀴즈장") || (@mapname$ == "청룡성입구") || (@mapname$ == "청룡의심장") || (@mapname$ == "주작성입구") || (@mapname$ == "주작의심장") || (@mapname$ == "현무성입구") || (@mapname$ == "현무의심장") || (@mapname$ == "백호성입구") || (@mapname$ == "백호의심장") end;
+
+	image 1, 240, 0;
+
+	if($marry_check != 0)
+	{
+		set @target_id, name2id($marry_name$);
+		set @target_sd, name2sd($marry_name$);
+		if(@target_sd > 0)
+		{
+			if(get_mapid(@sd) == get_mapid(@target_sd))
+			{
+				set_xy @id, get_x(@target_id), get_y(@target_id);
+				set_side @id, get_side(@target_id);
+
+				updatexy @sd;
+				updatelookpc @sd, 0;
+				updateallpc @sd;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 0, "배우자 " + get_name(@target_sd) + "님과 같은 맵에 있어야 합니다.");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "배우자 " + $marry_name$ + "님은 바람의나라에 없습니다.");
+			end;
+		}
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 0, "결혼하지 않은 자는 사용할 수 없는듯 하다.");
+		end;
+	}
+}
+
+@산신의보물	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 1, 2083, 0;
+
+	if($mountain_gold_count != 0)
+	{
+		set @pos, dialog(0, 0, 0, $mountain_name$ + " " + $mountain_x + ", " + $mountain_y + "에 숨겨두다.");
+	}
+	else
+	{
+		setarray @mapid$[0], "도삭산801층", "도삭산811층", "도삭산821층", "도삭산831층", "도삭산841층", "도삭산851층", "도삭산861층", "도삭산871층", "도삭산881층", "도삭산891층";
+		setarray @x[0], 20, 7, 20, 20, 15, 24, 15, 15, 24;
+		setarray @y[0], 9, 23, 7, 10, 12, 16, 12, 12, 12;
+
+		set @rand, rand(0, getarraysize(@mapid$)-1);
+
+		set $mountain_name$, @mapid$[@rand];
+		set $mountain_x, @x[@rand];
+		set $mountain_y, @y[@rand];
+		set $mountain_gold_count, 1;
+
+		deletearray @mapid$[0], getarraysize(@mapid$);
+		deletearray @x[0], getarraysize(@x);
+		deletearray @y[0], getarraysize(@y);
+
+		set @pos, dialog(0, 0, 0, $mountain_name$ + " " + $mountain_x + ", " + $mountain_y + "에 숨겨두다.");
+	}
+}
+
+@고래소환	{
+	set @sd, mysd();
+	set @id, myid();
+	delitem @sd, name2itemid("고래소환비서"), 1;
+	mobspawn get_mapid(@sd), get_x(@id), get_y(@id), 2, 1225;
+	broadcast 5, get_name(@sd) + "님께서 고래를 소환하셨습니다.";
+		}
+	}
+}
+
+@장인의회중시계	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+	if($clock_time < @nt)
+	{
+		message @sd, 8, "시계가 작동하지 않는다.";
+	}
+	else
+	{
+		setarray @day$[0], "일", "월", "화", "수", "목", "금", "토";
+		set @days$, @day$[gettime(6, 0)];
+		deletearray @day$[0], getarraysize(@day$);
+		message @sd, 8, gettime(5, 0) + "년 " + gettime(4, 0) + "월 " + gettime(3, 0) + "일 " + @days$ + "요일\\n" + gettime(2, 0) + "시 " + gettime(1, 0) + "분 " + gettime(0, 0) + "초\\n\\n건전지 수명 : " + ($clock_time-@nt);
+	}
+}
+
+@건전지	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+	if($clock_time < @nt)
+	{
+		set $clock_time, @nt+7200;
+		message @sd, 0, "[정보] 건전지로 장인의회중시계의 수명을 2시간 연장시켰습니다.";
+		delitem @sd, name2itemid("건전지"), 1;
+		message @sd, 3, "건전지 주었습니다";
+	}
+	else
+	{
+		message @sd, 8, "건전지가 남아있습니다.";
+	}
+}
+
+@고급선물상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,442);
+	set @pos, list2(@list, 0, 0, "고급선물상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("고급선물상자"), 1;
+	if(@r > 0 && @r <= 100) { set @item$, "보물상자"; }
+	else if(@r > 100 && @r <= 110) { set @item$, "비룡장갑"; }
+	else if(@r > 110 && @r <= 120) { set @item$, "비룡팔찌"; }
+	else if(@r > 120 && @r <= 140) { set @item$, "비룡팔찌"; }
+	else if(@r > 140 && @r <= 160) { set @item$, "비룡선류"; }
+	else if(@r > 160 && @r <= 180) { set @item$, "비룡투구"; }
+	else if(@r > 180 && @r <= 200) { set @item$, "용천제삼검"; }
+	else if(@r > 200 && @r <= 220) { set @item$, "용랑제삼봉"; }
+	else if(@r > 220 && @r <= 240) { set @item$, "남자기모노"; }
+	else if(@r > 240 && @r <= 260) { set @item$, "여자기모노"; }
+	else if(@r > 260 && @r <= 280) { set @item$, "은나무가지"; }
+	else if(@r > 280 && @r <= 300) { set @item$, "용마제삼검"; }
+	else if(@r > 300 && @r <= 310) { set @item$, "은나무가지"; }
+	else if(@r > 310 && @r <= 320) { set @item$, "활력의목걸이"; }
+	else if(@r > 320 && @r <= 330) { set @item$, "황금"; }
+	else if(@r > 330 && @r <= 350) { set @item$, "현철"; }
+	else if(@r > 350 && @r <= 370) { set @item$, "용겸제삼봉"; }
+	else if(@r > 370 && @r <= 380) { set @item$, "여신의방패"; }
+	else if(@r > 380 && @r <= 400) { set @item$, "은나무가지"; }
+	else if(@r > 400 && @r <= 410) { set @item$, "보무의목걸이"; }
+	else if(@r > 410 && @r <= 420) { set @item$, "활력의목걸이"; }
+	else if(@r > 420 && @r <= 430) { set @item$, "금조각"; }
+	else if(@r > 430 && @r <= 440) { set @item$, "시력회복의귀걸이"; }
+	else if(@r > 440 && @r <= 442) { set @item$, "해골왕의뼈"; }
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	broadcast 4, "" + get_name(@sd) + "님이 고급선물상자를 개봉하여 " + @item$ + "을(를) 획득하셨습니다!";
+
+	end;
+	}
+}
+
+@하나상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,146);
+	set @pos, list2(@list, 0, 0, "하나상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("하나상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "하나상자"; }
+	else if(@r > 10 && @r <= 30) { set @item$, "용무기삼교환권"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "용무기사교환권"; }
+	else if(@r > 40 && @r <= 45) { set @item$, "여신의방패"; }
+	else if(@r > 45 && @r <= 50) { set @item$, "팔세지도"; }
+	else if(@r > 50 && @r <= 60) { set @item$, "시력회복의귀걸이"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "보무의목걸이"; }
+	else if(@r > 70 && @r <= 73) { set @item$, "용무기오교환권"; }
+	else if(@r > 73 && @r <= 85) { set @item$, "하나상자"; }
+	else if(@r > 85 && @r <= 95) { set @item$, "비룡투구"; }
+	else if(@r > 95 && @r <= 100) { set @item$, "비룡교환권"; }
+	else if(@r > 100 && @r <= 103) { set @item$, "하나상자"; }
+	else if(@r > 103 && @r <= 106) { set @item$, "하나상자"; }
+	else if(@r > 106 && @r <= 110) { set @item$, "하나상자"; }
+	else if(@r > 110 && @r <= 112) { set @item$, "용무기오교환권"; }
+	else if(@r > 112 && @r <= 124) { set @item$, "해골왕의뼈"; }
+	else if(@r > 124 && @r <= 125) { set @item$, "황금투구"; }
+	else if(@r > 125 && @r <= 128) { set @item$, "구미호의꼬리"; }
+	else if(@r > 128 && @r <= 138) { set @item$, "철갑안장"; }
+	else if(@r > 138 && @r <= 140) { set @item$, "금나무가지"; }
+	else if(@r > 140 && @r <= 141) { set @item$, "순수의강철"; }
+	else if(@r > 141 && @r <= 142) { set @item$, "금천지인패"; }
+	else if(@r > 142 && @r <= 144) { set @item$, "은별목걸이"; }
+	else if(@r > 144 && @r <= 146) { set @item$, "손상무기수리비령"; }
+
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@고급의류상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,75);
+	set @pos, list2(@list, 0, 0, "후원의류상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("고급의류상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "고급의류상자"; }
+	else if(@r > 10 && @r <= 20) { set @item$, "유카타"; }
+	else if(@r > 20 && @r <= 30) { set @item$, "선녀예복"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "선녀평복"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "묘족예복"; }
+	else if(@r > 50 && @r <= 60) { set @item$, "남자수영복"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "여자수영복"; }
+	else if(@r > 70 && @r <= 75) { set @item$, "끈옷1"; }
+
+
+
+	additem @sd, name2itemid(@item$), 1;
+	broadcast 4, "" + get_name(@sd) + "님이 고급의류상자를 개봉하여 " + @item$ + "을(를) 획득하셨습니다!";
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@의류상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,120);
+	set @pos, list2(@list, 0, 0, "의류상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("의류상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "의류상자"; }
+	else if(@r > 10 && @r <= 30) { set @item$, "여자기모노"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "남자기모노"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "차이나드레스"; }
+	else if(@r > 50 && @r <= 60) { set @item$, "유카타"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "선녀예복"; }
+	else if(@r > 70 && @r <= 80) { set @item$, "선녀평복"; }
+	else if(@r > 80 && @r <= 90) { set @item$, "묘족예복"; }
+	else if(@r > 90 && @r <= 100) { set @item$, "남자수영복"; }
+	else if(@r > 100 && @r <= 110) { set @item$, "여자수영복"; }
+	else if(@r > 110 && @r <= 120) { set @item$, "끈옷1"; }
+
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	broadcast 4, "" + get_name(@sd) + "님이 의류상자를 개봉하여 " + @item$ + "을(를) 획득하셨습니다!";
+	end;
+	}
+}
+
+@이상한상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,110);
+	set @pos, list2(@list, 0, 0, "이상한상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("이상한상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "이상한상자"; }
+	else if(@r > 10 && @r <= 30) { set @item$, "고급선물상자"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "[허상]용마제칠검"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "[허상]용천제칠검"; }
+	else if(@r > 50 && @r <= 60) { set @item$, "[허상]용랑제칠봉"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "[허상]용겸제칠봉"; }
+	else if(@r > 70 && @r <= 80) { set @item$, "[허상]구곡검"; }
+	else if(@r > 80 && @r <= 90) { set @item$, "[허상]협가검"; }
+	else if(@r > 90 && @r <= 100) { set @item$, "[허상]대모홍접선"; }
+	else if(@r > 100 && @r <= 110) { set @item$, "[허상]영후단봉"; }
+
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	broadcast 4, "" + get_name(@sd) + "님이 이상한상자를 개봉하여 " + @item$ + "을(를) 획득하셨습니다!";
+	end;
+	}
+}
+
+@이벤트상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,135);
+	set @pos, list2(@list, 0, 0, "이벤트상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("이벤트상자"), 1;
+	if(@r > 0 && @r <= 20) { set @item, "운의제일검"; }
+	else if(@r > 20 && @r <= 30) { set @item$, "보노보노변신시약"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "노란색풍선"; }
+	else if(@r > 40 && @r <= 45) { set @item$, "웨딩드레스18"; }
+	else if(@r > 45 && @r <= 55) { set @item$, "꽃송이"; }
+	else if(@r > 55 && @r <= 60) { set @item$, "칠지도"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "유연선류"; }
+	else if(@r > 70 && @r <= 75) { set @item$, "금마반지"; }
+	else if(@r > 75 && @r <= 85) { set @item$, "연위팔찌"; }
+	else if(@r > 85 && @r <= 95) { set @item$, "꽃잎반지"; }
+	else if(@r > 95 && @r <= 100) { set @item$, "백호변신시약"; }
+	else if(@r > 100 && @r <= 105) { set @item$, "죄수복"; }
+	else if(@r > 105 && @r <= 110) { set @item$, "산타복"; }
+	else if(@r > 110 && @r <= 115) { set @item$, "얼음칼"; }
+	else if(@r > 115 && @r <= 120) { set @item$, "저주의단검"; }
+	else if(@r > 120 && @r <= 125) { set @item$, "선녀평복"; }
+	else if(@r > 125 && @r <= 130) { set @item$, "여왕님의홍철편"; }
+	else if(@r > 130 && @r <= 135) { set @item$, "끈옷7"; }
+	else if(@r > 135 && @r <= 140) { set @item$, "유카타"; }
+	else if(@r > 140 && @r <= 145) { set @item$, "하늘개비"; }
+	else if(@r > 145 && @r <= 150) { set @item$, "연환장갑"; }
+	else if(@r > 130 && @r <= 132) { set @item$, "무도가옷"; }
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	broadcast 4, "" + get_name(@sd) + "님이 이벤트상자를 개봉하여 " + @item$ + "을(를) 획득하셨습니다!";
+	end;
+	}
+}
+
+@윤도상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,175);
+	set @pos, list2(@list, 0, 0, "윤도상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("윤도상자"), 1;
+	if(@r > 0 && @r <= 30) { set @item$, "추억윤도"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "파티성장시약"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "천명초기화비령"; }
+	else if(@r > 50 && @r <= 70) { set @item$, "오철"; }
+	else if(@r > 70 && @r <= 80) { set @item$, "동인패"; }
+	else if(@r > 80 && @r <= 90) { set @item$, "동지패"; }
+	else if(@r > 90 && @r <= 100) { set @item$, "동천패"; }
+	else if(@r > 100 && @r <= 105) { set @item$, "어금니상자"; }
+	else if(@r > 105 && @r <= 110) { set @item$, "일본상자"; }
+	else if(@r > 110 && @r <= 115) { set @item$, "용의상자"; }
+	else if(@r > 115 && @r <= 120) { set @item$, "북방상자"; }
+	else if(@r > 120 && @r <= 125) { set @item$, "똥"; }
+	else if(@r > 125 && @r <= 130) { set @item$, "용왕의반지"; }
+	else if(@r > 130 && @r <= 135) { set @item$, "방패상자"; }
+	else if(@r > 135 && @r <= 140) { set @item$, "일본상자"; }
+	else if(@r > 140 && @r <= 145) { set @item$, "용왕의투구"; }
+	else if(@r > 145 && @r <= 150) { set @item$, "유성지의보패"; }
+	else if(@r > 150 && @r <= 152) { set @item$, "해골왕의뼈"; }
+	else if(@r > 152 && @r <= 153) { set @item$, "팔세지도"; }
+	else if(@r > 153 && @r <= 154) { set @item$, "여신의방패"; }
+	else if(@r > 154 && @r <= 164) { set @item$, "추억윤도"; }
+	else if(@r > 164 && @r <= 167) { set @item$, "천공투구"; }
+	else if(@r > 167 && @r <= 169) { set @item$, "천공장갑"; }
+	else if(@r > 169 && @r <= 171) { set @item$, "천공팔찌"; }
+	else if(@r > 171 && @r <= 173) { set @item$, "천공반지"; }
+	else if(@r > 173 && @r <= 175) { set @item$, "천공선류"; }
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	broadcast 4, "" + get_name(@sd) + "님이 윤도상자를 개봉하여 " + @item$ + "을(를) 획득하셨습니다!";
+
+	end;
+	}
+}
+
+@소다수의선물{
+	set @sd, mysd();
+	set @userid$, get_name(@sd);
+	set @slot_available, 0;
+
+	for(set @i, 8; @i < 60; set @i, @i+1) // 8번부터가 아이템슬롯 a
+	{
+		if(get_equipitem_name(@sd, @i) == 0) // 메시지로 찍어보니 아이템 없으면 0을 리턴하네요
+		{
+			set @slot_available, @slot_available + 1;
+		}
+	}
+	if(@slot_available == 0){
+		if(countitem(name2itemid("소다수의선물")) != 1) //소다수의선물 1개일때는 허용(1개면 사라짐과 동시에 아이템 획득 가능)
+		{	
+			message @sd, 3, "아이템창이 꽉찼습니다.";
+			end;
+		}
+	}
+	
+	setarray @itemid$[0], "망또", "남자설빔", "여자설빔", "웨딩드레스", "웨딩드레스4"
+	, "연등", "남자기모노", "여자기모노", "웨딩드레스17", "차이나드레스", "묘족여자평복"
+	, "여자치파오", "타라의남자옷", "타라의여자옷", "분홍개비", "연두개비", "파랑개비", "초록개비"
+	, "풀잎반지", "노란연등", "빨간연등", "보라연등", "삼다수", "삼다수", "꽃잎반지", "삼다수";
+	
+	delitem @sd, name2itemid("소다수의선물"), 1;
+	set @drop$, @itemid$[rand(0, getarraysize(@itemid$)-1)];
+	additem @sd, name2itemid(@drop$), 1;
+	broadcast 5, @userid$ + "님이 소다수의선물에서 " + @drop$ + "을(를) 얻었습니다. 축하합니다!";
+	
+}
+
+@선물상자	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 1, 431, 3;
+
+	message @sd, 0, "○ 이벤트에 감사드리며 행운이 따르시길!";
+
+
+		effect myid(), 93;
+
+		set @r, rand(1,25);
+		if(@r == 1) { set @item$, "은나무가지"; set @number, 1; }
+		else if(@r == 2) { set @item$, "보물상자"; set @number, 1; }
+		else if(@r == 3) { set @item$, "양첨목봉"; set @number, 1; }
+		else if(@r == 4) { set @item$, "진백화검"; set @number, 1; }
+		else if(@r == 5) { set @item$, "은나무가지"; set @number, 1; }
+		else if(@r == 6) { set @item$, "천공반지"; set @number, 1; }
+		else if(@r == 7) { set @item$, "천공장갑"; set @number, 1; }
+		else if(@r == 8) { set @item$, "천공팔찌"; set @number, 1; }
+		else if(@r == 9) { set @item$, "천공선류"; set @number, 1; }
+		else if(@r == 10) { set @item$, "오철"; set @number, 1; }
+		else if(@r == 11) { set @item$, "여자기모노"; set @number, 1; }
+		else if(@r == 12) { set @item$, "그물"; set @number, 1; }
+		else if(@r == 13) { set @item$, "보물상자"; set @number, 1; }
+		else if(@r == 14) { set @item$, "남자기모노"; set @number, 1; }
+		else if(@r == 15) { set @item$, "용설봉"; set @number, 1; }
+		else if(@r == 16) { set @item$, "진선장"; set @number, 1; }
+		else if(@r == 17) { set @item$, "백진도"; set @number, 1; }
+		else if(@r == 18) { set @item$, "진성검"; set @number, 1; }
+		else if(@r == 19) { set @item$, "활"; set @number, 1; }
+		else if(@r == 20) { set @item$, "용마제일검"; set @number, 1; }
+		else if(@r == 21) { set @item$, "용천제일검"; set @number, 1; }
+		else if(@r == 22) { set @item$, "용랑제일봉"; set @number, 1; }
+		else if(@r == 23) { set @item$, "용겸제일봉"; set @number, 1; }
+		else if(@r == 24) { set @item$, "오철"; set @number, 1; }
+		else if(@r == 25) { set @item$, "보물상자"; set @number, 1; }
+
+
+
+
+		broadcast 5, "★☆ " + get_name(@sd) + "님이 선물상자에서 " + @item$ + " 아이템을 획득하였습니다!";
+		delitem @sd, name2itemid("선물상자"), 1;
+		additem @sd, name2itemid(@item$), @number;
+	}
+	else end;
+}
+
+@라면	{
+ set @sd, mysd();
+ set @healhp, 5000;
+ if(get_hp(@sd)+@healhp > get_maxhp(@sd)) { set_hp @sd, get_maxhp(@sd); }
+ else { set_hp @sd, get_hp(@sd)+@healhp; }
+}
+
+@짜장면	{
+ set @sd, mysd();
+ set @healmp, 5000;
+ if(get_mp(@sd)+@healmp > get_maxmp(@sd)) { set_mp @sd, get_maxmp(@sd); }
+ else { set_mp @sd, get_mp(@sd)+@healmp; }
+}
+
+@치킨	{
+ set @sd, mysd();
+ set @healhp, 30000;
+ if(get_hp(@sd)+@healhp > get_maxhp(@sd)) { set_hp @sd, get_maxhp(@sd); }
+ else { set_hp @sd, get_hp(@sd)+@healhp; }
+}
+
+@맥주	{
+ set @sd, mysd();
+ set @healmp, 10000;
+ if(get_mp(@sd)+@healmp > get_maxmp(@sd)) { set_mp @sd, get_maxmp(@sd); }
+ else { set_mp @sd, get_mp(@sd)+@healmp; }
+}
+
+//@이벤트관리	{
+	set @mysd, mysd();
+	set @pos, list2(@list, 0, 0, "선택하세요.", "청룡설정", "주작설정", "백호설정", "현무설정");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, input2(@dragon$, 0, 10, "청룡성을 점령한 문파이름은?", "청룡성을 점령한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #dragon_castle$, @dragon$;
+		set @pos, input2(@dragonmaster$, 0, 6, "청룡성을 점령한 문파의 성주는?", "청룡성을 점령한 문파의 성주이름:", " ");
+		if(@pos == 0) end;
+		set #dragon_castle_master$, @dragonmaster$;
+		end;
+	}
+	else if(@list == 2)
+	{
+		set @pos, input2(@brid$, 0, 10, "주작성을 점령한 문파이름은?", "주작성을 점령한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #bird_castle$, @brid$;
+		set @pos, input2(@birdmaster$, 0, 6, "주작성을 점령한 문파의 성주는?", "주작성을 점령한 문파의 성주이름:", " ");
+		if(@pos == 0) end;
+		set #bird_castle_master$, @birdmaster$;
+		end;
+	}
+	else if(@list == 3)
+	{
+		set @pos, input2(@tiger$, 0, 10, "백호성을 점령한 문파이름은?", "백호성을 점령한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #tiger_castle$, @tiger$;
+		set @pos, input2(@tigermaster$, 0, 6, "백호성을 점령한 문파의 성주는?", "백호성을 점령한 문파의 성주이름:", " ");
+		if(@pos == 0) end;
+		set #tiger_castle_master$, @tigermaster$;
+		end;
+	}
+	else if(@list == 4)
+	{
+		set @pos, input2(@turtle$, 0, 10, "현무성을 점령한 문파이름은?", "현무성을 점령한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #turtle_castle$, @turtle$;
+		set @pos, input2(@turtlemaster$, 0, 6, "현무성을 점령한 문파의 성주는?", "현무성을 점령한 문파의 성주이름:", " ");
+		if(@pos == 0) end;
+		set #turtle_castle_master$, @turtlemaster$;
+		end;
+	}
+}
+
+@이벤트관리	{
+	set @mysd, mysd();
+	if(get_gmlevel(@mysd) < 1) end;
+
+	set @pos, list2(@list, 0, 0, "선택하세요.", "무한대전입장", "무한대전입장불가", "무한대전시작", "무한대전끝", "오엑스입장", "오엑스입장불가", "사냥이벤트입장", "사냥이벤트입장불가", "생존이벤트참가", "생존참가불가", "성주기");
+	if(@pos == 0) end;
+	else if(@list == 1) {
+		set #muhanmove, 0;
+		end;
+	}
+	else if(@list == 2) {
+		set #muhanmove, 1;
+		end;
+	}
+	else if(@list == 3) {
+		set #muhanmoveno, 1;
+		set #battle_kind, 6;
+		set @map_id, 38001;
+		end;
+	}
+	else if(@list == 4) {
+		set #muhanmoveno, 0;
+		end;
+	}
+	else if(@list == 5) {
+		set #ox_event_count, 0;
+		set #event_OX, 1;
+		end;
+	}
+	else if(@list == 6) {
+		set #event_OX, 0;
+		end;
+	}
+	else if(@list == 7) {
+		set #huntmove, 0;
+		end;
+	}
+	else if(@list == 8) {
+		set #huntmove, 1;
+		end;
+	}
+	else if(@list == 9) {
+		set #sangmove, 0;
+		end;
+	}
+	else if(@list == 10) {
+		set #sangmove, 1;
+		end;
+	}
+}
+
+
+무한대전입장	{
+	set @mysd, mysd();
+	set @myid, myid();
+	if(#muhanmove == 0)
+	{
+		set @pos, list2(@list, 0, 0, "동서무한대전에 참여하시겠습니까?", "예", "아뇨");
+		if(@list == 1)
+		{
+			if($oxevent == 0)
+			{
+				warp @mysd,  38002, rand(6,8), rand(2,4);
+				set $oxevent, 1;
+				end;
+			}
+			if($oxevent == 1)
+			{
+				warp @mysd, 38002, rand(7,9), rand(7,9);
+				message @mysd, 3, "이동되었습니다.";
+				end;
+			}
+		}
+		else { end; }
+	}
+	if(#muhanmove == 1)
+	{
+		set @pos, dialog(0,0,0, "현재 동서무한대전이 진행중이지 않습니다.");
+		end;
+	}
+}
+
+//사냥이벤트입장	{
+	set @mysd, mysd();
+	set @myid, myid();
+	if(#oxmove == 0)
+	{
+		set @pos, list2(@list, 0, 0, "오엑스장 입장하시겠습니까?", "예", "아뇨");
+		if(@list == 1)
+		{
+			if($oxevent == 0)
+			{
+				warp @mysd, 1480, rand(13,15), rand(2,4);
+				set $oxevent, 1;
+				end;
+			}
+			if($oxevent == 1)
+			{
+				warp @mysd, 1480, rand(7,21), rand(2,7);
+				message @mysd, 3, "이동되었습니다.";
+				end;
+			}
+		}
+		else { end; }
+	}
+	if(#oxmove == 1)
+	{
+		set @pos, dialog(0,0,0, "현재 오엑스 이벤트가 진행중이지 않습니다.");
+		end;
+	}
+}
+
+사냥이벤트입장	{
+	set @mysd, mysd();
+	set @myid, myid();
+	if(#huntmove == 0)
+	{
+		set @pos, list2(@list, 0, 0, "사냥이벤트장 입장하시겠습니까?", "예", "아뇨");
+		if(@list == 1)
+		{
+			if($oxevent == 0)
+			{
+				warp @mysd,  14401, rand(3,183), rand(10,180);
+				set $oxevent, 1;
+				end;
+			}
+			if($oxevent == 1)
+			{
+				warp @mysd, 14401, rand(3,180), rand(10,180);
+				message @mysd, 3, "이동되었습니다.";
+				end;
+			}
+		}
+		else { end; }
+	}
+	if(#huntmove == 1)
+	{
+		set @pos, dialog(0,0,0, "현재 사냥이벤트가 진행중이지 않습니다.");
+		end;
+	}
+}
+
+생존이벤트입장	{
+	set @mysd, mysd();
+	set @myid, myid();
+	if(#sangmove == 0)
+	{
+		set @pos, list2(@list, 0, 0, "생존이벤트장 입장하시겠습니까?", "예", "아뇨");
+		if(@list == 1)
+		{
+			if($oxevent == 0)
+			{
+				warp @mysd,  53426, rand(9,15), rand(6,8);
+				set $oxevent, 1;
+				end;
+			}
+			if($oxevent == 1)
+			{
+				warp @mysd, 53426, rand(9,15), rand(6,8);
+				message @mysd, 3, "이동되었습니다.";
+				end;
+			}
+		}
+		else { end; }
+	}
+	if(#sangmove == 1)
+	{
+		set @pos, dialog(0,0,0, "현재 생존이벤트가 진행중이지 않습니다.");
+		end;
+	}
+}
+
+@일본비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 1836, 116, 11;
+	delitem @mysd, name2itemid("일본비서"), 1;
+}
+
+@용왕의방비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 925, 12, 11;
+	delitem @mysd, name2itemid("용왕의방비서"), 1;
+}
+
+@북방대초원31층비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 1902, 28, 6;
+	delitem @mysd, name2itemid("북방대초원31층비서"), 1;
+}
+
+@메마른섬비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 53512, 16, 11;
+	delitem @mysd, name2itemid("메마른섬비서"), 1;
+}
+
+@환상의섬비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 1648, 21, 80;
+	delitem @mysd, name2itemid("환상의섬비서"), 1;
+}
+
+@둔귀촌비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 53154, 10, 10;
+	delitem @mysd, name2itemid("둔귀촌비서"), 1;
+}
+
+@사천족움막비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 53123, 9, 12;
+	delitem @mysd, name2itemid("사천족움막비서"), 1;
+}
+
+@해안가비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 906, 26, 3;
+	delitem @mysd, name2itemid("해안가비서"), 1;
+}
+
+@위례성비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 53408, 10, 5;
+	delitem @mysd, name2itemid("위례성비서"), 1;
+}
+
+@선비족입구비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 674, 9, 16;
+	delitem @mysd, name2itemid("선비족비서"), 1;
+}
+
+@흉노족입구비서	{
+	set @mysd, mysd();
+	set @myid, myid();
+ 
+	sound @myid, 412;
+	warp @mysd, 1489, 18, 15;
+	delitem @mysd, name2itemid("흉노족비서"), 1;
+}
+
+
+@지원의상자	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 1, 1510, 0;
+
+	set @pos, list2(@list, 0, 0, "정말로 여시겠습니까?", "네", "아니요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		delitem @sd, name2itemid("지원의상자"), 1;
+		additem @sd, name2itemid("승급지원상자"), 1;
+		additem @sd, name2itemid("부여성비서"), 10;
+		additem @sd, name2itemid("초심자노리개"), 1;
+		additem @sd, name2itemid("용왕의투구"), 1;
+		additem @sd, name2itemid("십억경"), 20;
+		additem @sd, name2itemid("해안가비서"), 1;
+		additem @sd, name2itemid("철갑마비서"), 100;
+		additem @sd, name2itemid("용왕의반지"), 1;
+		additem @sd, name2itemid("용왕의반지"), 1;
+		additem @sd, name2itemid("진호박"), 10;
+		additem @sd, name2itemid("세계전도"), 1;
+
+		broadcast 4, "" + get_name(@sd) + "님이 아이디를 새로만드셨습니다!";
+		end;
+	}
+	else end;
+	end;
+}
+
+@승급지원상자	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 1, 1510, 0;
+
+	set @pos, list2(@list, 0, 0, "정말로 여시겠습니까?", "네", "아니요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		delitem @sd, name2itemid("승급지원상자"), 1;
+		additem @sd, name2itemid("팔괘"), 1;
+		additem @sd, name2itemid("화룡의비늘"), 1;
+		additem @sd, name2itemid("수룡의비늘"), 1;
+		additem @sd, name2itemid("천성현의증표"), 1;
+
+		end;
+	}
+	else end;
+	end;
+}
+
+@단체지원의상자	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 1, 1510, 0;
+
+	set @pos, list2(@list, 0, 0, "정말로 여시겠습니까?", "네", "아니요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		delitem @sd, name2itemid("단체지원의상자"), 1;
+		additem @sd, name2itemid("십억경"), 500;
+		end;
+	}
+	else end;
+	end;
+}
+
+@영혼사고급	{
+	set @sd, mysd();
+	set @id, myid();
+
+	delitem @sd, name2itemid("십억경변환비서"), 1;
+
+	callfunc "BUGCLEAR";
+
+COS001:
+	image 0, 74, 0;
+
+	for(set @i, 0; @i < 8; set @i, @i+1)
+	{
+		if(get_equipitem(@sd, @i) != -1) { set @pos, dialog(0, 0, 0, "아이템을 하나라도 착용하고 있으면 날 만날수 없네!"); end; }
+	}
+
+	set @ret, list2(@list, 0, 0, "자네는 여기에 온 이유가 무엇인가?", "경험치변환", "성전환", "십억경변환");
+	if(@ret == 0) end;
+	if(@list == 1)
+	{
+		if(get_level(@sd) < 90) { set @pos, dialog(0, 0, 1, "수련을 더 쌓으시게."); end; }
+		else
+		{
+			set @pos, list2(@list, 1, 1, "바라는 것이 무엇인가?", "체력 사기", "마력 사기", "힘 사기", "민첩 사기", "지력 사기");
+			if(@pos == 0) { end; }
+			else if(@pos== -1) { goto COS001; }
+			if(@list == 1)
+			{
+				if(get_job(@sd) == 1 || get_job(@sd) == 2)
+				{
+					if(get_joblevel(@sd) == 0 && get_purehp(@sd) >= 80000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_joblevel(@sd) == 1 && get_purehp(@sd) >= 250000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_joblevel(@sd) == 2 && get_purehp(@sd) >= 700000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_joblevel(@sd) == 3 && get_purehp(@sd) >= 1600000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_purehp(@sd) < 800000) { set @minus_exp_m$, "1천만"; set @minus_exp, 10000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 800000 && get_purehp(@sd) < 1000000) { set @minus_exp_m$, "2천만"; set @minus_exp, 20000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1000000 && get_purehp(@sd) < 1200000) { set @minus_exp_m$, "5천만"; set @minus_exp, 50000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1200000 && get_purehp(@sd) < 1500000) { set @minus_exp_m$, "1억"; set @minus_exp, 100000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1500000 && get_purehp(@sd) < 1700000) { set @minus_exp_m$, "2억"; set @minus_exp, 200000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1700000 && get_purehp(@sd) < 2000000) { set @minus_exp_m$, "3억"; set @minus_exp, 300000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 2000000 && get_purehp(@sd) < 2200000) { set @minus_exp_m$, "4억"; set @minus_exp, 400000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 2200000 && get_purehp(@sd) < 2500000) { set @minus_exp_m$, "6억"; set @minus_exp, 600000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 2500000 && get_purehp(@sd) < 3000000) { set @minus_exp_m$, "9억"; set @minus_exp, 900000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 3000000 && get_purehp(@sd) < 3100000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 3100000 && get_purehp(@sd) < 3200000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 25; }
+					else if(get_purehp(@sd) >= 3200000 && get_purehp(@sd) < 3300000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 10; }
+					else if(get_purehp(@sd) >= 3300000 && get_purehp(@sd) < 3400000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 5; }
+					else if(get_purehp(@sd) >= 3400000 && get_purehp(@sd) < 3500000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 3; }
+					else if(get_purehp(@sd) >= 3500000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 1; }
+				}
+				else if(get_job(@sd) == 3 || get_job(@sd) == 4)
+				{
+					if(get_joblevel(@sd) == 0 && get_purehp(@sd) >= 35000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_joblevel(@sd) == 1 && get_purehp(@sd) >= 170000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_joblevel(@sd) == 2 && get_purehp(@sd) >= 550000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_joblevel(@sd) == 3 && get_purehp(@sd) >= 1000000) { set @pos, dialog(0, 0, 0, "아직도 승급을 하지 않았다니. 일단 승급을 한 뒤에 다시 오도록!"); end; }
+					if(get_purehp(@sd) < 400000) { set @minus_exp_m$, "1천만"; set @minus_exp, 10000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 400000 && get_purehp(@sd) < 500000) { set @minus_exp_m$, "2천만"; set @minus_exp, 20000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 500000 && get_purehp(@sd) < 600000) { set @minus_exp_m$, "5천만"; set @minus_exp, 50000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 600000 && get_purehp(@sd) < 700000) { set @minus_exp_m$, "1억"; set @minus_exp, 100000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 700000 && get_purehp(@sd) < 800000) { set @minus_exp_m$, "2억"; set @minus_exp, 200000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 800000 && get_purehp(@sd) < 900000) { set @minus_exp_m$, "3억"; set @minus_exp, 300000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 900000 && get_purehp(@sd) < 1000000) { set @minus_exp_m$, "4억"; set @minus_exp, 400000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1000000 && get_purehp(@sd) < 1100000) { set @minus_exp_m$, "6억"; set @minus_exp, 600000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1100000 && get_purehp(@sd) < 1200000) { set @minus_exp_m$, "9억"; set @minus_exp, 900000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1200000 && get_purehp(@sd) < 1250000) { set @minus_exp_m$, "12억"; set @minus_exp, 1200000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1250000 && get_purehp(@sd) < 1300000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 50; }
+					else if(get_purehp(@sd) >= 1300000 && get_purehp(@sd) < 1400000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 25; }
+					else if(get_purehp(@sd) >= 1400000 && get_purehp(@sd) < 1500000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 10; }
+					else if(get_purehp(@sd) >= 1500000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_vita, 5; }
+				}
+				if(get_exp(@sd) >= 0 && get_exp(@sd) < @minus_exp) { set @pos, dialog(0, 0, 1, "경험치가 부족하네."); end; }
+
+				if(get_exp(@sd) < 0) { set @exp1, 2147483647; set @exp2, (get_exp(@sd)+@exp1); }
+				else { set @exp1, get_exp(@sd); set @exp2, 0; }
+
+				set @max_step, @exp1/@minus_exp + @exp2/@minus_exp;
+				if(@minus_exp_m$ == "1천만" && @max_step > 200) { set @max_step, 200; }
+				else if(@minus_exp_m$ == "2천만" && @max_step > 100) { set @max_step, 100; }
+				else if(@minus_exp_m$ == "5천만" && @max_step > 40) { set @max_step, 40; }
+				else if(@minus_exp_m$ == "1억" && @max_step > 20) { set @max_step, 20; }
+				else if(@minus_exp_m$ == "2억" && @max_step > 10) { set @max_step, 10; }
+				else if(@minus_exp_m$ == "4억" && @max_step > 5) { set @max_step, 5; }
+COS002:
+				set @pos, dialog(0, 0, 1, "자네 수준이면 경험치 " + @minus_exp_m$ + "에 체력 " + @plus_vita + "을 올릴 수 있겠군. 한번에 20억 이상은 팔지 못한다네.");
+				if(@pos == 0) { end; }
+
+				set @pos, input2(@input_step, 1, 6, "그래, 몇 단계를 올리겠는가? 최대 " + @max_step + "단계까지 올릴 수 있네.", " ", " ");
+				if(@pos == 0) { end; }
+				else if(@pos == -1) { goto COS002; }
+
+				if(@input_step > @max_step || @input_step <= 0) 
+				{
+					set @pos, dialog(0, 0, 0, "다시 한번 장난을 친다면 체력을 100으로 만들어버리겠네.");
+					end; 
+				}
+				else
+				{
+					set_exp @sd, ((@exp1+@exp2)-(@input_step*@minus_exp));
+					set_purehp @sd, get_purehp(@sd)+(@input_step*@plus_vita);
+					set @pos, dialog(0, 0, 1, "능력치를 정상적으로 올려주었네.");
+					end;
+				}
+			}
+			else if(@list == 2)
+			{
+				if(get_job(@sd) == 1 || get_job(@sd) == 2)
+				{
+					if(get_puremp(@sd) < 100000) { set @minus_exp_m$, "1천만"; set @minus_exp, 10000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 100000 && get_puremp(@sd) < 150000) { set @minus_exp_m$, "2천만"; set @minus_exp, 20000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 150000 && get_puremp(@sd) < 200000) { set @minus_exp_m$, "5천만"; set @minus_exp, 50000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 200000 && get_puremp(@sd) < 250000) { set @minus_exp_m$, "1억"; set @minus_exp, 100000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 250000 && get_puremp(@sd) < 300000) { set @minus_exp_m$, "2억"; set @minus_exp, 200000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 300000 && get_puremp(@sd) < 400000) { set @minus_exp_m$, "2억"; set @minus_exp, 200000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 400000 && get_puremp(@sd) < 450000) { set @minus_exp_m$, "4억"; set @minus_exp, 400000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 450000 && get_puremp(@sd) < 500000) { set @minus_exp_m$, "6억"; set @minus_exp, 600000000; set @plus_mana,  25; }
+					else if(get_puremp(@sd) >= 500000 && get_puremp(@sd) < 550000) { set @minus_exp_m$, "10억"; set @minus_exp, 1000000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 550000 && get_puremp(@sd) < 600000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 600000 && get_puremp(@sd) < 650000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 15; }
+					else if(get_puremp(@sd) >= 650000 && get_puremp(@sd) < 700000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 10; }
+					else if(get_puremp(@sd) >= 700000 ) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 5; }
+				}
+				else if(get_job(@sd) == 3 || get_job(@sd) == 4)
+				{
+					if(get_joblevel(@sd) == 0 && get_puremp(@sd) >= 30000) { set @pos, dialog(0, 0, 0, "더 이상 올릴 수 없습니다."); end; }
+					if(get_joblevel(@sd) == 1 && get_puremp(@sd) >= 110000) { set @pos, dialog(0, 0, 0, "더 이상 올릴 수 없습니다."); end; }
+					if(get_joblevel(@sd) == 2 && get_puremp(@sd) >= 550000) { set @pos, dialog(0, 0, 0, "더 이상 올릴 수 없습니다."); end; }
+					if(get_joblevel(@sd) == 3 && get_puremp(@sd) >= 1000000) { set @pos, dialog(0, 0, 0, "더 이상 올릴 수 없습니다."); end; }
+					if(get_puremp(@sd) < 600000) { set @minus_exp_m$, "1천만"; set @minus_exp, 10000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 600000 && get_puremp(@sd) < 700000) { set @minus_exp_m$, "2천만"; set @minus_exp, 20000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 700000 && get_puremp(@sd) < 800000) { set @minus_exp_m$, "5천만"; set @minus_exp, 50000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 800000 && get_puremp(@sd) < 900000) { set @minus_exp_m$, "1억"; set @minus_exp, 100000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 900000 && get_puremp(@sd) < 1000000) { set @minus_exp_m$, "2억"; set @minus_exp, 200000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 1000000 && get_puremp(@sd) < 1100000) { set @minus_exp_m$, "3억"; set @minus_exp, 300000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 1100000 && get_puremp(@sd) < 1200000) { set @minus_exp_m$, "4억"; set @minus_exp, 400000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 1200000 && get_puremp(@sd) < 1400000) { set @minus_exp_m$, "6억"; set @minus_exp, 600000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 1400000 && get_puremp(@sd) < 1550000) { set @minus_exp_m$, "9억"; set @minus_exp, 900000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 1550000 && get_puremp(@sd) < 1600000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 25; }
+					else if(get_puremp(@sd) >= 1600000 && get_puremp(@sd) < 1650000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 15; }
+					else if(get_puremp(@sd) >= 1650000 && get_puremp(@sd) < 1700000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 10; }
+					else if(get_puremp(@sd) >= 1700000 && get_puremp(@sd) < 1750000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 5; }
+					else if(get_puremp(@sd) >= 1750000 && get_puremp(@sd) < 1800000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 3; }
+					else if(get_puremp(@sd) >= 1800000) { set @minus_exp_m$, "20억"; set @minus_exp, 2000000000; set @plus_mana, 1; }
+				}
+				if(get_exp(@sd) >= 0 && get_exp(@sd) < @minus_exp) { set @pos, dialog(0, 0, 1, "경험치가 부족하네."); end; }
+
+				if(get_exp(@sd) < 0) { set @exp1, 2147483647; set @exp2, (get_exp(@sd)+@exp1); }
+				else { set @exp1, get_exp(@sd); set @exp2, 0; }
+
+				set @max_step, @exp1/@minus_exp + @exp2/@minus_exp;
+				if(@minus_exp_m$ == "2천만" && @max_step > 100) { set @max_step, 100; }
+				else if(@minus_exp_m$ == "4천만" && @max_step > 50) { set @max_step, 50; }
+				else if(@minus_exp_m$ == "1억" && @max_step > 20) { set @max_step, 20; }
+				else if(@minus_exp_m$ == "2억" && @max_step > 10) { set @max_step, 10; }
+				else if(@minus_exp_m$ == "4억" && @max_step > 5) { set @max_step, 5; }
+COS003:
+				set @pos, dialog(0, 0, 1, "자네 수준이면 경험치 " + @minus_exp_m$ + "에 마력 " + @plus_mana + "을 올릴 수 있겠군. 한번에 20억 이상은 팔지 못한다네.");
+				if(@pos == 0) { end; }
+
+				set @pos, input2(@input_step, 1, 6, "그래, 몇 단계를 올리겠는가? 최대 " + @max_step + "단계까지 올릴 수 있네.", " ", " ");
+				if(@pos == 0) { end; }
+				else if(@pos == -1) { goto COS003; }
+
+				if(@input_step > @max_step || @input_step <= 0) 
+				{
+					set @pos, dialog(0, 0, 0, "다시 한번 장난을 친다면 마력을 100으로 만들어버리겠네.");
+					end; 
+				}
+				else
+				{
+					set_exp @sd, ((@exp1+@exp2)-(@input_step*@minus_exp));
+					set_puremp @sd, get_puremp(@sd)+(@input_step*@plus_mana);
+					set @pos, dialog(0, 0, 1, "능력치를 정상적으로 올려주었네.");
+					end;
+				}
+			}
+			else if(@list >= 3 && @list <= 5)	
+			{
+				if(get_level(@sd) < 99) { set @pos, dialog(0, 0, 0, "99레벨 이상만 가능하네."); end; }
+				else
+				{
+					if(get_exp(@sd) >= 0 && get_exp(@sd) < 10000000) { set @pos, dialog(0, 0, 0, "경험치가 부족하네."); end; }
+					else
+					{
+						if(@list == 3)
+						{
+							if(get_might(@sd)+1 <= 130)
+							{
+								set @message$, "힘";
+								set_might @sd, get_might(@sd)+1;
+								goto LABEL;
+							}
+							else
+							{
+								set @pos, dialog(0, 0, 0, "더 이상 능력치를 올리실 수 없습니다.");
+							}
+						}
+						else if(@list == 4)
+						{
+							if(get_will(@sd)+1 <= 130)
+							{
+								set @message$, "민첩성";
+								set_will @sd, get_will(@sd)+1;
+								goto LABEL;
+							}
+							else
+							{
+								set @pos, dialog(0, 0, 0, "더 이상 능력치를 올리실 수 없습니다.");
+							}
+						}
+						else if(@list == 5)
+						{
+							if(get_grace(@sd)+1 <= 130)
+							{
+								set @message$, "지력";
+								set_grace @sd, get_grace(@sd)+1;
+								goto LABEL;
+							}
+							else
+							{
+								set @pos, dialog(0, 0, 0, "더 이상 능력치를 올리실 수 없습니다.");
+							}
+						}
+						end;
+					LABEL:
+						set_exp @sd, get_exp(@sd)-10000000;
+						updatestatus @sd, 0;
+						set @pos, dialog(0, 0, 1, "정상적으로 " + @message$ + " 1 올려주었네.");
+					}
+				}
+			}
+			else end;
+		}
+	}
+	else if(@list == 2)
+	{
+		if(get_level(@sd) < 50) { set @pos, dialog(0, 0, 0, "50레벨 이상만 가능하네."); end; }
+		else
+		{
+			if(get_gender(@sd) == 1) { set @gender$, "남자"; }
+			else { set @gender$, "여자"; }
+
+			set @list2, list1("정말로 " + @gender$ + "가 되고 싶은가? 기혼이거나 아이템을 착용한 상태에선 불가능하고 10만전의 시술비가 필요하다네. 그리고, 성별이 바뀐 후에 어울리는 머리모양으로 바꿀 기회를 줄 터이니 놓치지 않도록 하게. 준비 되었는가?", "예", "아니오");
+			if(@list2 == 1)
+			{
+				if(get_money(@sd) < 100000) { set @pos, dialog(0, 0, 0, "금전이 부족하다네!"); end; }
+
+				if(get_gender(@sd) == 0) { set_gender @sd, 1; }
+				else if(get_gender(@sd) == 1) { set_gender @sd, 0; }
+
+				set_money @sd, get_money(@sd)-100000;
+				updatestatus @sd, 2;
+REHAIR1:
+				set @face, 1;
+				set @haircolor, get_haircolor(@sd);
+HAIR1:
+				set @pos, list3(@ret, 0, 0, @face, @haircolor, "이 모습으로 바꾸시겠습니까?\\n\\n비용은 1만전 입니다.", "이 모습을 선택하겠습니다.", "다른 머리모양을 보여주세요.", "바꾸지 않겠습니다.");
+				if(@pos == 0) { end; }
+				else if(@ret == 1)
+				{
+					set @pos, dialog(0, 0, 0, "자! 해주었다네, 다음에 또오시게.");
+					set_face @sd, @face;
+					updatexy @sd;
+					updatelookpc @sd, 0;
+					updateallpc @sd;
+				}
+				else if(@ret == 2)
+				{
+					set @face, @face+1;
+					if(@face < 30) { goto HAIR1; }
+					else
+					{
+						set @temp, list1("방금 보신 것이 마지막입니다.\\n\\n처음부터 다시 보시겠습니까?", "예");
+						if(@temp == 1) { goto REHAIR1; }
+						end;
+					}
+				}
+				else end;
+			}
+			else if(@list2 == 2)
+			{
+				set @pos, dialog(0,0,0, "다시 한번 생각해보게.");
+			}
+		}
+	}
+	else if(@list == 3)
+	{
+	set @sd, mysd();
+	set @id, myid();
+	set @job, get_job(@sd);
+	set @joblv, get_joblevel(@sd);
+	set @purehp, get_purehp(@sd);
+	set @puremp, get_puremp(@sd);
+
+	image 0, 74, 0;
+
+	for(set @i, 0; @i < 8; set @i, @i+1)
+	{
+		if(get_equipitem(@sd, @i) != -1)
+		{
+			set @pos, dialog(0, 0, 0, "아이템을 하나라도 착용하고 있으면 날 만날 수 없네!");
+			end;
+		}
+	}
+
+	if(get_level(@sd) < 99)
+	{
+		set @pos, dialog(0, 0, 0, "수련을 더 쌓으시게..");
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 1, "저는 십억경 전용 귀인입니다.\\n\\n십억경이 아닌 다른 것으로 경험치를 팔기 위해서는 남쪽의 도호귀인&도광귀인에게 가세요.");
+		if(@pos == 0) end;
+
+		set @pos, list2(@list, 0, 0, "바라는 것이 무엇인가?", "체력사기", "마력사기");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			if(@job == 1) { setarray @limit_hp[0], 140000, 300000, 1200000, 2800000, 3500000, 4000000; }
+			else if(@job == 2) { setarray @limit_hp[0], 130000, 300000, 1200000, 2800000, 3500000, 4000000; }
+			else if(@job == 3) { setarray @limit_hp[0], 60000, 300000, 600000, 2500000, 3500000, 4000000; }
+			else if(@job == 4) { setarray @limit_hp[0], 50000, 160000, 600000, 2500000, 3500000, 4000000; }
+			else end;
+
+			if(@limit_hp[@joblv] < @purehp)
+			{
+				deletearray @limit_hp[0], getarraysize(@limit_hp);
+
+				set @pos, dialog(0, 0, 1, "아직도 승급을 하지 않았다니..\\n\\n일단 승급을 한 뒤에 다시 오도록!");
+				end;
+			}
+			else
+			{
+				set @pos, input2(@var, 0, 2, "십억경 몇개를 교환하시겠어요?", "", "(최대99)");
+				if(@pos == 0 || @var< 0) { deletearray @limit_hp[0], getarraysize(@limit_hp); end; }
+
+				else if(get_joblevel(@sd) <= 4 && @var > 9)
+				{
+					deletearray @limit_hp[0], getarraysize(@limit_hp);
+
+					set @pos, dialog(0, 0, 0, get_joblevel(@sd)+"차 승급자는 9개 미만으로만 교환이 가능합니다.");
+					end;
+				}
+				else if($saveexp_p < @var)
+				{
+					deletearray @limit_hp[0], getarraysize(@limit_hp);
+
+					set @pos, dialog(0, 0, 0, "십억경이 부족하네.\\n\\n현재 십억경 : " + $saveexp_p + "");
+					end;
+				}
+				else
+				{
+
+					if(@job == 1 || @job == 2)
+					{
+						setarray @calc_hp[0], 1, 800000, 1000000, 1200000, 1500000, 1700000, 2000000, 2200000, 2500000, 3000000, 3100000, 3200000, 3300000, 3400000, 3500000, 4000000;
+						setarray @plus_hp[0], 5000, 2500, 1000, 500, 250, 165, 125, 83, 55, 25, 12, 5, 2, 1, 1, 1;
+					}
+					else if(@job == 3 || @job == 4)
+					{
+						setarray @calc_hp[0], 1, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1100000, 1200000, 1250000, 1300000, 1400000, 1500000, 2500000, 3500000;
+						setarray @plus_hp[0], 5000, 2500, 1000, 500, 250, 166, 125, 83, 55, 41, 25, 12, 5, 2, 1, 1;
+					}
+					else { deletearray @limit_hp[0], getarraysize(@limit_hp); end; }
+
+					for(set @loop, 0; @loop < (getarraysize(@calc_hp)-2); set @loop, @loop+1)
+					{
+						if(@purehp >= @calc_hp[@loop] && @purehp < @calc_hp[@loop+1])
+						{
+							set @plus_purehp, @purehp+(@plus_hp[@loop]*@var);
+
+							if(@plus_purehp > @limit_hp[@joblv] || @plus_purehp > @calc_hp[@loop+2] || @plus_purehp > @calc_hp[getarraysize(@calc_hp)-1])
+							{
+								deletearray @limit_hp[0], getarraysize(@limit_hp);
+								deletearray @calc_hp[0], getarraysize(@calc_hp);
+								deletearray @plus_hp[0], getarraysize(@plus_hp);
+
+								set @pos, dialog(0, 0, 0, "십억경 교환 갯수를 조금 줄여주게나.");
+								end;
+							}
+							else
+							{
+								deletearray @limit_hp[0], getarraysize(@limit_hp);
+								deletearray @calc_hp[0], getarraysize(@calc_hp);
+								deletearray @plus_hp[0], getarraysize(@plus_hp);
+
+								set $saveexp_p, $saveexp_p-@var;
+								set_purehp @sd, @plus_purehp;
+								set_hp @sd, get_maxhp(@sd);
+
+								set @pos, dialog(0, 0, 1, "능력치를 정상적으로 올려주었네.");
+								end;
+							}
+						}
+					}
+
+					deletearray @[0], getarraysize(@limit_hp);
+					deletearray @calc_hp[0], getarraysize(@calc_hp);
+					deletearray @plus_hp[0], getarraysize(@plus_hp);
+
+					set @pos, dialog(0, 0, 0, "자네는 이미 최고의 경지에 이르렀네.");
+					end;
+				}
+			}
+		}
+		else if(@list == 2)
+		{
+			if(@job == 1 || @job == 2) { setarray @limit_mp[0], 90000, 250000, 900000, 1750000, 1750000, 1750000; }
+			else if(@job == 3) { setarray @limit_mp[0], 50000, 200000, 1850000, 1800000, 1800000, 1800000; }
+			else if(@job == 4) { setarray @limit_mp[0], 50000, 140000, 1500000, 1500000, 1800000, 1800000; }
+			else end;
+
+			if(@limit_mp[@joblv] < @puremp)
+			{
+				deletearray @limit_mp[0], getarraysize(@limit_mp);
+
+				set @pos, dialog(0, 0, 1, "아직도 승급을 하지 않았다니..\\n\\n일단 승급을 한 뒤에 다시 오도록!");
+				end;
+			}
+			else
+			{
+				set @pos, input2(@var, 0, 2, "십억경 몇개를 교환하시겠어요?", "", "(최대99)");
+				if(@pos == 0 || @var < 0) { deletearray @limit_mp[0], getarraysize(@limit_mp); end; }
+
+				else if(get_joblevel(@sd) <= 4 && @var > 9)
+				{
+					deletearray @limit_hp[0], getarraysize(@limit_hp);
+
+					set @pos, dialog(0, 0, 0, get_joblevel(@sd)+"차 승급자는 9개 미만으로만 교환이 가능합니다.");
+					end;
+				}
+				else if($saveexp_p < @var)
+				{
+					deletearray @limit_mp[0], getarraysize(@limit_mp);
+
+					set @pos, dialog(0, 0, 0, "십억경이 부족하네.\\n\\n현재 십억경 : " + $saveexp_p + "");
+					end;
+				}
+				else
+				{
+					if(@job == 1 || @job == 2)
+					{
+						setarray @calc_mp[0], 1, 100000, 150000, 200000, 250000, 300000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 1000000, 1200000;
+						setarray @plus_mp[0], 2500, 1250, 500, 250, 166, 125, 62, 41, 25, 12, 6, 3, 1, -1;
+					}
+					else if(@job == 3 || @job == 4)
+					{
+						setarray @calc_mp[0], 1, 600000, 700000, 800000, 900000, 1000000, 1100000, 1200000, 1400000, 1550000, 1600000, 1650000, 1700000, 1900000, 2500000, 3500000;
+						setarray @plus_mp[0], 2500, 1250, 500, 250, 125, 83, 62, 41, 27, 12, 7, 5, 2, 1;
+					}
+					else { deletearray @limit_mp[0], getarraysize(@limit_mp); end; }
+
+					for(set @loop, 0; @loop < (getarraysize(@calc_mp)-2); set @loop, @loop+1)
+					{
+						if(@puremp >= @calc_mp[@loop] && @puremp < @calc_mp[@loop+1])
+						{
+							set @plus_puremp, @puremp+(@plus_mp[@loop]*@var);
+							if(@plus_puremp > @limit_mp[@joblv] || @plus_puremp > @calc_mp[@loop+2] || @plus_puremp > @calc_mp[getarraysize(@calc_mp)-1])
+							{
+								deletearray @limit_mp[0], getarraysize(@limit_mp);
+								deletearray @calc_mp[0], getarraysize(@calc_mp);
+								deletearray @plus_mp[0], getarraysize(@plus_mp);
+
+								set @pos, dialog(0, 0, 0, "십억경 교환 갯수를 조금 줄여주게나.");
+								end;
+							}
+							else
+							{
+								if(@puremp > @plus_puremp)
+								{
+									if(@var != 4)
+									{
+										deletearray @limit_mp[0], getarraysize(@limit_mp);
+										deletearray @calc_mp[0], getarraysize(@calc_mp);
+										deletearray @plus_mp[0], getarraysize(@plus_mp);
+
+										set @pos, dialog(0, 0, 0, "십억경을 9개 초과 및 미만은 교환할 수 없네.");
+										end;
+									}
+									else
+									{
+										set $saveexp_p, $saveexp_p-@var;
+
+										set_puremp @sd, @puremp+2;
+										set_mp @sd, get_maxmp(@sd);
+
+										set @pos, dialog(0, 0, 1, "능력치를 정상적으로 올려주었네.");
+										end;
+									}
+								}
+
+								deletearray @limit_mp[0], getarraysize(@limit_mp);
+								deletearray @calc_mp[0], getarraysize(@calc_mp);
+								deletearray @plus_mp[0], getarraysize(@plus_mp);
+
+								set $saveexp_p, $saveexp_p-@var;
+
+								set_puremp @sd, @plus_puremp;
+								set_mp @sd, get_maxmp(@sd);
+
+								set @pos, dialog(0, 0, 1, "능력치를 정상적으로 올려주었네.");
+								end;
+							}
+						}
+					}
+
+					deletearray @limit_mp[0], getarraysize(@limit_mp);
+					deletearray @calc_mp[0], getarraysize(@calc_mp);
+					deletearray @plus_mp[0], getarraysize(@plus_mp);
+
+					set @pos, dialog(0, 0, 0, "자네는 이미 최고의 경지에 이르렀네.");
+					end;
+				}
+			}
+		}
+		else if(@list == 3)
+		{
+				set @pos, dialog(0, 0, 1, "내 비록 지금은 귀양을 온 처지이지만, 그 정도는 할 수 있다네... 어디보자...");
+				if(@pos == 0) end;
+
+				if(get_nation(@sd) == 1)
+				{
+					set @mes$, "부여";
+					set @nation, 2;
+				}
+				else if(get_nation(@sd) == 2)
+				{
+					set @mes$, "고구려";
+					set @nation, 1;
+				}
+
+				set @pos, list2(@list, 0, 1, "상제께 금 삼십만전을 제물로 바치면, "+@mes$+" 국적을 얻도록 해주겠네...", @mes$+" 국적을 얻게 해주십시요.", "에고, 돈이 모자라는군요, 다음에 다시...");
+				if(@pos == 0) end;
+				else if(@pos == 0) goto M;
+
+				if(@list == 1)
+				{
+					if(get_money(@sd) < 300000)
+					{
+						set @pos, dialog(0, 0, 0, "저런, 재물이 모자라는군, 다음에 다시 오게나... 그럼...");
+						end;
+					}
+					else
+					{
+						callfunc "deletemoney", 300000, "저런, 재물이 모자라는군, 다음에 다시 오게나... 그럼...";
+
+						set_nation @sd, @nation;
+						set @pos, dialog(0, 0, 0, "이제 "+@mes$+"인 답게 살아가게나.");
+
+						if(get_money(@sd) < 0) { broadcast 8, get_name(@sd) + "님이 돈 버그를 사용중입니다.\\n신고해주세요!"; end; }
+						end;
+					}
+				}
+			}
+		}
+	}
+}
+
+@북방상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,112);
+	set @pos, list2(@list, 0, 0, "북방(오철~금조각)상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("북방상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "장석"; }
+	else if(@r > 10 && @r <= 30) { set @item$, "오철"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "천공투구"; }
+	else if(@r > 40 && @r <= 45) { set @item$, "천공장갑"; }
+	else if(@r > 45 && @r <= 50) { set @item$, "천공팔찌"; }
+	else if(@r > 50 && @r <= 55) { set @item$, "천공반지"; }
+	else if(@r > 55 && @r <= 60) { set @item$, "천공선류"; }
+	else if(@r > 60 && @r <= 73) { set @item$, "천년묵은가지"; }
+	else if(@r > 73 && @r <= 85) { set @item$, "노송의가지"; }
+	else if(@r > 85 && @r <= 95) { set @item$, "반짝이는돌"; }
+	else if(@r > 95 && @r <= 100) { set @item$, "오독산"; }
+	else if(@r > 100 && @r <= 110) { set @item$, "만지초"; }
+	else if(@r > 110 && @r <= 111) { set @item$, "현철"; }
+	else if(@r > 111 && @r <= 112) { set @item$, "금조각"; }
+
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@비서상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,70);
+	set @pos, list2(@list, 0, 0, "비서상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("비서상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "용왕의방비서"; }
+	else if(@r > 10 && @r <= 20) { set @item$, "일본비서"; }
+	else if(@r > 20 && @r <= 30) { set @item$, "환상의섬비서"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "위례성비서"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "둔귀촌비서"; }
+	else if(@r > 50 && @r <= 60) { set @item$, "북방대초원31층비서"; }
+	else if(@r > 60 && @r <= 70) { set @item$, "메마른섬비서"; }
+
+
+	additem @sd, name2itemid(@item$), 2;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@방패상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,56);
+	set @pos, list2(@list, 0, 0, "방패(각종방패~여방)상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("방패상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "보라방패"; }
+	else if(@r > 10 && @r <= 20) { set @item$, "월광방패"; }
+	else if(@r > 20 && @r <= 30) { set @item$, "사각방패"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "문신방패"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "주술방패"; }
+	else if(@r > 50 && @r <= 55) { set @item$, "정화의방패"; }
+	else if(@r > 55 && @r <= 56) { set @item$, "여신의방패"; }
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@용의상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,56);
+	set @pos, list2(@list, 0, 0, "용의상자(각종어금니~용무기) 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("용의상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "묵룡의어금니"; }
+	else if(@r > 10 && @r <= 30) { set @item$, "흑룡의어금니"; }
+	else if(@r > 30 && @r <= 50) { set @item$, "감룡의어금니"; }
+	else if(@r > 50 && @r <= 70) { set @item$, "진룡의어금니"; }
+	else if(@r > 70 && @r <= 72) { set @item$, "용마제일검"; }
+	else if(@r > 72 && @r <= 74) { set @item$, "용천제일검"; }
+	else if(@r > 74 && @r <= 76) { set @item$, "용랑제일봉"; }
+	else if(@r > 76 && @r <= 78) { set @item$, "용겸제일봉"; }
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@일본상자	{
+	set @sd, mysd();
+	image 0, 41, 0;
+	set @r, rand(1,56);
+	set @pos, list2(@list, 0, 0, "일본(불의수정~해골왕의뼈)상자 개봉하시겠습니까?", "예", "아뇨");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+	else
+	{
+	delitem @sd, name2itemid("일본상자"), 1;
+	if(@r > 0 && @r <= 10) { set @item$, "불의수정"; }
+	else if(@r > 10 && @r <= 20) { set @item$, "태존도"; }
+	else if(@r > 20 && @r <= 30) { set @item$, "요존도"; }
+	else if(@r > 30 && @r <= 40) { set @item$, "이가닌자의검"; }
+	else if(@r > 40 && @r <= 50) { set @item$, "금강석조각"; }
+	else if(@r > 50 && @r <= 55) { set @item$, "금강석"; }
+	else if(@r > 55 && @r <= 56) { set @item$, "유성지의보패"; }
+	else if(@r > 55 && @r <= 56) { set @item$, "해골왕의뼈"; }
+
+
+	additem @sd, name2itemid(@item$), 1;
+	set @pos, dialog(0,0,1, "축하드려요! " + @item$ + "획득!");
+	end;
+	}
+}
+
+@아지트관리	{
+	set @mysd, mysd();
+	set @pos, list2(@list, 0, 0, "선택하세요", "아지트1", "아지트2", "아지트3", "아지트4", "아지트5", "아지트6", "아지트7", "아지트8");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, input2(@house1$, 0, 10, "아지트1에 입주한 문파이름은?", "아지트1에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house1_castle$, @house1$;
+		set @pos, input2(@house1master$, 0, 6, "아지트1에 입주한 문파의 문주는?", "아지트1에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house1_castle_master$, @house1master$;
+		end;
+	}
+	else if(@list == 2)
+	{
+		set @pos, input2(@house2$, 0, 10, "아지트2에 입주한 문파이름은?", "아지트2에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house2_castle$, @house2$;
+		set @pos, input2(@house2master$, 0, 6, "아지트2에 입주한 문파의 문주는?", "아지트2에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house2_castle_master$, @house2master$;
+		end;
+	}
+	else if(@list == 3)
+	{
+		set @pos, input2(@house3$, 0, 10, "아지트3에 입주한 문파이름은?", "아지트3에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house3_castle$, @house3$;
+		set @pos, input2(@house3master$, 0, 6, "아지트3에 입주한 문파의 문주는?", "아지트3에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house3_castle_master$, @house3master$;
+		end;
+	}
+	else if(@list == 4)
+	{
+		set @pos, input2(@house4$, 0, 10, "아지트4에 입주한 문파이름은?", "아지트4 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house4_castle$, @house4$;
+		set @pos, input2(@house4master$, 0, 6, "아지트4에 입주한 문파의 문주는?", "아지트4 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house4_castle_master$, @house4master$;
+		end;
+	}
+	else if(@list == 5)
+	{
+		set @pos, input2(@house5$, 0, 10, "아지트5에 입주한 문파이름은?", "아지트5에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house5_castle$, @house5$;
+		set @pos, input2(@house5master$, 0, 6, "아지트5에 입주한 문파의 문주는?", "아지트5에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house5_castle_master$, @house5master$;
+		end;
+	}
+	else if(@list == 6)
+	{
+		set @pos, input2(@house6$, 0, 10, "아지트6에 입주한 문파이름은?", "아지트6에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house6_castle$, @house6$;
+		set @pos, input2(@house6master$, 0, 6, "아지트6에 입주한 문파의 문주는?", "아지트6에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house6_castle_master$, @house6master$;
+		end;
+	}
+	else if(@list == 7)
+	{
+		set @pos, input2(@house7$, 0, 10, "아지트7에 입주한 문파이름은?", "아지트7에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house7_castle$, @house7$;
+		set @pos, input2(@dragonmaster$, 0, 6, "아지트7에 입주한 문파의 문주는?", "아지트7에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house7_castle_master$, @house7master$;
+		end;
+	}
+	else if(@list == 8)
+	{
+		set @pos, input2(@house8$, 0, 10, "아지트8에 입주한 문파이름은?", "아지트8에 입주한 문파이름:", " ");
+		if(@pos == 0) end;
+		set #house8_castle$, @house8$;
+		set @pos, input2(@house8master$, 0, 6, "아지트8에 입주한 문파의 문주는?", "아지트8에 입주한 문파의 문주이름:", " ");
+		if(@pos == 0) end;
+		set #house8_castle_master$, @house8master$;
+		end;
+	}
+}
+
+아지트1입장	{
+	image 0, 7, 1;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house1_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트1 입주민이군.");
+	warp @sd, 30001, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트1에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트2입장	{
+	image 0, 199, 2;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house2_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트2 입주민이군.");
+	warp @sd, 30002, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트2에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트3입장	{
+	image 0, 7, 3;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house3_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트3 입주민이군.");
+	warp @sd, 30003, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트3에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트4입장	{
+	image 0, 7, 10;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house4_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트4 입주민이군.");
+	warp @sd, 30004, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트4에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트5입장	{
+	image 0, 7, 5;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house5_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트5 입주민이군.");
+	warp @sd, 30005, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트5에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트6입장	{
+	image 0, 7, 11;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house6_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트6 입주민이군.");
+	warp @sd, 30006, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트6에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트7입장	{
+	image 0, 7, 7;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house7_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트7 입주민이군.");
+	warp @sd, 30007, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트7에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+아지트8입장	{
+	image 0, 7, 15;
+	set @sd, mysd();
+	if(get_clanname(@sd) == #house8_castle$)
+	{
+		set @pos, dialog(0,0,0, "아지트8 입주민이군.");
+	warp @sd, 30008, 15, 15;
+		end;
+	}
+	else
+	{
+		set @pos, dialog(0,0,0, "아지트8에 입주한 자가 아니군.");
+		end;
+	}
+}
+
+@구양성뚫기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	delitem @sd, name2itemid("구양성초기화비령"), 1;
+
+	set #ninedungeon_a_map, 0;
+	set #ninedungeon_a_mobc, 0;
+	set #ninedungeon_a_level, 0;
+	set #ninedungeon_b_map, 0;
+	set #ninedungeon_b_mobc, 0;
+	set #ninedungeon_b_level, 0;
+
+
+	message @sd, 3, "초기화 완료!";
+}

@@ -1,0 +1,31 @@
+@파연	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("진호박"), 1;
+}
+
+@파성	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("진호박"), 1;
+}
+
+@파단	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("갈호박"), 1;
+}
+
+@파염	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("진호박"), 1;
+}
+
+@월연	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("황호박"), 1;
+}
+
+@월지	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("녹호박"), 1;
+}
+
+@월선	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("자호박"), 1;
+}
+
+@월정	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("청호박"), 1;
+}

@@ -1,0 +1,54 @@
+@°õ	{
+	set @myid, objid();
+	set @r, rand(1, 10);
+
+	if(@r <= 5)
+	{
+		dropitem get_mobx(@myid), get_moby(@myid), name2itemid("°õ°¡Á×"), 1;
+	}
+}
+
+@È£¶ûÀÌ	{
+	set @myid, objid();
+	set @r, rand(1, 10);
+
+	if(@r <= 5)
+	{
+		dropitem get_mobx(@myid), get_moby(@myid), name2itemid("È£¶ûÀÌ°¡Á×"), 1;
+	}
+}
+
+@Æò¿õ	{
+	set @myid, objid();
+	set @r, rand(1, 10);
+
+	if(@r <= 3)
+	{
+		dropitem get_mobx(@myid), get_moby(@myid), name2itemid("¿õ´ã"), 1;
+	}
+}
+
+@Áø¿õ	{
+	callfunc "DROPITEM2", objid(), 100, 10, name2itemid("±ÍÈ¯ºñ¼­"), 1;
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("Áö·ÂÀÇÅõ±¸1"), 1;
+}
+
+@ÆòÈ£	{
+	set @myid, objid();
+	set @r, rand(1, 10);
+
+	if(@r <= 5)
+	{
+		dropitem get_mobx(@myid), get_moby(@myid), name2itemid("È£¶ûÀÌ°í±â"), 1;
+	}
+}
+
+@ÁøÈ£	{
+	set @myid, objid();
+	set @r, rand(1, 10);
+
+	if(@r <= 4)
+	{
+		dropitem get_mobx(@myid), get_moby(@myid), name2itemid("ÁøÈ£ÀÇ°¡Á×"), 1;
+	}
+}

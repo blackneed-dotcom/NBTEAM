@@ -1,0 +1,51 @@
+@백산신	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("산신의바늘"), 1;
+}
+
+@염승천곤	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 174, rand(90000, 120000), 0, "염승천곤", "-1";
+}
+
+@흑환안	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 146, rand(200000, 300000), 2, "흑환안", 10, "흑환안~!~!!";
+}
+
+@도삭산길림장군	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서1장"), 1;
+}
+
+@도삭산수룡	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서2장"), 1;
+}
+
+@도삭산화룡	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서3장"), 1;
+}
+
+@도삭산풍석	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서4장"), 1;
+}
+
+@도삭산선우	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서5장"), 1;
+}
+
+@도삭산해골왕	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서6장"), 1;
+}
+
+@도삭산파괴왕	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서7장"), 1;
+}
+
+@도삭산암흑왕	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서8장"), 1;
+}
+
+@도삭산청의태자	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서9장"), 1;
+}
+
+@산신대왕	{
+	callfunc "DROPITEM", objid(), 10, 9, name2itemid("황금문서10장"), 1;
+}

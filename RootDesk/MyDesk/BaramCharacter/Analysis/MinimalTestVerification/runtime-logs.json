@@ -1,0 +1,1656 @@
+{
+  "status": "ok",
+  "kind": "normal",
+  "count": 97,
+  "logs": [
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:32",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] begin: 12 source frames, test speed=1.2, interval=0.12",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnBeginPlay",
+          "methodLineNum": 10,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:32",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] ready: arrow keys; test map only",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 19,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:39",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:39",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:39",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:39",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:40",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:40",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:40",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:40",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:40",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:40",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:41",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:41",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:41",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:41",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:41",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:41",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:42",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:42",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:42",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:42",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:42",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:42",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:43",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:43",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:47",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:47",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:48",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:48",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:48",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:49",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:49",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:49",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:49",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:51",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:51",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:51",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:51",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:52",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:52",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:52",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:53",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:53",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:53",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:54",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:54",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] right-stop pos=(0.306, 0.123, 0.000) facing=3 frame=4 moving=true changes=71",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:55",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:55",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:56",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:56",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:57",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:37:57",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:20",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] baseline pos=(-0.081, -0.326, 0.000) frame=6 moving=false phase=0.0",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:21",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] right-held pos=(0.956, -0.326, 0.000) facing=3 frame=3 moving=true phase=0.86459609493613",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:23",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] released pos=(1.972, -0.326, 0.000) facing=3 frame=3 moving=false phase=0.0",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:45",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] up-held pos=(1.972, 0.790, 0.000) facing=0 frame=0 moving=true phase=0.93058479949832",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:46",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:47",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] up-released pos=(1.972, 1.849, 0.000) facing=0 frame=0 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:48",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:48",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] left-held pos=(0.854, 1.849, 0.000) facing=9 frame=9 moving=true phase=0.93171130679548",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:49",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:50",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] left-released pos=(-0.224, 1.849, 0.000) facing=9 frame=9 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:51",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:52",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] down-held pos=(-0.224, 0.772, 0.000) facing=6 frame=6 moving=true phase=0.89795740693808",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:53",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:38:54",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramVerify] down-released pos=(-0.224, -0.266, 0.000) facing=6 frame=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:13",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:14",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=3 phase=0.86418959498405 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:14",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=3 phase=0.94896769337356 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:15",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=4 phase=1.0337505917996 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:15",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=3 phase=1.1179878916591 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:15",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=5 phase=1.2027616910636 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:15",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=5 phase=1.2875577919185 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:15",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=3 phase=1.3723357897252 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:15",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramCycle] frame=4 phase=1.4571556895971 offset=(0.005, 0.185, 0.000)",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:16",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=3 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:17",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BaramIdle] stationary=true unchangedFrames=true facing=3 frame=3",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 5,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:35",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=true",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:39:35",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] state facing=6 moving=false",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 41,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+@자동무장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("무장")) == 0 && spellaethered(@sd, name2spellid("자동무장")) == 0)
+	{
+		if(get_state(@sd) == 1)
+		{
+			message @sd, 3, "귀신은 할 수 없습니다.";
+			end;
+		}
+
+		action @id, 6, 30, 0;
+		effect @id, 110;
+		sound @id, 8;
+
+		set_ac @sd, get_ac(@sd)-10;
+		spellaether @sd, name2spellid("자동무장"), 60;
+		message @sd, 3, "자동무장을 외웠습니다.";
+	}
+	else
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+}
+
+@자동무장해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)+10;
+	message @sd, 3, "자동무장 해제.";
+
+	if(get_equipitem(@sd, 6) == name2itemid("보무의목걸이") || get_equipitem(@sd, 7) == name2itemid("보무의목걸이") || get_equipitem(@sd, 7) == name2itemid("승리의증표") || get_equipitem(@sd, 6) == name2itemid("승리의증표") || get_equipitem(@sd, 7) == name2itemid("초심자노리개") || get_equipitem(@sd, 6) == name2itemid("초심자노리개") || get_equipitem(@sd, 7) == name2itemid("*보무의목걸이") || get_equipitem(@sd, 6) == name2itemid("*보무의목걸이"))	{
+		if(get_state(@sd) == 1) { end; }
+		spellcast @sd, (name2spellid("자동무장"));
+	}
+}
+
+@자동보호	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("보호")) == 0 && spellaethered(@sd, name2spellid("자동보호")) == 0)
+	{
+		if(get_state(@sd) == 1)
+		{
+			message @sd, 3, "귀신은 할 수 없습니다.";
+			end;
+		}
+
+		set_damagedrate @sd, 1;
+
+		action @id, 6, 30, 0;
+		effect @id, 110;
+		sound @id, 8;
+
+		spellaether @sd, name2spellid("자동보호"), 60;
+		message @sd, 3, "자동보호를 외웠습니다.";
+	}
+	else
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+}
+
+@자동보호해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_damagedrate @sd, 0;
+
+	message @sd, 3, "자동보호 해제.";
+
+	if(get_equipitem(@sd, 6) == name2itemid("보무의목걸이") || get_equipitem(@sd, 7) == name2itemid("보무의목걸이") || get_equipitem(@sd, 7) == name2itemid("승리의증표") || get_equipitem(@sd, 6) == name2itemid("승리의증표") || get_equipitem(@sd, 7) == name2itemid("초심자노리개") || get_equipitem(@sd, 6) == name2itemid("초심자노리개") || get_equipitem(@sd, 7) == name2itemid("*보무의목걸이") || get_equipitem(@sd, 6) == name2itemid("*보무의목걸이"))
+	{
+		if(get_state(@sd) == 1) { end; }
+		spellcast @sd, (name2spellid("자동보호"));
+	}
+}
+
+@자동투명	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("투명")) == 0 && spellaethered(@sd, name2spellid("자동투명")) == 0)
+	{
+		if(get_state(@sd) == 1)
+		{
+			message @sd, 3, "귀신은 할 수 없습니다.";
+			end;
+		}
+
+		action @id, 6, 30, 0;
+		effect @id, 20;
+		sound @id, 28;
+
+		set_state @sd, 2;
+		updatelookpc @sd, 1;
+
+		spellaether @sd, name2spellid("자동투명"), 60;
+		message @sd, 3, "자동투명을 외웠습니다.";
+	}
+	else
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+}
+
+
+@자동투명해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_hp(@sd) == 0)
+	{
+		set_state @sd, 1;
+		updatelookpc @sd, 1;
+	}
+	else
+	{
+		set_state @sd, 0;
+		updatelookpc @sd, 1;
+	}
+
+	message @sd, 3, "자동투명 해제.";
+
+	if(get_equipitem(@sd, 6) == name2itemid("투명구두") || get_equipitem(@sd, 7) == name2itemid("투명구두"))
+	{
+		spellcast @sd, (name2spellid("자동투명"));
+	}
+}

@@ -1,0 +1,14 @@
+@한나라병사	{
+	set .@id, objid();
+
+	callfunc "mob_constanting_spell", 300, 1, 69, 8, rand(5000, 6100), 1, "한국전법", "을";
+}
+
+@한나라병사드랍	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의가루4"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각4"), 1;
+}
+
+@한나라장수드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각4"), 1;
+}

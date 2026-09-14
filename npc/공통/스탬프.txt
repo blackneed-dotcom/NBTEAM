@@ -1,0 +1,1161 @@
+캐쉬판매원	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @year$, gettime(5,0);
+	set @month$, gettime(4,0);
+	set @day$, gettime(3,0);
+	set @hour$, gettime(2,0);
+	set @min$, gettime(1,0);
+	set @sec$, gettime(0,0,);
+
+	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+	set @cash_bp, $cash_p;
+
+	set @pos, dialog(0, 0, 1, "캐쉬 전용 상인입니다.\\n\\n캐쉬가 아닌 다른 것으로 아이템을 구매 하기 위해서는 다른상인에게 가세요.\\n\\n보유캐쉬 " +$cash_p+"원");
+	if(@pos == 0) end;
+
+	set @pos, list2(@list, 0, 0, "무엇을 구매하시겠습니까?", "황금600개                (1만원)", "해골갑옷+여신의방패+황금500개      (3만원)", "크리스탈방패+황금1000   (6만원)", "진'해골방패+황금1000개  (8만원)", "용마제칠검+황금1000개   (10만원)", "용천제칠검+황금1000개   (10만원)", "용랑제칠봉+황금1000개   (10만원)", "용겸제칠봉+황금1000개   (10만원)", "진'해골갑옷+황금1000개  (15만원)", "황금투구+황금1000개     (15만원)", "황금장갑쌍+황금1000개   (20만원)", "황금팔찌쌍+황금1000개   (20만원)", "황금반지쌍+황금1000개   (20만원)", "황금선류쌍+황금1000개   (20만원)", "진일신검+황금2000개     (25만원)", "청일기창+황금2000개     (25만원)", "황염곤봉+황금2000개     (25만원)", "적염곤봉+황금2000개     (25만원)", "구곡검+황금2000개       (25만원)", "협가검+황금2000개       (25만원)", "영후단봉+황금2000개     (25만원)", "대모홍접선+황금2000개   (25만원)", "용마제팔검+황금3000개   (45만원)", "용천제팔검+황금3000개   (45만원)", "용랑제팔봉+황금3000개   (45만원)", "용겸제팔봉+황금3000개   (45만원)", "용무기손상해제(조합)(3만원)");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 10000원 으로 황금600개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+	else if($cash_p < 10000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+			end;
+		}
+		else
+		{
+			set $cash_p, $cash_p-10000;
+			additem @sd, name2itemid("황금"), 600;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 30000원 으로 해골갑옷+여신의방패+황금500개 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 30000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-30000;
+			additem @sd, name2itemid("해골갑옷"), 1;
+                        additem @sd, name2itemid("여신의방패"), 1;
+			additem @sd, name2itemid("황금"), 500;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 60000원 으로 크리스탈방패+황금1000개 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 60000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-60000;
+			additem @sd, name2itemid("크리스탈방패"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 80000원 으로 진'해골방패+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 80000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-80000;
+			additem @sd, name2itemid("진'해골방패"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 5)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 100000원 으로 용마제칠검+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 100000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-100000;
+			additem @sd, name2itemid("용마제칠검"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 6)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 100000원 으로 용천제칠검+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 100000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-100000;
+			additem @sd, name2itemid("용천제칠검"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 7)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 100000원 으로 용랑제칠봉+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 100000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-100000;
+			additem @sd, name2itemid("용랑제칠봉"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 8)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 100000원 으로 용겸제칠봉+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 100000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-100000;
+			additem @sd, name2itemid("용겸제칠봉"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 9)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 150000원 으로 진'해골갑옷+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 150000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-150000;
+			additem @sd, name2itemid("진'해골갑옷"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 10)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 150000원 으로 황금투구+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 150000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-150000;
+			additem @sd, name2itemid("황금투구"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+
+	else if(@list == 11)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 200000원 으로 황금장갑쌍+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 200000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-200000;
+			additem @sd, name2itemid("황금장갑"), 1;
+			additem @sd, name2itemid("황금장갑"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 12)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 200000원 으로 황금팔찌쌍+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 200000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-200000;
+			additem @sd, name2itemid("황금팔찌"), 1;
+			additem @sd, name2itemid("황금팔찌"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 13)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 200000원 으로 황금반지쌍+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 200000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-200000;
+			additem @sd, name2itemid("황금반지"), 1;
+			additem @sd, name2itemid("황금반지"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 14)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 200000원 으로 황금선류쌍+황금1000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 200000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-200000;
+			additem @sd, name2itemid("황금선류"), 1;
+			additem @sd, name2itemid("황금선류"), 1;
+			additem @sd, name2itemid("황금"), 1000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 15)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 진일신검+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("진일신검"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 16)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 청일기창+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("청일기창"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 17)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 황염곤봉+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("황염곤봉"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 18)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 적염곤봉+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("적염곤봉"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 19)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 구곡검+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("구곡검"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 20)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 협가검+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("협가검"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 21)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 영후단봉+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("영후단봉"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 22)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 250000원 으로 대모홍접선+황금2000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 250000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-250000;
+			additem @sd, name2itemid("대모홍접선"), 1;
+			additem @sd, name2itemid("황금"), 2000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 23)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 450000원 으로 용마제팔검+황금3000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 450000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-450000;
+			additem @sd, name2itemid("용마제팔검"), 1;
+			additem @sd, name2itemid("황금"), 3000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 24)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 450000원 으로 용천제팔검+황금3000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 450000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-450000;
+			additem @sd, name2itemid("용천제팔검"), 1;
+			additem @sd, name2itemid("황금"), 3000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 25)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 450000원 으로 용랑제팔봉+황금3000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 450000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-450000;
+			additem @sd, name2itemid("용랑제팔봉"), 1;
+			additem @sd, name2itemid("황금"), 3000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 26)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 450000원 으로 용겸제팔봉+황금3000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 450000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됨니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-450000;
+			additem @sd, name2itemid("용겸제팔봉"), 1;
+			additem @sd, name2itemid("황금"), 3000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+/*	else if(@list == 27)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 900000원 으로 용마제구검+황금5000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 900000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-900000;
+			additem @sd, name2itemid("용마제구검"), 1;
+			additem @sd, name2itemid("황금"), 5000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 28)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 900000원 으로 용천제구검+황금5000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 900000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-900000;
+			additem @sd, name2itemid("용천제구검"), 1;
+			additem @sd, name2itemid("황금"), 5000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 29)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 900000원 으로 용랑제구봉+황금5000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 900000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-900000;
+			additem @sd, name2itemid("용랑제구봉"), 1;
+			additem @sd, name2itemid("황금"), 5000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	else if(@list == 30)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 900000원 으로 용겸제구봉+황금5000개를 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 900000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-900000;
+			additem @sd, name2itemid("용겸제구봉"), 1;
+			additem @sd, name2itemid("황금"), 5000;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+*/
+	else if(@list == 27)
+	{
+		set @pos, list2(@list, 0, 1, "캐쉬 20000원 으로 용무기손상해제(조합)을 구매하시겠습니까?.", "구매");
+		if(@pos == 0) end;
+
+		else if($cash_p < 20000)
+		{
+			set @pos, dialog(0, 0, 0, "캐쉬가 부족하여 구매가 안됩니다.");
+		}
+		else
+		{
+			set $cash_p, $cash_p-20000;
+			additem @sd, name2itemid("[손상]해제비서"), 1;
+			set @pos, dialog(0, 0, 1, "정상적으로 구매하였습니다.남은캐쉬 " +$cash_p+"원 입니다. ");
+		}
+	}
+	write_log "log/cash/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - [CASH ]"+get_name(@sd)+"님 사용금액:"+(@cash_bp-$cash_p)+" CASH 남은금액:"+$cash_p+" CASH\\n";
+}
+기부왕	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @ret, list1("안녕하세요. 어떻게 오셨나요?", "기부");
+	if(@ret == 1)
+	{
+		set @pos, dialog(0, 0, 1, "현재 " + get_name(@sd) + " 님의 기부 금액은\\n\\n"+$cgibu_money+" 원입니다...");
+		if(@pos == 0) end;
+
+		set @pos, list2(@list, 0, 0, "얼마를 기부 하시겠습니까?. \\n현재 " + get_name(@sd) + "님의 기부금액은 "+$cgibu_money+"원입니다", "네 기부하겠습니다.", "아니오. 필요 없습니다.");
+		if(@pos == 0) end;
+		if(@list == 1)
+		{
+			set @pos, input2(@money, 0, 8, "기부할 금액을 입력하세요.","","원을 기부하겠습니다");
+			if(@pos == 0) end;
+			if(get_money(@sd) < @money)
+			{
+				set @pos, dialog(0, 0, 0, "돈이 부족하여 기부가 안됨니다.");
+				end;
+			}
+			else
+			{
+				set $cgibu_money, $cgibu_money + @money;
+				set_money @sd, get_money(@sd) - @money;
+				updatestatus @sd, 2;
+				set @pos, dialog(0, 0, 1, "고맙습니다...");
+			}
+		}
+	}
+}
+
+스탬프	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	if(#server_exp_time > @nt)
+	{
+		set @pos, dialog(0, 0, 0, "이미 기부를 통해 경험치배율이 상승중입니다 남은시간 " + (#server_exp_time-@nt) + "초 남았습니다.");
+		end;
+	}
+	set @ret, list1("안녕하세요. 어떻게 오셨나요?", "금전기부");
+	if(@ret == 1)
+	{
+COS001:
+		set @pos, dialog(0, 0, 1, "기부를 하면 24시간동안 배율을 올려주지. 하하하...");
+		if(@pos == 0) end;
+COS002:
+		set @pos, list2(@list, 0, 0, "기부금액은 10000000만전 이라네. 기부할텐가?\\n\\n현재 총 기부금액: "+#exp_money+"원", "네 기부하겠습니다.", "아니오. 필요 없습니다.");
+		if(@pos == 0) end;
+		if(@list == 1)
+		{
+			if(get_level(@sd) < 99)
+			{
+				set @pos, dialog(0, 0, 0, "99레벨 이상 기부가 가능합니다.");
+				end;
+			}
+			set @pos, input2(@money, 0, 7, "기부할 금액을 입력하세요.","","원을 기부하겠습니다");
+			if(@pos == 0) end;
+			if(get_money(@sd) < @money)
+			{
+				set @pos, dialog(0, 0, 0, "돈이 부족한 것 아닌가?");
+				end;
+			}
+			else
+			{
+				set #exp_money, #exp_money + @money;
+				set_money @sd, get_money(@sd) - @money;
+				updatestatus @sd, 2;
+				set @pos, dialog(0, 0, 1, "고맙네...");
+				broadcast 5, "" + get_name(@sd) + "님이 "+@money+"원 기부를 하여 총"+#exp_money+"원 되었습니다!";
+
+				set $giboo, $giboo+1;
+				addlegend @sd, 45, 6, 0, 105, "기부를 " + $giboo + "회 하였다.";
+
+				if(#exp_money >= 10000000)
+				{
+					set #exp_money, #exp_money - 10000000; 
+					set #server_exprate, 20;
+					set #server_exp_time, @nt+86400;
+					broadcast 5, "" + get_name(@sd) + "님이 지금 막 기부를 하여 배율이 20배가 되었습니다!";
+				}
+			}
+		}
+	}
+	end;	
+}
+
+
+//스탬프	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "스탬프교환 입니다.", "보무의목걸이", "시력회복의귀걸이", "해골왕의뼈", "해골갑옷", "용마제오검", "용천제오검", "용랑제오봉", "용겸제오봉", "용마제육검", "용천제육검", "용랑제육봉", "용겸제육봉", "용마제칠검", "용천제칠검", "용랑제칠봉", "용겸제칠봉", "금천지인패", "순수의강철", "황금투구", "철갑마안장", "금인패", "금지패", "금천패");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 2개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "보무의목걸이"; }
+		if(countitem(name2itemid(@needitem$)) < 1)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "2개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 2;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 2개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "시력회복의귀걸이"; }
+		if(countitem(name2itemid(@needitem$)) < 1)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "2개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 2;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 2개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "해골왕의뼈"; }
+		if(countitem(name2itemid(@needitem$)) < 1)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "2개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 2;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 16개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "해골갑옷"; }
+		if(countitem(name2itemid(@needitem$)) < 15)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "16개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 16;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 5)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 10개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용마제오검"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 6)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 10개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용천제오검"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 7)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 10개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용랑제오봉"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 8)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 10개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용겸제오봉"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 9)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 20개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용마제육검"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 10)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 10개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용천제육검"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 11)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 20개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용랑제육봉"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 12)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 20개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용겸제육봉"; }
+		if(countitem(name2itemid(@needitem$)) < 19)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 13)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 40개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용마제칠검"; }
+		if(countitem(name2itemid(@needitem$)) < 39)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "40개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 40;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 14)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 40개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용천제칠검"; }
+		if(countitem(name2itemid(@needitem$)) < 39)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "40개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 40;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 15)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 40개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용랑제칠봉"; }
+		if(countitem(name2itemid(@needitem$)) < 39)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "40개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 40;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 16)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 40개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "용겸제칠봉"; }
+		if(countitem(name2itemid(@needitem$)) < 39)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "40개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 40;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 17)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 40개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "금천지인패"; }
+		if(countitem(name2itemid(@needitem$)) < 39)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "40개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 40;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 18)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 40개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "순수의강철"; }
+		if(countitem(name2itemid(@needitem$)) < 39)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "40개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 40;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 19)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 20개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "황금투구"; }
+		if(countitem(name2itemid(@needitem$)) < 20)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "20개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 20;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 20)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 6개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "철갑안장"; }
+		if(countitem(name2itemid(@needitem$)) < 5)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "6개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 6;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 21)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 12개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "금인패"; }
+		if(countitem(name2itemid(@needitem$)) < 11)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "12개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 12;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 22)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 12개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "금지패"; }
+		if(countitem(name2itemid(@needitem$)) < 11)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "12개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 12;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 23)
+	{
+		set @pos, list2(@list1, 0, 1, "스탬프 10개로 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "스탬프"; set @additem$, "금천패"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 1;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+}
+
+
+소포	{
+	set @mysd, mysd();
+	set @list, list1("안녕하세요. 어떻게 오셨나요?", "소포 보내기");
+	if(@list == 1)
+	{
+	set @pos, input2(@name$, 0, 6, "소포를 받을 유저의 이름을 적어주세요.", "소포를 받을 유저의 이름:", "입니다.");
+	if(@pos == 0) end;
+	set @target_sd, name2sd(@name$);
+	if(@target_sd > 0)
+	{
+	set @pos, input2(@item$, 0, 10, "보낼 아이템 이름을 적어주세요.", "보낼 아이템 이름:", "입니다.");
+	if(@pos == 0) end;
+	setarray @check$[0], "사도의투구","지원의상자","초심자노리개","승리의증표","*용천제칠검","*용마제칠검","*용랑제칠봉","*용겸제칠봉","청룡의검", "주작의검", "백호의검", "현무의검", "주작선장", "청룡신검", "신녀의꽃", "탄지신공수련의서", "일성탄지신공수련의서", "이성탄지신공수련의서", "삼성탄지신공수련의서", "사성탄지신공수련의서", "천성현의증표", "반고의심장", "제곡의증표", "순제의증표", "요제의증표", "소호의증표", "십억경", "이무기의어금니", "시력회복의귀걸이", "보무의목걸이", "용겸제구봉", "용랑제구봉", "용마제구검", "활력의목걸이", "용천제구검", "용마제팔검", "용천제팔검", "용랑제팔봉", "용겸제팔봉"; // array 에 못보낼템 설저앟고
+	for(set @i, 0; @i < 40; set @i, @i+1) // array 에 설정한 템 갯수만큼 @i < 6 수정 array 에 10개썼으면 @i < 10
+	{
+		if(@item$ == @check$[@i])
+		{
+		set @pos, dialog(0,0,0, @check$[@i] + "은(는) 보낼 수 없습니다.");
+		end;
+		}
+	}
+	if(countitem(name2itemid(@item$)) == 0)
+	{
+		set @pos, dialog(0,0,0, @item$ + "을(를) 가지고 있지 않습니다.");
+		end;
+	}
+	else
+	{
+		set @pos, input2(@number, 0, 3, "해당 아이템을 몇개 보내시겠습니까?", "보낼 아이템 갯수:", "개 입니다.");
+		if(@pos == 0) end;
+		else if(@number <= 0 || @number > 200)
+		{
+		set @pos, dialog(0,0,0, "아이템을 최소 1개, 최대 200개까지 전달이 가능합니다.");
+		end;
+		}
+		else if(countitem(name2itemid(@item$)) < @number)
+		{
+		set @pos, dialog(0,0,0, "해당 아이템을 " + @number + "개 만큼 가지고 있지 않습니다.");
+		end;
+		}
+		else
+		{
+		if(get_money(@mysd) < 100000)
+		{
+		set @pos, dialog(0,0,0, "수수료 100000전이 부족합니다.");
+		end;
+		}
+		else
+		{
+		additem @target_sd, name2itemid(@item$), @number;
+		delitem @mysd, name2itemid(@item$), @number;
+		set_money @mysd, get_money(@mysd)-100000;
+		message @target_sd, 3, get_name(@mysd) + "님으로 부터 소포가 전달되었습니다.";
+		set @pos, dialog(0,0,1, @name$ + "님에게 성공적으로 소포가 전달되었습니다.");
+		end;
+		}
+		}
+	}
+	}
+	else
+	{
+	set @pos, dialog(0,0,0, @name$ + "님은 바람의나라에 없습니다.");
+	end;
+	}
+	}
+}

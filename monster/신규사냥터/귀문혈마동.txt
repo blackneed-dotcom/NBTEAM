@@ -1,0 +1,277 @@
+@귀문부적	{
+	callfunc "DROPITEM", objid(), 200, 3, name2itemid("귀문적색부적"), 1;
+}
+
+@귀문부적2	{
+	callfunc "DROPITEM", objid(), 200, 5, name2itemid("귀문적색부적"), 1;
+}
+
+@귀문부적3	{
+	callfunc "DROPITEM", objid(), 200, 8, name2itemid("귀문적색부적"), 1;
+}
+
+@귀문방주공격	{
+	set @id, objid();
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*3; }
+
+	if(mobspellaethered(@id, name2spellid("절망")) == 1) { mobspellaether @id, name2spellid("절망"), 5; }
+
+	if(rand(1, 10) <= 5) end;
+
+	set @x1, 0;
+	set @x2, mapwidth()-1;
+	set @y1, 0;
+	set @y2, mapheight()-1;
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+
+					if(get_state(@target_sd) == 1) { continue; }
+
+					sound @target_id, 507;
+					effect @target_id, 123;
+
+					damage @id, @target_id, rand(250000, 350000), 2;
+					message @target_sd, 3, "귀문방주가 겨락을 가합니다.";
+				}
+			}
+		}
+	}
+}
+
+@방주	{
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("귀문진산검"), 1;
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("귀문진산도"), 1;
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("귀문진산봉"), 1;
+	callfunc "DROPITEM", objid(), 150, 10, name2itemid("귀문진산장"), 1;
+}
+	
+
+@혈마동전사공격	{
+	set @id, myid();
+	set @side, get_side(@id);
+	set @rand, rand(1, 2);
+	if(@rand == 1)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				if(istype(@target_id) != 3)
+				{
+					switch(@side)
+					{
+					case 0:
+						set_y @target_id, get_y(@id)-1;
+						set_side @target_id, 2; set @side, 2;
+						break;
+					case 1:
+						set_x @target_id, get_x(@id)+1;
+						set_side @target_id, 3; set @side, 3;
+						break;
+					case 2:
+						set_y @target_id, get_y(@id)+1;
+						set_side @target_id, 0; set @side, 0;
+						break;
+					case 3:
+						set_x @target_id, get_x(@id)-1;
+						set_side @target_id, 1; set @side, 1;
+						break;
+					}
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+//						updatexy @target_sd;
+//						updatelookpc @target_sd, 0;
+						updateallpc @target_sd;
+						say @id, 2, get_mobname(@id) + ": 초혼비무~~!~!";
+					}
+					else
+					{
+						move @target_id, @side;
+					}
+					callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 99, 105, rand(150000, 200000), 0, "초혼비무~~!~!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+	else if(@rand == 2)
+	{
+	for(set @i, 1; @i < 5; set @i, @i+1)
+	{
+		switch(@side)
+		{
+		case 0:
+			set @x, get_x(@id);
+			set @y, get_y(@id)-@i;
+			break;
+		case 1:
+			set @x, get_x(@id)+@i;
+			set @y, get_y(@id);
+			break;
+		case 2:
+			set @x, get_x(@id);
+			set @y, get_y(@id)+@i;
+			break;
+		case 3:
+			set @x, get_x(@id)-@i;
+			set @y, get_y(@id);
+			break;
+		}
+		
+		set @target_id, obj_getxy(@x, @y);
+		if((@x >= mapwidth() || @x < 0) || (@y >= mapheight() || @y < 0 )) { break; }
+		else if(@i != 4 && canmove(@id, @x, @y)) { break; };
+		
+		if(@target_id > 0)
+		{
+			if(@i != 4) { break; }
+			else
+			{
+				switch(@side)
+				{
+				case 0:
+					set_y @id, get_y(@target_id)+1;
+					break;
+				case 1:
+					set_x @id, get_x(@target_id)-1;
+					break;
+				case 2:
+					set_y @id, get_y(@target_id)-1;
+					break;
+				case 3:
+					set_x @id, get_x(@target_id)+1;
+					break;
+				}
+				updatelook @id;
+				say @id, 2, get_mobname(@id) + ": 쇄혼비무~~!~!";
+				callfunc "cho_MONSTER_RANGE_ATTACK", objid(), 10, 2, -1, 100, 97, rand(200000, 250000), 0, "쇄혼비무~~!~!", 16, "-1";
+				}
+			}
+		}
+	}
+}
+
+@혈마동도적공격	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	if(@rand >= 1 && @rand <= 2)
+	{
+	callfunc "MONSTER_FRONT_ATTACK", @id, 10, 8, -1, 90, 69, rand(700000, 800000), 0, "백호검무", "백호검무~!!";
+	}
+	else if(@rand >= 4 && @rand <= 6)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 103, 92, rand(250000, 300000), 2, "무형경천", 10, "-1";
+	}
+}
+
+@혈마동도사공격	{
+	set @id, objid();
+	set @target_id, get_mobtarget(@id);
+	set @rand, rand(1, 10);
+	if(@rand <= 2)
+	{
+	set @x1, get_x(@id)-3;
+	set @x2, get_x(@id)+3;
+	set @y1, get_y(@id)-3;
+	set @y2, get_y(@id)+3;
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j<=@y2; set @j, @j+1)
+			{
+				set @target_id, obj_getxy(@i, @j);
+				if(@target_id > 0)
+				{
+					if(istype(@target_id) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+						if(spellaethered(@target_sd, name2spellid("파력무참진")) == 0)
+						{
+							effect @id, 115;
+							effect @target_id, 107;
+							action @id, 6, 30, 0;
+							sound @id, 108;
+							spellaether @target_sd, name2spellid("파력무참진"), 4;
+						}
+					}
+					else if(istype(@target_id) == 2)
+					{
+						if(mobspellaethered(@target_id, name2spellid("파력무참진")) == 0)
+						{
+							effect @id, 115;
+							effect @target_id, 107;
+							action @id, 6, 30, 0;
+							sound @id, 108;
+							mobspellaether @target_id, name2spellid("파력무참진"), 4;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@혈마동술사공격	{
+	set @id, objid();
+	set @rand, rand(1, 10);
+	set @rate, rand(1, 10);
+	if(rand(1, 10) <= 2)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 6, -1, 107, 104, rand(1300000, 1500000), 1, "지폭지술", 10, "-1";	
+	}
+}
+
+@건곤	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 6, rand(30000, 55000), 0, "건곤대나잇", "-1";
+}
+
+@필살	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 7, rand(30000, 55000), 0, "필살검무", "-1";
+}
+
+@헬파	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 8, rand(30000, 55000), 0, "헬파이어", "-1";
+}
+

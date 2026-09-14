@@ -1,0 +1,849 @@
+@용의제일주	{
+	callfunc "DRAGON_CURSE", 10000, 2000, 53, 8, 31, 6, 6, "용의제일주";
+}
+
+@용의제일주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-31;
+	message @sd, 3, "용의제일주 해제.";
+}
+
+@몹용의제일주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-31;
+}
+
+@용의제이주	{
+	callfunc "DRAGON_CURSE", 10000, 2200, 53, 8, 35, 6, 6, "용의제이주";
+}
+
+@용의제이주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-35;
+	message @sd, 3, "용의제이주 해제.";
+}
+
+@몹용의제이주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-35;
+}
+
+@용의제삼주	{
+	callfunc "DRAGON_CURSE", 10000, 2400, 53, 8, 37, 6, 6, "용의제삼주";
+}
+
+@용의제삼주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-37;
+	message @sd, 3, "용의제삼주 해제.";
+}
+
+@몹용의제삼주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-37;
+}
+
+@용의제사주	{
+	callfunc "DRAGON_CURSE", 10000, 2600, 53, 8, 45, 6, 6, "용의제사주";
+}
+
+@용의제사주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-45;
+	message @sd, 3, "용의제사주 해제.";
+}
+
+@몹용의제사주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-45;
+}
+
+@용의제오주	{
+	callfunc "DRAGON_CURSE", 10000, 2800, 53, 8, 50, 6, 6, "용의제오주";
+}
+
+@용의제오주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-50;
+	message @sd, 3, "용의제오주 해제.";
+}
+
+@몹용의제오주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-50;
+}
+
+@용의제육주	{
+	callfunc "DRAGON_CURSE", 10000, 3000, 53, 8, 60, 6, 6, "용의제육주";
+}
+
+@용의제육주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-60;
+	message @sd, 3, "용의제육주 해제.";
+}
+
+@몹용의제육주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-60;
+}
+
+@용의제칠주	{
+	callfunc "DRAGON_CURSE", 10000, 3200, 53, 8, 63, 6, 6, "용의제칠주";
+}
+
+@용의제칠주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-63;
+	message @sd, 3, "용의제칠주 해제.";
+}
+
+@몹용의제칠주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-63;
+}
+
+@용의제팔주	{
+	callfunc "DRAGON_CURSE", 10000, 3400, 53, 8, 65, 6, 6, "용의제팔주";
+}
+
+@용의제팔주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-65;
+	message @sd, 3, "용의제팔주 해제.";
+}
+
+@몹용의제팔주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-65;
+}
+
+@용의제구주	{
+	callfunc "DRAGON_CURSE", 10000, 3600, 53, 8, 80, 6, 6, "용의제구주";
+}
+
+@용의제구주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-80;
+	message @sd, 3, "용의제구주 해제.";
+}
+
+@몹용의제구주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-80;
+}
+
+@용의제일노	{
+	callfunc "DRAGON_CURSE", 10000, 2000, 53, 8, 51, 6, 6, "용의제일노";
+}
+
+@용의제일노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-51;
+	message @sd, 3, "용의제일노 해제.";
+}
+
+@몹용의제일노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-51;
+}
+
+@용의제이노	{
+	callfunc "DRAGON_CURSE", 10000, 2200, 53, 8, 55, 6, 6, "용의제이노";
+}
+
+@용의제이노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-55;
+	message @sd, 3, "용의제이노 해제.";
+}
+
+@몹용의제이노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-55;
+}
+
+@용의제삼노	{
+	callfunc "DRAGON_CURSE", 10000, 2400, 53, 8, 57, 6, 6, "용의제삼노";
+}
+
+@용의제삼노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-57;
+	message @sd, 3, "용의제삼노 해제.";
+}
+
+@몹용의제삼노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-57;
+}
+
+@용의제사노	{
+	callfunc "DRAGON_CURSE", 10000, 2600, 53, 8, 65, 6, 6, "용의제일노";
+}
+
+@용의제사노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-65;
+	message @sd, 3, "용의제사노 해제.";
+}
+
+@몹용의제사노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-65;
+}
+
+@용의제오노	{
+	callfunc "DRAGON_CURSE", 10000, 2800, 53, 8, 68, 6, 6, "용의제오노";
+}
+
+@용의제오노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-68;
+	message @sd, 3, "용의제오노 해제.";
+}
+
+@몹용의제오노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-68;
+}
+
+@용의제육노	{
+	callfunc "DRAGON_CURSE", 10000, 3000, 53, 8, 72, 10, 30, "용의제육노";
+}
+
+@용의제육노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-72;
+	message @sd, 3, "용의제육노 해제.";
+}
+
+@몹용의제육노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-72;
+}
+
+@용의제칠노	{
+	callfunc "DRAGON_CURSE", 10000, 3200, 53, 8, 63, 6, 6, "용의제칠노";
+}
+
+@용의제칠노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-63;
+	message @sd, 3, "용의제칠노 해제.";
+}
+
+@몹용의제칠노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-63;
+}
+
+@용의제팔노	{
+	callfunc "DRAGON_CURSE", 10000, 3400, 53, 8, 65, 6, 6, "용의제팔노";
+}
+
+@용의제팔노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-65;
+	message @sd, 3, "용의제팔노 해제.";
+}
+
+@몹용의제팔노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-65;
+}
+
+@용의제구노	{
+	callfunc "DRAGON_CURSE", 10000, 3600, 53, 8, 80, 6, 6, "용의제구노";
+}
+
+@용의제구노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-80;
+	message @sd, 3, "용의제구노 해제.";
+}
+
+@몹용의제구노해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-80;
+}
+
+@사성주박	{
+	callfunc "DRAGON_CURSE", 10000, 2500, 56, 8, 75, 10, 15, "사성주박";
+}
+
+@사성주박해제	{
+	set @sd, mysd();
+	set_ac @sd, get_ac(@sd)-75;
+}
+
+@몹사성주박해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-70;
+}
+
+//callfunc "ITEMEFFECTMAGIC", (0: 원거리, 1: 근접, 2: 격, 3: 필살), 확률변수?, 이펙트, 효과음, 데미지1, 데미지2, "격이름", 확률;
+
+@월아일격	{
+	//이펙트 보류 //사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 120, 8, 80000, 100000, "월아일격", 50;
+}
+
+@초심자목도격	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_joblevel(@sd) < 4)
+	{
+		if(get_joblevel(@sd) < 4) { callfunc "ITEMEFFECTMAGIC", 2, 100, 120, 8, 30000, 50000, "초심격", 80; }
+		else { callfunc "ITEMEFFECTMAGIC", 2, 100, 120, 8, 100000, 130000, "초심격", 80; }
+	}
+	else
+	{
+		if(isequip(@sd, 0) != 0 && get_equipitem(@sd, 0) == name2itemid("초심자의목도"))
+		{
+			set_unequipitem2 @sd, 0;
+		}
+
+		message @sd, 3, "초심자목도 다 닳았습니다";
+		message @sd, 5, " 초심자목도검은 4차 승급이 넘으면 사용할 수 없습니다.";
+	}
+}
+
+@사성격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 125, 8, 90000, 100000, "사성격", 70;
+}
+
+@용마제일격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 2000, 2500, "용마제일격", 75;
+}
+
+@용마제이격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 8000, 10000, "용마제이격", 70;
+}
+
+@용마제삼격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 18000, 20000, "용마제삼격", 75;
+}
+
+@용마제사격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 40000, 45000, "용마제사격", 70;
+}
+
+@용마제오격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 48000, 50000, "용마제오격", 75;
+}
+
+@용마제육격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 78000, 100000, "용마제육격", 70;
+}
+
+@용마제칠격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 250000, 300000, "용마제칠격", 75;
+}
+
+@용마제팔격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 350000, 400000, "용마제팔격", 75;
+}
+
+@용마제구격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 550000, 600000, "용마제구격", 75;
+}
+
+@용천제일격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 2000, 2500, "용천제일격", 75;
+}
+
+@용천제이격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 8000, 10000, "용천제이격", 70;
+}
+
+@용천제삼격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 18000, 20000, "용천제삼격", 75;
+}
+
+@용천제사격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 40000, 45000, "용천제사격", 70;
+}
+
+@용천제오격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 48000, 50000, "용천제오격", 75;
+}
+
+@용천제육격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 88000, 100000, "용천제육격", 70;
+}
+
+@용천제칠격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 250000, 300000, "용천제칠격", 75;
+}
+
+@용천제팔격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 350000, 450000, "용천제팔격", 75;
+}
+
+@용천제구격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 51, 8, 450000, 500000, "용천제구격", 75;
+}
+
+@원류일광	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 56, 8, 200000, 250000, "원류일광", 70;
+}
+
+@진원류일광	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 56, 8, 250000, 300000, "진'원류일광", 70;
+}
+
+@청린격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 223, 8, 2600000, 2700000, "청린격", 8000;
+}
+
+@흑형참	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 153, 8, 20000, 25000, "흑형참", 20;
+}
+
+@백형참	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 153, 8, 2000, 2500, "백형참", 20;
+}
+
+@적형참	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 153, 8, 13000, 15000, "적형참", 20;
+}
+
+@청형참	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 153, 8, 4500, 5000, "청형참", 20;
+}
+
+@용형참	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 153, 8, 4500, 5000, "용형참", 20;
+}
+
+@진용형참	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 153, 8, 14000, 15000, "진용형참", 20;
+}
+
+@진'천부연격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 256, 8, 7500, 9000, "진'천부연격", 4000;
+}
+
+@뇌령의분노	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 186, 8, 88000, 95000, "뇌령의분노", 70;
+}
+
+@염령의분노	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 188, 8, 88000, 95000, "염령의분노", 70;
+}
+
+@횃불	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 48, 8, 3000, 3500, "불붙이기", 45;
+}
+
+@풍의제일격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 51, 8, 13500, 15000, "풍의제일격", 2000;
+}
+
+@풍의제이격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 51, 8, 27000, 30000, "풍의제이격", 2500;
+}
+
+@풍의제삼격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 51, 8, 39000, 42000, "풍의제삼격", 3000;
+}
+
+@운의제일격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 51, 8, 13500, 15000, "운의제일격", 2000;
+}
+
+@운의제이격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 51, 8, 27000, 30000, "운의제이격", 2500;
+}
+
+@운의제삼격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 10000, 51, 8, 41000, 42000, "운의제삼격", 3000;
+}
+
+@마비격	{
+	set @sd, mysd();
+	set @id, myid();
+	set @rand, rand(1, 100);
+	set @target_id, obj_getfront();
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 2)
+		{
+			if(@rand <= 10)
+			{
+				if(mobspellaethered(@target_id, name2spellid("마비")) == 1 || mobspellaethered(@target_id, name2spellid("만파지독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+
+
+				sound @target_id, 70;
+				effect @target_id, 1;
+
+				mobspellaether @target_id, name2spellid("마비"), 10;
+				set_siya @target_id, 2, 1;
+				message @sd, 3, "마비를 외웠습니다.";
+			}
+		}
+	}
+}
+
+@중독격	{
+	set @sd, mysd();
+	set @id, myid();
+	set @rand, rand(1, 100);
+	set @target_id, obj_getfront();
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 2)
+		{
+			if(@rand <= 100)
+			{
+				if(mobspellaethered(@target_id, name2spellid("몬스터중독")) == 1 || mobspellaethered(@target_id, name2spellid("노도성황")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+				mobspellaether @target_id, name2spellid("몬스터중독"), 30;
+
+				sound @target_id, 14;
+				effect @target_id, 84;
+
+				message @sd, 3, "중독을 외웠습니다.";
+			}
+		}
+	}
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(spellaethered(@target_sd, name2spellid("중독")) == 0 && spellaethered(@target_sd, name2spellid("노도성황")) == 0)
+		{
+			if(ismapoption(@sd, 6))
+			{
+				spellaether @target_sd, name2spellid("노도성황"), 30;
+				if(@target_id != @id) { message @sd, 3, get_name(@sd) + "님이 귀문진산격을 가합니다."; }
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "이미 걸려있습니다.";
+			end;
+		}
+	}
+}
+
+@중독격2	{
+	set @sd, mysd();
+	set @id, myid();
+	set @rand, rand(1, 100);
+	set @target_id, obj_getfront();
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 2)
+		{
+			if(@rand <= 100)
+			{
+				if(mobspellaethered(@target_id, name2spellid("몬스터중독2")) == 1 || mobspellaethered(@target_id, name2spellid("노도성황")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+				mobspellaether @target_id, name2spellid("몬스터중독2"), 30;
+
+				sound @target_id, 14;
+				effect @target_id, 84;
+
+				message @sd, 3, "중독을 외웠습니다.";
+			}
+		}
+	}
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(spellaethered(@target_sd, name2spellid("중독2")) == 0 && spellaethered(@target_sd, name2spellid("노도성황2")) == 0)
+		{
+			if(ismapoption(@sd, 6))
+			{
+				spellaether @target_sd, name2spellid("노도성황2"), 5;
+				if(@target_id != @id) { message @sd, 3, get_name(@sd) + "님이 귀문진산격을 가합니다."; }
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "이미 걸려있습니다.";
+			end;
+		}
+	}
+}
+
+@저주격	{
+	set @sd, mysd();
+	set @id, myid();
+	set @rand, rand(1, 100);
+	set @target_id, obj_getfront();
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 2)
+		{
+			if(@rand <= 20)
+			{
+				if(mobspellaethered(@target_id, name2spellid("혼마술")) || mobspellaethered(@target_id, name2spellid("극혼술")) || mobspellaethered(@target_id, name2spellid("극혼술'첨")) || mobspellaethered(@target_id, name2spellid("저주")) ||  mobspellaethered(@target_id, name2spellid("귀염추혼소")) || mobspellaethered(@target_id, name2spellid("마기지체저주")) || callfunc("NOCURSE", @target_id, 2) == 1)
+				{
+					message @sd, 3, "이미 걸려있습니다.";
+					end;
+				}
+
+				sound @target_id, 13;
+				effect @target_id, 69;
+
+				mobspellaether @target_id, name2spellid("저주"), 185;
+				set_mobac @target_id, get_mobac(@target_id)+30;
+				message @sd, 3, "저주를 외웠습니다";
+			}
+		}
+	}
+}
+
+
+@폭류	{
+	set @sd, mysd();
+	set @id, myid();
+	set @damage, get_hp(@sd)*2;
+	set @target, obj_getfront();
+	if(@target == 0) end;
+	if($damageup) { set @damage, @damage*3; }
+	
+	callfunc "MANA_DELAY", 600, 0, @sd;
+	
+	set @x1, get_x(@id)-6;
+	set @x2, get_x(@id)+5;
+	set @y1, get_y(@id)-6;
+	set @y2, get_y(@id)+5;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					damage @id, @target, @damage, 0;	
+					if(ismapoption(@sd, 6)) message @target_sd, 3, get_name(@sd) + "님께서 폭류신격을 가합니다.";
+				}
+				else if (istype(@target) == 2)
+				{
+					damage @id, @target, @damage, 0;
+				}
+			}
+		}
+	}
+	
+	effect @id, 161;
+	action @id, 6, 30, 0;
+	sound @id, 500;
+	set_hp @sd, get_hp(@sd)/2;
+	set_mp @sd, get_mp(@sd)/2;
+	spellaether @sd, name2spellid("폭류"), 1;
+	spelldelay @sd, name2spellid("폭류"), 1;
+	message @sd, 3, "폭류신격을 외웠습니다.";
+}
+
+
+@폭류신격	{
+	//이펙트 보류 //사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 77, 0, 30000, 35000, "폭류", 10;
+}
+
+@현성주	{
+	callfunc "DRAGON_CURSE", 10000, 3400, 106, 8, 65, 6, 6, "현성주";
+}
+
+@현성주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-65;
+	message @sd, 3, "현성주 해제.";
+}
+
+
+@천랑노	{
+	callfunc "DRAGON_CURSE", 10000, 3400, 101, 8, 65, 6, 6, "천랑노";
+}
+
+@천랑노해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-65;
+	message @sd, 3, "천랑노 해제.";
+}
+
+
+@진혼신격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 77, 8, 350000, 400000, "진혼신격", 75;
+}
+
+@적랑기격	{
+	//사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 76, 8, 350000, 400000, "정랑기격", 75;
+}
+
+
+@선인술	{
+	set @mysd, mysd();
+	set @myid, myid();
+	set @damage, get_hp(@mysd)*20;
+	if($damageup) { set @damage, @damage*5; }
+	if ($finalattack) { set @damage, @damage*5/2; }
+	
+	callfunc "MANA_DELAY", 600, 0, @mysd;
+	
+	set @x1, get_x(@myid)-8;
+	set @x2, get_x(@myid)+8;
+	set @y1, get_y(@myid)-7;
+	set @y2, get_y(@myid)+7;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					damage @id, @target, @damage*6/3, 0;
+					effect @target, 86;
+					message @target_sd, 3, get_name(@sd) + "님께서 선인술을 가했습니다.";
+				}
+				else if (istype(@target) == 2)
+				{
+					effect @target, 86;
+					damage @id, @target, @damage*6/3, 0;
+				}
+			}
+		}
+	}
+	action @id, 6, 30, 0;
+	sound @id, 8;
+	set_hp @sd, get_hp(@sd)/2;
+	set_mp @sd, get_mp(@sd)-600;
+	message @sd, 3, "선인의가르침을 외웠습니다.";
+}
+
+
+
+@선인의가르침	{
+	//이펙트 보류 //사운드 보류
+	callfunc "ITEMEFFECTMAGIC", 2, 100, 77, 0, 30000, 35000, "선인술", 10;
+}

@@ -1,0 +1,23 @@
+@너구리	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("너구리털"), 1;
+}
+
+@일본원숭이	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("원숭이털"), 1;
+}
+
+@은여우	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("은여우털"), 1;
+}
+
+@아귀	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("은전"), rand(100, 150);
+}
+
+@어전	{
+	callfunc "DROPITEM", objid(), 50, 10, name2itemid("어전의칼"), 1;
+}
+
+@멧돼지	{
+	callfunc "DROPITEM", objid(), 50, 10, name2itemid("금덩어리"), rand(10000, 15000);
+}

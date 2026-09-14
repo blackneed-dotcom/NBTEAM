@@ -1,0 +1,149 @@
+@¿î¶û	{
+	set @id, objid();
+	if($revival == 0)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": Æø·ÚºÎÈ°!!";
+		set_mobhp @id, get_mobmaxhp(@id);
+		set $revival, $revival+1;
+		effect @id, 5;
+		sound @id, 8;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, "¼ö·Å±Í: ÀÌ·²¼ö°¡..";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("±¸¸§ÀÇ¿Á"), 1;
+}
+
+@¿î¶û°ø°Ý	{
+	if(rand(1, 2) == 1)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 150, rand(100000, 200000), 2, "Æø·Ú°­¸²", 16, "Æø·Ú°­¸²!!";
+	}
+	else
+	{
+		callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 3, -1, 8, 100, rand(100000, 200000), 2, "¸ùÈ¯¼ú", "¸ùÈ¯¼ú!!";
+	}
+}
+
+@¼ö·Å±Í	{
+	set @id, objid();
+	if($revival == 0)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": ¼ö·Å±ÍÀÇ±â¿ø!";
+		set_mobhp @id, get_mobmaxhp(@id);
+		set $revival, $revival+1;
+		effect @id, 5;
+		sound @id, 8;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, "¼ö·Å±Í: ÀÌ·²¼ö°¡..";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("¹°ÀÇ¿Á"), 1;
+}
+
+@Ç³¼®	{
+	set @id, objid();
+	if($revival == 0)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": ¾ÏÈæÀÇÈûÀ» ¾èº¸Áö¸¶¶ù!!";
+		set_mobhp @id, get_mobmaxhp(@id);
+		set $revival, $revival+1;
+		effect @id, 5;
+		sound @id, 8;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, "Ç³¼®: À¹..ÀÌ·²¼ö°¡..";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("»êÀÇ¿Á"), 1;
+}
+
+@Æø¿°±Í	{
+	set @id, objid();
+	if($revival == 0)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": Æø¿°ÀÇºÎÈ°!!";
+		set_mobhp @id, get_mobmaxhp(@id);
+		set $revival, $revival+1;
+		effect @id, 5;
+		sound @id, 8;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, "Æø¿°±Í: ÀÌ·²¼ö°¡..";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("ºÒÀÇ¿Á"), 1;
+}
+
+@¾ÏÈæ¿Õ	{
+	set @id, objid();
+	if(rand(1, 30) <= 29)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, "¾ÏÈæ¿Õ: ³»°¡ ÀÌÁ¤µµ·Î Á×À»°Í °°À¸³Ä!!";
+		set_mobhp @id, get_mobhp(@id)+5000000;
+		effect @id, 5;
+		sound @id, 8;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, "¾ÏÈæ¿Õ: À¸À¹..ºÐÇÏ´Ù..";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("¾ÏÈæ¿ÕÀÇºÀÀÎ"), 1;
+}
+
+@¾ÏÈæ¿Õ°ø°Ý	{
+	if(rand(1, 2) == 1)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 149, rand(200000, 300000), 2, "¾ÏÈæÁøÆÄ", 10, "¾ÏÈæÁøÆÄ!!";
+	}
+	else
+	{
+		callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 3, -1, 8, 139, rand(200000, 300000), 2, "¾ÏÈæÆÄ", "¾ÏÈæÆÄ!!";
+	}
+}
+
+@¾ÏÈæÁ¤·É	{
+	callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 7, -1, 8, 87, rand(60000, 130000), 2, "¾ÏÈæÁ¤·É", "¾ÏÈæÁ¤·É!!";
+}
+
+@¾ÏÈæ¿­±¤Åº	{
+	callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 7, -1, 8, 106, rand(60000, 130000), 2, "¾ÏÈæ¿­±¤Åº", "¾ÏÈæ¿­±¤Åº!!";
+}
+
+@¾ÏÈæÅõ±â	{
+	callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 7, -1, 8, 91, rand(60000, 130000), 2, "¾ÏÈæÅõ±â", "¾ÏÈæÅõ±â!!";
+}
+
+@¾óÀ½Áö¿Á	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 99, rand(100000, 200000), 2, "¾óÀ½Áö¿Á", 16, "¾óÀ½Áö¿Á!!";
+}
+
+@Áö¿Á°ÌÈ­	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 94, rand(100000, 200000), 2, "Áö¿Á°ÌÈ­", 16, "Áö¿Á°ÌÈ­!!";
+}
+
+@°­·ÚÆÄÅº	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 114, rand(100000, 200000), 2, "°­·ÚÆÄÅº", 16, "°­·ÚÆÄÅº!!";
+}

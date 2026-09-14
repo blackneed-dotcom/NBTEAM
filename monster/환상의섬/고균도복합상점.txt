@@ -1,0 +1,15 @@
+@상점가포악중성인성초	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("누름막대"), 1;
+}
+
+@상점가포악초성인성초	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("좌우막대"), 1;
+}
+
+@상점가흉폭초성인성초	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("요술구슬"), 1;
+}
+
+@상점가흉폭중성인성초	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("상하막대"), 1;
+}

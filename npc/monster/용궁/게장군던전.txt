@@ -1,0 +1,11 @@
+@파산게	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("게등껍질"), 1;
+}
+
+@사산게	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("게집게"), 1;
+}
+
+@암흑진	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 6, 2, 8, 143, rand(7000, 10000), 0, "암흑진", "-1";
+}

@@ -1,0 +1,194 @@
+{
+  "status": "ok",
+  "kind": "normal",
+  "count": 11,
+  "logs": [
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:14",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] begin: 12 source frames, test speed=1.2, interval=0.12",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnBeginPlay",
+          "methodLineNum": 10,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:14",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "eb7e3df1-f128-4077-8048-553fbd192076",
+      "message": "[BaramHUD] ready: source frame, bitmap digits, HP/MP/level/experience/gold",
+      "stackTrace": [
+        {
+          "methodName": "BaramHUDController.OnBeginPlay",
+          "methodLineNum": 11,
+          "codeBlockFileId": "4b16291c-be9c-494e-8fbf-d1c1ab7bbf0e"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:14",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": "316f8a83-753c-4066-96f0-ea89c44334d3",
+      "message": "[BaramMinimal] ready: arrow keys; test map only",
+      "stackTrace": [
+        {
+          "methodName": "BaramMinimalController.OnUpdate",
+          "methodLineNum": 19,
+          "codeBlockFileId": "08f1f762-7002-4796-9fb7-86757f5b8237"
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:36",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] percent=0 hp=0.0 mp=0.0 pass=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 7,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:36",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] percent=50 hp=0.5 mp=0.5 pass=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 7,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:36",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] percent=100 hp=1.0 mp=1.0 pass=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 7,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:36",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] clamp-zero-max pass=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 10,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:37",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] bitmap-level42 pass=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 13,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:51:54",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDRef] first=MOD.Core.MODDataRef second=MOD.Core.MODDataRef expected=e8c9f289f836463c83613614512b7004,cb33d34e6b094095bb269836156d9920",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:52:16",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] level42-DataId pass=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 3,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-14T02:52:16",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[HUDVerify] level1-leading-digit-hidden pass=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 5,
+          "codeBlockFileId": null
+        }
+      ]
+    }
+  ]
+}

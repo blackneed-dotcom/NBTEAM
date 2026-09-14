@@ -1,0 +1,313 @@
+@주작의옷	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #bird_castle$) )
+	{
+		set_equipitem_dura @sd, 1, 1;
+	}
+	spelluncast @sd, name2spellid("주작의옷");
+}
+
+@현무의옷	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #turtle_castle$) )
+	{
+		set_equipitem_dura @sd, 1, 1;
+	}
+	spelluncast @sd, name2spellid("현무의옷");
+}
+
+@청룡의옷	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #dragon_castle$) )
+	{
+		set_equipitem_dura @sd, 1, 1;
+	}
+	spelluncast @sd, name2spellid("청룡의옷");
+}
+
+@백호의옷	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #tiger_castle$) )
+	{
+		set_equipitem_dura @sd, 1, 1;
+	}
+	spelluncast @sd, name2spellid("백호의옷");
+}
+
+@옥좌점령	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_x(@id) == 20 && get_y(@id) == 8)
+	{
+		effect @id, 74;
+	}
+	else
+	{
+		spelluncast @sd, name2spellid("옥좌점령");
+	}
+}
+
+@왕의저주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-0;
+	message @sd, 3, "왕의저주 해제.";
+}
+
+@금고주인의저주해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd)-49;
+	message @sd, 3, "금고주인의저주 해제.";
+}
+
+@승급보상	{
+	set @sd, mysd();
+	set @id, myid();
+	set @joblv, get_joblevel(@sd);
+	set @gender, get_gender(@sd);
+
+	switch(get_job(@sd))
+	{
+	case 1:
+		if(@joblv == 3)
+		{
+			if(@gender == 1)
+			{
+				additem @sd, name2itemid("검황의심장"), 1;
+				additem @sd, name2itemid("검황의영혼"), 1;
+			}
+			else
+			{
+				additem @sd, name2itemid("검황의영혼"), 1;
+				additem @sd, name2itemid("검황의심장"), 1;
+			}
+		}
+		else if(@joblv == 4)
+		{
+			additem @sd, name2itemid("검성기검"), 1;
+		}
+		else if(@joblv == 5)
+		{
+			additem @sd, name2itemid("승리의증표"), 1;
+			additem @sd, name2itemid("용마제육검"), 1;
+		}
+		break;
+	case 2:
+		if(@joblv == 3)
+		{
+			if(@gender == 1)
+			{
+				additem @sd, name2itemid("귀검의심장"), 1;
+				additem @sd, name2itemid("귀검의영혼"), 1;
+			}
+			else
+			{
+				additem @sd, name2itemid("귀검의영혼"), 1;
+				additem @sd, name2itemid("귀검의심장"), 1;
+			}
+		}
+		else if(@joblv == 4)
+		{
+			additem @sd, name2itemid("태성태도"), 1;
+		}
+		else if(@joblv == 5)
+		{
+			additem @sd, name2itemid("승리의증표"), 1;
+			additem @sd, name2itemid("용천제육검"), 1;
+		}
+		break;
+	case 3:
+		if(@joblv == 3)
+		{
+			if(@gender == 1)
+			{
+				additem @sd, name2itemid("현인의심장"), 1;
+				additem @sd, name2itemid("현인의영혼"), 1;
+			}
+			else
+			{
+				additem @sd, name2itemid("현인의영혼"), 1;
+				additem @sd, name2itemid("현인의심장"), 1;
+			}
+		}
+		else if(@joblv == 4)
+		{
+			additem @sd, name2itemid("현자금봉"), 1;
+		}
+		else if(@joblv == 5)
+		{
+			additem @sd, name2itemid("승리의증표"), 1;
+			additem @sd, name2itemid("용랑제육봉"), 1;
+		}
+		break;
+	case 4:
+		if(@joblv == 3)
+		{
+			if(@gender == 1)
+			{
+				additem @sd, name2itemid("진인의심장"), 1;
+				additem @sd, name2itemid("진인의영혼"), 1;
+			}
+			else
+			{
+				additem @sd, name2itemid("진인의영혼"), 1;
+				additem @sd, name2itemid("진인의심장"), 1;
+			}
+		}
+		else if(@joblv == 4)
+		{
+			additem @sd, name2itemid("진선역봉"), 1;
+			additem @sd, name2itemid("여신의방패"), 1;
+		}
+		else if(@joblv == 5)
+		{
+			additem @sd, name2itemid("승리의증표"), 1;
+			additem @sd, name2itemid("용겸제육봉"), 1;
+		}
+		break;
+	}
+}
+
+@결혼체크	{
+	if($marry_check != 0)
+	{
+		set #marry_check_success, 1;
+	}
+}
+
+@주작의검	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #bird_castle$) )
+	{
+		set_equipitem_dura @sd, 0, 0;
+	}
+	spelluncast @sd, name2spellid("주작의검");
+}
+
+@현무의검	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #turtle_castle$) )
+	{
+		set_equipitem_dura @sd, 0, 0;
+	}
+	spelluncast @sd, name2spellid("현무의검");
+}
+
+@청룡의검	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #dragon_castle$) )
+	{
+		set_equipitem_dura @sd, 0, 0;
+	}
+	spelluncast @sd, name2spellid("청룡의검");
+}
+
+@백호의검	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if( strcmp(get_clanname(@sd), #tiger_castle$) )
+	{
+		set_equipitem_dura @sd, 0, 0;
+	}
+	spelluncast @sd, name2spellid("백호의검");
+}
+
+@보스지급1	{
+	set @sd, mysd();
+	additem @sd, name2itemid("십억경"), 1;
+	message @sd, 3, "십억경 1개 얻었습니다.";
+	effect myid(), 2;
+}
+
+@보스지급2	{
+	set @sd, mysd();
+	additem @sd, name2itemid("십억경"), 2;
+	message @sd, 3, "십억경 2개 얻었습니다.";
+	effect myid(), 2;
+}
+
+@보스지급3	{
+	set @sd, mysd();
+	additem @sd, name2itemid("레이드코인"), 1;
+	message @sd, 3, "레이드코인 1개 얻었습니다.";
+	effect myid(), 2;
+}
+
+@보스지급4	{
+	set @sd, mysd();
+	additem @sd, name2itemid("레이드코인"), 2;
+	message @sd, 3, "레이드코인 2개 얻었습니다.";
+	set_money @sd, get_money(@sd) + rand(1,1000)*100;
+	effect myid(), 2;
+}
+@보스지급5	{
+	set @sd, mysd();
+	additem @sd, name2itemid("십억경"), 1;
+	message @sd, 3, "십억경 1개 얻었습니다.";
+	effect myid(), 2;
+}
+
+@보스지급6	{
+	set @sd, mysd();
+	additem @sd, name2itemid("십억경"), 2;
+	message @sd, 3, "십억경 2개 얻었습니다.";
+	effect myid(), 2;
+}
+
+@보스지급7	{
+	set @sd, mysd();
+	additem @sd, name2itemid("십억경"), 3;
+	message @sd, 3, "십억경 3개 얻었습니다.";
+	effect myid(), 2;
+}
+
+@보스지급8	{
+	set @sd, mysd();
+	additem @sd, name2itemid("십억경"), 4;
+	message @sd, 3, "십억경 4개 얻었습니다.";
+	set_money @sd, get_money(@sd) + rand(1,1000)*100;
+	effect myid(), 2;
+}
+@정답O지속	{
+	set @sd, mysd();
+	if(#ox_switch == 1) end;	
+	else
+	{
+		if(#ox_event_que$ == "1")
+			warp @sd, 1480, rand(12,16), rand(2,5);
+		else
+			warp @sd, 16, rand(3,4), 5;
+		spellaether @sd, name2spellid("정답:O"), 1;
+	}
+}
+@정답X지속	{
+	set @sd, mysd();
+	if(#ox_switch == 1) end;
+	else
+	{
+		if(#ox_event_que$ == "2")
+			warp @sd, 1480, rand(12,16), rand(2,5);
+		else
+			warp @sd, 16, rand(3,4), 5;
+		spellaether @sd, name2spellid("정답:X"), 1;
+	}
+}

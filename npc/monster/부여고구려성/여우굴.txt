@@ -1,0 +1,26 @@
+@흑여우	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("여우모피"), 1;
+}
+
+@백여우	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("여우모피"), 1;
+}
+
+@서여우	{
+	callfunc "DROPITEM2", objid(), 100, 10, name2itemid("은전"), 200;
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("여우모피"), 1;
+}
+
+@불여우	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("여우모피"), 1;
+}
+
+@구미호	{
+	callfunc "DROPITEM2", objid(), 100, 60, name2itemid("여우모피"), 1;
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("사각방패"), 1;
+}
+
+@불구미호	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("귀환비서"), 1;
+	callfunc "DROPITEM", objid(), 180, 40, name2itemid("철도"), 1;
+}

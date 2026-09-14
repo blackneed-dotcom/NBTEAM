@@ -1,0 +1,1596 @@
+@극'파천검무	{
+	set @id, myid();
+	set @sd, mysd();
+	set @move_y, 0;
+	set @move_x, 0;
+	set @save_hp, get_hp(@sd);
+	set @damage, get_hp(@sd);
+	if(get_mp(@sd) > 20000) { set @damage, get_hp(@sd) + 13000000; }
+
+	callfunc "MANA_DELAY", 0, name2spellid("극'파천검무"), @sd;
+
+	if($damageup) { set @damage, @damage*2; }
+
+	spelldelay @sd, name2spellid("극'파천검무"), 30;
+
+	set_hp @sd, @save_hp/2;
+
+	//좌표체크
+	switch(get_side(@id))
+	{
+	case 0:
+		set @target, obj_getxy(get_x(@id), get_y(@id)-1);
+
+		callfunc "BATTLE_DOOR_CHECK", @target;
+
+		if(validid(@target) == 0) { goto failed; }
+		for(set @loop, 1;@loop <= 4;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id), get_y(@id)-@loop);
+			if(validid(@target) != 0)
+			{
+				set @move_y, @move_y-1;
+			}
+			else { set @move_y, @move_y-1; goto next; }
+		}
+		set @move_y, @move_y-1;	
+		break;
+	case 1:
+		set @target, obj_getxy(get_x(@id)+1, get_y(@id));
+
+		callfunc "BATTLE_DOOR_CHECK", @target;
+
+		if(validid(@target) == 0) { goto failed; }
+		for(set @loop, 1;@loop <= 4;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id)+@loop, get_y(@id));
+			if(validid(@target) != 0)
+			{
+				set @move_x, @move_x+1;
+			}
+			else { set @move_x, @move_x+1; goto next; }		
+		}
+		set @move_x, @move_x+1;
+		break;
+	case 2:
+		set @target, obj_getxy(get_x(@id), get_y(@id)+1);
+
+		callfunc "BATTLE_DOOR_CHECK", @target;
+
+		if(validid(@target) == 0) { goto failed; }
+		for(set @loop, 1;@loop <= 4;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id), get_y(@id)+@loop);
+			if(validid(@target) != 0)
+			{
+				set @move_y, @move_y+1;
+			}
+			else { set @move_y, @move_y+1; goto next; }	
+		}
+		set @move_y, @move_y+1;
+		break;
+	case 3:
+		set @target, obj_getxy(get_x(@id)-1, get_y(@id));
+
+		callfunc "BATTLE_DOOR_CHECK", @target;
+
+		if(validid(@target) == 0) { goto failed; }
+		for(set @loop, 1;@loop <= 4;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id)-@loop, get_y(@id));
+			if(validid(@target) != 0)
+			{
+				set @move_x, @move_x-1;
+			}
+			else { set @move_x, @move_x-1; goto next; }		
+		}
+		set @move_x, @move_x-1;
+		break;
+	}
+	next:
+	if(canmove(@id, get_x(@id)+@move_x, get_y(@id)+@move_y) == 1) { goto failed; }
+	if(get_x(@id)+@movex < 0 || get_x(@id)+@movex > get_mapwidth(@sd)-1) { goto failed; }
+	if(get_y(@id)+@movey < 0 || get_y(@id)+@movey > get_mapheight(@sd)-1) { goto failed; }
+	set_xy @id, get_x(@id)+@move_x, get_y(@id)+@move_y;
+	if(@move_x < 0) set @move_x, @move_x*-1;
+	if(@move_y < 0) set @move_y, @move_y*-1;
+	updatexy @sd;
+	updatelookpc @sd, 0;
+	updateallpc @sd;
+	sound @id, 501;
+	//이펙트 먼저 처리하고 움직이면 뒤로 묻히기 때문에.. 재처리
+	//위쪽 switch 에도 처리를 하면되나 마지막 좌표 체킹처리를 위해 어쩔수 없이 아래에 둠.
+	switch(get_side(@id))
+	{
+	case 0:
+		set_side @id, 2;
+		for(set @loop, 1;@loop <= @move_y-1;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id), get_y(@id)+@loop);
+			effect @target, 167;
+			damage @id, @target, @damage, 0; 
+		}
+		break;
+	case 1:
+		set_side @id, 3;
+		for(set @loop, 1;@loop <= @move_x+1;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id)-@loop, get_y(@id));
+			effect @target, 167;
+			damage @id, @target, @damage, 0; 
+		}
+		break;
+	case 2:
+		set_side @id, 0;
+		for(set @loop, 1;@loop <= @move_y+1;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id), get_y(@id)-@loop);
+			effect @target, 167;
+			damage @id, @target, @damage, 0; 
+		}
+		break;
+	case 3:
+		set_side @id, 1;
+		for(set @loop, 1;@loop <= @move_x-1;set @loop, @loop+1)
+		{
+			set @target, obj_getxy(get_x(@id)+@loop, get_y(@id));
+			effect @target, 167;
+			damage @id, @target, @damage, 0; 
+		}
+		break;
+	}
+
+	updatexy @sd;
+	updatelookpc @sd, 0;
+	updateallpc @sd;
+	action @id, 1, 15, 0;
+	message @sd, 3, "극'파천검무를 외웠습니다.";
+
+failed:
+	set_hp @sd, @save_hp;
+	message @sd, 3, "극'파천검무 실패!";
+
+	set @loopx1, 0;
+	set @loopx2, 0;
+	set @loopy1, 0;
+	set @loopy2, 0;
+	
+	set @mob_count, 0;
+	set @loop_count, 0;
+	set @damage, 0;
+	
+	if($finalattack) { set @damage, get_hp(@sd)*0; }
+	if($damageup) { set @damage, @damage*0; }
+
+	switch(get_side(@id))
+	{
+	case 0:
+		if(get_y(@id)-1 < 0) { goto failed1; }		
+		for(set @loop, 1; @loop <= 3; set @loop, @loop+1)
+		{
+			if(get_y(@id)-@loop < 0) { goto next1; }
+			for(set @loop2, @loopx1; @loop2 <= @loopx2; set @loop2, @loop2+1)
+			{
+				if(get_x(@id)+@loop2 < 0 || get_x(@id)+@loop2 > get_mapwidth(@sd)-1) { goto next0_11; }
+				set @target, obj_getxy(get_x(@id)+@loop2, get_y(@id)-@loop);
+				if(validid(@target) != 0)
+				{
+					set @mob_count, @mob_count+1;
+					effect @target, 167;
+					damage @id, @target, @damage, 0;
+				}
+				next0_11:
+			}
+			set @loopx1, @loopx1-1;
+			set @loopx2, @loopx2+1;
+		}
+		break;
+		
+	case 1:
+		if(get_x(@id)+1 > get_mapwidth(@sd)-1) { goto failed1; }
+		for(set @loop, 1; @loop <= 3; set @loop, @loop+1)
+		{
+			if(get_x(@id)+@loop > get_mapwidth(@sd)-1) { goto next1; }
+			for(set @loop2, @loopy1; @loop2 <= @loopy2; set @loop2, @loop2+1)
+			{
+				if(get_y(@id)+@loop2 < 0 || get_y(@id)+@loop2 > get_mapheight(@sd)-1) { goto next1_11; }
+				set @target, obj_getxy(get_x(@id)+@loop, get_y(@id)+@loop2);
+				if(validid(@target) != 0)
+				{
+					set @mob_count, @mob_count+1;
+					effect @target, 167;
+					damage @id, @target, 0, 0;
+				}
+				next1_11:
+			}
+			set @loopy1, @loopy1-1;
+			set @loopy2, @loopy2+1;
+		}
+		break;
+		
+	case 2:
+		if(get_y(@id)+1 > get_mapheight(@sd)-1) { goto failed1; }
+		for(set @loop, 1; @loop <= 3; set @loop, @loop+1)
+		{
+			if(get_y(@id)+@loop > get_mapheight(@sd)-1) { goto next1; }
+			for(set @loop2, @loopx1; @loop2 <= @loopx2; set @loop2, @loop2+1)
+			{
+				if(get_x(@id)+@loop2 < 0 || get_x(@id)+@loop2 > get_mapwidth(@sd)-1) { goto next2_11; }
+				set @target, obj_getxy(get_x(@id)+@loop2, get_y(@id)+@loop);
+				if(validid(@target) != 0)
+				{
+					set @mob_count, @mob_count+1;
+					effect @target, 167;
+					damage @id, @target, 0, 0;
+				}
+				next2_11:
+			}
+			set @loopx1, @loopx1-1;
+			set @loopx2, @loopx2+1;
+		}
+		break;
+		
+	case 3:
+		if(get_x(@id)-1 < 0) { goto failed1; }
+		for(set @loop, 1; @loop <= 3; set @loop, @loop+1)
+		{
+			if(get_x(@id)-@loop < 0) { goto next1; }
+			for(set @loop2, @loopy1; @loop2 <= @loopy2; set @loop2, @loop2+1)
+			{
+				if(get_y(@id)+@loop2 < 0 || get_y(@id)+@loop2 > get_mapheight(@sd)-1) { goto next3_11; }
+				set @target, obj_getxy(get_x(@id)-@loop, get_y(@id)+@loop2);
+				if(validid(@target) != 0)
+				{
+					set @mob_count, @mob_count+1;
+					effect @target, 167;
+					damage @id, @target, 0, 0;
+				}
+				next3_11:
+			}
+			set @loopy1, @loopy1-1;
+			set @loopy2, @loopy2+1;
+		}
+		break;
+	}
+
+	next1:
+	
+	if(@mob_count == 0) { goto failed1; }
+	else { goto success; }	
+
+	failed1:
+	message @sd, 3, "극'파천검무 실패!";
+	end;
+	
+	success:
+	set_hp @sd, get_hp(@sd)/2;
+	set_mp @sd, get_mp(@sd)-50;
+	action @id, 1, 30, 87;
+}
+
+@몹독지속	{
+	set @id, objid();
+	set @hp, get_mobhp(@id)-(get_mobmaxhp(@id)/100*3);
+
+	if(@hp <= 0) { set_mobhp @id, 1; }
+	else { set_mobhp @id, @hp; }
+
+	effect @id, 59;
+}
+
+@혈독주입	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 2200, name2spellid("혈독주입"), @sd;
+	//set_mp @sd, get_mp(@sd)-2200;
+
+	action @id, 6, 30, 0;
+	effect @id, 89;
+	sound @id, 8;
+
+	spellaether @sd, name2spellid("혈독주입"), 20;
+	message @sd, 3, "혈독주입을 외웠습니다.";
+}
+
+@혈독주입지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("혈독주입")) == 0) { end; }
+
+	set @value, callfunc("calculate_damage", (get_hp(@sd)+(get_mp(@sd)/100*125))/4, 4);
+	set @damage, callfunc("calc_multiply", @value);
+
+	set @hp, get_hp(@sd)-(get_maxhp(@sd)/100*5);
+	if(@hp <= 0) { set_hp @sd, 1; }
+	else { set_hp @sd, @hp; }
+
+	set @x1, get_x(@id)-2;
+	set @x2, get_x(@id)+2;
+	set @y1, get_y(@id)-2;
+	set @y2, get_y(@id)+2;
+	
+	if(@x1 < 0) { set @x1, 0; }
+	if(@x2 > get_mapwidth(@sd)-1) { set @x2, get_mapwidth(@sd)-1; }
+	if(@y1 < 0) { set @y1, 0; }
+	if(@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd)-1; }
+	
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j <= @y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0 && @target_id != @id)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+					if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1)
+					{
+						set @hp, get_hp(@target_sd)-(get_maxhp(@target_sd)/100*2);
+						if(@hp <= 0) { set_hp @target_sd, 1; }
+						else { set_hp @target_sd, @hp; }
+
+						showhitgage @target_id;
+
+						message @target_sd, 3, get_name(@sd) + "님께서 혈독주입을 가합니다.";
+					}
+					effect @target_id, 139;
+				}
+				else if(istype(@target_id) == 2)
+				{
+					if(get_mobid(@target_id) == 1012) || (get_mobid(@target_id) == 1013) || (get_mobid(@target_id) == 1162) || (get_mobid(@target_id) == 1242) || (get_mobid(@target_id) == 1243) || (get_mobid(@target_id) == 1244) || (get_mobid(@target_id) == 1245) || (get_mobid(@target_id) == 1254) { message @sd, 3, "마법 보호!!"; end; }
+					
+					if(rand(1, 10) <= 10)
+					{
+						mobspellaether @target_id, name2spellid("몹독"), 5;
+					}
+					effect @target_id, 139;
+
+					callfunc "ATTACKDAMAGE", @target_id,  @damage, 0;
+				}
+			}
+		}
+	}
+}
+
+@혈독주입해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	spelldelay @sd, name2spellid("혈독주입"), 40;
+	message @sd, 3, "혈독주입를 외웠습니다.";
+}
+
+@회전무영	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 2000, 0, @sd;
+	set_mp @sd, get_mp(@sd) - 2000;
+	set @damage, get_hp(@sd)/2*2;
+	set_hp @sd, get_hp(@sd)/100*65;
+	message @sd, 3, "회전무영를 외웠습니다.";
+	sound @id, 8;
+	spelldelay @sd, name2spellid("회전무영"), 30;
+	if($finalattack) { set @damage, @damage*2; }
+	if($damageup) { set @damage, @damage*2; }
+
+	set @me_x, get_x(@id);
+	set @me_y, get_y(@id);
+	setarray @range_x[0], @me_x  , @me_x-1, @me_x  , @me_x+1, @me_x-1, @me_x-1, @me_x+1, @me_x+1, @me_x-1, @me_x  , @me_x+1, @me_x;
+	setarray @range_y[0], @me_y+1, @me_y+1, @me_y+1, @me_y+1, @me_y  , @me_y  , @me_y  , @me_y  , @me_y-1, @me_y-1, @me_y-1, @me_y-1;
+	for(set @loop, 0; @loop < 12; set @loop, @loop+1)
+	{
+		if(@range_x[@loop] >= 0 && @range_x[@loop] < mapwidth() && @range_y[@loop] >= 0 && @range_y[@loop] < mapheight())
+		{
+			set @target_id, obj_getxy(@range_x[@loop], @range_y[@loop]);
+			if(@target_id > 0 && @target_id != @id)
+			{
+				if(istype(@target_id) == 1)
+				{
+					if(ismapoption(@sd, 6) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+						effect @target_id, 92;
+						damage @id, @target_id, @damage, 0;
+						message @target_sd, 3, get_name(@sd) + "님께서 회전무영를 가합니다.";
+					}
+				}
+				else if(istype(@target_id) == 2)
+				{
+					action @id, 1, 15, 0;
+					effect @target_id, 92;
+					damage @id, @target_id, @damage, 0;
+				}
+			}
+		}
+	}
+
+	deletearray @range_x[0], getarraysize(@range_x);
+	deletearray @range_y[0], getarraysize(@range_y);
+}
+
+@필살검강	{
+	set @sd, mysd();
+	set @id, myid();
+	set @weapon$, get_equipitem_name(@sd, 0);
+	set @target_id, obj_getfront();
+	set @damage, get_hp(@sd) + get_mp(@sd);
+	if(get_mp(@sd) > 200000) { set @damage, get_hp(@sd) + 2500000; }
+	
+	callfunc "MANA_DELAY", 60, 0, @sd;
+	if(@target_id > 0) { message @sd, 3, "필살검강을 외웠습니다."; }
+	callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 60, "필살검강~!!", 60, 35, 1;
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산도")
+	{
+	if(@rand <= 10)
+	callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 60, "진'필살검강~~!!", 68, 90, 1;
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산도'진")
+	{
+	if(@rand <= 20)
+	callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 60, "진'필살검강~~!!", 68, 90, 1;
+	}
+}
+
+@검폭	{
+	set @sd, mysd();
+	set @id, myid();
+	if($poktan_c == 0)
+	{
+
+		if(ismapoption(@sd, 6) == 1)
+		{
+			set $pok_dam, (100000000);
+		}
+		else
+		{
+			set $pok_dam, (100000000);
+		}
+
+		set @me_x, get_x(@id);
+		set @me_y, get_y(@id);
+
+		set $poktan_m, get_mapid(@sd);
+		set $poktan_x, @me_x;
+		set $poktan_y, @me_y;
+		set $poktan_c, 1;
+
+		action @id, 6, 30, 0;
+
+		message @sd, 3, "폭탄을 설치했습니다. 다시 누르면 터트립니다.";
+		end;
+	}
+	else
+	{
+		if(get_mapid(@sd) != $poktan_m)
+		{
+			set $poktan_m, 0;
+			set $poktan_x, 0;
+			set $poktan_y, 0;
+			set $poktan_c, 0;
+
+			if(ismapoption(@sd, 6) == 1)
+			{
+				set @delay_time, 30;
+			}
+			else
+			{
+				set @delay_time, 30;
+			}
+			
+			spelldelay @sd, name2spellid("폭탄심기"), @delay_time;
+			message @sd, 3, "폭탄을 터트릴수 없어서 제거합니다.";
+			end;
+		}
+		else
+		{
+			if(ismapoption(@sd, 6) == 1)
+			{
+				set @delay_time, 30;
+			}
+			else
+			{
+				set @delay_time, 30;
+			}
+
+			spelldelay @sd, name2spellid("폭탄심기"), @delay_time;
+			message @sd, 3, "폭탄을 퍼뜨렸습니다.";
+			delitem @sd, name2itemid("폭탄"), 1;
+
+			set @bomb_x, $poktan_x;
+			set @bomb_y, $poktan_y;
+			set @damage, $pok_dam;
+		
+			setarray @range_x[0], @bomb_x-1, @bomb_x  , @bomb_x+1, @bomb_x-1, @bomb_x, @bomb_x+1, @bomb_x-1, @bomb_x  , @bomb_x+1;
+			setarray @range_y[0], @bomb_y-1, @bomb_y-1, @bomb_y-1, @bomb_y  , @bomb_y, @bomb_y  , @bomb_y+1, @bomb_y+1, @bomb_y+1;
+			for(set @loop, 0; @loop < 9; set @loop, @loop+1)
+			{
+				if(@range_x[@loop] >= 0 && @range_x[@loop] < mapwidth() && @range_y[@loop] >= 0 && @range_y[@loop] < mapheight())
+				{
+					set @target_id, obj_getxy(@range_x[@loop], @range_y[@loop]);
+					if(@target_id > 0 && @target_id != @id)
+					{
+						if(istype(@target_id) == 1)
+						{
+							if(ismapoption(@sd, 6) == 1)
+							{
+								set @target_sd, id2sd(@target_id);
+								effect @target_id, 19;
+								damage @id, @target_id, @damage, 0;
+								message @target_sd, 3, get_name(@sd) + "의 폭탄에 맞았습니다.";
+							}
+						}
+						else if(istype(@target_id) == 2)
+						{
+							effect @target_id, 19;
+							damage @id, @target_id, @damage, 0;
+						}
+					}
+				}
+			}
+			sound @id, 700;
+			set $poktan_m, 0;
+			set $poktan_x, 0;
+			set $poktan_y, 0;
+			set $poktan_c, 0;
+			set $pok_dam, 0;
+
+			action @id, 6, 30, 0;
+
+			deletearray @range_x[0], getarraysize(@range_x);
+			deletearray @range_y[0], getarraysize(@range_y);
+		}
+	}
+}
+
+@무영검	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 300, 0, @sd;
+
+	set @chk, 0;
+	set @me_x, get_x(@id);
+	set @me_y, get_y(@id);
+	set @damage, get_hp(@sd)/2*5;
+	set_hp @sd, get_hp(@sd)/2;
+	spelldelay @sd, name2spellid("무영검"), 20;
+	if($damageup) { set @damage, @damage*5; }
+
+	switch(get_side(@id))
+	{
+	case 0:
+		setarray @range_x[0], @me_x-1, @me_x-2, @me_x+1, @me_x+2, @me_x-1, @me_x  , @me_x+1, @me_x  , @me_x;
+		setarray @range_y[0], @me_y  , @me_y  , @me_y  , @me_y  , @me_y-1, @me_y-1, @me_y-1, @me_y-2, @me_y-3;
+		break;
+	case 1:
+		setarray @range_x[0], @me_x  , @me_x  , @me_x  , @me_x  , @me_x+1, @me_x+1, @me_x+1, @me_x+2, @me_x+3;
+		setarray @range_y[0], @me_y-1, @me_y-2, @me_y+1, @me_y+2, @me_y-1, @me_y  , @me_y+1, @me_y  , @me_y;
+		break;
+	case 2:
+		setarray @range_x[0], @me_x-1, @me_x-2, @me_x+1, @me_x+2, @me_x-1, @me_x  , @me_x+1, @me_x  , @me_x;
+		setarray @range_y[0], @me_y  , @me_y  , @me_y  , @me_y  , @me_y+1, @me_y+1, @me_y+1, @me_y+2, @me_y+3;
+		break;
+	case 3:
+		setarray @range_x[0], @me_x  , @me_x  , @me_x  , @me_x  , @me_x-1, @me_x-1, @me_x-1, @me_x-2, @me_x-3;
+		setarray @range_y[0], @me_y-1, @me_y-2, @me_y+1, @me_y+2, @me_y-1, @me_y  , @me_y+1, @me_y  , @me_y;
+		break;
+	}
+
+	for(set @loop, 0; @loop < 9; set @loop, @loop+1)
+	{
+		set @target_id, obj_getxy(@range_x[@loop], @range_y[@loop]);
+		if(@target_id > 0 && @target_id != @id)
+			{
+				if(istype(@target_id) == 1)
+				{
+					if(ismapoption(@sd, 6) == 1)
+					{
+						set @target_sd, id2sd(@target_id);
+						effect @target_id, 92;
+						damage @id, @target_id, @damage, 0;
+						message @target_sd, 3, get_name(@sd) + "님께서 무영검을 가합니다.";
+					}
+				}
+				else if(istype(@target_id) == 2)
+				{
+					effect @target_id, 92;
+					damage @id, @target_id, @damage, 0;
+				}
+			}
+		}
+	}
+
+	deletearray @range_x[0], getarraysize(@range_x);
+	deletearray @range_y[0], getarraysize(@range_y);
+}
+@진검승부	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	set @mapid, get_mapid(@sd);
+	callfunc "MANA_DELAY", 300, 0, @sd;
+	
+	if(@id == @target_id) { message @sd, 3, "자신에게는 사용할 수 없습니다."; end; }
+	if(!ismapoption(@sd, 6) && !ismapoption(@sd, 5)) // 사냥터나 pk지역만 허용
+	{
+		message @sd, 3, "사용할 수 없습니다.";
+		end;
+	}
+	if(@target_id > 0)
+	{
+		set @type, istype(@target_id);
+		if(@type == 1 || @type == 2)
+		{
+			if(@type == 1)
+				set @target_sd, id2sd(@target_id);
+
+			effect @id, 16;
+			sound @id, 29;
+			
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @id, 1;
+					break;
+				}
+				if(@type == 1)
+				{
+					if(!canmove(@id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y) ) { goto LOOP; }
+				}
+				else 
+				{
+					if(!canmove(@id, get_mobx(@target_id)+@rand_x, get_moby(@target_id)+@rand_y)) { goto LOOP; }
+				}
+			}
+	LOOP:
+			if(@i != 4) 
+			{ 
+				if(@type == 1)
+					warp @sd, get_mapid(@target_sd), get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y; 
+				else
+					warp @sd, get_mapid(@sd), get_mobx(@target_id)+@rand_x, get_moby(@target_id)+@rand_y; 				
+			}
+
+
+			if(@type == 1)
+			{
+				callfunc "MANA_DELAY", 0, name2spellid("마비"), @target_sd;
+				spellaether @target_sd, name2spellid("마비"), 20;
+				set_numb @target_sd, 1;
+				effect @id, 172;
+				effect @target_id, 172;
+			}
+			else
+			{
+				mobspellaether @target_id, name2spellid("마비"), 20;
+				set_mobnumb @target_id, 1;
+				effect @id, 172;
+				effect @target_id, 172;	
+			}
+
+			sound @id, 8;
+
+			spelldelay @sd, name2spellid("진검승부"), 20;
+			message @sd, 3, "진검승부를 외웠습니다.";
+		}
+	}
+}
+//@진검승부	{
+	set @id, myid();
+	set @sd, mysd();
+	set @target_id, script_target(@sd);
+	
+	callfunc "MANA_DELAY", 300, 0, @sd;
+
+	if(istype(@target_id) != 1)
+	{
+		message @sd, 3, "걸리지 않습니다.";
+	}
+	else
+	{
+		set @pk, ismapoption(@sd, 6);
+		if(@pk)
+		{
+			set @target_sd, id2sd(@target_id);
+			callfunc "MANA_DELAY", 0, name2spellid("마비"), @target_sd;
+
+			spellaether @target_sd, name2spellid("마비"), 7;
+			spellaether @sd, name2spellid("마비"), 0;
+			set_siya @target_sd, 2, 0;
+			set_siya @sd, 2, 0;
+			spelldelay @sd, name2spellid("진검승부"), 120;
+			message @sd, 3, "진검승부을 외웠습니다.";
+			effect @id, 89;
+			effect @target_id, 89;
+			sound @id, 70;
+		}
+	}
+}
+//callfunc "Rush_Push_Attack", "마법이름", 범위, 대미지, 딜레이, 체력소모량, 마력소모량, 실패율, 액션, 이펙트, 사운드;
+//@진검승부이전	{
+	set @id, myid();
+	set @sd, mysd();
+
+	callfunc "Rush_Push_Attack", "진검승부", 3, get_hp(@sd)*2/1, 60, get_hp(@sd)/2, 300, 10, 1, 89, 70;
+	
+	set @id, myid();
+	set @sd, mysd();
+	set @target_id, script_target(@sd);
+	
+	//callfunc "MANA_DELAY", 300, 0, @sd;
+
+	if(istype(@target_id) != 1)
+	{
+		message @sd, 3, "걸리지 않습니다.";
+	}
+	else
+	{
+		set @pk, ismapoption(@sd, 6);
+		if(@pk)
+		{
+			set @target_sd, id2sd(@target_id);
+			callfunc "MANA_DELAY", 0, name2spellid("마비"), @target_sd;
+
+			spellaether @target_sd, name2spellid("마비"), 15;
+			spellaether @sd, name2spellid("마비"), 15;
+			set_siya @target_sd, 2, 0;
+			set_siya @sd, 2, 0;
+			//spelldelay @sd, name2spellid("진검승부"), 25;
+			message @sd, 3, "진검승부를 외웠습니다.";
+			effect @id, 89;
+			effect @target_id, 89;
+			sound @id, 70;
+		}
+	}
+}
+
+
+@독살	{
+	set @sd, mysd();
+	set @id, myid();
+	set @me_x, get_x(@id);
+	set @me_y, get_y(@id);
+	callfunc "MANA_DELAY", 200, 0, @sd;
+
+
+	switch(get_side(@id))
+	{
+	case 0:
+		setarray @range_x[0], @me_x  , @me_x  , @me_x  , @me_x , @me_x , @me_x , @me_x, @me_x , @me_x;
+		setarray @range_y[0], @me_y-1, @me_y-2, @me_y-3, @me_y-4, @me_y-5, @me_y-6, @me_y-7, @me_y-8, @me_y-9;
+		break;
+	case 1:
+		setarray @range_x[0], @me_x+1, @me_x+2, @me_x+3, @me_x+4, @me_x+5, @me_x+6, @me_x+7, @me_x+8, @me_x+9;
+		setarray @range_y[0], @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y, @me_y  , @me_y;
+		break;
+	case 2:
+		setarray @range_x[0], @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x, @me_x  , @me_x;
+		setarray @range_y[0], @me_y+1, @me_y+2, @me_y+3, @me_y+4, @me_y+5, @me_y+6, @me_y+7, @me_y+8, @me_y+9;
+		break;
+	case 3:
+		setarray @range_x[0], @me_x-1, @me_x-2, @me_x-3, @me_x-4, @me_x-5, @me_x-6, @me_x-7, @me_x-8, @me_x-9;
+		setarray @range_y[0], @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y, @me_y  , @me_y;
+		break;
+	}
+	for(set @r, 0; @r < 9; set @r, @r+1)
+	{
+		set @ti, obj_getxy(@range_x[@r], @range_y[@r]);
+		if(@ti > 0)
+		{
+			effect @ti, 33;
+			if(istype(@ti) == 1)
+			{
+				set @ts, id2sd(@ti);
+				if(ismapoption(@sd, 6) && !spellaethered(@ts, name2spellid("독살")) && get_state(@ts) != 1)
+				{
+					set @ck, 1;
+					set_ac @ts, get_ac(@ts)+50;
+					spellaether @ts, name2spellid("독살"), 60;
+					damage @id, @ti, @damage, 0;
+					message @ts, 3, get_name(@sd) + "님께서 독살을 가합니다.";
+				}
+			}					
+			else if(istype(@ti) == 2 && !mobspellaethered(@ti, name2spellid("독살")))
+			{
+				if(get_mobid(@ti) == 1012) || (get_mobid(@ti) == 1013) || (get_mobid(@ti) == 1162) || (get_mobid(@ti) == 1242) || (get_mobid(@ti) == 1243) || (get_mobid(@ti) == 1244) || (get_mobid(@ti) == 1245) || (get_mobid(@ti) == 1254) { message @sd, 3, "마법 보호!!"; end; }
+
+				set @ck, 1;
+				set_mobac @ti, get_mobac(@ti)+50;
+				damage @id, @ti, @damage, 0;
+				mobspellaether @ti, name2spellid("몬스터독살"), 30;
+			}
+		}
+	}
+	if(@ck)
+	{
+		sound @id, 113;
+		action @id, 1, 30, 0;
+
+		say @id, 2, "독살!";
+		message @sd, 3, "독살을 외웠습니다.";
+
+		set_hp @sd, get_hp(@sd)/2;
+		spelldelay @sd, name2spellid("독살"), 40;
+	}
+
+}
+
+
+
+
+
+@독살지속	{
+	set @id, myid();
+	set @sd, mysd();
+	set @check, get_hp(@sd) - get_maxhp(@sd)*30/100;
+
+	effect @id, 139;
+
+	if(@check >100)
+		set_hp @sd, @check;
+	else
+		set_hp @sd, get_hp(@sd);
+	showgage @id;
+}
+
+@몬스터독살지속	{
+	set @id, objid();
+	effect @id, 139;
+	set @check, get_mobhp(@id) - get_mobmaxhp(@id)*20/100;
+	
+	if(@check > 100) 
+		set_mobhp @id, @check;
+	else 
+		set_mobhp @id, get_mobhp(@id);
+	showgage @id;
+}
+
+@독살해제	{
+	set @id, objid();
+	if(istype(@id) == 1)
+	{
+		set @sd, mysd();
+		set_ac @sd, get_ac(@sd)-50;
+		message @sd, 3, "독살 해제.";
+	}
+	else
+	{
+		set_mobac @id, get_mobac(@id)-50;
+	}
+}
+
+@무영검랑	{
+	set @sd, mysd();
+	set @id, myid();
+	set @weapon$, get_equipitem_name(@sd, 0);
+	set @target_id, obj_getfront();
+	set @damage, get_hp(@sd) + get_mp(@sd);
+	if(get_mp(@sd) > 500000) { set @damage, get_hp(@sd) + 6500000; }
+	
+	callfunc "MANA_DELAY", 60, 0, @sd;
+	if(@target_id > 0) { message @sd, 3, "무영검랑을 외웠습니다."; }
+	callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 68, "무영검랑~!!", 68, 91, 1;
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산도")
+	{
+	if(@rand <= 10)
+	callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 68, "진'무영검랑~~!!", 68, 91, 1;
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산도'진")
+	{
+	if(@rand <= 20)
+	callfunc "MAGICATTACK", @id, @sd, @damage, get_hp(@sd)/2, 68, "진'무영검랑~~!!", 68, 91, 1;
+	}
+}
+
+@무력파천	{
+	set @mysd, mysd();
+	set @myid, myid();
+	set @damage, get_hp(@mysd)*6/3;
+	if($damageup) { set @damage, @damage*7; }
+	
+	callfunc "MANA_DELAY", 600, 0, @mysd;
+	
+	set @x1, get_x(@myid)-8;
+	set @x2, get_x(@myid)+8;
+	set @y1, get_y(@myid)-7;
+	set @y2, get_y(@myid)+7;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					damage @id, @target, @damage*5/3, 0;
+					effect @target, 119;
+					message @target_sd, 3, get_name(@sd) + "님께서 무력파천을 가했습니다.";
+				}
+				else if (istype(@target) == 2)
+				{
+					effect @target, 119;
+					damage @id, @target, @damage*6/3, 0;
+				}
+			}
+		}
+	}
+	action @id, 6, 30, 0;
+	sound @id, 99;
+	set_hp @sd, get_hp(@sd)/2;
+	set_mp @sd, get_mp(@sd)-600;
+	if(get_equipitem_name(@sd, 0) == "적랑기창'비") { set @delay, 225; }
+	else if(get_equipitem_name(@sd, 0) == "협가신검'공") { set @delay, 215; }
+	else { set @delay, 240; }
+	spellaether @sd, name2spellid("무력파천"), @delay;
+	spelldelay @sd, name2spellid("무력파천"), @delay;
+	message @sd, 3, "무력파천을 외웠습니다.";
+}
+
+
+//@무영의혼	{
+	set @mysd, mysd();
+	set @myid, myid();
+
+	callfunc "MAGICIANSPELL", myid(), mysd(), 8, 1500000, 119, "무영의혼", 80;
+	spelldelay @sd, name2spellid("무력파천"), 180;
+}
+
+@해골왕의강림	{
+	set @sd, mysd();
+
+	callfunc "SPELL_MOMENT", 4;
+	callfunc "MANA_DELAY", 30, name2spellid("해골왕의강림"), @sd;
+	//set_mp @sd, get_mp(@sd) - 30;
+
+	callfunc "allunspell_disguiselook";
+
+	set @name$, script_input(@sd);
+	if(@name$ == "해골왕") { set @image, 315; set @color, 1; }
+	else
+	{
+		message @sd, 3, "강림 가능한 형태";
+		message @sd, 3, "해골왕";
+		end;
+	}
+
+	sound @id, 25;
+	effect @id, 3;
+
+	set_disguiselook @sd, @image;
+	set_disguisecolor @sd, @color;
+	set_state @sd, 4;
+
+	set_maxhp @sd, get_maxhp(@sd) + 1000000;
+	set_maxmp @sd, get_maxmp(@sd) + 200000;
+
+	updatelookpc @sd, 1;
+
+	spellaether @sd, name2spellid("해골왕의강림"), 120;
+	message @sd, 3, "해골왕의강림을 외웠습니다.";
+}
+
+@해골왕의강림해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_state @sd, 0;
+
+	set_maxhp @sd, get_maxhp(@sd) - 1000000;
+	set_maxmp @sd, get_maxmp(@sd) - 200000;
+
+	updatelookpc @sd, 1;
+	spelldelay @sd, name2spellid("해골왕의강림"), 1800;
+	message @sd, 3, "해골왕의강림 해제.";
+}
+
+@구속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_mapname(@sd) == "선필대련장") { end; }
+
+	set @x, get_x(@id);
+	set @y, get_y(@id);
+
+	set $isolation_mapid, get_mapid(@sd);
+
+	switch(get_side(@id))
+	{
+	case 0:
+		setarray @x[0], @x-3, @x-3, @x-3, @x-3, @x-2, @x-1, @x+0, @x+1, @x+2, @x+3, @x+3, @x+3, @x+3;
+		setarray @y[0], @y-1, @y-2, @y-3, @y-4, @y-4, @y-4, @y-4, @y-4, @y-4, @y-4, @y-3, @y-2, @y-1;
+		break;
+	case 1:
+		setarray @x[0], @x+1, @x+2, @x+3, @x+4, @x+4, @x+4, @x+4, @x+4, @x+4, @x+4, @x+3, @x+2, @x+1;
+		setarray @y[0], @y-3, @y-3, @y-3, @y-3, @y-2, @y-1, @y+0, @y+1, @y+2, @y+3, @y+3, @y+3, @y+3;
+		break;
+	case 2:
+		setarray @x[0], @x-3, @x-3, @x-3, @x-3, @x-2, @x-1, @x+0, @x+1, @x+2, @x+3, @x+3, @x+3, @x+3;
+		setarray @y[0], @y+1, @y+2, @y+3, @y+4, @y+4, @y+4, @y+4, @y+4, @y+4, @y+4, @y+3, @y+2, @y+1;
+		break;
+	case 3:
+		setarray @x[0], @x-1, @x-2, @x-3, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-4, @x-3, @x-2, @x-1;
+		setarray @y[0], @y-3, @y-3, @y-3, @y-3, @y-2, @y-1, @y+0, @y+1, @y+2, @y+3, @y+3, @y+3, @y+3;
+		break;
+	}
+
+	for(set @loop, 0; @loop < 13; set @loop, @loop+1)
+	{
+		if(canmove(@id, @x[@loop], @y[@loop]) != 1 && !obj_getxy(@x[@loop], @y[@loop]) && @x[@loop] >= 0 && @x[@loop] < mapwidth(@sd) && @y[@loop] >= 0 && @y[@loop] < mapheight(@sd))
+		{
+			if($isolation_mapid != get_mapid(@sd)) { break; }
+
+			mobspawn get_mapid(@sd), @x[@loop], @y[@loop], 2, name2mobid("바위덩어리");
+
+			set @object, obj_getxy(@x[@loop], @y[@loop]);
+			if(@object > 0 && istype(@object) == 2 && get_mobname(@object) == "바위덩어리")
+			{
+				mobspellaether @object, name2spellid("바위덩어리삭제"), 8;
+			}
+		}
+	}
+
+	deletearray @x[0], getarraysize(@x);
+	deletearray @y[0], getarraysize(@y);
+
+	action @id, 1, 30, 0;
+
+	set $isolation_mapid, 0;
+
+	spelldelay @sd, name2spellid("토둔수리검"), 60;
+	message @sd, 3, "토둔수리검을 외웠습니다.";
+}
+
+@이동제한	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_mapname(@sd) == "선필대련장") { end; }
+
+	set @x, get_x(@id);
+	set @y, get_y(@id);
+
+	set $isolation_mapid, get_mapid(@sd);
+
+	switch(get_side(@id))
+	{
+	case 0:
+		setarray @x[0], @x+0, @x-1, @x+1, @x-2, @x+2, @x-2, @x+2, @x-2, @x+2, @x-1, @x+1, @x+0;
+		setarray @y[0], @y-2, @y-2, @y-2, @y-3, @y-3, @y-4, @y-4, @y-5, @y-5, @y-6, @y-6, @y-6;
+		break;
+	case 1:
+		setarray @x[0], @x+2, @x+2, @x+2, @x+3, @x+3, @x+4, @x+4, @x+5, @x+5, @x+6, @x+6, @x+6;
+		setarray @y[0], @y+0, @y+1, @y-1, @y+2, @y-2, @y+2, @y-2, @y+2, @y-2, @y+1, @y-1, @y+0;
+		break;
+	case 2:
+		setarray @x[0], @x+0, @x-1, @x+1, @x-2, @x+2, @x-2, @x+2, @x-2, @x+2, @x-1, @x+1, @x+0;
+		setarray @y[0], @y+2, @y+2, @y+2, @y+3, @y+3, @y+4, @y+4, @y+5, @y+5, @y+6, @y+6, @y+6;
+		break;
+	case 3:
+		setarray @x[0], @x-2, @x-2, @x-2, @x-3, @x-3, @x-4, @x-4, @x-5, @x-5, @x-6, @x-6, @x-6;
+		setarray @y[0], @y+0, @y+1, @y-1, @y+2, @y-2, @y+2, @y-2, @y+2, @y-2, @y+1, @y-1, @y+0;
+		break;
+	}
+
+	for(set @loop, 0; @loop < 12; set @loop, @loop+1)
+	{
+		if(canmove(@id, @x[@loop], @y[@loop]) != 1 && !obj_getxy(@x[@loop], @y[@loop]) && @x[@loop] >= 0 && @x[@loop] < mapwidth(@sd) && @y[@loop] >= 0 && @y[@loop] < mapheight(@sd))
+		{
+			if($isolation_mapid != get_mapid(@sd)) { break; }
+
+			mobspawn get_mapid(@sd), @x[@loop], @y[@loop], 2, name2mobid("바위덩어리");
+
+			set @object, obj_getxy(@x[@loop], @y[@loop]);
+			if(@object > 0 && istype(@object) == 2 && get_mobname(@object) == "바위덩어리")
+			{
+				mobspellaether @object, name2spellid("바위덩어리삭제"), 6;
+			}
+
+			//set @sleep, 0;
+			//if(@loop == 0) { set @sleep, 250; }
+			//else if(@loop == 2) { set @sleep, 250; }
+			//else if(@loop == 4) { set @sleep, 200; }
+			//else if(@loop == 6) { set @sleep, 200; }
+			//else if(@loop == 8) { set @sleep, 200; }
+			//else if(@loop == 10) { set @sleep, 250; }
+
+			//if(@sleep > 0) { sleep @sleep; }
+		}
+	}
+
+	deletearray @x[0], getarraysize(@x);
+	deletearray @y[0], getarraysize(@y);
+
+	action @id, 1, 30, 0;
+
+	set $isolation_mapid, 0;
+
+	spelldelay @sd, name2spellid("가두기"), 120;
+	message @sd, 3, "가두기를 외웠습니다.";
+}
+
+@바위덩어리삭제	{
+	set @id, objid();
+
+	if(mobspellaetherdelay(@id, name2spellid("바위덩어리삭제")) > 2) end;
+
+	set @x1, get_mobx(@id)-1;
+	set @x2, get_mobx(@id)+1;
+	set @y1, get_moby(@id)-1;
+	set @y2, get_moby(@id)+1;
+
+	if(@x1 < 0) { set @x1, 0; }
+	if(@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+	if(@y1 < 0) { set @y1, 0; }
+	if(@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j <= @y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0 && @target_id != @id)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+					if(ismapoption(@target_sd, 6) && get_state(@target_sd) != 1)
+					{
+						callfunc "ATTACKDAMAGE", @target_id,  get_maxhp(@target_sd)/100*15, 0;
+					}
+
+					sound @target_id, 8;
+					effect @target_id, 196;
+
+					message @target_sd, 3, "바위파편에 맞았습니다.";
+				}
+			}
+		}
+	}
+
+	deletemob @id, mapid();
+}
+
+@바위덩어리잔해제거	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @x1, get_x(@id)-8;
+	set @x2, get_x(@id)+8;
+	set @y1, get_y(@id)-7;
+	set @y2, get_y(@id)+7;
+	
+	if(@x1 < 0) { set @x1, 0; }
+	if(@x2 > get_mapwidth(@sd)-1) { set @x2, get_mapwidth(@sd)-1; }
+	if(@y1 < 0) { set @y1, 0; }
+	if(@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd)-1; }
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j <= @y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if(@target > 0 && @target != @id)
+			{
+				if(istype(@target) == 2)
+				{
+					if(get_mobname(@target) == "바위덩어리")
+					{
+						if(mobspellaethered(@target, name2spellid("바위덩어리삭제")) == 0)
+						{
+							mobspellaether @target, name2spellid("바위덩어리삭제"), 6;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@광란의발걸음	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "SPELL_MOMENT";
+	callfunc "MANA_DELAY", 0, name2spellid("광란의발걸음"), @sd;
+	callfunc "MANA_DELAY", 0, name2spellid("투명"), @sd;
+
+	set_state @sd, 2;
+	updatelookpc @sd, 1;
+
+	effect @id, 103;
+	sound @id, 23;
+
+	set $compulsion_move, 0;
+
+	set_ac @sd, get_ac(@sd)+10;
+
+	spellaether @sd, name2spellid("광란의발걸음"), 45;
+	spelldelay @sd, name2spellid("광란의발걸음"), 8;
+
+	message @sd, 3, "광란의발걸음을 외웠습니다.";
+}
+
+@광란의발걸음지속	{
+	set @sd, mysd();
+	set @id, myid();
+	set @mapname$, get_mapname(@sd);
+
+	if(spellaethered(@sd, name2spellid("광란의발걸음")) == 0 || get_state(@sd) != 2 || ismapoption(@sd, 4)) { spelluncast @sd, name2spellid("광란의발걸음"); end; }
+	if(spellaethered(@sd, name2spellid("스턴")) == 1 || spellaethered(@sd, name2spellid("이동불가")) == 1) end;
+	/*
+	if(#Siege_Mapname$ != "")
+	{
+		if(@mapname$ == #Siege_Mapname$ + "성입구" || @mapname$ == #Siege_Mapname$ + "의심장" || @mapname$ == #Siege_Mapname$ + "의성" || @mapname$ == #Siege_Mapname$ + "일존장" || @mapname$ == #Siege_Mapname$ + "지하수로")
+		{
+			set $compulsion_move, $compulsion_move+10;
+			if($compulsion_move < 11) end;
+			else { set $compulsion_move, 0; }
+		}
+	}
+	*/
+	switch(get_side(@id))
+	{
+	case 0:
+		if(canmove(@id, get_x(@id), get_y(@id)-1) == 1) { set @move, 0; }
+		else { set @move, 1; }
+
+		set @move_s, get_y(@id)-@move;
+		if(get_x(@id) != 50 || @move_s != 40)
+			set_y @id, get_y(@id)-@move;
+		break;
+	case 1:
+		if(canmove(@id, get_x(@id)+2, get_y(@id)) == 1) { set @move, 0; }
+		else { set @move, 1; }
+
+		set @move_s, get_x(@id)+@move;
+		if(@move_s != 50 || get_y(@id) != 40)
+			set_x @id, get_x(@id)+@move;
+		break;
+	case 2:
+		if(canmove(@id, get_x(@id), get_y(@id)+1) == 1) { set @move, 0; }
+		else { set @move, 1; }
+
+		set @move_s, get_y(@id)+@move;
+		if(get_x(@id) != 50 || @move_s != 40)
+			set_y @id, get_y(@id)+@move;
+		break;
+	case 3:
+		if(canmove(@id, get_x(@id)-2, get_y(@id)) == 1) { set @move, 0; }
+		else { set @move, 1; }
+
+		set @move_s, get_x(@id)-@move;
+		if(@move_s != 50 || get_y(@id) != 40)
+			set_x @id, get_x(@id)-@move;
+		break;
+	}
+
+	updatexy @sd;
+	updatelookpc @sd, 0;
+	updateallpc @sd;
+}
+
+@광란의발걸음해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_state @sd, 0;
+	updatelookpc @sd, 1;
+
+	set_ac @sd, get_ac(@sd)-10;
+
+	//spelldelay @sd, name2spellid("광란의발걸음"), 8;
+	message @sd, 3, "광란의발걸음 해제.";
+}
+
+@끌어오기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "SPELL_MOMENT", 1;
+	callfunc "MANA_DELAY", 300, 0, @sd;
+
+	set @chk, 0;
+	set @me_x, get_x(@id);
+	set @me_y, get_y(@id);
+	set @side, get_side(@id);
+	set @damage, get_hp(@sd)*3/2;
+	if(spellaethered(@sd, name2spellid("파력무참진")) == 1) { set @damage, @damage*2; }
+	if($runaway) { set @damage, @damage*2; }
+
+	action @id, 1, 30, 0;
+	sound @id, 42;
+
+	set_hp @sd, get_hp(@sd)/2;
+	//set_mp @sd, get_mp(@sd)-300;
+
+	spelldelay @sd, name2spellid("끌어오기"), 60;
+	message @sd, 3, "끌어오기를 외웠습니다.";
+
+	//위치 확인하고 배열함수 주기
+	switch(@side)
+	{
+
+	case 0:
+		setarray @range_x[0], @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  ;
+		setarray @range_y[0], @me_y-1, @me_y-2, @me_y-3, @me_y-4, @me_y-5, @me_y-6, @me_y-6, @me_y-8, @me_y-9, @me_y-10;
+		break;
+
+	case 1:
+		setarray @range_x[0], @me_x+1, @me_x+2, @me_x+3, @me_x+4, @me_x+5, @me_x+6, @me_x+7, @me_x+8, @me_x+9, @me_x+10;
+		setarray @range_y[0], @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  ;
+		break;
+
+	case 2:
+		setarray @range_x[0], @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  , @me_x  ;
+		setarray @range_y[0], @me_y+1, @me_y+2, @me_y+3, @me_y+4, @me_y+5, @me_y+6, @me_y+7, @me_y+8, @me_y+9, @me_y+10;
+		break;
+
+	case 3:
+		setarray @range_x[0], @me_x-1, @me_x-2, @me_x-3, @me_x-4, @me_x-5, @me_x-6, @me_x-7, @me_x-8, @me_x-9, @me_x-10;
+		setarray @range_y[0], @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  , @me_y  ;
+		break;
+
+	}
+
+	for(set @loop, 0; @loop < 10; set @loop, @loop+1)
+	{
+		//발동 좌표 체크
+		if(@range_x[@loop] >= 0 && @range_x[@loop] <= mapwidth(@sd) && @range_y[@loop] >= 0 && @range_y[@loop] <= mapheight(@sd))
+		{
+			//타겟 아이디 검색
+			set @target_id, obj_getxy(@range_x[@loop], @range_y[@loop]);
+
+			//타겟 아이디가 있고, 내가 아닐 경우
+			if(@target_id > 0 && @target_id != @id)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+					effect @target_id, 103;
+					damage @id, @target_id, @damage + (@damage*(@loop*3/10)), 0;
+					set_hp @sd, get_hp(@sd) + @damage/3;
+					if(get_hp(@sd) > get_maxhp(@sd)) { set_hp @sd, get_maxhp(@sd); }
+					message @sd, 3, @damage/3 + "의 체력을 흡수!!";
+					goto next;
+					end;
+				}
+				else if(istype(@target_id) == 2)
+				{
+					effect @target_id, 103;
+					callfunc "ATTACKDAMAGE", @target_id,  @damage + (@damage*(@loop*3/10)), 0;
+					set_hp @sd, get_hp(@sd) + @damage/3;
+					if(get_hp(@sd) > get_maxhp(@sd)) { set_hp @sd, get_maxhp(@sd); }
+					message @sd, 3, @damage/3 + "의 체력을 흡수!!";
+					goto next;
+					end;
+				}
+			}
+			else
+			{
+				if(@loop == 10)
+				{
+					deletearray @range_x[0], getarraysize(@range_x);
+					deletearray @range_y[0], getarraysize(@range_y);
+					end;
+				}
+			}
+		}
+		else
+		{
+			if(@loop == 10)
+			{
+				deletearray @range_x[0], getarraysize(@range_x);
+				deletearray @range_y[0], getarraysize(@range_y);
+				end;
+			}
+		}
+	}
+	end;
+
+next:
+	deletearray @range_x[0], getarraysize(@range_x);
+	deletearray @range_y[0], getarraysize(@range_y);
+
+	//데미지도 줬으니, 데미지를 줘도 사람/몹이 살아있으면 끌어오장!
+
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			if(get_gmlevel(id2sd(@target_id)) >= 1) { end; }
+		}
+
+		//끌어오기 전에 자신의 case에 따라 확인!!
+		if((@me_x >= mapwidth() || @me_x < 0) || (@me_y >= mapheight() || @me_y < 0 )) { message @sd, 3, "상대방을 끌어오진 못했습니다."; end; }
+		if(@side == 0 && canmove(@id, @me_x, @me_y-1)) { message @sd, 3, "상대방을 끌어오진 못했습니다."; end; }
+		else if(@side == 1 && canmove(@id, @me_x+1, @me_y)) { message @sd, 3, "상대방을 끌어오진 못했습니다."; end; }
+		else if(@side == 2 && canmove(@id, @me_x, @me_y+1)) { message @sd, 3, "상대방을 끌어오진 못했습니다."; end; }
+		else if(@side == 3 && canmove(@id, @me_x-1, @me_y)) { message @sd, 3, "상대방을 끌어오진 못했습니다."; end; }
+
+		//저걸 체크했으면 이제 끌어오자!! 오류가 절대로 일어날리가 없다.
+		switch(@side)
+		{
+		case 0:
+			set_y @target_id, get_y(@id)-1;
+			set_side @target_id, 2; set @side, 2;
+			break;
+		case 1:
+			set_x @target_id, get_x(@id)+1;
+			set_side @target_id, 3; set @side, 3;
+			break;
+		case 2:
+			set_y @target_id, get_y(@id)+1;
+			set_side @target_id, 0; set @side, 0;
+			break;
+		case 3:
+			set_x @target_id, get_x(@id)-1;
+			set_side @target_id, 1; set @side, 1;
+			break;
+		}
+		updatexy @sd;
+		updatelookpc @sd, 0;
+		updateallpc @sd;
+	}
+}
+
+
+
+
+@시한폭탄	{
+	set @sd, mysd();
+	set @id, myid();
+	callfunc "SPELL_MOMENT", 1;
+	if($poktan_c == 0)
+	{
+		callfunc "MANA_DELAY", 5000, 0, @sd;
+		set_mp @sd, get_mp(@sd) - 5000;
+
+		if(ismapoption(@sd, 6) == 1)
+		{
+			set $pok_dam, (get_hp(@sd)*5/2)+(get_mp(@sd)/2);
+		}
+		else
+		{
+			set $pok_dam, (get_hp(@sd)*9/2)+(get_mp(@sd)/2);
+		}
+
+		set_hp @sd, get_hp(@sd)/2;
+
+		set @me_x, get_x(@id);
+		set @me_y, get_y(@id);
+
+		set $poktan_m, get_mapid(@sd);
+		set $poktan_x, @me_x;
+		set $poktan_y, @me_y;
+		set $poktan_c, 1;
+
+		action @id, 6, 30, 0;
+
+		message @sd, 3, "폭탄을 설치했습니다. 다시 누르면 터집니다.";
+		end;
+	}
+	else
+	{
+		if(get_mapid(@sd) != $poktan_m)
+		{
+			set $poktan_m, 0;
+			set $poktan_x, 0;
+			set $poktan_y, 0;
+			set $poktan_c, 0;
+
+			if(ismapoption(@sd, 6) == 1)
+			{
+				set @delay_time, 7;
+			}
+			else
+			{
+				set @delay_time, 50;
+			}
+			
+			spelldelay @sd, name2spellid("시한폭탄"), @delay_time;
+			message @sd, 3, "폭탄을 터뜨릴 수 없어서 제거합니다.";
+			end;
+		}
+		else
+		{
+			if(ismapoption(@sd, 6) == 1)
+			{
+				set @delay_time, 12;
+			}
+			else
+			{
+				set @delay_time, 50;
+			}
+
+			spelldelay @sd, name2spellid("시한폭탄"), @delay_time;
+			message @sd, 3, "폭탄을 떠뜨렸습니다.";
+
+			set @bomb_x, $poktan_x;
+			set @bomb_y, $poktan_y;
+			set @damage, $pok_dam;
+		
+			setarray @range_x[0], @bomb_x-1, @bomb_x  , @bomb_x+1, @bomb_x-1, @bomb_x, @bomb_x+1, @bomb_x-1, @bomb_x  , @bomb_x+1;
+			setarray @range_y[0], @bomb_y-1, @bomb_y-1, @bomb_y-1, @bomb_y  , @bomb_y, @bomb_y  , @bomb_y+1, @bomb_y+1, @bomb_y+1;
+			for(set @loop, 0; @loop < 9; set @loop, @loop+1)
+			{
+				if(@range_x[@loop] >= 0 && @range_x[@loop] < mapwidth() && @range_y[@loop] >= 0 && @range_y[@loop] < mapheight())
+				{
+					set @target_id, obj_getxy(@range_x[@loop], @range_y[@loop]);
+					if(@target_id > 0 && @target_id != @id)
+					{
+						if(istype(@target_id) == 1)
+						{
+							if(ismapoption(@sd, 6) == 1)
+							{
+								set @target_sd, id2sd(@target_id);
+								effect @target_id, 19;
+								damage @id, @target_id, @damage, 0;
+								message @target_sd, 3, get_name(@sd) + "의 폭탄에 맞았습니다.";
+							}
+						}
+						else if(istype(@target_id) == 2)
+						{
+							effect @target_id, 19;
+							damage @id, @target_id, @damage, 0;
+						}
+					}
+				}
+			}
+			sound @id, 700;
+			set $poktan_m, 0;
+			set $poktan_x, 0;
+			set $poktan_y, 0;
+			set $poktan_c, 0;
+			set $pok_dam, 0;
+
+			action @id, 6, 30, 0;
+
+			deletearray @range_x[0], getarraysize(@range_x);
+			deletearray @range_y[0], getarraysize(@range_y);
+		}
+	}
+}
+
+
+@당황해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_siya @sd, 0, 0;
+	message @sd, 3, "당황 해제.";
+}

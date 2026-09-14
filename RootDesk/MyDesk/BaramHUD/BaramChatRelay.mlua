@@ -1,0 +1,89 @@
+@Logic
+script BaramChatRelay extends Logic
+    -- Session-wide transport. UI references and editing state remain client-only.
+    property boolean IsEditing = false
+    property number InputBlockSeconds = 0
+
+    @ExecSpace("ServerOnly")
+    method void OnBeginPlay()
+        -- Rate limits belong to the current world session only.
+        self._T.lastSent = {}
+        self._T.clock = 0
+        log("[BaramChatRelay] same-map server relay ready")
+    end
+
+    method void OnUpdate(number delta)
+        -- Advance a session clock and the client input-release guard.
+        if self:IsServer() then
+            self._T.clock = (self._T.clock or 0) + delta
+        else
+            self.InputBlockSeconds = math.max(0, self.InputBlockSeconds - delta)
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method boolean IsInputBlocked()
+        -- Shared guard for gameplay movement and HUD keyboard shortcuts.
+        return not _BaramEntryFlow.InWorld or self.IsEditing or self.InputBlockSeconds > 0 or _BaramInput:Blocked()
+    end
+
+    @ExecSpace("Server")
+    method void RequestMessage(string message)
+        -- Resolve identity on the server and deliver to the same map instance only.
+        local player = _UserService:GetUserEntityByUserId(senderUserId)
+        if not isvalid(player) or not isvalid(player.CurrentMap) then return end
+        if message == nil or #message > 480 then return end
+        local length = utf8.len(message)
+        if length == nil or length > 120 then return end
+        local text = string.gsub(message, "%c", " ")
+        text = string.match(text, "^%s*(.-)%s*$") or ""
+        if text == "" then return end
+        local now = self._T.clock or 0
+        local last = self._T.lastSent[senderUserId]
+        if last ~= nil and now - last < 0.5 then
+            self:ReceiveNotice("잠시 후 다시 말씀해 주세요.", senderUserId)
+            return
+        end
+        self._T.lastSent[senderUserId] = now
+        local map = player.CurrentMap
+        local users = _UserService:GetUsersByMapComponent(map.MapComponent)
+        if users == nil then return end
+        local count = 0
+        for _, recipient in ipairs(users) do
+            if isvalid(recipient) and recipient.CurrentMap == map then
+                self:ReceiveMessage(map.Id, player.PlayerComponent.Nickname, text, recipient.PlayerComponent.UserId)
+                count = count + 1
+            end
+        end
+        log("[BaramChatRelay] delivered recipients=" .. tostring(count) .. " bytes=" .. tostring(#text))
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveMessage(string mapId, string nickname, string message)
+        -- Ignore delayed messages after a map change; display plain text only.
+        local player = _UserService.LocalPlayer
+        if not isvalid(player) or not isvalid(player.CurrentMap) or player.CurrentMap.Id ~= mapId then return end
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+        if not isvalid(root) then return end
+        ---@type BaramChatHistory
+        local history = root:GetComponent("script.BaramChatHistory")
+        if isvalid(history) then history:AppendMessage(nickname, message) end
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveNotice(string message)
+        -- Keep transport feedback inside the Baram chat history.
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+        if not isvalid(root) then return end
+        ---@type BaramChatHistory
+        local history = root:GetComponent("script.BaramChatHistory")
+        if isvalid(history) then history:AppendMessage("안내", message) end
+    end
+
+    @ExecSpace("ServerOnly")
+    @EventSender("Service", "UserService")
+    handler HandleUserLeave(UserLeaveEvent event)
+        -- Release rate-limit state for disconnected users.
+        if self._T.lastSent ~= nil then self._T.lastSent[event.UserId] = nil end
+    end
+end

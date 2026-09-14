@@ -1,0 +1,144 @@
+@Component
+script BaramPlayerVisual extends Component
+    @Sync
+    property integer Gender = 0
+    @Sync
+    property integer Hair = 0
+    @Sync
+    property integer Facing = 6
+    @Sync
+    property integer Step = 0
+
+    @ExecSpace("ClientOnly")
+    method void PredictMove(integer direction)
+        local s = _BaramWorld.LocalState
+        if s == nil or s.x == nil or s.hp <= 0 or self._T.map ~= self.Entity.CurrentMap then return end
+        local dx, dy = {0, 1, 0, -1}, {-1, 0, 1, 0}
+        local x, y = s.x + dx[direction + 1], s.y + dy[direction + 1]
+        if not _BaramWorldData:Walkable(s.map, x, y) then return end
+        for _, npc in ipairs(_BaramWorld.Npcs) do
+            if npc.map == s.map and npc.x == x and npc.y == y then return end
+        end
+        -- Portals wait for the authoritative destination; never slide between maps.
+        for _, portal in ipairs(_BaramWorldData.Portals) do
+            if portal.from == s.map and portal.x == x and portal.y == y then return end
+        end
+        local map = self.Entity.CurrentMap
+        for _, creature in ipairs(map:GetChildComponentsByTypeName("script.BaramCreature", false)) do
+            if creature.Hp > 0 and creature.GridX == x and creature.GridY == y then return end
+        end
+        local target = _BaramWorldData:Position(x, y)
+        local users = _UserService:GetUsersByMapComponent(map.MapComponent)
+        if users ~= nil then
+            for _, user in ipairs(users) do
+                if user ~= self.Entity then
+                    local p = user.TransformComponent.WorldPosition
+                    if math.abs(p.x - target.x) < 0.01 and math.abs(p.y - target.y) < 0.01 then return end
+                end
+            end
+        end
+        self._T.predictionOrigin = self.Entity.TransformComponent.WorldPosition
+        self._T.predicted = target
+        self._T.predictionAge = 0
+    end
+
+    @ExecSpace("ClientOnly")
+    method void CancelPrediction()
+        if self._T.predicted ~= nil then
+            self._T.predicted = nil
+            self._T.path = {}
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        local map = self.Entity.CurrentMap
+        if not isvalid(map) then return end
+        self.Entity.Visible = true
+        self.Entity.AvatarRendererComponent.Enable = false
+        if self.Entity == _UserService.LocalPlayer then self.Entity.PlayerControllerComponent.Enable = false end
+        if self._T.map ~= map then
+            if isvalid(self._T.visual) then self._T.visual:Destroy() end
+            self._T.map = map
+            self._T.visual = _SpawnService:SpawnByModelId("baramworldvisual", "BaramVisual_" .. self.Entity.Id, self.Entity.TransformComponent.WorldPosition, map)
+            self._T.signature = ""
+            self._T.target = self.Entity.TransformComponent.WorldPosition
+            self._T.path = {}
+            self._T.walkTime = 0
+            self._T.predicted = nil
+            log("[BaramPlayer] visual created on " .. map.Name)
+        end
+        local visual = self._T.visual
+        if not isvalid(visual) then return end
+        local target = self.Entity.TransformComponent.WorldPosition
+        local predicted = self._T.predicted
+        if predicted ~= nil then
+            self._T.predictionAge = self._T.predictionAge + delta
+            local origin = self._T.predictionOrigin
+            if target.x == predicted.x and target.y == predicted.y then
+                self._T.predicted = nil
+            elseif target.x == origin.x and target.y == origin.y and self._T.predictionAge < 0.75 then
+                target = predicted
+            else
+                self:CancelPrediction()
+            end
+        end
+        local previous = self._T.target
+        if target.x ~= previous.x or target.y ~= previous.y then
+            local dx, dy = target.x - previous.x, target.y - previous.y
+            if dx * dx + dy * dy > 0.5184 or #self._T.path >= 4 then
+                visual.TransformComponent.WorldPosition = target
+                self._T.path = {}
+            else
+                table.insert(self._T.path, target)
+            end
+            self._T.target = target
+        end
+        -- Only the bodyless display moves between authoritative grid positions.
+        -- Keep waypoints so turns follow the grid instead of cutting corners.
+        local moving = #self._T.path > 0
+        local frameSeconds = _BaramWorldData.WalkFrameSeconds
+        local budget = math.max(0, delta) * (0.24 / (frameSeconds * 4))
+        local position = visual.TransformComponent.WorldPosition
+        while #self._T.path > 0 and budget > 0 do
+            local destination = self._T.path[1]
+            local dx, dy = destination.x - position.x, destination.y - position.y
+            local distance = math.sqrt(dx * dx + dy * dy)
+            if distance <= budget then
+                position = destination
+                budget = budget - distance
+                table.remove(self._T.path, 1)
+            else
+                position = Vector3(position.x + dx * budget / distance, position.y + dy * budget / distance, destination.z)
+                budget = 0
+            end
+        end
+        visual.TransformComponent.WorldPosition = position
+        if moving then self._T.walkTime = self._T.walkTime + delta else self._T.walkTime = 0 end
+        local phase = math.floor(self._T.walkTime / frameSeconds) % 4
+        local step = moving and _BaramWorldData.WalkFrames[phase + 1] or 0
+        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(self.Facing) .. ":" .. tostring(step)
+        if signature ~= self._T.signature then
+            local frame = self.Facing + step
+            visual:GetChildByName("Body").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetBody(self.Gender, frame)
+            visual:GetChildByName("Head").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetHead(self.Hair, frame)
+            self._T.signature = signature
+        end
+        if self.Entity == _UserService.LocalPlayer and _BaramEntryFlow.InWorld and _BaramInput.MapScroll then
+            local camera = map:GetChildByName("TestCamera")
+            if isvalid(camera) then
+                local p = position
+                camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
+                camera.CameraComponent.Damping = Vector2(0, 0)
+                camera.CameraComponent.DeadZone = Vector2(0, 0)
+                camera.CameraComponent.SoftZone = Vector2(0, 0)
+                if _CameraService:GetCurrentCameraComponent() ~= camera.CameraComponent then _CameraService:SwitchCameraTo(camera.CameraComponent) end
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        if isvalid(self._T.visual) then self._T.visual:Destroy() end
+    end
+end

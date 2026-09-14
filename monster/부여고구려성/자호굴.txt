@@ -1,0 +1,17 @@
+@자호	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("자호의가죽"), 1;
+}
+
+@친자호	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("자호의가죽"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("은전"), 200;
+}
+
+@구자호	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("은전"), 100;
+}
+
+@적호	{
+	callfunc "DROPITEM2", objid(), 100, 40, name2itemid("자호의가죽"), 1;
+	callfunc "DROPITEM", objid(), 100, 25, name2itemid("철검"), 200;
+}

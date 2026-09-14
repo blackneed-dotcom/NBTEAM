@@ -1,0 +1,46 @@
+@마법신천뢰경	{
+	set @sd, mysd();
+	set @id, myid();
+	set @damage, get_mp(@sd)*1000;
+	if($damageup) { set @damage, @damage*1000; }
+	
+	callfunc "MANA_DELAY", 600, 0, @sd;
+	
+	set @x1, get_x(@id)-8;
+	set @x2, get_x(@id)+8;
+	set @y1, get_y(@id)-7;
+	set @y2, get_y(@id)+7;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					damage @id, @target, @damage,0;
+					effect @target, 191;
+					if(ismapoption(@sd, 6)) message @target_sd, 3, get_name(@sd) + "님께서 신천뢰경을 가합니다.";
+				}
+				else if (istype(@target) == 2)
+				{
+					effect @target, 191;
+					damage @id, @target, @damage,0;
+				}
+			}
+		}
+	}
+	action @id, 6, 30, 0;
+	sound @id, 510;
+	spellaether @sd, name2spellid("신천뢰경"), 240;
+	spelldelay @sd, name2spellid("신천뢰경"), 240;
+	message @sd, 3, "신천뢰경을 외웠습니다.";
+}

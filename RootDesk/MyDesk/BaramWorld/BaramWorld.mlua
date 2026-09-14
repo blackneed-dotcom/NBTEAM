@@ -1,0 +1,604 @@
+@Logic
+script BaramWorld extends Logic
+    property string StorageKey = "BaramWorldV1"
+    property table LocalState = {}
+    property number Clock = 0
+    property table Npcs = {{id = 8, map = 15, x = 6, y = 8, name = "연실네"}, {id = 11, map = 7, x = 5, y = 4, name = "옥이"}}
+
+    @ExecSpace("ServerOnly")
+    method void OnBeginPlay()
+        self._T.users = {}
+        self._T.loading = {}
+        self._T.drops = {}
+        self._T.nextDrop = 0
+        self._T.flush = 60
+        self.Clock = 0
+        log("[BaramWorld] server ready: original grids, inventory and persistence")
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Enter(string userId, string appearance)
+        if self._T.loading[userId] then return false end
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) or not _BaramEntryFlow:IsValidRecord(appearance) then return false end
+        local record = self._T.users[userId]
+        if record == nil then
+            self._T.loading[userId] = true
+            local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
+            local code, raw = storage:GetAndWait(self.StorageKey)
+            self._T.loading[userId] = nil
+            if code ~= 0 and code ~= 1000002 then self:Notice(userId, "진행 정보를 불러오지 못했습니다.") return false end
+            local state = nil
+            if raw ~= nil and raw ~= "" then
+                local ok, parsed = pcall(function() return _HttpService:JSONDecode(raw) end)
+                if not ok or not self:ValidState(parsed) then self:Notice(userId, "저장 형식을 확인할 수 없습니다. 기존 데이터는 보존했습니다.") return false end
+                state = parsed
+            else
+                state = {version = 1, map = 14, x = 34, y = 122, hp = 100, mp = 80, maxHp = 100, maxMp = 80, level = 1, exp = 0, gold = 0, items = {kind = "inventory"}, equip = 0, guide = 0}
+            end
+            record = {state = state, storage = storage, dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
+            self._T.users[userId] = record
+        end
+        local selected = _BaramEntryFlow:DecodeRecord(appearance)
+        record.active = true
+        if record.allowExchange == nil then record.allowExchange = true end
+        self:ExchangeSetting(record.allowExchange, userId)
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if not isvalid(visual) then visual = player:AddComponent("BaramPlayerVisual") end
+        if not isvalid(visual) then return false end
+        visual.Gender = selected.gender
+        visual.Hair = selected.hair
+        player.PlayerControllerComponent.Enable = false
+        player.PlayerComponent.PVPMode = false
+        self:Place(userId, record.state.map, record.state.x, record.state.y)
+        self:Snapshot(userId)
+        log("[BaramWorld] entered map=" .. tostring(record.state.map))
+        return true
+    end
+
+    method boolean ValidState(table s)
+        if s == nil or s.version ~= 1 or type(s.items) ~= "table" then return false end
+        for _, name in ipairs({"map", "x", "y", "hp", "mp", "maxHp", "maxMp", "level", "exp", "gold", "equip", "guide"}) do
+            if type(s[name]) ~= "number" or s[name] ~= math.floor(s[name]) or s[name] < 0 then return false end
+        end
+        if _BaramWorldData:Map(s.map) == nil or not _BaramWorldData:Walkable(s.map, s.x, s.y) or s.level < 1 or s.level > 99 then return false end
+        if s.hp > s.maxHp or s.mp > s.maxMp or s.gold > 2000000000 then return false end
+        for key, item in pairs(s.items) do
+            if key ~= "kind" then
+            local slot = tonumber(key)
+            if slot == nil or slot < 1 or slot > _BaramWorldData.InventoryCapacity or slot ~= math.floor(slot) or type(item) ~= "table" then return false end
+            local data = _BaramWorldData:Item(item.id or -1)
+            if data == nil or type(item.count) ~= "number" or item.count < 1 or item.count > math.max(1, data.maxCount) then return false end
+            end
+        end
+        return s.equip == 0 or s.items[tostring(s.equip)] ~= nil
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Place(string userId, integer mapId, integer x, integer y)
+        local r = self._T.users[userId]
+        local mapData = _BaramWorldData:Map(mapId)
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or mapData == nil or not isvalid(player) then return end
+        local map = _EntityService:GetEntityByPath("/maps/" .. mapData.name)
+        if not isvalid(map) then log_error("[BaramWorld] missing map " .. mapData.name) return end
+        local p = _BaramWorldData:Position(x, y)
+        r.state.map = mapId
+        r.state.x = x
+        r.state.y = y
+        r.nextMove = self.Clock + 0.25
+        r.dialog = nil
+        if player.CurrentMap ~= map then _TeleportService:TeleportToMapPosition(player, p, mapData.name)
+        else player.PlayerComponent:SetPosition(p) end
+        self:Changed(userId)
+        log("[BaramWorld] map=" .. tostring(mapId) .. " cell=" .. tostring(x) .. "," .. tostring(y))
+    end
+
+    @ExecSpace("Server")
+    method void Move(integer direction, boolean turnOnly)
+        local userId = senderUserId
+        local result = self:MoveChecked(userId, direction, turnOnly)
+        self:MoveReply(result, userId)
+    end
+
+    @ExecSpace("Client")
+    method void MoveReply(integer result)
+        _BaramInput:MoveResult(result)
+    end
+
+    @ExecSpace("ServerOnly")
+    method integer MoveChecked(string userId, integer direction, boolean turnOnly)
+        local r = self._T.users[userId]
+        if r == nil or not r.active or direction < 0 or direction > 3 or self.Clock < r.nextMove or r.state.hp <= 0 then return 0 end
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return 0 end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        -- Original 0x4D89C0: an idle direction change turns before walking.
+        local changedDirection = visual.Facing ~= direction * 3
+        visual.Facing = direction * 3
+        if turnOnly or changedDirection then visual.Step = 0 return 2 end
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        local s = r.state
+        local x = s.x + dx[direction + 1]
+        local y = s.y + dy[direction + 1]
+        if not _BaramWorldData:Walkable(s.map, x, y) then return 0 end
+        for _, npc in ipairs(self.Npcs) do if npc.map == s.map and npc.x == x and npc.y == y then return 0 end end
+        if s.map == 315 then
+            ---@type BaramHunting
+            local hunting = player.CurrentMap:GetComponent("script.BaramHunting")
+            if isvalid(hunting) and hunting:Occupied(x, y) then return 0 end
+        end
+        for _, other in pairs(self._T.users) do
+            if other ~= r and other.active and other.state.map == s.map and other.state.x == x and other.state.y == y then return 0 end
+        end
+        s.x = x
+        s.y = y
+        r.nextMove = self.Clock + _BaramWorldData.WalkFrameSeconds * 4
+        r.dialog = nil
+        visual.Step = visual.Step % 2 + 1
+        player.PlayerComponent:SetPosition(_BaramWorldData:Position(x, y))
+        for _, p in ipairs(_BaramWorldData.Portals) do
+            if p.from == s.map and p.x == x and p.y == y and s.level >= p.minLevel and s.level <= p.maxLevel then
+                self:Place(userId, p.to, p.toX, p.toY)
+                self:Snapshot(userId)
+                return 1
+            end
+        end
+        self:Changed(userId)
+        self:Snapshot(userId)
+        return 1
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Changed(string userId)
+        local r = self._T.users[userId]
+        if r == nil then return end
+        r.dirty = true
+        r.revision = r.revision + 1
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Snapshot(string userId)
+        local r = self._T.users[userId]
+        if r ~= nil then self:ReceiveState(_HttpService:JSONEncode(r.state), userId) end
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveState(string raw)
+        self.LocalState = _HttpService:JSONDecode(raw)
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD")
+        if not isvalid(root) then return end
+        ---@type BaramHUDController
+        local hud = root:GetComponent("script.BaramHUDController")
+        local s = self.LocalState
+        hud:SetVitals(s.hp, s.maxHp, s.mp, s.maxMp, s.level)
+        hud.Gold = s.gold
+        hud.Experience = s.exp
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Notice(string userId, string message)
+        _BaramChatRelay:ReceiveNotice(message, userId)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean AddItem(table s, integer id, integer count, integer durability)
+        local data = _BaramWorldData:Item(id)
+        if data == nil or count < 1 then return false end
+        local limit = math.max(1, data.maxCount)
+        local capacity = 0
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            local item = s.items[tostring(i)]
+            if item == nil then capacity = capacity + limit elseif item.id == id then capacity = capacity + limit - item.count end
+        end
+        if capacity < count then return false end
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            local item = s.items[tostring(i)]
+            if item ~= nil and item.id == id then
+                local amount = math.min(count, limit - item.count)
+                item.count = item.count + amount
+                count = count - amount
+            end
+        end
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            if count <= 0 then break end
+            local key = tostring(i)
+            if s.items[key] == nil then
+                local amount = math.min(count, limit)
+                s.items[key] = {id = id, count = amount, durability = durability >= 0 and durability or data.durability}
+                count = count - amount
+            end
+        end
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method void RemoveItem(table s, integer slot, integer count)
+        local key = tostring(slot)
+        local item = s.items[key]
+        item.count = item.count - count
+        if item.count <= 0 then s.items[key] = nil if s.equip == slot then s.equip = 0 end end
+    end
+
+    @ExecSpace("Server")
+    method void SetExchangeAllowed(boolean allowed)
+        -- Keep item-receiving permission authoritative on the server.
+        local r = self._T.users[senderUserId]
+        if r == nil or not r.active then return end
+        r.allowExchange = allowed
+        self:ExchangeSetting(allowed, senderUserId)
+        self:Notice(senderUserId, allowed and "교환 허가" or "교환 거부")
+        log("[BaramExchange] allowed=" .. tostring(allowed))
+    end
+
+    @ExecSpace("Client")
+    method void ExchangeSetting(boolean allowed)
+        -- Reflect the server-confirmed setting in the keyboard controller.
+        _BaramInput.AllowExchange = allowed
+    end
+
+    @ExecSpace("ServerOnly")
+    method string FrontUser(string userId)
+        -- Resolve an active player on the single cell directly ahead.
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or r.state.hp <= 0 or not isvalid(player) then return "" end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if not isvalid(visual) then return "" end
+        local index = math.floor(visual.Facing / 3) + 1
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        if dx[index] == nil then return "" end
+        for otherId, other in pairs(self._T.users) do
+            if otherId ~= userId and other.active and other.state.hp > 0 and other.state.map == r.state.map and other.state.x == r.state.x + dx[index] and other.state.y == r.state.y + dy[index] then
+                local target = _UserService:GetUserEntityByUserId(otherId)
+                if isvalid(target) and target.CurrentMap == player.CurrentMap then return otherId end
+            end
+        end
+        return ""
+    end
+
+    @ExecSpace("Server")
+    method void ItemAction(string action, integer slot, integer other)
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or slot < 1 or slot > _BaramWorldData.InventoryCapacity then return end
+        r.nextAction = self.Clock + 0.15
+        local s = r.state
+        local item = s.items[tostring(slot)]
+        if item == nil then self:Notice(userId, "그 칸은 비어 있습니다.") return end
+        local data = _BaramWorldData:Item(item.id)
+        if action == "give" or action == "giveall" then
+            local targetId = self:FrontUser(userId)
+            local target = self._T.users[targetId]
+            if target == nil or target.allowExchange == false or r.allowExchange == false then self:Notice(userId, "앞에 물건을 받을 사람이 없습니다.") return end
+            if s.equip == slot then self:Notice(userId, "장비를 먼저 벗어 주세요.") return end
+            local count = action == "giveall" and item.count or 1
+            if not self:AddItem(target.state, item.id, count, item.durability) then self:Notice(userId, "상대방의 소지품이 가득 찼습니다.") return end
+            self:RemoveItem(s, slot, count)
+            self:Changed(targetId)
+            self:Snapshot(targetId)
+            self:Notice(targetId, data.name .. " " .. tostring(count) .. "개를 받았습니다.")
+            self:Notice(userId, data.name .. " 전달")
+        elseif action == "swap" then
+            if other < 1 or other > _BaramWorldData.InventoryCapacity then return end
+            s.items[tostring(slot)] = s.items[tostring(other)]
+            s.items[tostring(other)] = item
+            if s.equip == slot then s.equip = other elseif s.equip == other then s.equip = slot end
+        elseif action == "equip" or action == "armor" then
+            if data.type ~= 0 then self:Notice(userId, "이 물건은 장착할 수 없습니다.") return end
+            if item.durability <= 0 then self:Notice(userId, "내구도가 없습니다.") return end
+            s.equip = slot
+            self:Notice(userId, data.name .. " 장착")
+        elseif action == "unequip" then
+            if s.equip == slot then s.equip = 0 self:Notice(userId, "장비를 벗었습니다.") end
+        elseif action == "use" or action == "eat" then
+            if s.hp <= 0 then return end
+            if item.id == 3014 then s.hp = math.min(s.maxHp, s.hp + 8)
+            elseif item.id == 3018 then s.hp = math.min(s.maxHp, s.hp + 48)
+            elseif item.id == 2200 then s.hp = math.max(1, s.hp - 1) s.mp = math.min(s.maxMp, s.mp + 30)
+            else self:Notice(userId, "사용할 수 없는 물건입니다.") return end
+            if data.type == 6 and item.durability > 1 then item.durability = item.durability - 1 else self:RemoveItem(s, slot, 1) end
+            self:Notice(userId, data.name .. " 사용")
+        elseif action == "drop" or action == "dropall" or action == "throw" then
+            if data.dropAllowed ~= 1 or s.equip == slot then self:Notice(userId, "장비를 벗은 뒤 버려 주세요.") return end
+            local count = action == "dropall" and item.count or 1
+            local x = s.x
+            local y = s.y
+            if action == "throw" then
+                local player = _UserService:GetUserEntityByUserId(userId)
+                ---@type BaramPlayerVisual
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                local dx = {0, 1, 0, -1}
+                local dy = {-1, 0, 1, 0}
+                local index = math.floor(visual.Facing / 3) + 1
+                for i = 1, 3 do
+                    if not _BaramWorldData:Walkable(s.map, x + dx[index], y + dy[index]) then break end
+                    x = x + dx[index] y = y + dy[index]
+                end
+            end
+            self._T.nextDrop = self._T.nextDrop + 1
+            self._T.drops[self._T.nextDrop] = {map = s.map, x = x, y = y, id = item.id, count = count, durability = item.durability, expires = self.Clock + 300}
+            self:ShowDrop(self._T.drops[self._T.nextDrop])
+            self:RemoveItem(s, slot, count)
+            self:Notice(userId, data.name .. " " .. tostring(count) .. "개를 내려놓았습니다.")
+        else return end
+        self:Changed(userId)
+        self:Snapshot(userId)
+        log("[BaramInventory] " .. action .. " slot=" .. tostring(slot))
+    end
+
+    @ExecSpace("Server")
+    method void Pickup(boolean all)
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction then return end
+        r.nextAction = self.Clock + 0.15
+        local s = r.state
+        local count = 0
+        for key, drop in pairs(self._T.drops) do
+            if drop.map == s.map and drop.x == s.x and drop.y == s.y and drop.expires > self.Clock then
+                if not self:AddItem(s, drop.id, drop.count, drop.durability) then self:Notice(userId, "소지품이 가득 찼습니다.") break end
+                if isvalid(drop.entity) then drop.entity:Destroy() end
+                self._T.drops[key] = nil
+                count = count + 1
+                if not all then break end
+            end
+        end
+        if count > 0 then self:Changed(userId) self:Snapshot(userId) end
+        self:Notice(userId, count > 0 and "물건을 주웠습니다." or "발밑에 주울 물건이 없습니다.")
+        log("[BaramInventory] pickup=" .. tostring(count))
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Flush(string userId)
+        local r = self._T.users[userId]
+        if r == nil then return false end
+        if r.saving then return false end
+        if not r.dirty then return true end
+        r.saving = true
+        local revision = r.revision
+        local raw = _HttpService:JSONEncode(r.state)
+        local code = r.storage:SetAndWait(self.StorageKey, raw)
+        r.saving = false
+        if code == 0 then
+            if r.revision == revision then r.dirty = false end
+            log("[BaramSave] saved revision=" .. tostring(revision))
+            return true
+        end
+        log_warning("[BaramSave] retry required code=" .. tostring(code))
+        return false
+    end
+
+    @ExecSpace("Server")
+    method void Save()
+        local ok = self:Flush(senderUserId)
+        self:Notice(senderUserId, ok and "진행 정보를 저장했습니다." or "저장하지 못했습니다. 잠시 후 다시 시도해 주세요.")
+    end
+
+    @ExecSpace("Server")
+    method void Interact()
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 then return end
+        for _, npc in ipairs(self.Npcs) do
+            if npc.map == r.state.map and math.abs(npc.x - r.state.x) + math.abs(npc.y - r.state.y) <= 2 then
+                r.dialog = npc.id
+                self:Dialog(npc.name, "안녕하세요. 어떻게 오셨나요?\n\nB: 물건 사기\nS: 물건 팔기", userId)
+                log("[BaramNPC] conversation=" .. tostring(npc.id))
+                return
+            end
+        end
+        self:Notice(userId, "바로 앞에 대화할 사람이 없습니다.")
+    end
+
+    @ExecSpace("Client")
+    method void Dialog(string title, string text)
+        _BaramInput.Mode = "shop"
+        _BaramInput.Pending = ""
+        _BaramInput:Show(title, text, "B: 사기   S: 팔기   Esc: 닫기")
+    end
+
+    @ExecSpace("Server")
+    method void Shop(string action, integer choice)
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or r.dialog == nil or self.Clock < r.nextAction then return end
+        local npc = nil
+        for _, n in ipairs(self.Npcs) do if n.id == r.dialog then npc = n end end
+        if npc == nil or npc.map ~= r.state.map or math.abs(npc.x - r.state.x) + math.abs(npc.y - r.state.y) > 2 then return end
+        r.nextAction = self.Clock + 0.2
+        local stock = npc.id == 8 and {2200} or {3014, 3018}
+        local s = r.state
+        if action == "list" then
+            local lines = {}
+            for i, id in ipairs(stock) do
+                local item = _BaramWorldData:Item(id)
+                table.insert(lines, tostring(i) .. ": " .. item.name .. "   " .. tostring(item.price) .. "전")
+            end
+            self:Dialog(npc.name .. " · 물건 사기", table.concat(lines, "\n") .. "\n\n숫자를 누르면 1개 구입합니다.", userId)
+            return
+        elseif action == "buy" then
+            local id = stock[choice]
+            if id == nil then return end
+            local data = _BaramWorldData:Item(id)
+            if s.gold < data.price then self:Notice(userId, "금전이 부족합니다.") return end
+            if not self:AddItem(s, id, 1, -1) then self:Notice(userId, "소지품이 가득 찼습니다.") return end
+            s.gold = s.gold - data.price
+            self:Notice(userId, data.name .. " 구입")
+        elseif action == "sell" then
+            local item = s.items[tostring(choice)]
+            if item == nil or choice == s.equip then self:Notice(userId, "판매할 물건을 확인해 주세요.") return end
+            local allowed = false
+            for _, id in ipairs(stock) do if item.id == id then allowed = true end end
+            if not allowed then self:Notice(userId, "이 상점에서는 사지 않는 물건입니다.") return end
+            local data = _BaramWorldData:Item(item.id)
+            s.gold = math.min(2000000000, s.gold + math.floor(data.price / 2))
+            self:RemoveItem(s, choice, 1)
+            self:Notice(userId, data.name .. " 판매")
+        else return end
+        self:Changed(userId)
+        self:Snapshot(userId)
+        log("[BaramShop] " .. action .. " gold=" .. tostring(s.gold))
+    end
+
+    @ExecSpace("Server")
+    method void OpenDoor()
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or r.state.hp <= 0 or not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        local index = math.floor(visual.Facing / 3) + 1
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        for _, p in ipairs(_BaramWorldData.Portals) do
+            if p.from == r.state.map and p.x == r.state.x + dx[index] and p.y == r.state.y + dy[index] and r.state.level >= p.minLevel and r.state.level <= p.maxLevel then
+                self:Place(userId, p.to, p.toX, p.toY)
+                self:Snapshot(userId)
+                return
+            end
+        end
+        self:Notice(userId, "앞에 열 수 있는 출입구가 없습니다.")
+    end
+
+    @ExecSpace("Server")
+    method void Users()
+        local names = {}
+        for _, player in ipairs(_UserService.UserEntities.Values) do if isvalid(player) then table.insert(names, player.PlayerComponent.Nickname) end end
+        self:ShowUsers(table.concat(names, "\n"), senderUserId)
+    end
+
+    @ExecSpace("Client")
+    method void ShowUsers(string names)
+        _BaramInput.Mode = "users"
+        _BaramInput:Show("현재 사용자", names, "Esc: 닫기")
+    end
+
+    @ExecSpace("Server")
+    method void LeaveToTitle()
+        if not self:Flush(senderUserId) then self:Notice(senderUserId, "저장 중입니다. 잠시 후 다시 시도해 주세요.") return end
+        self._T.users[senderUserId].active = false
+        self:ReturnToTitle(senderUserId)
+    end
+
+    @ExecSpace("Client")
+    method void ReturnToTitle()
+        _BaramInput:Close()
+        _BaramEntryFlow.InWorld = false
+        _EntityService:GetEntityByPath("/ui/BaramEntry").Enable = true
+        _BaramEntryFlow:Show("title")
+    end
+
+    @ExecSpace("Server")
+    method void Attack()
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or not isvalid(player) or r.state.hp <= 0 or self.Clock < (r.nextAttack or 0) then return end
+        r.nextAttack = self.Clock + 0.5
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        ---@type BaramGridAttack
+        local attack = player:GetComponent("script.BaramGridAttack")
+        if not isvalid(attack) then attack = player:AddComponent("BaramGridAttack") end
+        local index = math.floor(visual.Facing / 3) + 1
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        local damage = _UtilLogic:RandomIntegerRange(1, 2)
+        local equipped = r.state.items[tostring(r.state.equip)]
+        if equipped ~= nil and equipped.id == 17 and equipped.durability > 0 then
+            damage = _UtilLogic:RandomIntegerRange(5, 10)
+            equipped.durability = equipped.durability - 1
+            self:Changed(userId)
+        end
+        attack:Swing(r.state.x + dx[index], r.state.y + dy[index], damage)
+        self:Snapshot(userId)
+        log("[BaramCombat] swing damage=" .. tostring(damage))
+    end
+
+    @ExecSpace("ServerOnly")
+    method table GetRecord(string userId)
+        return self._T.users ~= nil and self._T.users[userId] or nil
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Damage(string userId, integer amount)
+        local r = self._T.users[userId]
+        if r == nil or r.state.hp <= 0 then return end
+        r.state.hp = math.max(0, r.state.hp - amount)
+        if r.state.hp == 0 then
+            r.state.hp = 1
+            self:Place(userId, 14, 34, 122)
+            self:Notice(userId, "쓰러져 부여성으로 돌아왔습니다. 체력을 회복해 주세요.")
+        end
+        self:Changed(userId)
+        self:Snapshot(userId)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void DropLoot(integer mapId, integer x, integer y, integer itemId, integer count)
+        self._T.nextDrop = self._T.nextDrop + 1
+        local drop = {map = mapId, x = x, y = y, id = itemId, count = count, durability = 0, expires = self.Clock + 300}
+        self._T.drops[self._T.nextDrop] = drop
+        self:ShowDrop(drop)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ShowDrop(table drop)
+        local map = _EntityService:GetEntityByPath("/maps/" .. _BaramWorldData:Map(drop.map).name)
+        local p = _BaramWorldData:Position(drop.x, drop.y)
+        drop.entity = _SpawnService:SpawnByModelId("baramgroundlabel", "Drop_" .. tostring(self._T.nextDrop), p, map)
+        if isvalid(drop.entity) then drop.entity.TextRendererComponent.Text = _BaramWorldData:Item(drop.id).name .. " " .. tostring(drop.count) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Killed(string userId, integer kind, integer x, integer y)
+        local r = self._T.users[userId]
+        if r == nil then return end
+        r.state.exp = r.state.exp + (kind == 1 and 10 or 5)
+        local oldLevel = r.state.level
+        local exp = _BaramLevelData.SourceExperience[0]
+        while r.state.level < 5 and r.state.exp >= exp[r.state.level + 1] do r.state.level = r.state.level + 1 end
+        if r.state.level > oldLevel then self:Notice(userId, "레벨 " .. tostring(r.state.level) .. "이 되었습니다.") end
+        if kind == 1 then
+            -- Literal original branch: 300/10000 for 100; three extra DROPITEM2 rolls.
+            if _UtilLogic:RandomIntegerRange(1, 10000) <= 300 then self:DropLoot(315, x, y, 3014, 100)
+            else
+                for _, chance in ipairs({50, 50, 40}) do if _UtilLogic:RandomIntegerRange(1, 100) <= chance then self:DropLoot(315, x, y, 3014, 1) end end
+            end
+        elseif _UtilLogic:RandomIntegerRange(1, 100) <= 90 then self:DropLoot(315, x, y, 3018, 1) end
+        r.state.guide = math.max(1, r.state.guide)
+        self:Changed(userId)
+        self:Snapshot(userId)
+        self:Notice(userId, "처치! 경험치 " .. tostring(kind == 1 and 10 or 5) .. " 획득")
+        log("[BaramCombat] kill kind=" .. tostring(kind) .. " exp=" .. tostring(r.state.exp))
+    end
+
+    @ExecSpace("ServerOnly")
+    method void OnUpdate(number delta)
+        self.Clock = self.Clock + delta
+        self._T.flush = self._T.flush - delta
+        if self._T.flush <= 0 then
+            self._T.flush = 60
+            for userId, r in pairs(self._T.users) do if r.dirty then self:Flush(userId) end end
+            for key, drop in pairs(self._T.drops) do if drop.expires <= self.Clock then
+                if isvalid(drop.entity) then drop.entity:Destroy() end
+                self._T.drops[key] = nil
+            end end
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    @EventSender("Service", "UserService")
+    handler HandleLeave(UserLeaveEvent event)
+        self:Flush(event.UserId)
+        self._T.users[event.UserId] = nil
+        self._T.loading[event.UserId] = nil
+    end
+end

@@ -1,0 +1,11 @@
+@흑다람쥐	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("참나무조각"), 1;
+}
+
+@흑토끼	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("참나무조각"), 1;
+}
+
+@흑암사슴	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("참나무조각"), 1;
+}

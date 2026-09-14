@@ -1,0 +1,112 @@
+@반고	{
+	set @id, objid();
+	set @rand, rand(1, 100);
+	if(@rand <= 80)
+	{
+		set_mobrevival @id, 1;
+		say @id, 0, get_mobname(@id) + ": 가소롭군..";
+		set_mobhp @id, get_mobhp(@id)+10000000;
+		end;
+	}
+	else
+	{
+		set_mobrevival @id, 0;
+	}
+
+	say @id, 0, get_mobname(@id) + ": 이 순간이..너희들의 기억속에서..지워지는 날..다시 오리라...";
+	callfunc "DROPITEM", @id, 1, 1, name2itemid("반고의심장"), 1;
+}
+
+@반고공격	{
+	set @id, objid();
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*3; }
+
+	if(mobspellaethered(@id, name2spellid("절망")) == 1) { mobspellaether @id, name2spellid("절망"), 5; }
+
+	if(rand(1, 10) <= 5) end;
+
+	set @x1, 0;
+	set @x2, mapwidth()-1;
+	set @y1, 0;
+	set @y2, mapheight()-1;
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+
+					if(get_state(@target_sd) == 1) { continue; }
+
+					sound @target_id, 507;
+					effect @target_id, 185;
+
+					damage @id, @target_id, rand(300000, 450000), 2;
+					message @target_sd, 3, "반고가 진흑룡소환을 가합니다.";
+				}
+			}
+		}
+	}
+}
+
+//@순제	{
+	set @id, objid();
+
+	say @id, 0, get_mobname(@id) + ": 이제야...모든...준비가...";
+	callfunc "DROPITEM", objid(), 1, 1, name2itemid("순제의증표"), 1;
+}
+
+@순제공격	{
+	set @id, objid();
+	set @rand, rand(1, 2);
+	set @siya, rand(1, 10);
+	if(@rand == 1)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", @id, 10, 8, -1, 87, 67, rand(500000, 550000), 2, "쌍검회전", 15, "쌍검회전!!";
+	}
+	else
+	{
+		if(@siya <= 2)
+		{
+			set @x1, get_mobx(@id)-15;
+			set @x2, get_mobx(@id)+15;
+			set @y1, get_moby(@id)-15;
+			set @y2, get_moby(@id)+15;
+
+			if(@x1 < 0) { set @x1, 0; }
+			if(@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+			if(@y1 < 0) { set @y1, 0; }
+			if(@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+			for(set @i, @x1; @i <= @x2; set @i, @i+1)
+			{
+				for(set @j, @y1; @j <= @y2; set @j, @j+1)
+				{
+					set @target_id, obj_getxy(@i, @j);
+					if(@target_id > 0)
+					{
+						if(istype(@target_id) == 1)
+						{
+							set @target_sd, id2sd(@target_id);
+							if(spellaethered(@target_sd, name2spellid("마비")) == 0)
+							{
+								sound @target_id, 70;
+								effect @target_id, 1;
+
+								set_siya @target_sd, 2, 0;
+								spellaether @target_sd, name2spellid("마비"), 10;
+								message @target_sd, 3, get_mobname(@id) + "가 마비를 가합니다.";
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

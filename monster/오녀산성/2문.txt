@@ -1,0 +1,17 @@
+@물어뜯기	{
+	callfunc "mob_constanting_spell", 300, 1, 12, 8, rand(1200, 1600), 1, "물어뜯기", "를";
+}
+
+@수색견드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루2"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각2"), 1;
+}
+
+@쌈닭드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루2"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각2"), 1;
+}
+
+@암흑혼령드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각2"), 1;
+}

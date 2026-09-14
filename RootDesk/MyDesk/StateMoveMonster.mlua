@@ -1,0 +1,42 @@
+@Component
+script StateMoveMonster extends StateComponent
+
+	@HideFromInspector
+	property number MoveSpeedFactor = 0.5
+
+	property boolean SpriteFacesLeftByDefault = true
+
+	@HideFromInspector
+	property boolean wanderDirLeft = false
+
+	@HideFromInspector
+	property Vector2 movingDirection = Vector2(0, 0)
+
+	@HideFromInspector
+	property any tileMapModeCache = nil
+
+	@ExecSpace("ServerOnly")
+	method void OnBeginPlay()
+		-- Bootstrap only. Transitions live in the StateSet (StateSetId).
+		local pos = self.Entity.TransformComponent.WorldPosition
+		math.randomseed(math.floor(pos.x * 100.0))
+		
+		local map = self.Entity.CurrentMap
+		if isvalid(map) and isvalid(map.MapComponent) then
+			self.tileMapModeCache = map.MapComponent.TileMapMode
+		end
+		
+		local rigidInit = self.Entity.RigidbodyComponent
+		if isvalid(rigidInit) then
+			rigidInit.IsolatedMove = true
+		end
+		
+		local mvInit = self.Entity.MovementComponent
+		if isvalid(mvInit) then
+			mvInit.InputSpeed = mvInit.InputSpeed * self.MoveSpeedFactor
+		end
+		
+		self.wanderDirLeft = math.random(0, 1) < 1
+	end
+
+end

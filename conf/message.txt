@@ -1,0 +1,298 @@
+
+//* Global
+//--------------------------------------------
+GLOBAL_PACKET_OVER: 서버에 과부하를 주는 행동을 하여 접속을 종료합니다.
+
+//* LoginServer
+//--------------------------------------------
+LOGIN_TOO_SHORT_NAME: 이름이 너무 짧습니다.
+LOGIN_TOO_SHORT_PASS: 비밀번호가 너무 짧습니다.
+LOGIN_TOO_SHORT_NEWPASS: 새 비밀번호가 너무 짧습니다.
+LOGIN_TOO_LONG_NAME: 이름이 너무 깁니다.
+LOGIN_TOO_LONG_PASS: 비밀번호가 너무 깁니다.
+LOGIN_TOO_LONG_NEWPASS: 새 비밀번호가 너무 깁니다.
+LOGIN_INVALID_BIRTHDAY: 생년월일이 틀렸습니다.
+LOGIN_CHANGE_SUCCESS: 변경완료!
+LOGIN_IP_BLOCK: 아이피가 제재되어 접속할 수 없습니다.	//추가요망
+LOGIN_FILTER_NAME: 적절하지 않은 이름입니다.
+LOGIN_HANGUL_NAME: 이름은 한글로만 해주세요.
+LOGIN_HARDLY_PASS: 비밀번호는 영문+숫자의 조합으로 해주세요.
+LOGIN_INVALID_NAME: 없는 이름입니다.
+LOGIN_INVALID_PASS: 암호가 틀렸습니다.
+LOGIN_EXIST_NAME: 이미 존재하는 이름입니다.
+LOGIN_ALREADY_CONNECTED: 이미 접속중 입니다.
+LOGIN_ACCOUNT_OK: 이어하기를 눌러 주세요.
+LOGIN_ACCOUNT_MAX: 더 이상 계정을 만들 수 없습니다.
+LOGIN_SERIOUS_ERROR: 삑사리!
+LOGIN_INTER_ERROR: DB에 연결할 수 없습니다. 서버 관리자에게 문의하세요.
+LOGIN_MAP_ERROR: 비바람이 휘몰아치는 중입니다. 잠시만 기다려 주십시오.
+LOGIN_BLOCKED_ACCOUNT: 비매너, 버그 등을 이유로 제재된 이름입니다.
+
+//* MapServer
+//--------------------------------------------
+MAP_ERRTIMEATTACK: %lu초간 공격을 할 수 없습니다.	//추가요망
+MAP_ERRTIMESAY: %lu초간 말을 할 수 없습니다.	//추가요망
+MAP_ERRTIMEWHISPER: %lu초간 귓속말을 할 수 없습니다.	//추가요망
+MAP_ERRTIMEMAGIC: %lu초간 마법을 쓸 수 없습니다.	//추가요망
+MAP_ERRSAY: 말을 할 수 없습니다.
+MAP_ERRWHISPER: 이곳에 마력이 미치지 않습니다.
+MAP_ERRMAGIC: 이곳에 마력이 미치지 않습니다.
+MAP_ERRGHOST: 귀신은 할 수 없습니다.
+MAP_ERRHORSE: 말을 타고 할 수 없습니다.
+MAP_ERRPARTY: 가입된 그룹이 없습니다.
+MAP_ERRCLAN: 문파에 가입되어 있지 않습니다.
+MAP_ERRWHISP1: 귓속말은 레벨 2 부터
+MAP_ERRWHISP2: 귓속말 거부 상태입니다.
+MAP_ERRWHISP3: 님은 귓속말 거부 중입니다.
+MAP_ERRWHISP4: 님은 바람의 나라에 없습니다.
+MAP_NOHORSE: 탈 것이 없습니다.
+MAP_HORSE1: 말을 탔습니다.
+MAP_HORSE2: 말에서 내렸습니다.
+MAP_AL_WHISP1: 귓속말듣기  : ON
+MAP_AL_WHISP2: 귓속말듣기  : OFF
+MAP_AL_PARTY1: 그룹허가    : ON
+MAP_AL_PARTY2: 그룹허가    : OFF
+MAP_AL_SHOUT1: 외치기듣기  : ON
+MAP_AL_SHOUT2: 외치기듣기  : OFF
+MAP_AL_ANNOUNCE1: 소식듣기    : ON
+MAP_AL_ANNOUNCE2: 소식듣기    : OFF
+MAP_AL_EFFECT1: 마법이펙트  : ON
+MAP_AL_EFFECT2: 마법이펙트  : OFF
+MAP_AL_WEATHER1: 날씨변화    : ON
+MAP_AL_WEATHER2: 날씨변화    : OFF
+MAP_AL_FIXEDMOVEMENT1: 고정이동    : ON
+MAP_AL_FIXEDMOVEMENT2: 고정이동    : OFF
+MAP_AL_TRADE1: 교환가능    : ON
+MAP_AL_TRADE2: 교환가능    : OFF
+MAP_AL_FASTMOVE1: 패스트무브  : ON
+MAP_AL_FASTMOVE2: 패스트무브  : OFF
+MAP_AL_PVP1: PK보호      : ON
+MAP_AL_PVP2: PK보호      : OFF
+MAP_AL_SOUND1: 소리듣기    : ON
+MAP_AL_SOUND2: 소리듣기    : OFF
+MAP_ERRWARPLV1: 감히 접근할 수 없습니다.
+MAP_ERRWARPLV2: 오직 강한 자에게만..
+MAP_ERRWARPLV3: 들어가기에 창피합니다.
+MAP_ERRITEMDROP: 떨어뜨릴 수 없는 물건입니다.
+MAP_ERRMONEYDROP: 돈이 부족합니다.
+MAP_DROPMONEY: 돈을 버렸습니다.
+MAP_ITEMINFO1: %s [%lu 잔]
+MAP_ITEMINFO2: %s %lu개
+MAP_ITEMINFO3: %s (%lu전)
+MAP_ITEMINFO4: %s [%lu 개]	//추가요망
+MAP_EQUIPINFO1: w:무기  :%s
+MAP_EQUIPINFO2: a:갑옷  :%s
+MAP_EQUIPINFO3: s:방패  :%s
+MAP_EQUIPINFO4: h:머리  :%s
+MAP_EQUIPINFO5: l:왼손  :%s
+MAP_EQUIPINFO6: r:오른손:%s
+MAP_EQUIPINFO7: [:보조1 :%s
+MAP_EQUIPINFO8: ]:보조2 :%s
+MAP_EQUIPINFO9: 갑옷 강도  %d  %d S  %d
+MAP_ERRITEMTHROW: 던질 수 없는 물건입니다.
+MAP_DOORNONE: 열 것이 없습니다.
+MAP_DOOROPEN: 문이 열렸습니다.
+MAP_DOORCLOSE: 문이 닫혔습니다.
+MAP_ERRINVENSPACE: 소지품 공간이 부족합니다.
+MAP_ITEMMIX_SUCCESS: 성공하였습니다.
+MAP_ITEMMIX_FAILURE: 실패하였습니다.
+MAP_ITEMMIX_ERROR: 조합을 할 수 없습니다.
+MAP_PARTY_JOIN: 님 그룹에 참여
+MAP_PARTY_DISSOLVE: 그룹 해체.
+MAP_PARTY_FULL: 자리가 없습니다.
+MAP_PARTY_OUT: 님 그룹 탈퇴
+MAP_PARTY_PASS: 님 그룹장 이임
+MAP_ERRSIGHT: 대상이 보이지 않습니다.
+MAP_PARTY_EXIST: 님은 이미 그룹 참여 중입니다.
+MAP_PARTY_NOALLOW1: 그룹 거부 상태입니다.
+MAP_PARTY_NOALLOW2: 님은 그룹 거부 중입니다.
+MAP_LASTTIME1: %d일 %d시간만에 바람으로
+MAP_LASTTIME2: %d시간 %d분만에 바람으로
+MAP_WELCOME: 바람력 %d년 %d월 %d일 %d시
+MAP_ERRITEM1: 입을 수 없습니다.
+MAP_ERRITEM2: 감히 사용할 수 없습니다.
+MAP_ERRITEM3: 아이템의 성격상 사용할 수 없습니다.
+MAP_ERRITEM4: 아이템이 너무 무겁습니다.
+MAP_ERRITEM5: 아이템을 사용하기엔 민첩하지 않습니다.
+MAP_ERRITEM6: 아이템을 사용하기 어렵습니다.
+MAP_ERRITEM7: 입을 수 없는 물건입니다.
+MAP_ERRMAXITEM: %s %lu개 이상 가질 수 없습니다.
+MAP_ERRITEMPICK: 죽은 자의 온기가 남아있습니다.
+MAP_ERRMONEYPICK: 더 이상 돈을 가질 수 없습니다.
+MAP_ERRITEM8: 먹을 수 없는 물건입니다.
+MAP_ERRITEM9: 사용할 수 없는 물건입니다.
+MAP_LEVELUP: 레벨이 올랐습니다.
+MAP_ERRJOB: 레벨 5 이상은 직업을 가지셔야 경험치를 얻을 수 있습니다.
+MAP_ERRMAXEXP: 더 이상 경험치가 오르지 않습니다.
+MAP_EXPUP: 경험치가 %lu(%d%%) 올랐습니다.
+MAP_ERRSPELL: 더 이상 마법을 배울 수 없습니다.
+MAP_TRADE_NOALLOW1: 교환 거부 상태입니다.
+MAP_TRADE_NOALLOW2: 님은 교환 거부 중입니다.
+MAP_TRADE_EXIST: 님은 이미 교환 중입니다.
+MAP_TRADE_DISTANCE: 님과 너무 멀리 떨어져 있습니다.
+MAP_TRADE_CANCEL1: 교환이 취소되었습니다.
+MAP_TRADE_CANCEL2: 내가 교환을 취소하였습니다.
+MAP_TRADE_CANCEL3: 상대방이 교환을 취소하였습니다.
+MAP_ERRITEMTRADE: 교환이 불가능한 아이템입니다.
+MAP_ERRITEMMANY: 개수가 올바르지 않습니다.
+MAP_TRADE_FULL: 교환창이 꽉 찼습니다.
+MAP_TRADE_MAXITEM: 더 이상 추가할 수 없습니다.
+MAP_TRADE_ERROR1: 교환에 실패하였습니다.\n(사유: 내가 돈이 너무 많습니다)
+MAP_TRADE_ERROR2: 교환에 실패하였습니다.\n(사유: 상대방이 돈이 너무 많습니다)
+MAP_TRADE_ERROR3: 교환에 실패하였습니다.\n(사유: 내가 아이템 개수를 초과함)
+MAP_TRADE_ERROR4: 교환에 실패하였습니다.\n(사유: 상대방이 아이템 개수를 초과함)
+MAP_TRADE_ERROR5: 교환에 실패하였습니다.\n(사유: 내 소지품이 꽉참)
+MAP_TRADE_ERROR6: 교환에 실패하였습니다.\n(사유: 상대방의 소지품이 꽉참)
+MAP_TRADE_SUCCESS: 교환에 성공하였습니다.
+MAP_TRADE_OKAY: 상대방이 확인을 눌렀습니다.
+MAP_CASH_DONG: 엽전
+MAP_CASH_DONGS: 엽전뭉치
+MAP_CASH_SILVER: 은전
+MAP_CASH_SILVERS: 은전뭉치
+MAP_CASH_GOLD: 금전
+MAP_CASH_GOLDS: 금덩어리
+MAP_PARTY_NONE: 그룹 없음.
+MAP_NONE: 없음
+MAP_SPELL_DELAY: %lu초 후에 쓸 수 있습니다.
+MAP_SPELL_AETHER: 이미 걸려있습니다.
+MAP_MSGYES: 예
+MAP_MSGNO: 아니오
+MAP_ITEMBUY1: 제가 파는 물건들입니다. 그림도 있고, 옆에 가격도 함께 드리니 잘 생각하시고 골라 주세요.
+MAP_ITEMBUY2: 몇 개나 필요하신가요?
+MAP_ITEMBUY3: 가지고 계신 것을 포함해서 최고 100개까지 가능합니다. 몇 개나 사시겠어요?
+MAP_ITEMBUY4: 소지품이 꽉 찼습니다.
+MAP_ITEMBUY5: 돈이 부족하시네요.
+MAP_ITEMBUY6: 더 이상 가질 수 없습니다.
+MAP_ITEMSELL1: 무엇을 파시게요?
+MAP_ITEMSELL2: 몇 개나 파시게요?
+MAP_ITEMSELL3: 숫자로만 써주셔야 되구요, 이미 가지고 계신 것 만큼만 팔 수 있습니다. 몇 개 파실래요?
+MAP_ITEMSELL4: %lu전에 파시겠어요?
+MAP_ITEMSELL5: 그 만큼이나 가지고 계시지 않으시면서...
+MAP_ITEMSELL6: 돈을 너무 많이 가지고 계시네요.
+MAP_MONEYDEPOSIT1: 제가 %lu 전을 맡고 있습니다.\n얼마나 맡기시렵니까?
+MAP_MONEYDEPOSIT2: 가지고 있는 돈이 부족합니다.
+MAP_MONEYDEPOSIT3: 금전 %lu전을 보관했습니다.
+MAP_MONEYDEPOSIT4: 돈을 너무 많이 맡고 있습니다.
+MAP_MONEYWITHDRAW1: 제가 %lu 전을 맡고 있습니다.\n얼마나 찾으시렵니까?
+MAP_MONEYWITHDRAW2: 가지고 있는 돈이 부족합니다.
+MAP_MONEYWITHDRAW3: 금전 %lu전을 돌려드렸습니다.
+MAP_MONEYWITHDRAW4: 돈을 너무 많이 가지고 계시네요.
+MAP_ITEMDEPOSIT1: 손에 들고 계신 물건 중에서 새 것만 맡아드릴 수 있습니다. 무엇을 맡기시게요?
+MAP_ITEMDEPOSIT2: 그런 물건은 맡지 않을래.
+MAP_ITEMDEPOSIT3: 헌 물건은 안 맡아줘.. 헷갈린단 말이야.
+MAP_ITEMDEPOSIT4: 몇 개나 맡기시게요?
+MAP_ITEMDEPOSIT5: 숫자로만 써주셔야 되구요, 이미 가지고 계신 것 만큼만 맡기실 수 있습니다. 몇 개 맡기실래요?
+MAP_ITEMDEPOSIT6: 더 이상 물건을 보관하실 수 없습니다.
+MAP_ITEMDEPOSIT7: 손님, 돈이 부족합니다. 수수료는 %lu전 입니다.
+MAP_ITEMDEPOSIT8: %s 보관했습니다.
+MAP_ITEMDEPOSIT9: %s %lu개를 보관했습니다.
+MAP_ITEMDEPOSIT10: 수수료 %lu전을 받았습니다.
+MAP_ITEMWITHDRAW1: 지금 제가 보관하고 있는 물건들입니다. 옆에 몇 개 보관하고 있는 지도 함께 적었습니다. 무엇을 찾으시겠습니까?
+MAP_ITEMWITHDRAW2: 몇 개나 찾으시게요?
+MAP_ITEMWITHDRAW3: 숫자로만 써주셔야 되구요, 이미 가지고 계신 것 만큼만 찾을 수 있습니다. 몇 개 찾으실래요?
+MAP_ITEMWITHDRAW4: 소지품이 꽉 찼습니다.
+MAP_ITEMWITHDRAW5: %s 최고 %u개까지 가질 수 있습니다.
+MAP_ITEMWITHDRAW6: 손님, 돈이 부족합니다. 수수료는 %lu전 입니다.
+MAP_ITEMWITHDRAW7: %s 돌려드렸습니다.
+MAP_ITEMWITHDRAW8: %s %lu개 돌려드렸습니다.
+MAP_ITEMWITHDRAW9: 수수료 %u전을 받았습니다.
+MAP_ITEMDURA1: %s의 내구도가 %d%%미만 남았습니다.
+MAP_ITEMDURA2: %s가 다 닳아서 없어졌습니다.
+MAP_ITEMDURA3: %s가 깨졌습니다.
+MAP_ITEMREPAIR1: 무엇을 고치시게요?
+MAP_ITEMREPAIR2: 고치는 비용으로 %lu전이 필요합니다. 고치시겠습니까?
+MAP_ITEMREPAIR3: 가지고 계신 %s 거의 새것이라 그냥 고쳐드렸습니다. 잘 쓰세요.
+MAP_ITEMREPAIR4: 은전이 모자라시네요
+MAP_ITEMREPAIR5: %s(내구도%lu%%) 수리 비용은 %lu전입니다. 지금 고치시겠습니까?
+MAP_ITEMREPAIR6: 가지고 계신 %s 수리비가 모자라서 고치지 못했습니다. %lu전이 필요합니다.
+MAP_ITEMREPAIR7: 가지고 계신 %s 고치는 비용으로 %lu전을 받았습니다.
+MAP_ITEMREPAIR8: 모두 고치는 비용으로 %lu전이 필요합니다. 모두 고치시겠습니까?
+MAP_ITEMREPAIR9: 모두 고쳐드렸습니다.
+MAP_ITEMREPAIR10: 고쳐드렸습니다.
+MAP_ITEMNAMING1: 별칭을 부여할 무기의 본래 명칭을 입력해주세요.\n\n소지품에 같은 명칭의 무기가 여럿 있을 경우, 맨 위쪽 칸에 위치한 것이 선택됩니다.
+MAP_ITEMNAMING2: %s의 별칭 부여에 드는 금액은 %lu전 입니다.\n\n계속하시겠습니까?
+MAP_ITEMNAMING3: 무기가 아닙니다.
+MAP_ITEMNAMING4: %u전이 필요합니다.
+MAP_ITEMNAMING5: %s에 부여할 별칭을 입력해주세요.
+MAP_ITEMNAMING6: %s의 별칭을 제거하고 원래대로 되돌리시겠습니까?\n\n별칭을 없애는 데 드는 비용은 %lu전 입니다.
+MAP_ITEMNAMING7: 제대로 된 별칭을 입력하세요.
+MAP_ITEMNAMING8: 금지된 단어가 포함 돼 있습니다.
+MAP_ITEMNAMING9: %s의 별칭부여 %s 부여가 완료됐습니다.
+MAP_ERRITEM2H1: 양손 무기입니다.
+MAP_ERRITEM2H2: 양손 무기와는 동시착용이 불가능합니다.
+MAP_NPCDEAD1: %s: 누가 죽었나?
+MAP_NPCDEAD2: %s: 잡귀는 물러가라!
+MAP_NPCDEAD3: %s: 기운이 음산하네..
+MAP_NPCDEAD4: %s: 귀신이 돌아다니네..
+MAP_NPCBUY1:  삽니다.
+MAP_NPCBUY2: %s: 저는 물건을 사지 않습니다.
+MAP_NPCBUY3: %s: 그렇게나 많이?
+MAP_NPCBUY4: %s: %s %lu전에 팔았습니다.
+MAP_NPCBUY5: %s: %s %lu개 %lu전에 팔았습니다.
+MAP_NPCBUY6: %s: 그런 물건은 안 팝니다.
+MAP_NPCSELL1:  팝니다.
+MAP_NPCSELL2: %s: 저는 물건을 팔지 않습니다.
+MAP_NPCSELL3: %s: 물건이 모자랍니다.
+MAP_NPCSELL4: %s: %s %lu전에 샀습니다.
+MAP_NPCSELL5: %s: %s %lu개 %lu전에 샀습니다.
+MAP_NPCSELL6: %s: 그런 물건은 안 삽니다.
+MAP_DEPOSIT1: %s: 가지고 있는 돈이 부족합니다.
+MAP_DEPOSIT2: %s: %s %lu전을 보관했습니다.
+MAP_DEPOSIT3: %s: 그냥 주면 몰라도 여긴 은행이 아니야.
+MAP_DEPOSIT4: %s: 엉뚱한 것 맡아 달라고 하지마!
+MAP_DEPOSIT5: %s: 여기가 전당포야?
+MAP_DEPOSIT6: %s: %s %lu전 보관하고 있습니다.
+MAP_DEPOSIT7: %s: 내가 언제 네 돈을 맡았다고...
+MAP_DEPOSIT8:  %-16s:% 8lu
+MAP_DEPOSIT9: %s: 총 %lu 종류를 보관 중 입니다.
+MAP_DEPOSIT10: %s: 아무것도 보관하고 있지 않습니다.
+MAP_DEPOSIT11: %s: %s %lu 개 보관하고 있습니다.
+MAP_DEPOSIT12: %s: %s 보관 안 하셨습니다.
+MAP_DEPOSIT13: %s: 난 모르지. 내가 어떻게 알아...
+MAP_WITHDRAW1: %s: 가지고 있는 돈이 부족합니다.
+MAP_WITHDRAW2: %s: %s %lu전을 돌려드렸습니다.
+MAP_WITHDRAW3: %s: 총만 안들었지, 거의 강도네...
+MAP_WITHDRAW4: %s: 물건이 모자랍니다.
+MAP_WITHDRAW5: %s: %s 보관 안 하셨습니다.
+MAP_WITHDRAW6: %s: 뭘 돌려줘?
+MAP_HOWMUCH1: %s: %s %lu전 입니다.
+MAP_HOWMUCH2: %s: %s %lu개는 %lu전 입니다.
+MAP_HOWMUCH3: %s: 그런 물건은 취급하지 않습니다.
+MAP_NPC_MAXMONEY: %s: 돈을 너무 많이 가지고 계시네요.
+MAP_SUNGHANG1: %s: 정성이 부족하구나..
+MAP_SUNGHANG2: %s: 생즉시공, 공즉시생.
+MAP_SUNGHANG3: %s: 경건한 마음으로 빌거라.
+MAP_SUNGHANG4: %s: 그런 마음가짐으로 생명을 얻겠느냐?
+MAP_SUNGHANG5: %s: 인생의 뜻을 모르고 있구나..
+MAP_SUNGHANG6: %s: 생명의 소중함을 그렇게 가르쳤거늘..
+MAP_SUNGHANG7: %s: 예의를 지켜도 살려줄까 말까인데..
+MAP_SUNGHANG8: 체력이 완전히 회복되었습니다.
+MAP_SUNGHANG9: %s: 예절바른 놈, 잘 살거라.
+MAP_KIDDING1: %s: 뭐가 비싸!
+MAP_KIDDING2: %s: 난 땅 팔아 장사하니?
+MAP_KIDDING3: %s: 이정도면 싼 거지..
+MAP_KIDDING4: %s: 여기서나 팔지 딴 데 가면 살 수나 있냐?
+MAP_KIDDING5: %s: 사기 싫으면 사지 마!
+MAP_KIDDING6: %s: 나도 지겨워..
+MAP_KIDDING7: %s: 그렇지 않아도 신경질이 나는데..
+MAP_PURSUIT1: %s: 예! 읽겠습니다.
+MAP_PURSUIT2: %s: %d개의 펄숫을 관리하겠습니다.
+MAP_PURSUIT3: %s: 실패... %s.sav가 존재하지 않습니다.
+MAP_PURSUIT4: %s: 아 예... 그러시겠죠..
+MAP_WHATNAME: 저는 %s입니다.
+MAP_BOARD0: 5.65에서는 게시글을 쓸 수 없습니다.	//추가요망
+MAP_BOARD1: 제목을 입력해 주세요.
+MAP_BOARD2: 내용을 입력해 주세요.
+MAP_BOARD3: 받는사람을 입력해 주세요.
+MAP_BOARD4: 더 이상 글이 없습니다.
+MAP_BOARD5: 더 이상 글을 작성할 수 없습니다.
+MAP_BOARD6: 글을 작성하였습니다.
+MAP_BOARD7: 이미 삭제된 글입니다.
+MAP_BOARD8: 글이 삭제 되었습니다.
+MAP_BOARD9: 권한이 없습니다.
+MAP_BOARD10: 받는사람이 존재하지 않습니다.
+MAP_BOARD11: 편지를 보냈습니다.
+GM_DIE: 운영자라서 죽이지 않았습니다.	//추가요망
+
+// Je suis genial!
+//-----------------

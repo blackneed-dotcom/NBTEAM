@@ -1,0 +1,15 @@
+@도삭산세발문어	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("금덩어리"), 400;
+}
+
+@도삭산대발문어	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("금덩어리"), 400;
+}
+
+@도삭산장간문어	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("금덩어리"), 400;
+}
+
+@도삭산문어장군	{
+	callfunc "DROPITEM", objid(), 10, 3, name2itemid("금덩어리"), 400;
+}

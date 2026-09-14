@@ -1,0 +1,25 @@
+@초성인성초	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("망고"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호두"), 1;
+}
+
+@중성인성초	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("포도"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("야자수잎"), 1;
+}
+
+@종성인성초	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("향료가루"), 1;
+}
+
+@해적선원의망령	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("노회"), 1;
+}
+
+@해적갑판장의망령	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("기름"), 1;
+}
+
+@해적선장의망령	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("정령의결정"), 1;
+}

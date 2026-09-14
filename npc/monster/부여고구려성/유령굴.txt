@@ -1,0 +1,39 @@
+@유령	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("호박"), 1;
+}
+
+@초급유령	{
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("해골죽장"), 1;
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("현철중검"), 1;
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("영혼마령봉"), 1;
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("야월도"), 1;
+}
+
+@중급유령	{
+	callfunc "DROPITEM", objid(), 600, 10, name2itemid("철단도"), 1;
+	callfunc "DROPITEM", objid(), 600, 10, name2itemid("철도"), 1;
+	callfunc "DROPITEM", objid(), 600, 10, name2itemid("철검"), 1;
+}
+
+@고급유령	{
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("현철중검"), 1;
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("해골죽장"), 1;
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("영혼마령봉"), 1;
+	callfunc "DROPITEM", objid(), 1000, 25, name2itemid("야월도"), 1;
+}
+
+@유령전사	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("현철중검"), 1;
+}
+
+@유령도적	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("야월도"), 1;
+}
+
+@유령마법사	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("해골죽장"), 1;
+}
+
+@불연	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("영혼마령봉"), 1;
+}

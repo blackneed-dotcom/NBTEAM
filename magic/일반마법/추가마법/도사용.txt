@@ -1,0 +1,976 @@
+@자동기원1	{
+	set @sd, mysd();
+	set @id, myid();
+	set_spellinterval @sd, get_spellinterval(@sd)-200;
+    
+	set @pk, ismapoption(@sd, 6);
+	if(@pk)
+	{
+		message @sd, 3, "사용할수없는곳입니다.";
+		end;
+	}
+	if(get_state(@sd) == 3 || get_state(@sd) == 1)
+	{
+		message @sd, 3, "사용이 불가능합니다.";
+		end;
+	}
+	if(ismapoption(@sd,48))
+	{
+		message @sd, 3, "공성맵에서는 사용이 불가능합니다.";
+		end;
+	}
+	if($heal_name$ == "백호의희원")
+	{
+		message @sd, 3, "백호의희원은 자동기원을 사용할 수 없습니다.";
+		end;
+	}
+
+	set @ts, name2sd($heal_target_name$);
+	if(@ts > 0)
+	{
+		set @x1, get_x(@id);
+		set @y1, get_y(@id);
+		set @x2, get_x(name2id($heal_target_name$));
+		set @y2, get_y(name2id($heal_target_name$));
+
+		if(@x1 > @x2) set @cha, @x1-@x2;
+		else set @cha, @x2-@x1;
+		if(@y1 > @y2) set @cha2, @y1-@y2;
+		else set @cha2, @y2-@y1;
+
+		if(@cha < 7 && @cha2 < 7)
+		{
+			if(@id != name2id($heal_target_name$))
+			{	
+				callfunc "TARGETHEALMAGIC", $mp_delay, $hp_target, $heal_effect, $heal_sound, $heal_name$, 1;
+				end;
+			}
+		}
+	}
+	else
+	{
+		message @sd, 3, "타겟이범위내에없습니다.";
+		end;
+	}
+}
+@자동기원2	{
+	set @sd, mysd();
+	set @id, myid();
+	set_spellinterval @sd, get_spellinterval(@sd)-200;
+    
+	set @pk, ismapoption(@sd, 6);
+	if(@pk)
+	{
+		message @sd, 3, "사용할수없는곳입니다.";
+		end;
+	}
+	if(get_state(@sd) == 3 || get_state(@sd) == 1)
+	{
+		message @sd, 3, "사용이 불가능합니다.";
+		end;
+	}
+	if(ismapoption(@sd,48))
+	{
+		message @sd, 3, "공성맵에서는 사용이 불가능합니다.";
+		end;
+	}
+	if($heal_name$ == "백호의희원")
+	{
+		message @sd, 3, "백호의희원은 자동기원을 사용할 수 없습니다.";
+		end;
+	}
+
+	set @ts, name2sd($heal_target_name$);
+	if(@ts > 0)
+	{
+		set @x1, get_x(@id);
+		set @y1, get_y(@id);
+		set @x2, get_x(name2id($heal_target_name$));
+		set @y2, get_y(name2id($heal_target_name$));
+
+		if(@x1 > @x2) set @cha, @x1-@x2;
+		else set @cha, @x2-@x1;
+		if(@y1 > @y2) set @cha2, @y1-@y2;
+		else set @cha2, @y2-@y1;
+
+		if(@cha < 7 && @cha2 < 7)
+		{
+			if(@id != name2id($heal_target_name$))
+			{	
+				callfunc "TARGETHEALMAGIC", $mp_delay, $hp_target, $heal_effect, $heal_sound, $heal_name$, 1;
+				end;
+			}
+		}
+	}
+	else
+	{
+		message @sd, 3, "타겟이범위내에없습니다.";
+		end;
+	}
+}
+@전체부활	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "NOREVIVAL";
+
+	if(get_mp(@sd) < 600)
+	{
+		message @sd, 3, "마력이 부족합니다.";
+		end;
+	}
+
+	set @x1, get_x(@id) - 8;
+	set @x2, get_x(@id) + 8;
+	set @y1, get_y(@id) - 8;
+	set @y2, get_y(@id) + 8;
+
+	if(@x1 < 0) { set @x1, 0; }
+	if(@x2 > get_mapwidth(@sd) - 1) { set @x2, get_mapwidth(@sd) - 1; }
+	if(@y1 < 0) { set @y1, 0; }
+	if(@y2 > get_mapheight(@sd)- 1) { set @y2, get_mapheight(@sd) - 1; }
+
+	for(set @i, @x1; @i <= @x2; set @i, @i + 1)
+	{
+		for(set @j, @y1; @j <= @y2; set @j, @j + 1)
+		{
+			set @target, obj_getxy(@i, @j);
+
+			if(@target > 0)
+			{
+				if(istype(@target) == 2)
+				{
+					continue;
+				}
+				else if(istype(@target) == 1)
+				{
+					set @temp, 1;
+
+					set @target_sd, id2sd(@target);
+
+					if(get_state(@target_sd) == 1)
+					{
+						effect @target, 11;
+
+						set_state @target_sd, 0;
+					}
+
+					if(get_hp(@target_sd) < 30)
+					{
+						set_hp @target_sd, 30;
+					}
+
+					if(get_equipitem(@target_sd, 6) == name2itemid("보무의목걸이") || get_equipitem(@target_sd, 7) == name2itemid("보무의목걸이"))
+					{
+						spellcast @target_sd, name2spellid("자동보호");
+						spellcast @target_sd, name2spellid("자동무장");
+					}
+
+					if(@target != @id)
+					{
+						message @target_sd, 3, get_name(@sd) + "님이 부활을 외워주셨습니다.";
+					}
+
+					updatelookpc @target_sd, 1;
+				}
+			}
+		}
+	}
+
+	if(@temp)
+	{
+		action @id, 6, 30, 0;
+		sound @id, 8;
+
+		set_mp @sd, get_mp(@sd) - 600;
+		message @sd, 3, "전체부활을 외웠습니다.";
+		spelldelay @sd, name2spellid("전체부활"), 40;
+	}
+}
+
+@선천만정	{
+	set @mysd, mysd();
+	set @myid, myid();
+	set @target_id, script_target(@mysd);
+	set @target_sd, id2sd(@target_id);
+
+	set_hp @target_sd, get_maxhp(@target_sd);
+	set_mp @target_sd, get_maxmp(@target_sd);
+
+	sound @target_id, 6;
+	effect @target_id, 63;
+	effect @target_id, 166;
+	action @myid, 6, 30, 0;
+
+	message @mysd, 3, "선천만정을 외웠습니다.";
+	if(@mysd != @target_sd) { message @target_sd, 3, get_name(@mysd) + "님이 선천만정을 외워주셨습니다."; }
+
+	spelldelay @mysd, name2spellid("선천만정"), 60;
+}
+
+@집중	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("집중"), @sd;
+
+	set $concentration, 1;
+	message @sd, 3, "집중을 외웠습니다.";
+	spellaether @sd, name2spellid("집중"), 11;
+	spelldelay @sd, name2spellid("집중"), 70;
+}
+
+@집중지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(!$concentration) { end; }
+
+	if(get_maxhp(@sd) < (get_hp(@sd) + (get_purehp(@sd)/100*10))) { set_hp @sd, get_maxhp(@sd); }
+	else { set_hp @sd, get_hp(@sd) + (get_purehp(@sd)/100*10); }
+
+	showgage @id;
+
+	action @id, 6, 30, 0;
+	effect @id, 5;
+	sound @id, 8;
+}
+
+@집중해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set $concentration, 0;
+	message @sd, 3, "집중 해제.";
+	spelldelay @sd, name2spellid("집중"), 60;
+}
+
+@명상	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("명상"), @sd;
+
+	set $meditation, 1;
+	message @sd, 3, "명상을 외웠습니다.";
+	spellaether @sd, name2spellid("명상"), 11;
+}
+
+@명상지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(!$meditation) { end; }
+
+	if(get_maxmp(@sd) < (get_mp(@sd) + (get_puremp(@sd)/100*10))) { set_mp @sd, get_maxmp(@sd); }
+	else { set_mp @sd, get_mp(@sd) + (get_puremp(@sd)/100*10); }
+
+	action @id, 6, 30, 0;
+	effect @id, 173;
+	sound @id, 2;
+}
+
+@명상해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set $meditation, 0;
+	message @sd, 3, "명상 해제.";
+	spelldelay @sd, name2spellid("명상"), 60;
+}
+
+@극'봉황의기원	{
+	set @sd, mysd();
+	set @id, myid();
+	set @weapon$, get_equipitem_name(@sd, 0);
+
+	if(get_maxmp(@sd) < 1300000) { callfunc "TARGETHEALMAGICC", 20000, 300000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1400000) { callfunc "TARGETHEALMAGICC", 20000, 320000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1500000) { callfunc "TARGETHEALMAGICC", 22000, 340000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1550000) { callfunc "TARGETHEALMAGICC", 24000, 360000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1600000) { callfunc "TARGETHEALMAGICC", 26000, 380000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1650000) { callfunc "TARGETHEALMAGICC", 28000, 400000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1700000) { callfunc "TARGETHEALMAGICCC", 30000, 420000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1750000) { callfunc "TARGETHEALMAGICCC", 32000, 440000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1820000) { callfunc "TARGETHEALMAGICCC", 34000, 460000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) < 1880000) { callfunc "TARGETHEALMAGICCC", 36000, 480000, 165, 505, "극'봉황의기원"; }
+	else if(get_maxmp(@sd) > 1900000) { callfunc "TARGETHEALMAGICCC", 38000, 500000, 165, 505, "극'봉황의기원"; }
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 5000, (get_maxmp(@sd)/2), 179, 111, "대모홍접선'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "적염곤봉")
+	{
+	if(@rand <= 15)
+	callfunc "TARGETHEALMAGIC", 12000, (get_maxmp(@sd)/2), 173, 111, "적염곤봉'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "용겸제구봉")
+	{
+	if(@rand <= 20)
+	callfunc "TARGETHEALMAGIC", 12000, (get_maxmp(@sd)/8), 185, 111, "용겸제구봉'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "용겸제팔봉")
+	{
+	if(@rand <= 25)
+	callfunc "TARGETHEALMAGIC", 12000, (get_maxmp(@sd)/10), 185, 111, "용겸제구봉'격";
+	}
+	else if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산장")
+	{
+	if(@rand <= 10)
+	callfunc "CHOMHEALMAGIC", 1000, 30000, 149, 113, "귀문진산장의 회복";
+	}		
+	else if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산장'진")
+	{
+	if(@rand <= 15)
+	callfunc "CHOMHEALMAGIC", 1000, 100000, 149, 113, "귀문진산장'진의 회복";
+	}
+}
+
+@화타의술	{
+	set @sd, mysd();
+	set @id, myid();
+	set @weapon$, get_equipitem_name(@sd, 0);
+
+	if(get_maxmp(@sd) < 2100000) { callfunc "TARGETHEALMAGICC", 30000, 520000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2200000) { callfunc "TARGETHEALMAGICC", 32000, 540000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2300000) { callfunc "TARGETHEALMAGICC", 34000, 560000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2350000) { callfunc "TARGETHEALMAGICC", 36000, 580000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2400000) { callfunc "TARGETHEALMAGICC", 38000, 600000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2450000) { callfunc "TARGETHEALMAGICC", 40000, 620000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2500000) { callfunc "TARGETHEALMAGICCC", 42000, 640000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2650000) { callfunc "TARGETHEALMAGICCC", 44000, 660000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2700000) { callfunc "TARGETHEALMAGICCC", 46000, 680000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) < 2750000) { callfunc "TARGETHEALMAGICCC", 48000, 700000, 75, 505, "화타의술"; }
+	else if(get_maxmp(@sd) > 2800000) { callfunc "TARGETHEALMAGICCC", 50000, 720000, 75, 505, "화타의술"; }
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 5000, (get_maxmp(@sd)/2), 179, 111, "대모홍접선'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "적염곤봉")
+	{
+	if(@rand <= 15)
+	callfunc "TARGETHEALMAGIC", 5000, (get_maxmp(@sd)/2), 173, 111, "적염곤봉'격";
+	}
+}
+
+
+@화타의술'첨	{
+	set @sd, mysd();
+	set @hp, get_mp(@sd)/12;
+	set @mp, get_mp(@sd)/13;
+	
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0) { set @member_count, @member_count+1; }
+		}
+	}
+	else { set @member_count, 1; }
+
+	set @delay, get_mp(@sd)/(30000*@member_count);
+
+	if(@hp > 100000) { set @hp, 1500000; }
+	if(@mp > 50000) { set @mp, 500000; }
+
+	if(@delay > 15) { spelldelay @sd, name2spellid("화타의술'첨"), 15; }
+	else if(@delay > 0) { spelldelay @sd, name2spellid("화타의술'첨"), @delay; }
+	else { spelldelay @sd, name2spellid("화타의술'첨"), 1; }
+	callfunc "CHOMHEALMAGIC", @mp, @hp, 75, 97, "화타의술'첨";
+}
+
+@극혼술	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	set @pk, ismapoption(@sd, 6);
+	
+	callfunc "MANA_DELAY", 40, 0, @sd;
+	if(istype(@target_id) == 1)
+	{
+		callfunc "MANA_DELAY", 0, name2spellid("저주"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("혼마술"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("귀염추혼소"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("마기지체저주"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("극혼술"), id2sd(@target_id);
+		callfunc "NOCURSE", @target_id, 0;
+	}
+	else if(mobspellaethered(@target_id, name2spellid("혼마술")) ||
+		 mobspellaethered(@target_id, name2spellid("저주")) ||
+		 mobspellaethered(@target_id, name2spellid("귀염추혼소")) ||
+		 mobspellaethered(@target_id, name2spellid("극혼술")) ||
+		 mobspellaethered(@target_id, name2spellid("마기지체저주")) ||
+		 callfunc("NOCURSE", @target_id, 2) == 1)
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+	if(@pk) goto LABEL;
+	if(istype(@target_id) != 2)
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+	
+LABEL:
+	callfunc "BEGINFUNC", 79, 79, 0, 0, 6, @target_id;
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(spellaethered(@target_sd, name2spellid("호체주술")) == 1) { message @sd, 3, "극혼술로 부터 보호되어 있습니다."; end; }
+		spellaether @target_sd, name2spellid("극혼술"), 425;
+		set_ac @target_sd, get_ac(@target_sd)+60;
+		if(@target_id != @id)
+		{
+			message @target_sd, 3, get_name(@sd) + "님이 극혼술을 걸었습니다.";
+		}
+	}
+	else if(istype(@target_id) == 2)
+	{
+		mobspellaether @target_id, name2spellid("극혼술"), 425;
+		set_mobac @target_id, get_mobac(@target_id)+50;
+	}
+	set_mp @sd, get_mp(@sd)-1000;
+	message @sd, 3, "극혼술을 외웠습니다.";
+}
+
+@극혼술해제	{
+	set @myid, myid();
+	set @mysd, mysd();
+	set_ac @mysd, get_ac(@mysd)-50;
+	message @mysd, 3, "극혼술 해제.";
+}
+
+@극혼술'첨	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_mp(@sd) < 600)
+	{
+		message @sd, 3, "마력이 부족합니다.";
+		end;
+	}
+
+	set @me_x, get_x(@id);
+	set @me_y, get_y(@id);
+	set @x1, @me_x-9;
+	set @x2, @me_x+9;
+	set @y1, @me_y-9;
+	set @y2, @me_y+9;
+
+	if(@x1 < 0) { set @x1, 0; }
+	if(@x2 > mapwidth() -1) { set @x2, mapwidth() -1; }
+	if(@y1 < 0) { set @y1, 0; }
+	if(@y2 > mapheight()-1) { set @y2, mapheight() -1; }
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			
+			if( validid(@target) && @target != @id)
+			{
+				set @chk_x, callfunc("maxtomincalc", @me_x, @i);
+				set @chk_y, callfunc("maxtomincalc", @me_y, @j);
+				
+				if( @chk_x >= @chk_y )
+				{
+					set @ret, @chk_x;
+				} 
+				else 
+				{
+					set @ret, @chk_y;
+				}
+
+				if(istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					if( spellaethered(@target_sd, "호체주술") )
+					{
+						sound @target, 96;
+						effect @target, 79;
+						message @sd, 3, "마법 보호!!";
+						end;
+					}
+
+					if(ismapoption(@sd, 6) == 1)
+					{
+						if(spellaethered(@target_sd, name2spellid("귀염추혼소")) ||
+						   spellaethered(@target_sd, name2spellid("저주")) ||
+						   spellaethered(@target_sd, name2spellid("극혼술")) ||
+						   spellaethered(@target_sd, name2spellid("혼마술"))) 
+						{
+							continue;
+						}
+
+						effect @target, 79;
+						set_ac @target_sd, get_ac(@target_sd) + 60;
+						spellaether @target_sd, name2spellid("극혼술'첨"), 30;
+						message @target_sd, 3, get_name(@sd) + "님께서 극혼술'첨을 가했습니다.";
+					}
+				}
+				else if(istype(@target) == 2)
+				{
+					if(mobspellaethered(@target, name2spellid("저주")) ||
+					   mobspellaethered(@target, name2spellid("혼마술")) ||
+					   mobspellaethered(@target, name2spellid("극혼술")) ||
+					   mobspellaethered(@target, name2spellid("귀염추혼소")))
+					{
+						continue;
+					}
+
+					effect @target, 79;
+					set_mobac @target, get_mobac(@target) + 60;
+					mobspellaether @target, name2spellid("극혼술'첨"), 425;
+				}
+			}
+		}
+	}
+
+	action @id, 6, 30, 79;
+	spelldelay @sd, name2spellid("극혼술'첨"), 10;
+	set_mp @sd, get_mp(@sd) - 150000;
+}
+
+@극혼술'첨해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_ac @sd, get_ac(@sd) - 60;
+	message @sd, 3, "극혼술'첨해제.";
+}
+
+
+
+@극'파혼술	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	set @target_sd, id2sd(@target_id);
+	if(spellaethered(@target_sd, name2spellid("혼마술")) == 1) {callfunc "UNMAGIC", 30, 49, 77, name2spellid("혼마술"), "극'파혼술"; }
+	else if(spellaethered(@target_sd, name2spellid("귀염추혼소")) == 1) { callfunc "UNMAGIC", 30, 49, 77, name2spellid("귀염추혼소"), "극'파혼술"; }
+	else if(spellaethered(@target_sd, name2spellid("극혼술")) == 1) { callfunc "UNMAGIC", 30, 49, 77, name2spellid("극혼술"), "극'파혼술"; }
+	else if(spellaethered(@target_sd, name2spellid("극혼술'첨")) == 1) { callfunc "UNMAGIC", 30, 49, 77, name2spellid("극혼술'첨"), "극'파혼술"; }
+	else
+	{
+		if(get_mp(@sd) < 30) { message @sd, 3, "마력이 부족합니다"; end; }
+		set_mp @sd, get_mp(@sd) - 30;
+		effect @target_id, 49;
+		action @id, 6, 30, 77;
+	}		
+}
+
+
+@선인의기원	{
+	set @sd, mysd();
+	set @id, myid();
+	set @weapon$, get_equipitem_name(@sd, 0);
+
+	if(get_maxmp(@sd) < 2800000) { callfunc "TARGETHEALMAGICC", 30000, 340000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2200000) { callfunc "TARGETHEALMAGICC", 32000, 350000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2300000) { callfunc "TARGETHEALMAGICC", 34000, 360000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2350000) { callfunc "TARGETHEALMAGICC", 36000, 370000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2400000) { callfunc "TARGETHEALMAGICC", 38000, 380000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2450000) { callfunc "TARGETHEALMAGICC", 40000, 390000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2500000) { callfunc "TARGETHEALMAGICCC", 42000, 400000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2650000) { callfunc "TARGETHEALMAGICCC", 44000, 41000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2700000) { callfunc "TARGETHEALMAGICCC", 46000, 450000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) < 2790000) { callfunc "TARGETHEALMAGICCC", 48000, 480000, 179, 505, "선인의기원"; }
+	else if(get_maxmp(@sd) > 2800000) { callfunc "TARGETHEALMAGICCC", 50000, 500000, 179, 505, "선인의기원"; }
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 5000, (get_maxmp(@sd)/2), 179, 111, "대모홍접선'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "적염곤봉")
+	{
+	if(@rand <= 15)
+	callfunc "TARGETHEALMAGIC", 5000, (get_maxmp(@sd)/2), 173, 111, "적염곤봉'격";
+	}
+}
+
+
+@선인의기원'첨	{
+	set @sd, mysd();
+	set @hp, get_mp(@sd)/12;
+	set @mp, get_mp(@sd)/13;
+	
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0) { set @member_count, @member_count+1; }
+		}
+	}
+	else { set @member_count, 1; }
+
+	set @delay, get_mp(@sd)/(30000*@member_count);
+
+	if(@hp > 100000) { set @hp, 3000000; }
+	if(@mp > 50000) { set @mp, 500000; }
+
+	if(@delay > 7) { spelldelay @sd, name2spellid("선인의기원'첨"), 7; }
+	else if(@delay > 0) { spelldelay @sd, name2spellid("선인의기원'첨"), @delay; }
+	else { spelldelay @sd, name2spellid("화타의술'첨"), 1; }
+	callfunc "CHOMHEALMAGIC", @mp, @hp, 179, 97, "화타의술'첨";
+}
+
+
+@극파력무참	{
+	set @id, myid();
+	set @sd, mysd();
+	callfunc "MANA_DELAY", 0, name2spellid("극파력무참"), @sd;
+	effect @id, 115;
+	action @id, 6, 30, 0;
+	sound @id, 108;
+	message @sd, 3, "극파력무참을 외웠습니다.";
+	spellaether @sd, name2spellid("극파력무참"), 45;
+}
+
+@극파력무참지속	{
+	set @id, myid();
+	set @sd, mysd();
+	set $mucham, $mucham+1;
+	if(spellaethered(@sd, name2spellid("극파력무참")) == 0) { spelluncast @sd, name2spellid("극파력무참"); end; }
+	if($mucham < 2) { end; }
+	else { set $mucham, 0; }
+	
+	set @x1, get_x(@id)-3;
+	set @x2, get_x(@id)+3;
+	set @y1, get_y(@id)-3;
+	set @y2, get_y(@id)+3;
+
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+					if(spellaethered(@target_sd, name2spellid("극파력무참진")) == 0)
+					{
+						effect @target_id, 106;
+						spellaether @target_sd, name2spellid("극파력무참진"), 20;
+						if(@target_id != @id) { message @target_sd, 3, get_name(@sd) + "님이 극파력무참진을 외워주셨습니다."; }
+					}
+				}
+				else if(istype(@target_id) == 2)
+				{
+					effect @target_id, 106;
+				}
+			}
+		}
+	}
+	effect @id, 115;
+	action @id, 6, 30, 0;
+	sound @id, 108;
+}
+
+@극파력무참해제	{
+	set @sd, mysd();
+	set @id, myid();
+	set $mucham, 0;
+	spelldelay @sd, name2spellid("극파력무참"), 30;
+	set $dosa3, callfunc("server_nowtime")+30;//극파력
+	message @sd, 3, "극파력무참 해제.";
+}
+
+@극파력무참진지속	{
+	set @sd, mysd();
+	set @id, myid();
+	if(spellaethered(@sd, name2spellid("극파력무참진")) == 0) { spelluncast @sd, name2spellid("극파력무참진"); end; }
+	else
+	{
+		set $damageup, 1;
+	}
+}
+
+@파괴왕의강림	{
+	set @sd, mysd();
+
+	callfunc "SPELL_MOMENT", 4;
+	callfunc "MANA_DELAY", 30, name2spellid("파괴왕의강림"), @sd;
+	//set_mp @sd, get_mp(@sd) - 30;
+
+	callfunc "allunspell_disguiselook";
+
+	set @name$, script_input(@sd);
+	if(@name$ == "파괴왕") { set @image, 297; set @color, 1; }
+	else
+	{
+		message @sd, 3, "강림 가능한 형태";
+		message @sd, 3, "파괴왕";
+		end;
+	}
+
+	sound @id, 25;
+	effect @id, 3;
+
+	set_disguiselook @sd, @image;
+	set_disguisecolor @sd, @color;
+	set_state @sd, 4;
+
+	set_maxhp @sd, get_maxhp(@sd) + 800000;
+	set_maxmp @sd, get_maxmp(@sd) + 500000;
+
+	updatelookpc @sd, 1;
+
+	spellaether @sd, name2spellid("파괴왕의강림"), 120;
+	message @sd, 3, "파괴왕의강림을 외웠습니다.";
+}
+
+@파괴왕의강림해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_state @sd, 0;
+
+	set_maxhp @sd, get_maxhp(@sd) - 800000;
+	set_maxmp @sd, get_maxmp(@sd) - 500000;
+
+	updatelookpc @sd, 1;
+	spelldelay @sd, name2spellid("파괴왕의강림"), 1800;
+	message @sd, 3, "파괴왕의강림 해제.";
+}
+@전체무력화	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 50000, 0, @sd;
+	set_mp @sd, 0;
+
+	if(#clan_fight_animal$ != "")
+	{
+		if(get_clanname(@sd) == #bird_castle$)
+		{
+			set @penalty, @penalty + 1;
+		}
+		if(get_clanname(@sd) == #turtle_castle$)
+		{
+			set @penalty, @penalty + 1;
+		}
+		if(get_clanname(@sd) == #dragon_castle$)
+		{
+			set @penalty, @penalty + 1;
+		}
+		if(get_clanname(@sd) == #tiger_castle$)
+		{
+			set @penalty, @penalty + 1;
+		}
+
+		if(@penalty == 1) { set @rand, rand(1,150); }
+		else if(@penalty == 2) { set @rand, rand(1,200); }
+		else if(@penalty == 3) { set @rand, rand(1,250); }
+		else if(@penalty == 4) { set @rand, rand(26,27); } //0%
+	}
+	else
+	{
+		set @rand, rand(1,100);
+	}
+
+	if(rand(1, 3) == 1)
+	{
+		spelldelay @sd, name2spellid("전체무력화"), 40;
+		message @sd, 3, "전체무력화를 외우는데 실패하셨습니다.";
+		end;
+	}
+	else
+	{
+		spelldelay @sd, name2spellid("전체무력화"), 220;
+		message @sd, 3, "전체무력화를 외웠습니다.";
+	}
+
+	set @x1, get_x(@id)-5;
+	set @x2, get_x(@id)+5;
+	set @y1, get_y(@id)-5;
+	set @y2, get_y(@id)+5;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target, obj_getxy(@i, @j);
+			if (@target > 0 && @target != @id)
+			{
+				if (istype(@target) == 1)
+				{
+					set @target_sd, id2sd(@target);
+					if(ismapoption(@target_sd, 6))
+					{
+						if(#clan_fight_animal$ != 0)
+						{
+							if(get_clanname(@sd) != get_clanname(@target_sd))
+							{
+								//spelleveryuncast @target_sd;
+								//공통
+								spelluncast @target_sd, 23;
+								spelluncast @target_sd, 24;
+								//전사
+								spelluncast @target_sd, 202;
+								spelluncast @target_sd, 203;
+								spelluncast @target_sd, 204;
+								spelluncast @target_sd, 206;
+								spelluncast @target_sd, 207;
+								spelluncast @target_sd, 208;
+								spelluncast @target_sd, 210;
+								spelluncast @target_sd, 211;
+								spelluncast @target_sd, 212;
+								spelluncast @target_sd, 213;
+								spelluncast @target_sd, 214;
+								spelluncast @target_sd, 225;
+								spelluncast @target_sd, 244;
+								spelluncast @target_sd, 246;
+								//도적
+								spelluncast @target_sd, 402;
+								spelluncast @target_sd, 404;
+								spelluncast @target_sd, 406;
+								spelluncast @target_sd, 407;
+								spelluncast @target_sd, 410;
+								spelluncast @target_sd, 411;
+								spelluncast @target_sd, 412;
+								spelluncast @target_sd, 414;
+								spelluncast @target_sd, 415;
+								spelluncast @target_sd, 421;
+								spelluncast @target_sd, 423;
+								spelluncast @target_sd, 428;
+								spelluncast @target_sd, 430;
+								spelluncast @target_sd, 427;
+								spelluncast @target_sd, 431;
+								spelluncast @target_sd, 434;
+								spelluncast @target_sd, 435;
+								//주술
+								spelluncast @target_sd, 601;
+								spelluncast @target_sd, 604;
+								spelluncast @target_sd, 605;
+								spelluncast @target_sd, 606;
+								spelluncast @target_sd, 608;
+								spelluncast @target_sd, 609;
+								spelluncast @target_sd, 611;
+								spelluncast @target_sd, 612;
+								spelluncast @target_sd, 658;
+								spelluncast @target_sd, 660;
+								spelluncast @target_sd, 666;
+								spelluncast @target_sd, 667;
+								spelluncast @target_sd, 668;
+								spelluncast @target_sd, 670;
+								spelluncast @target_sd, 672;
+								spelluncast @target_sd, 673;
+								spelluncast @target_sd, 674;
+								//도사
+								spelluncast @target_sd, 802;
+								spelluncast @target_sd, 803;
+								spelluncast @target_sd, 805;
+								spelluncast @target_sd, 806;
+								spelluncast @target_sd, 814;
+								spelluncast @target_sd, 815;
+								spelluncast @target_sd, 817;
+								spelluncast @target_sd, 820;
+								spelluncast @target_sd, 821;
+								spelluncast @target_sd, 822;
+								spelluncast @target_sd, 823;
+								spelluncast @target_sd, 824;
+								spelluncast @target_sd, 825;
+								spelluncast @target_sd, 844;
+								spelluncast @target_sd, 845;
+								spelluncast @target_sd, 846;
+								spelluncast @target_sd, 856;
+								spelluncast @target_sd, 857;
+								spelluncast @target_sd, 858;
+								spelluncast @target_sd, 862;
+								spelluncast @target_sd, 863;
+								spelluncast @target_sd, 864;
+								spelluncast @target_sd, 866;
+								spelluncast @target_sd, 867;
+
+								if($muryukhwa == 1)
+								{
+									//전사
+									spelluncast @target_sd, 1201;
+									spelluncast @target_sd, 1202;
+									spelluncast @target_sd, 1203;
+									spelluncast @target_sd, 1204;
+									spelluncast @target_sd, 1205;
+									spelluncast @target_sd, 1206;
+									spelluncast @target_sd, 1207;
+									spelluncast @target_sd, 1208;
+									spelluncast @target_sd, 1209;
+									spelluncast @target_sd, 1210;
+									spelluncast @target_sd, 1211;
+									spelluncast @target_sd, 1212;
+									spelluncast @target_sd, 1213;
+									spelluncast @target_sd, 1214;
+									spelluncast @target_sd, 1215;
+									spelluncast @target_sd, 1216;
+									spelluncast @target_sd, 1217;
+									spelluncast @target_sd, 1218;
+									spelluncast @target_sd, 1232;
+									spelluncast @target_sd, 3065;
+									spelluncast @target_sd, 3068;
+
+									//도적
+									spelluncast @target_sd, 452;
+									spelluncast @target_sd, 3066;
+									spelluncast @target_sd, 3069;
+
+									//주술사
+									spelluncast @target_sd, 1601;
+									spelluncast @target_sd, 1602;
+									spelluncast @target_sd, 1603;
+									spelluncast @target_sd, 1604;
+									spelluncast @target_sd, 1605;
+									spelluncast @target_sd, 1606;
+									spelluncast @target_sd, 1607;
+									spelluncast @target_sd, 1608;
+									spelluncast @target_sd, 1609;
+									spelluncast @target_sd, 1610;
+									spelluncast @target_sd, 1611;
+									spelluncast @target_sd, 1612;
+									spelluncast @target_sd, 3067;
+									spelluncast @target_sd, 3070;
+
+									//도사
+									if(rand(1, 100) <= 25) { spelluncast @target_sd, 1810; }
+
+								}
+							}
+							effect @target, 10;
+							sound @target, 85;
+						}
+						else
+						{
+							spelleveryuncast @target_sd;
+						}
+						
+					}
+					else
+					{
+						message @sd, 3, "PK지역이 아닙니다.";
+						end;
+					}
+				}
+			}
+		}
+	}
+	action @id, 6, 30, 0;
+}

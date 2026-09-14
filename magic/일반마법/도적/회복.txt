@@ -1,0 +1,67 @@
+@운기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("운기"), @sd;
+	
+	set $ungi_x, get_x(@id);
+	set $ungi_y, get_y(@id);
+	
+	//callfunc "BEGINFUNC", 0, 0, name2spellid("운기"), 10, 0, 0;
+	spellaether @sd, name2spellid("운기"), 11;
+}
+
+@운기지속	{
+	set @id, myid();
+	set @sd, mysd();
+	
+	if(spellaethered(@sd, name2spellid("운기")) == 0) { end; }
+	else if(get_x(@id) != $ungi_x || get_y(@id) != $ungi_y ) { spelluncast @sd, name2spellid("운기"); end; }
+	
+	callfunc "BEGINFUNC", 133, 2, 0, 0, 6, 0;
+	if(get_maxmp(@sd) < (get_mp(@sd) + (get_puremp(@sd)/10))) { set_mp @sd, get_maxmp(@sd); }
+	else { set_mp @sd, get_mp(@sd) + (get_puremp(@sd)/10); }
+}
+
+@운기해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	message @sd, 3, "운기 해제.";
+}
+
+@전혈	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 0, name2spellid("전혈"), @sd;
+
+	set $junblood, get_maxhp(@sd);
+	set_maxhp @sd, get_maxhp(@sd)+get_mp(@sd)*2;
+	set_hp @sd, get_hp(@sd)+get_mp(@sd)*2;
+	set_mp @sd, 0;
+	action @id, 6, 30, 0;
+	effect @id, 136;
+	sound @id, 7;
+
+	spellaether @sd, name2spellid("전혈"), 15;
+	message @sd, 3, "전혈을 외웠습니다.";
+}
+
+@전혈해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_maxhp @sd, $junblood;
+	if(get_hp(@sd) > $junblood)
+	{
+		set_hp @sd, $junblood;
+	}
+	set $junblood, 0;
+	spelldelay @sd, name2spellid("전혈"), 50;
+	message @sd, 3, "전혈 해제.";
+}
+
+@개혈체식	{
+	callfunc "MYHEALMAGIC", 10000, 10000, 163, 61, "개혈체식";
+}

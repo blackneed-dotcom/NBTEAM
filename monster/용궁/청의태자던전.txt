@@ -1,0 +1,37 @@
+@청룡마령참	{
+	set @id, objid();
+	set @rand, rand(1, 20);
+
+	if(@rand <= 5)
+	{
+		if($blue_dragon == 0)
+		{
+			set @target_id, get_mobtarget(@id);
+			if(@target_id > 0 && istype(@target_id) == 1)
+			{
+				set $blue_dragon, 1;
+				set @target_sd, id2sd(@target_id);
+
+				say @id, 0, get_mobname(@id) + ": 여의주의 힘을 받은 용이여..";
+				sleep(1000);
+				say @id, 0, get_mobname(@id) + ": 그대 이름은 청룡일지다...";
+				sleep(1000);
+				say @id, 0, get_mobname(@id) + ": 나 청의태자의 이름으로 말하노니...";
+				sleep(1000);
+				say @id, 0, get_mobname(@id) + ": 네 포효를 적에게 발산하라!!";
+				sleep(1000);
+				say @id, 0, get_mobname(@id) + ": 청룡마령참~~!!";
+
+				set $blue_dragon, 0;
+
+				effect @target_id, 137;
+				action @id, 3, 30, 8;
+				sound @target_id, 8;
+
+				message @target_sd, 3, get_mobname(@id) + "가 청룡마령참을 가합니다.";
+
+				damage @id, @target_id, rand(12000000, 13000000), 0;
+			}
+		}
+	}	
+}

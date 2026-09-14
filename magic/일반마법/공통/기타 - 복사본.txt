@@ -1,0 +1,1614 @@
+@보상지급	{
+	set @sd, mysd();
+	set @id, myid();
+item:
+	set @time, @time +1;
+	if(@time >= 3600)
+	{
+		for(set @i, 0; @i < 1001; set @i, @i +1)
+		{
+			if(countitem(name2itemid(추억윤도조각)) < @i)
+			{
+				break;
+			}
+		}
+		for(set @r, 0; @r < 1001; set @r, @r +1)
+		{
+			if(countitem(name2itemid(십억경)) < @r)
+			{
+				break;
+			}
+		}
+		set @time, 0;
+		set @hour, @hour +1;
+		additem @sd, name2itemid("추억윤도조각"), 1;
+		for(set @a, 0; @a < 1001; set @a, @a +1)
+		{
+			if(countitem(name2itemid(추억윤도조각)) < @a)
+			{
+				break;
+			}
+		}
+		if(@i != @a)
+		{
+			set @hit, @a - @i;
+			for(set @loop, 0; @loop < @hit; set @loop, @loop+1)
+			{
+				delitem @sd, name2itemid("추억윤도조각"), 1;
+			}
+		}
+		if(get_level(@sd) >= 99) 
+		{ 
+			additem @sd, name2itemid("십억경"), 1;
+			for(set @b, 0; @b < 1001; set @b, @b +1)
+			{
+				if(countitem(name2itemid(추억윤도조각)) < @b)
+				{
+					break;
+				}
+			}
+			if(@r != @b)
+			{
+				set @hit2, @b - @r;
+				for(set @loop, 0; @loop < @hit2; set @loop, @loop+1)
+				{
+					delitem @sd, name2itemid("추억윤도조각"), 1;
+				}
+			} 
+		}
+		message @sd, 0, "접속 후, "+@hour+"시간이 경과하여 접속보상이 지급되었습니다.";
+	}
+	sleep 1000;
+	goto item;
+}
+
+@남팀패배	{
+	broadcast 5, " 북팀이 승리하였습니다!";
+	set #ev_bat_team_w, 2;
+	set #event_battle_round, 0;
+
+	set $southandnorth, 1;
+	//deletemob objid(), mapid();
+}
+
+@북팀패배	{
+	broadcast 5, " 남팀이 승리하였습니다!";
+	set #ev_bat_team_w, 1;
+	set #event_battle_round, 0;
+
+	set $southandnorth, 1;
+	//deletemob objid(), mapid();
+}
+@남북소속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	//공정하게 설정하기
+	if(get_job(@sd) == 1 || get_job(@sd) == 2)
+	{
+		set_maxhp @sd, 1400000;
+		set_maxmp @sd, 100000;
+		set_hp @sd, 1400000;
+		set_mp @sd, 100000;
+	}
+	else if(get_job(@sd) == 3)
+	{
+		set_maxhp @sd, 650000;
+		set_maxmp @sd, 900000;
+		set_hp @sd, 650000;
+		set_mp @sd, 900000;
+	}
+	else
+	{
+		set_maxhp @sd, 600000;
+		set_maxmp @sd, 750000;
+		set_hp @sd, 600000;
+		set_mp @sd, 750000;
+	}
+
+	if($ev_bat_team == 1) { spellaether @sd, name2spellid("남팀소속"), 1800; }
+	else if($ev_bat_team == 2) { spellaether @sd, name2spellid("북팀소속"), 1800; }
+}
+
+@남북소속지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(#event_battle_round == 0)
+	{
+		set $ev_bat_team, 0;
+		spelluncast @sd, name2spellid("남팀소속");
+		spelluncast @sd, name2spellid("북팀소속");
+	}
+	else
+	{
+		if(mapid() >=  43691 && mapid() <= 43702)
+		{
+			if(get_state(@sd) != 2)
+			{
+				if($ev_bat_team == 1) { effect @id, 210; }
+				else if($ev_bat_team == 2) { effect @id, 200; }
+			}
+
+			if(get_maxhp(@sd) < get_hp(@sd)) { set_hp @sd, get_maxhp(@sd); }
+			if(get_maxmp(@sd) < get_maxmp(@sd)) { set_mp @sd, get_maxmp(@sd); }
+
+		}
+		else
+		{
+			set $ev_bat_team, 0;
+			spelluncast @sd, name2spellid("남팀소속");
+			spelluncast @sd, name2spellid("북팀소속");
+		}
+	}
+}	
+
+@남북소속해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(#ev_battle_delete == 1) { warp @sd, 22, rand(195,205), rand(105,115); end; }
+	if(get_state(@sd) != 1)
+	{
+		if(#event_battle_round == 1)
+		{
+			if(mapid() >=  43691 && mapid() <= 43702)
+			{
+				if($ev_bat_team == 1) { spellcast @sd, name2spellid("남팀소속"); }
+				else if($ev_bat_team == 2) { spellcast @sd, name2spellid("북팀소속"); }
+			}
+		}
+		else
+		{
+
+			//승리팀 십억경 지급
+			if($southandnorth == 1)
+			{
+				if(get_joblevel(@sd) == 0) { set $saveexp_p, $saveexp_p+5; set @exp_p, 5; }
+				else if(get_joblevel(@sd) == 1) { set $saveexp_p, $saveexp_p+6; set @exp_p, 6; }
+				else if(get_joblevel(@sd) == 2) { set $saveexp_p, $saveexp_p+8; set @exp_p, 8; }
+				else if(get_joblevel(@sd) == 3) { set $saveexp_p, $saveexp_p+10; set @exp_p, 10; }
+				else if(get_joblevel(@sd) == 4) { set $saveexp_p, $saveexp_p+20; set @exp_p, 20; }
+
+				set $southandnorth, 0;
+				set @win_check$, "승리하여";
+			}
+			else
+			{
+				if(get_joblevel(@sd) == 0) { set $saveexp_p, $saveexp_p+2; set @exp_p, 2; }
+				else if(get_joblevel(@sd) == 1) { set $saveexp_p, $saveexp_p+3; set @exp_p, 3; }
+				else if(get_joblevel(@sd) == 2) { set $saveexp_p, $saveexp_p+4; set @exp_p, 4; }
+				else if(get_joblevel(@sd) == 3) { set $saveexp_p, $saveexp_p+5; set @exp_p, 5; }
+				else if(get_joblevel(@sd) == 4) { set $saveexp_p, $saveexp_p+10; set @exp_p, 10; }
+
+				set @win_check$, "패배하였지만";
+			}
+
+			message @sd, 5, "[남북대전] 게임에서 "+@win_check$+" 십억경 "+@exp_p+"개를 지급받았습니다.";
+			message @sd, 8, "[남북대전]\\n\\n부여/고구려 영혼사의 십억경 교환 엔피시를 통하여 체력과 마력을 구매할 수 있습니다.";
+			message @sd, 3, "현재 십억경 : "+$saveexp_p;
+
+			warp @sd, 22, rand(195,205), rand(105,115);
+
+			set #ev_bat_team_w, 0;
+		}
+	}
+}
+보내주기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, dialog(0, 0, 1, "이동합니다.");
+
+	if(#event_battle_round == 1)
+	{
+		set_state @sd, 0;
+		updatelookpc @sd, 1;
+
+		if($ev_bat_team == 1) { spellcast @sd, name2spellid("남팀소속"); warp @sd, name2mapid("남팀진영"), rand(8, 19), rand(83, 87); }
+		else if($ev_bat_team == 2) { spellcast @sd, name2spellid("북팀소속"); warp @sd, name2mapid("북팀진영"), rand(6, 21), rand(11, 20); }
+	}
+	else
+	{
+		warp @sd, 15, rand(195,205), rand(105,115);
+	}
+}
+
+@반짝반짝	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem_name(@sd, 1) == "남자설빔" || get_equipitem_name(@sd, 1) == "여자설빔") { effect @id, 133; }
+	else { effect @id, 130; }
+}
+
+@국적변경비령	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_nation(@sd) == 2) { set @nation$, "고구려"; }
+	else { set @nation$, "부여"; }
+
+	set @list, list1("정말 " + @nation$ + " 으로 국적을 변경할래?", "변경합니다.", "변경하지않습니다.");
+	if(@list == 1)
+	{
+		if(@nation$ == "고구려") { set_nation @sd, 1; }
+		else { set_nation @sd, 2; }
+
+		delitem @sd, name2itemid("국적변경비령"), 1;
+		message @sd, 0, "변경되었음";
+	}
+}
+
+//@초심자노리개	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(mapid() == 1781 || mapid() == 908 || mapid() == 915 || mapid() == 1792 || mapid() == 1798 || mapid() == 1781 || mapid() == 1808 || mapid() == 924)
+	{
+		message @sd, 3, "사용할 수 없습니다.";
+	}
+
+	callfunc "MANA_DELAY", 0, name2spellid("초심자노리개"), @sd;
+
+	set $concentration, 1;
+	spellaether @sd, name2spellid("초심자노리개"), 10;
+}
+
+//@초심자노리개지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(mapid() == 1781 || mapid() == 908 || mapid() == 915 || mapid() == 1792 || mapid() == 1798 || mapid() == 1781 || mapid() == 1808 || mapid() == 924)
+	{
+		message @sd, 3, "사용할 수 없습니다.";
+	}
+	if(!$concentration) { end; }
+
+	if(get_maxhp(@sd) < (get_hp(@sd) + (get_purehp(@sd)/100*10))) { set_hp @sd, get_maxhp(@sd); }
+	else { set_hp @sd, get_hp(@sd) + (get_purehp(@sd)/100*10); }
+
+
+	effect @id, 77;
+}
+
+//@초심자노리개해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(mapid() == 1781 || mapid() == 908 || mapid() == 915 || mapid() == 1792 || mapid() == 1798 || mapid() == 1781 || mapid() == 1808 || mapid() == 924)
+	{
+		message @sd, 3, "사용할 수 없습니다.";
+	}
+
+	set $concentration, 0;
+
+	spellcast @sd, (name2spellid("초심자노리개"));
+}
+
+@이벤트딜레이	{
+	set @sd, mysd();
+	set @time, callfunc("Server_Nowtime");
+	if($gigan_time < @time)
+	{
+		set_unequipitem2 @sd, 0;
+		if(checkitem(@sd, name2itemid("[기간]용마제칠검")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용천제칠검")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용랑제칠봉")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용겸제칠봉")) == 1)
+		delitem @sd, name2itemid("[기간]용마제칠검"), 1;
+		delitem @sd, name2itemid("[기간]용천제칠검"), 1;
+		delitem @sd, name2itemid("[기간]용랑제칠봉"), 1;
+		delitem @sd, name2itemid("[기간]용겸제칠봉"), 1;
+		message @sd, 3, "이벤트무기 기간이 만료되었습니다.";
+		end;
+	}
+	else
+	{
+		spellaether @sd, name2spellid("이벤트딜레이"), ($gigan_time - @time);
+	}
+}
+
+
+@이벤트딜레이지속	{
+	set @sd, mysd();
+	set @time, callfunc("Server_Nowtime");
+	if($gigan_time < @time)
+	{
+		set_unequipitem2 @sd, 0;
+		if(checkitem(@sd, name2itemid("[기간]용마제칠검")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용천제칠검")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용랑제칠봉")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용겸제칠봉")) == 1)
+		delitem @sd, name2itemid("[기간]용마제칠검"), 1;
+		delitem @sd, name2itemid("[기간]용천제칠검"), 1;
+		delitem @sd, name2itemid("[기간]용랑제칠봉"), 1;
+		delitem @sd, name2itemid("[기간]용겸제칠봉"), 1;
+		message @sd, 3, "이벤트무기 기간이 만료되었습니다.";
+		end;
+	}
+}
+
+@이벤트딜레이해제	{
+	set @sd, mysd();
+	set @time, callfunc("Server_Nowtime");
+	if($gigan_time > @time)
+	{
+		spellcast @sd, name2spellid("이벤트딜레이");
+	}
+	else
+	{
+		set @sd, mysd();
+		set_damagedrate @sd, 0;
+		set_unequipitem2 @sd, 0;
+		if(checkitem(@sd, name2itemid("[기간]용마제칠검")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용천제칠검")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용랑제칠봉")) == 1)
+		if(checkitem(@sd, name2itemid("[기간]용겸제칠봉")) == 1)
+		delitem @sd, name2itemid("[기간]용마제칠검"), 1;
+		delitem @sd, name2itemid("[기간]용천제칠검"), 1;
+		delitem @sd, name2itemid("[기간]용랑제칠봉"), 1;
+		delitem @sd, name2itemid("[기간]용겸제칠봉"), 1;
+		message @sd, 3, "이벤트무기 기간이 만료되었습니다.";
+		end;
+	}
+}
+
+@말타기	{
+	set @sd, mysd();
+	set @id, myid();
+	set @time, callfunc("Server_Nowtime");
+	if($horse_timeset > @time)
+	{
+		set @pos, dialog(0, 0, 0, ($horse_timeset-@time) + "초 후에 쓸 수 있습니다.");
+		end;
+	}
+	set_state @sd, 3;
+	set_horse @sd, 1;
+	updatelookpc @sd, 1;
+	spellaether @sd, name2spellid("말타기"), 3600;
+}
+
+@말타기지속	{
+	set @sd, mysd();
+	set @id, myid();
+	set @time, callfunc("Server_Nowtime");
+	if(get_state(@sd) != 3)
+	{
+		set $horse_timeset, @time+300;
+		spelluncast @sd, name2spellid("말타기");
+	}
+}
+
+@말타기해제	{
+	set @sd, mysd();
+	set @id, myid();
+	set @time, callfunc("Server_Nowtime");
+	set_state @sd, 0;
+	set_horse @sd, 0;
+	updatelookpc @sd, 1;
+	set $horse_timeset, @time+10;
+	message @sd, 3, "말타기 해제.";
+}
+
+@자동귀환	{
+	set @sd, mysd();
+	set @id, myid();
+}
+@자동귀환해제	{
+	set @sd, mysd();
+	set @id, myid();
+	message @sd, 3, "귀환 되었습니다.";
+	warp @sd, 15, 24, 10; //귀환하고싶은 장소지정
+}
+
+@십억경자동변환지속	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	updatestatus @sd, 2; //상태창 업데이트
+	//message @sd, 3, "적용중..";
+	set @need_money, 150;
+	set @my_money, get_money(@sd);
+	set @exp, get_exp(@sd);// 현재 갖고있는 경험치
+
+	if(countitem(name2itemid("십억경")) == 1000) // 십억경 갯수로 2차 체크
+	{
+		message @sd, 3, "십억경 한도 초과.";
+		end;
+	}
+	// 돈복사가 우려되므로 아래에서 금전 체크 후 처리
+	if(@exp < 0 && @exp < (-1147483648)){ // 중간 음수처리
+		if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+		else {set_money @sd, @my_money - @need_money;}
+		set_exp @sd, @exp + 2147483648 - 1000000000;
+		additem @sd, name2itemid("십억경"), 1;
+		updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp > 0 && @exp >= 1000000000){ // 양수 처리
+		if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+		else {set_money @sd, @my_money - @need_money;}
+		set_exp @sd, @exp - 1000000000;
+		additem @sd, name2itemid("십억경"), 1;
+		updatestatus @sd, 2; //상태창 업데이트
+	}
+	else if(@exp < 0 && @exp >= (-1147483648)){ // 나머지 음수 처리
+		if(@my_money < @need_money) {message @sd, 3, "금전이 부족합니다."; end;}
+		else {set_money @sd, @my_money - @need_money;}
+		set_exp @sd, @exp - 1000000000;
+		additem @sd, name2itemid("십억경"), 1;
+		updatestatus @sd, 2; //상태창 업데이트
+	}
+}
+
+@비영사천문	{
+	set @sd, mysd();
+	set @id, myid();
+	set @rand_x, rand(0, 2);
+	set @rand_y, rand(0, 2);
+	set @parent_map, get_parentmap(@sd);
+
+	action @id, 6, 30, 0;
+	sound @id, 1;
+
+	if(spellaethered(@sd, name2spellid("차폐")) == 1) { spelluncast @sd, name2spellid("차폐"); }
+
+	if(@parent_map == 22) /*국내성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("국내성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("국내성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("국내성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("국내성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3178) /*고구려평양성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려평양성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려평양성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려평양성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려평양성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3176) /*고구려졸본성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려졸본성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려졸본성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려졸본성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려졸본성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3174) /*고구려숙군성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려숙군성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려숙군성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려숙군성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려숙군성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3173) /*고구려선양성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려선양성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려선양성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려선양성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려선양성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3177) /*고구려집안성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려집안성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려집안성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려집안성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려집안성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3172) /*고구려산해관*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려산해관"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려산해관"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려산해관"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려산해관"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3170) /*고구려신성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려신성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려신성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려신성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려신성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3175) /*고구려용성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려용성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려용성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려용성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려용성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3179) /*고구려후연성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려후연성"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려후연성"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려후연성"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려후연성"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3171) /*고구려개주*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고구려개주"), 205+@rand_x, 106+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고구려개주"), 14+@rand_x, 106+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고구려개주"), 108+@rand_x, 211+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고구려개주"), 108+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 14) /*부여성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 2263) /*동부여성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("동부여성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("동부여성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("동부여성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("동부여성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3199) /*부여송원성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여송원성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여송원성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여송원성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여송원성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3200) /*부여장훈성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여장훈성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여장훈성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여장훈성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여장훈성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3201) /*부여읍루성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여읍루성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여읍루성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여읍루성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여읍루성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3202) /*부여만번한성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여만번한성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여만번한성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여만번한성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여만번한성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3203) /*부여천안궁성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여천안궁성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여천안궁성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여천안궁성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여천안궁성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3204) /*부여상곡성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여상곡성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여상곡성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여상곡성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여상곡성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3204) /*부여상곡성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여상곡성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여상곡성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여상곡성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여상곡성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3205) /*부여어양성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여어양성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여어양성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여어양성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여어양성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3206) /*부여관령성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여관령성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여관령성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여관령성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여관령성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 3207) /*부여범안성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("부여범안성"), 136+@rand_x, 87+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("부여범안성"), 7+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("부여범안성"), 75+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("부여범안성"), 73+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 632) /*12지신의유적*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("12지신의유적"), 54+@rand_x, 31+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("12지신의유적"), 6+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("12지신의유적"), 28+@rand_x, 49+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("12지신의유적"), 28+@rand_x, 4+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1948) /*PK12지신의유적*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("PK12지신의유적"), 54+@rand_x, 31+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("PK12지신의유적"), 6+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("PK12지신의유적"), 28+@rand_x, 49+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("PK12지신의유적"), 28+@rand_x, 4+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 673) /*대방성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("대방성"), 138+@rand_x, 73+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("대방성"), 9+@rand_x, 72+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("대방성"), 71+@rand_x, 147+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("대방성"), 74+@rand_x, 7+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 862) /*장안성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("장안성"), 237+@rand_x, 113+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("장안성"), 10+@rand_x, 112+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("장안성"), 118+@rand_x, 236+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("장안성"), 115+@rand_x, 7+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 861) /*현도성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("현도성"), 138+@rand_x, 72+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("현도성"), 9+@rand_x, 72+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("현도성"), 71+@rand_x, 141+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("현도성"), 73+@rand_x, 7+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 927) /*광동성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("광동성"), 187+@rand_x, 94+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("광동성"), 10+@rand_x, 90+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("광동성"), 93+@rand_x, 186+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("광동성"), 95+@rand_x, 7+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 14500 || @parent_map == 976) /*복건성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("복건성"), 138+@rand_x, 72+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("복건성"), 9+@rand_x, 72+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("복건성"), 71+@rand_x, 139+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("복건성"), 72+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 926) /*강서성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("강서성"), 137+@rand_x, 72+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("강서성"), 9+@rand_x, 72+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("강서성"), 71+@rand_x, 141+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("강서성"), 73+@rand_x, 6+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 860) /*낙양성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("낙양성"), 207+@rand_x, 97+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("낙양성"), 9+@rand_x, 100+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("낙양성"), 104+@rand_x, 205+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("낙양성"), 108+@rand_x, 7+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1836) /*일본신궁*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("일본신궁"), 194+@rand_x, 62+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("일본신궁"), 20+@rand_x, 95+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("일본신궁"), 137+@rand_x, 169+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("일본신궁"), 115+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1837) /*일본표신궁*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("일본표신궁"), 100+@rand_x, 60+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("일본표신궁"), 20+@rand_x, 85+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("일본표신궁"), 56+@rand_x, 104+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("일본표신궁"), 88+@rand_x, 4+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1596) /*고균도*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("고균도"), 190+@rand_x, 22+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("고균도"), 15+@rand_x, 125+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("고균도"), 188+@rand_x, 157+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("고균도"), 87+@rand_x, 10+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1648) /*가릉도*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("가릉도"), 123+@rand_x, 96+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("가릉도"), 19+@rand_x, 83+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("가릉도"), 74+@rand_x, 130+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("가릉도"), 113+@rand_x, 15+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1698) /*폭염도*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("폭염도"), 173+@rand_x, 74+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("폭염도"), 21+@rand_x, 88+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("폭염도"), 118+@rand_x, 182+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("폭염도"), 95+@rand_x, 22+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1059) /*도삭산100층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산100층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산100층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산100층상점"), 29+@rand_x, 43+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산100층상점"), 29+@rand_x, 3+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1079) /*도삭산200층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산200층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산200층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산200층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산200층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1099) /*도삭산300층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산300층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산300층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산300층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산300층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1119) /*도삭산400층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산400층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산400층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산400층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산400층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1139) /*도삭산500층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산500층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산500층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산500층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산500층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1159) /*도삭산600층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산600층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산600층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산600층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산600층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1179) /*도삭산700층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산700층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산700층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산700층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산700층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1279) /*도삭산800층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산800층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산800층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산800층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산800층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1379) /*도삭산900층상점*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("도삭산900층상점"), 48+@rand_x, 33+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("도삭산900층상점"), 9+@rand_x, 21+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("도삭산900층상점"), 30+@rand_x, 44+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("도삭산900층상점"), 30+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 908) /*용궁*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("용궁"), 122+@rand_x, 50+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("용궁"), 18+@rand_x, 73+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("용궁"), 75+@rand_x, 64+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("용궁"), 67+@rand_x, 2+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 53331) /*백두촌*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("백두촌"), 53+@rand_x, 32+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("백두촌"), 7+@rand_x, 26+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("백두촌"), 31+@rand_x, 52+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("백두촌"), 22+@rand_x, 8+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 53131) /*신수신전*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("신수신전"), 42+@rand_x, 22+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("신수신전"), 9+@rand_x, 23+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("신수신전"), 24+@rand_x, 39+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("신수신전"), 25+@rand_x, 9+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 53408) /*위례성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("위례성"), 142+@rand_x, 51+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("위례성"), 11+@rand_x, 51+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("위례성"), 78+@rand_x, 89+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("위례성"), 32+@rand_x, 13+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 1763) /*길림성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("길림성"), 181+@rand_x, 89+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("길림성"), 45+@rand_x, 125+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("길림성"), 131+@rand_x, 189+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("길림성"), 15+@rand_x, 8+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 53418) /*대초원*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("대초원"), 201+@rand_x, 89+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("대초원"), 9+@rand_x, 104+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("대초원"), 109+@rand_x, 189+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("대초원"), 109+@rand_x, 9+@rand_y; set @door$, "북"; }
+	}
+	else if(@parent_map == 53154) /*둔귀촌*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("둔귀촌"), 51+@rand_x, 41+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("둔귀촌"), 5+@rand_x, 25+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("둔귀촌"), 31+@rand_x, 58+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("둔귀촌"), 32+@rand_x, 8+@rand_y; set @door$, "북"; }
+	}		
+	else if(@parent_map == 15181) /*신부여성*/
+	{
+		if( !strcmp(script_input(@sd), "동") || !strcmp(script_input(@sd), "1") )
+		{ warp @sd, name2mapid("신부여성동쪽"), 107+@rand_x, 143+@rand_y; set @door$, "동"; }
+		else if( !strcmp(script_input(@sd), "서") || !strcmp(script_input(@sd), "2") )
+		{ warp @sd, name2mapid("신부여성서쪽"), 92+@rand_x, 92+@rand_y; set @door$, "서"; }
+		else if( !strcmp(script_input(@sd), "남") || !strcmp(script_input(@sd), "3") )
+		{ warp @sd, name2mapid("신부여성남쪽"), 83+@rand_x, 142+@rand_y; set @door$, "남"; } 
+		else if( !strcmp(script_input(@sd), "북") || !strcmp(script_input(@sd), "4") )
+		{ warp @sd, name2mapid("신부여성북쪽"), 83+@rand_x, 97+@rand_y; set @door$, "북"; }
+	}
+
+	if(@door$ == "동" || @door$ == "서" || @door$ == "남" || @door$ == "북") { message @sd, 3, @door$ + "문에 이르렀으니..."; }
+}
+
+@성황령	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	if(get_state(@sd) == 1)
+	{
+		set @rand_x, rand(0, 2);
+		set @rand_y, rand(0, 2);
+		set @parent_map, get_parentmap(@sd);
+
+		if(@parent_map == 3178) /*평양성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("평양좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("평양우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		if(@parent_map == 53408) /*위례성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("위례성"), 23+@rand_x, 29+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("위례성"), 23+@rand_x, 29+@rand_y; }
+		}
+		if(@parent_map == 53154) /*둔귀촌*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("둔귀촌"), 58+@rand_x, 9+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("둔귀촌"), 58+@rand_x, 9+@rand_y; }
+		}
+		else if(@parent_map == 3176) /*졸본성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("졸본좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("졸본우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3174) /*숙군성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("숙군좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("숙군우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3173) /*선양성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("선양좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("선양우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3177) /*집안성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("집안좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("집안우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3172) /*산해관*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("산해관좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("산해관우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3170) /*신성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("신성좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("신성우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3175) /*용성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("용성좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("용성우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3179) /*후연성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("후연좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("후연우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3171) /*개주*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("개주좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("개주우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 2263) /*동부여성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("동부여좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("동부여우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3199) /*송원성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("송원좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("송원우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3200) /*장훈성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("장훈좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("장훈우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3201) /*읍루성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("읍루좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("읍루우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3202) /*만번한성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("만번한좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("만번한우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3203) /*천안궁성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("천안궁좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("천안궁우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3204) /*상곡성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("상곡좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("상곡우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3205) /*어양성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("어양좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("어양우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3206) /*관령성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("관령좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("관령우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 3207) /*범안성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("범안좌성황"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("범안우성황"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 1836) /*일본신궁*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("일본좌성황"), 4+@rand_x, 3+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("일본우성황"), 4+@rand_x, 3+@rand_y; }
+		}
+		else if(@parent_map == 967) /*상해*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("상해좌성황"), 4+@rand_x, 3+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("상해우성황"), 4+@rand_x, 3+@rand_y; }
+		}
+		else if(@parent_map == 861) /*현도성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("현도성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("현도성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 14500 || @parent_map == 976) /*복건성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("복건성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("복건성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 927) /*광동성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("광동성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("광동성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 926) /*강서성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("강서성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("강서성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 862) /*장안성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("장안성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("장안성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 860) /*낙양성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("낙양성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("낙양성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 673) /*대방성*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("대방성좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("대방성우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1648) /*가릉도*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("가릉도좌성황"), 6+@rand_x, 10+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("가릉도우성황"), 6+@rand_x, 10+@rand_y; }
+		}
+		else if(@parent_map == 1596) /*고균도*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("고균도좌성황"), 6+@rand_x, 10+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("고균도우성황"), 6+@rand_x, 10+@rand_y; }
+		}
+		else if(@parent_map == 1698) /*폭염도*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("폭염도좌성황"), 6+@rand_x, 10+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("폭염도우성황"), 6+@rand_x, 10+@rand_y; }
+		}
+		else if(@parent_map == 2952) /*북극마을*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("북극성황당"), 5+@rand_x, 4+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("북극성황당"), 5+@rand_x, 4+@rand_y; }
+		}
+		else if(@parent_map == 1059) /*도삭산100층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산100층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산100층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1079) /*도삭산200층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산200층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산200층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1099) /*도삭산300층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산300층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산300층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1119) /*도삭산400층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산400층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산400층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1139) /*도삭산500층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산500층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산500층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1159) /*도삭산600층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산600층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산600층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1179) /*도삭산700층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산700층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산700층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1279) /*도삭산800층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산800층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산800층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else if(@parent_map == 1379) /*도삭산900층*/
+		{
+			if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+			{ warp @sd, name2mapid("도삭산900층좌성황"), 9+@rand_x,11+@rand_y; }
+			else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+			{ warp @sd, name2mapid("도삭산900층우성황"), 9+@rand_x,11+@rand_y; }
+		}
+		else
+		{
+			if(get_nation(@sd) == 1) /*고구려인*/
+			{
+				if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+				{ warp @sd, name2mapid("고구려좌성황"), 5+@rand_x, 4+@rand_y; }
+				else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+				{ warp @sd, name2mapid("고구려우성황"), 5+@rand_x, 4+@rand_y; }
+			}
+			else /*부여인*/
+			{
+				if( !strcmp(script_input(@sd), "좌") || !strcmp(script_input(@sd), "1") )
+				{ warp @sd, name2mapid("부여좌성황"), 5+@rand_x, 4+@rand_y; }
+				else if( !strcmp(script_input(@sd), "우") || !strcmp(script_input(@sd), "2") )
+				{ warp @sd, name2mapid("부여우성황"), 5+@rand_x, 4+@rand_y; }
+			}
+		}
+	}
+	else { message @sd, 3, "인간은 쓸 수 없음이니..."; }
+}
+
+@출두	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set_mp @sd, get_mp(@sd)-30;
+
+	set @target_id, name2id(script_input(@sd));
+	if(@target_id > 0 && istype(@target_id) == 1)
+	{
+		set @target_sd, name2sd(script_input(@sd));
+		if(@target_sd == @sd) { message @sd, 3, "나 자신을 출두할 수 없습니다."; end; }
+		if(get_level(@sd) > get_level(@target_sd) && get_nation(@sd) == get_nation(@target_sd) && get_mapid(@sd) == get_mapid(@target_sd) && ismapoption(@sd, 5) != 1 && get_will(@sd) > get_will(@target_sd))
+		{
+			effect @id, 16;
+			sound @id, 29;
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @id, 1;
+					break;
+				}
+				if( !canmove(@id, get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y) ) { goto LOOP; }
+			}
+LOOP:
+			callfunc "BEGINFUNC", 0, 0, name2spellid("출두"), 30, 0, @target_id;
+			if(@i != 4) { warp @sd, get_mapid(@target_sd), get_x(@target_id)+@rand_x, get_y(@target_id)+@rand_y; }
+
+			message @sd, 3, "출두를 외웠습니다.";
+		}
+		else
+		{
+			message @sd, 3, "마력이 미치지 않습니다.";
+		}
+	} 
+	else
+	{
+		message @sd, 3, script_input(@sd) + "님은 현재 바람의나라에 없습니다.";
+	}
+}
+
+@귀환	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 30, 0, @sd;
+
+	if(get_nation(@sd) == 1)
+	{
+		setarray @mapid[0], 29, 30, 31, 8016, 8017, 8018, 8043, 8044, 8045, 8070, 8071, 8072, 8097, 8098, 8099, 8124, 8125, 8126, 8151, 8152, 8153, 8178, 8179, 8180, 8205, 8206, 8207, 8232, 8233, 8234, 8259, 8260, 8261;
+		setarray @x[0], 3, 4, 7, 8, 3, 4, 7, 8;
+		setarray @y[0], 5, 5, 5, 5, 9, 9, 9, 9;
+	}
+	else
+	{
+		setarray @mapid[0], 15, 16, 17, 7716, 7717, 7718, 7743, 7744, 7745, 7770, 7771, 7772, 7797, 7798, 7799, 7824, 7825, 7826, 7851, 7852, 7853, 7878, 7879, 7880, 7905, 7906, 7907, 7932, 7933, 7934, 7959, 7960, 7961;
+		setarray @x[0], 3, 4, 7, 8, 3, 4, 7, 8;
+		setarray @y[0], 5, 5, 5, 5, 9, 9, 9, 9;
+	}
+	if(get_mapname(@sd) == "OX퀴즈장")
+	{
+		if(spellaethered(@sd, name2spellid("정답:O")) == 1) spelluncast @sd, name2spellid("정답:O");
+		if(spellaethered(@sd, name2spellid("정답:X")) == 1) spelluncast @sd, name2spellid("정답:X");
+		if(spellaethered(@sd, name2spellid("OX퀴즈장")) == 1) spelluncast @sd, name2spellid("OX퀴즈장");
+		set #ox_event_count, #ox_event_count-1;		
+	}
+	action @id, 6, 30, 0;
+	sound @id, 33;
+
+	set @warp_mapid, @mapid[rand(0, getarraysize(@mapid)-1)];
+	set @warp_x, @x[rand(0, getarraysize(@x)-1)];
+	set @warp_y, @y[rand(0, getarraysize(@y)-1)];
+
+	deletearray @mapid[0], getarraysize(@mapid);
+	deletearray @x[0], getarraysize(@x);
+	deletearray @y[0], getarraysize(@y);
+
+	warp @sd, @warp_mapid, @warp_x, @warp_y;
+
+	message @sd, 3, "귀환을 외웠습니다.";
+}
+
+@소환	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set_mp @sd, get_mp(@sd)-30;
+
+	set @target_id, name2id(script_input(@sd));
+	if(@target_id > 0 && istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd == @sd) { message @sd, 3, "나 자신을 소환할 수 없습니다."; end; }
+		if(get_level(@sd) > get_level(@target_sd) && get_nation(@sd) == get_nation(@target_sd) && get_mapid(@sd) == get_mapid(@target_sd) && ismapoption(@sd, 5) != 1 && get_will(@sd) > get_will(@target_sd))
+		{
+			effect @id, 3;
+			sound @id, 36;
+			for(set @i, 0; @i < 4; set @i, @i+1)
+			{
+				set @rand, rand(0, 3);
+				switch(@rand)
+				{
+				case 0:
+					set @rand_x, 0;
+					set @rand_y, -1;
+					set_side @target_id, 2;
+					break;
+				case 1:
+					set @rand_x, 1;
+					set @rand_y, 0;
+					set_side @target_id, 3;
+					break;
+				case 2:
+					set @rand_x, 0;
+					set @rand_y, 1;
+					set_side @target_id, 0;
+					break;
+				case 3:
+					set @rand_x, -1;
+					set @rand_y, 0;
+					set_side @target_id, 1;
+					break;
+				}
+				if( !canmove(@target_id, get_x(@id)+@rand_x, get_y(@id)+@rand_y) ) { goto LOOP; }
+			}
+LOOP:
+			callfunc "BEGINFUNC", 3, 36, name2spellid("소환"), 30, 6, @target_id;
+			if(@i != 4) { warp @target_sd, get_mapid(@sd), get_x(@id)+@rand_x, get_y(@id)+@rand_y; }
+
+			message @sd, 3, "소환을 외웠습니다.";
+		}
+		else
+		{
+			message @sd, 3, "마력이 미치지 않습니다.";
+		}
+	} 
+	else
+	{
+		message @sd, 3, script_input(@sd) + "님은 현재 바람의나라에 없습니다.";
+	}
+}
+
+@사자후전사	{
+	set @sd, mysd();
+	set @id, myid();
+	if(get_mp(@sd) < 80)
+	{
+		message @sd, 3, "마력이 부족합니다.";
+		end;
+	}
+	action @id, 6, 30, 8;
+	set_mp @sd, get_mp(@sd) - 80;
+	broadcast 4, "[" + get_name(@sd)+ "] : " + script_input(@sd);
+	spelldelay @sd, name2spellid("사자후전사"), 3;
+	message @sd, 3, "사자후전사를 외웠습니다.";
+}
+
+@사자후도적	{
+	set @sd, mysd();
+	set @id, myid();
+	if(get_mp(@sd) < 80)
+	{
+		message @sd, 3, "마력이 부족합니다.";
+		end;
+	}
+	action @id, 6, 30, 8;
+	set_mp @sd, get_mp(@sd) - 80;
+	broadcast 4, "[" + get_name(@sd)+ "] : " + script_input(@sd);
+	spelldelay @sd, name2spellid("사자후도적"), 3;
+	message @sd, 3, "사자후도적를 외웠습니다.";
+}
+
+@사자후술사	{
+	set @sd, mysd();
+	set @id, myid();
+	if(get_mp(@sd) < 80)
+	{
+		message @sd, 3, "마력이 부족합니다.";
+		end;
+	}
+	action @id, 6, 30, 8;
+	set_mp @sd, get_mp(@sd) - 80;
+	broadcast 4, "[" + get_name(@sd)+ "] : " + script_input(@sd);
+	spelldelay @sd, name2spellid("사자후술사"), 3;
+	message @sd, 3, "사자후술사를 외웠습니다.";
+}
+
+@사자후도사	{
+	set @sd, mysd();
+	set @id, myid();
+	if(get_mp(@sd) < 80)
+	{
+		message @sd, 3, "마력이 부족합니다.";
+		end;
+	}
+	action @id, 6, 30, 8;
+	set_mp @sd, get_mp(@sd) - 80;
+	broadcast 4, "[" + get_name(@sd)+ "] : " + script_input(@sd);
+	spelldelay @sd, name2spellid("사자후도사"), 3;
+	message @sd, 3, "사자후도사를 외웠습니다.";
+}

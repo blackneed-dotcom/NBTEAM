@@ -1,0 +1,83 @@
+레이드교환	{
+	set @mysd, mysd();
+	set @myid, myid();
+MAKE:
+	set @pos, list2(@list, 0, 0, "교환하고 싶은 아이템의 종류를 선택하세요.", "황금10개", "황금100개", "황금300개", "황금500개");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@list1, 0, 1, "레이드코인 1개로 황금 10개를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "레이드코인"; set @additem$, "황금"; }
+		if(countitem(name2itemid(@needitem$)) < 1)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "1개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 10;
+			delitem @mysd, name2itemid(@needitem$), 1;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		set @pos, list2(@list1, 0, 1, "레이드코인 10개로 황금 100개를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "레이드코인"; set @additem$, "황금"; }
+		if(countitem(name2itemid(@needitem$)) < 9)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "10개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 100;
+			delitem @mysd, name2itemid(@needitem$), 10;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 3)
+	{
+		set @pos, list2(@list1, 0, 1, "레이드코인 30개로 황금 300개를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "레이드코인"; set @additem$, "황금"; }
+		if(countitem(name2itemid(@needitem$)) < 29)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "30개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 300;
+			delitem @mysd, name2itemid(@needitem$), 30;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+	else if(@list == 4)
+	{
+		set @pos, list2(@list1, 0, 1, "레이드코인 50개로 황금 500개를 교환하시겠습니까?.", "교환");
+		if(@pos == 0) end;
+		if(@pos == -1) goto MAKE;
+		if(@list1 == 1) { set @needitem$, "레이드코인"; set @additem$, "황금"; }
+		if(countitem(name2itemid(@needitem$)) < 49)
+		{
+			set @pos, dialog(0,0,0, @needitem$ + "50개(를) 구해오세요.");
+			end;
+		}
+		else
+		{
+			additem @mysd, name2itemid(@additem$), 500;
+			delitem @mysd, name2itemid(@needitem$), 50;
+			set @pos, dialog(0,0,1, @additem$ + "만들어 드렸습니다.");
+			end;
+		}
+	}
+}

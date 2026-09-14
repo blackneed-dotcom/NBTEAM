@@ -1,0 +1,75 @@
+@백두묘공격	{
+	set @id, objid();
+	set @rand, rand(1, 2);
+	set @siya, rand(1, 10);
+	if(@rand == 1)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", @id, 10, 8, -1, 45, 23, rand(50000, 60000), 2, "얼음", 15, "-1";
+	}
+	else
+	{
+		if(@siya <= 1)
+		{
+			set @x1, get_mobx(@id)-15;
+			set @x2, get_mobx(@id)+15;
+			set @y1, get_moby(@id)-15;
+			set @y2, get_moby(@id)+15;
+
+			if(@x1 < 0) { set @x1, 0; }
+			if(@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+			if(@y1 < 0) { set @y1, 0; }
+			if(@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+
+			for(set @i, @x1; @i <= @x2; set @i, @i+1)
+			{
+				for(set @j, @y1; @j <= @y2; set @j, @j+1)
+				{
+					set @target_id, obj_getxy(@i, @j);
+					if(@target_id > 0)
+					{
+						if(istype(@target_id) == 1)
+						{
+							set @target_sd, id2sd(@target_id);
+							if(spellaethered(@target_sd, name2spellid("마비")) == 0)
+							{
+								sound @target_id, 70;
+								effect @target_id, 1;
+
+								set_siya @target_sd, 2, 0;
+								spellaether @target_sd, name2spellid("마비"), 15;
+								message @target_sd, 3, get_mobname(@id) + "가 마비를 가합니다.";
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@백두뱀마비	{
+	set @id, objid();
+	set @rand, rand(1, 15);
+	set @rate, rand(1, 20);
+	if(@rand <= 2)
+	{
+		callfunc "MONSTER_RANGE_ATTACK", @id, 10, 8, -1, 45, 23, rand(50000, 60000), 2, "얼음", 15, "-1";	
+	}
+	else
+	{
+		set @target_id, get_mobtarget(@id);
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd > 0)
+		{
+			if(@rate <= 1 && spellaethered(@target_sd, name2spellid("혼마술")) == 0 && spellaethered(@target_sd, name2spellid("저주")) == 0)
+			{
+				effect @target_id, 39;
+				sound @target_id, 79;
+				set_ac @target_sd, get_ac(@target_sd)+50;
+				spellaether @target_sd, name2spellid("혼마술"), 60;
+				message @target_sd, 3, get_mobname(@id) + "이(가) 혼마술을 가합니다";
+			}
+		}
+	}
+}
+

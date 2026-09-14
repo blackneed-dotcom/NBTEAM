@@ -1,0 +1,7 @@
+@일본게	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("기러기알"), 1;
+}
+
+@두꺼비	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("기러기알"), 1;
+}

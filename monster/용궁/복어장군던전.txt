@@ -1,0 +1,15 @@
+@복홍	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("복어의심장"), 1;
+}
+
+@복순이	{
+	callfunc "DROPITEM", objid(), 100, 00, name2itemid("복어의심장"), 1;
+}
+
+@복수리	{
+	callfunc "DROPITEM", objid(), 100, 00, name2itemid("복어의심장"), 1;
+}
+
+@독구름	{
+	callfunc "MONSTER_ATTACK", objid(), 100, 30, 3, 8, 139, rand(4000, 5000), 0, "독구름", "-1";
+}

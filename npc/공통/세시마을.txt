@@ -1,0 +1,234 @@
+@투명달	{
+	set @id, objid();
+
+	set @target_id, obj_getxy(0, 1);
+	if(@target_id > 0 && @target_id != @id)
+	{
+		if(istype(@target_id) == 2)
+		{
+			broadcast 5, "달이 나타났다. 설빔을 입고 달에게 소원을 빌자!";
+			mobspellaether @target_id, name2spellid("달이동"), 3600;
+		}
+	}
+}
+
+@투명달끝	{
+	set @id, objid();
+
+	set @target_id, obj_getxy(199, 1);
+	if(@target_id > 0 && @target_id != @id)
+	{
+		if(istype(@target_id) == 2)
+		{
+			deletemob @target_id, mapid();
+			broadcast 5, "달이 사라졌습니다.";
+		}
+	}
+}
+
+세시소녀	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, dialog(0, 0, 1, "세시마을에 오신것을 환영해요~~ " + get_name(@sd) + "님!");
+	end;
+}
+
+
+세시촌장	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "엣헴! 송편 3개를 주면 설빔으로 바꿔주도록 하지 허허허..", "남자설빔으로 바꿔주세요", "여자설빔으로 바꿔주세요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		if(countitem(name2itemid("송편")) < 3)
+		{
+			set @pos, dialog(0, 0, 1, "송편 3개를 주게나.");
+			end;
+		}
+		else
+		{
+			delitem @sd, name2itemid("송편"), 3;
+			additem @sd, name2itemid("남자설빔"), 1;
+
+			set @pos, dialog(0, 0, 1, "여기있다네!");
+			end;
+		}
+	}
+	else if(@list == 2)
+	{
+		if(countitem(name2itemid("송편")) < 3)
+		{
+			set @pos, dialog(0, 0, 1, "송편 3개를 주게나.");
+			end;
+		}
+		else
+		{
+			delitem @sd, name2itemid("송편"), 3;
+			additem @sd, name2itemid("여자설빔"), 1;
+
+			set @pos, dialog(0, 0, 1, "여기있다네!");
+			end;
+		}
+	}
+	end;
+}
+
+
+백세인	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list1("안녕하세요. 어떻게 오셨나요?", "추석이벤트", "차례상재료모으기");
+	if(@pos == 0) end;
+	else if(@pos == 1)
+	{
+		set @pos, dialog(0, 0, 1, "추석이 아닌데요??");
+		end;
+
+		set @pos, list2(@list, 0, 0, "제가 도와드릴 일이 있나요?", "추석엔 뭘 하나?", "송편을 만들어주세요!");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			set @pos, dialog(0, 0, 1, "추석엔 벌초도 하고 차례상도 차리고 여러가지 일을 하죠!");
+			end;
+		}
+		else if(@list == 2)
+		{
+			set @pos, list2(@list, 0, 0, "송편을 만들려면 밤과 호두, 자연산호박, 깨, 쌀가루가 필요해요.. 이는 유두집에 있는 백리향에게 얻을 수 있어요.", "모두 가지고 왔습니다.", "아직 준비가..");
+			if(@pos == 0) end;
+			else if(@list == 1)
+			{
+				if(countitem(name2itemid("밤")) > 0 && countitem(name2itemid("호두")) > 0 && countitem(name2itemid("자연산호박")) > 0 && countitem(name2itemid("깨")) > 0 && countitem(name2itemid("쌀가루")) > 0)
+				{
+					delitem @sd, name2itemid("밤"), 1;
+					delitem @sd, name2itemid("호두"), 1;
+					delitem @sd, name2itemid("자연산호박"), 1;
+					delitem @sd, name2itemid("깨"), 1;
+					delitem @sd, name2itemid("쌀가루"), 1;
+					additem @sd, name2itemid("송편"), 1;
+
+					set @pos, dialog(0, 0, 1, "송편을 만들어 드렸어요, 이 송편을 먹으면 십억경 3개 얻을 수 있다고 해요.");
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0, 0, 1, "재료가 부족하네요...");
+					end;
+				}
+			}
+			else end;
+		}
+		else end;
+	}
+	else if(@pos == 2)
+	{
+		set @pos, dialog(0, 0, 1, "지금은 차례상 재료가 모두 모여서 구매하지 않아요..");
+		end;
+	}
+	else end;
+}
+
+
+백리향	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @pos, list2(@list, 0, 0, "무슨일로 절 찾아오셨나요?", "송편재료가 필요해요", "벌초를 하고 왔어요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, dialog(0, 0, 1, "송편재료를 얻고 싶으신가요?.. 제 부탁이 있는데 혹시 남쪽에 가시면 묘지가 있는데 그곳에서 잡초 5개만 뽑아다 주세요.. 5개면 될거같은데..");
+	}
+	else if(@list == 2)
+	{
+		if(countitem(name2itemid("잡초")) < 5)
+		{
+			set @pos, dialog(0, 0, 1, "잡초를 가지고 오셔야. 확인이 가능한데..");
+			end;
+		}
+		else
+		{
+			set @pos, list2(@list, 0, 0, "앗! 잡초를 가지고 오셨네요! 무엇으로 바꿔가실래요?", "밤", "호두", "자연산호박", "깨", "쌀가루");
+			if(@pos == 0) end;
+			else if(@list == 1)
+			{
+				if(countitem(name2itemid("잡초")) < 5)
+				{
+					set @pos, dialog(0, 0, 1, "다시 세어보니까 잡초 5개가 아니네요..");
+					end;
+				}
+				else
+				{
+					delitem @sd, name2itemid("잡초"), 5;
+					additem @sd, name2itemid("밤"), 1;
+					set @pos, dialog(0, 0, 1, "바꿔드렸어요~~");
+					end;
+				}
+			}
+			else if(@list == 2)
+			{
+				if(countitem(name2itemid("잡초")) < 5)
+				{
+					set @pos, dialog(0, 0, 1, "다시 세어보니까 잡초 5개가 아니네요..");
+					end;
+				}
+				else
+				{
+					delitem @sd, name2itemid("잡초"), 5;
+					additem @sd, name2itemid("호두"), 1;
+					set @pos, dialog(0, 0, 1, "바꿔드렸어요~~");
+					end;
+				}
+			}
+			else if(@list == 3)
+			{
+				if(countitem(name2itemid("잡초")) < 5)
+				{
+					set @pos, dialog(0, 0, 1, "다시 세어보니까 잡초 5개가 아니네요..");
+					end;
+				}
+				else
+				{
+					delitem @sd, name2itemid("잡초"), 5;
+					additem @sd, name2itemid("자연산호박"), 1;
+					set @pos, dialog(0, 0, 1, "바꿔드렸어요~~");
+					end;
+				}
+			}
+			else if(@list == 4)
+			{
+				if(countitem(name2itemid("잡초")) < 5)
+				{
+					set @pos, dialog(0, 0, 1, "다시 세어보니까 잡초 5개가 아니네요..");
+					end;
+				}
+				else
+				{
+					delitem @sd, name2itemid("잡초"), 5;
+					additem @sd, name2itemid("깨"), 1;
+					set @pos, dialog(0, 0, 1, "바꿔드렸어요~~");
+					end;
+				}
+			}
+			else if(@list == 5)
+			{
+				if(countitem(name2itemid("잡초")) < 5)
+				{
+					set @pos, dialog(0, 0, 1, "다시 세어보니까 잡초 5개가 아니네요..");
+					end;
+				}
+				else
+				{
+					delitem @sd, name2itemid("잡초"), 5;
+					additem @sd, name2itemid("쌀가루"), 1;
+					set @pos, dialog(0, 0, 1, "바꿔드렸어요~~");
+					end;
+				}
+			}
+		}
+	}
+	else end;
+}

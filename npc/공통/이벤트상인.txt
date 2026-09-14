@@ -1,0 +1,195 @@
+OX퀴즈소녀	{
+	set @sd, mysd();
+	set @id, myid();
+	if(get_gmlevel(@sd) > 0)
+	{
+		set @pos, list2(@list, 0, 0, "어떤 기능을 이용하시겠습니까?", "OX퀴즈이벤트 참가 인원", "OX퀴즈이벤트 설명", "문제 내기", "문제 다시가르쳐주기", "문제 마감 (O,X 선택불가)","문제 답안");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			broadcast 5, "(알림) 현재 OX퀴즈이벤트에 " + #ox_event_count + "명이 참가하였습니다!";
+			end;
+		}
+		else if(@list == 2)
+		{
+			broadcast 5, "(알림) 입장은 부여 남쪽에 위치한 광대를 통해 입장가능합니다.";
+			broadcast 5, "(알림) 입장하는덴 20 레벨 이상이여야 합니다.";
+			end;
+		}
+		else if(@list == 3)
+		{
+			set @pos, input2(@question$, 0, 99, "문제를 내세요!", " ", " ");
+			if(@pos == 0) end;
+			else
+			{
+				set #ox_switch, 1;
+				set #ox_event_que$, @question$;
+				broadcast 5, "(알림) 현재 OX퀴즈이벤트에 " + #ox_event_count + "명이 남았습니다!";
+				broadcast 5, "(문제!) " + #ox_event_que$;
+				timecount_all 2, 15;
+				if(obj_getxy(7,13) != 0) { deletenpc obj_getxy(7,13), mapid(); }
+				if(obj_getxy(21,13) != 0) { deletenpc obj_getxy(21,13), mapid(); } 
+				end;
+			}
+		}
+		else if(@list == 4)
+		{
+			broadcast 5, "(문제!) " + #ox_event_que$;
+			end;
+		}
+		else if(@list == 5)
+		{
+			broadcast 5, "(마감!) 더 이상 입장하실 수 없습니다! 곧 답안이 나옵니다.";
+			npcspawn mapid(), 7, 13, 2, 223, 0;
+			npcspawn mapid(), 21, 13, 2, 223, 0;
+			end;
+		}
+		else if(@list == 6)
+		{
+			set @pos, input2(@answer$, 0, 99, "답 (오, 엑스)", " ", " ");
+			if(@pos == 0) end;
+			else
+			{
+				if(@answer$ == "오")
+				{
+					broadcast 5, "(정답!) 정답은 O 입니다!! 맞추신분들은 축하합니다!";
+					set #ox_event_que$, "1";
+					set #ox_switch, 0;
+					end;
+				}
+				else if(@answer$ == "엑스")
+				{
+					broadcast 5, "(정답!) 정답은 X 입니다!! 맞추신분들은 축하합니다!";
+					set #ox_event_que$, "2";
+					set #ox_switch, 0;
+					end;
+				}
+				else end;
+			}
+		}
+	}
+	else end;
+}
+
+광대	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_joblevel(@sd) < 1) { dialog 0,0,0, "승급자 이상만 참여가 가능합니다."; end; }
+	if(#event_whale == 1)
+	{
+		set @pos, list2(@list, 0, 0, "현재 고래이벤트가 진행중입니다. 입장하시겠습니까? 입장은 레벨 21 이상만 가능합니다.", "입장합니다", "입장하지 않습니다.");
+		if(@pos == 0) end;
+		else if(@list == 1)
+		{
+			if(get_level(@sd) < 21)
+			{
+				set @pos, dialog(0, 0, 0, "레벨이 부족합니다.");
+				end;
+			}
+			else
+			{
+				warp @sd, 2190, rand(0, 18), rand(18, 30);
+
+				additem @sd, name2itemid("노란비서"), 1;
+				set @pos, dialog(0, 0, 1, "고래갑판에 입장하였으며 노란비서를 지급해드렸습니다.");
+				end;
+			}
+		}
+		else end;
+	}
+	else if(#event_OX == 1)
+	{
+		set @pos, list2(@list, 0, 0, "지금 OX퀴즈 이벤트가 진행중입니다. 입장하시겠습니까? 입장은 레벨 21 이상만 가능하며, 입장비용은 필요하지 않습니다.", "네 입장할래요.", "아니요 입장안할래요");
+		if(@pos == 0) end;	
+		else if(@list == 1)
+		{
+			if(get_level(@sd) < 21)
+			{
+				set @pos, dialog(0, 0, 0, "레벨이 부족합니다.");
+				end;
+			}
+			else
+			{
+				set #ox_event_count, #ox_event_count + 1;
+				warp @sd, 1480, 14, 3;
+				additem @sd, name2itemid("노란비서"), 10;
+				message @sd, 5, "* OX퀴즈방에 입장하셨습니다!";
+				message @sd, 5, "* 여기선 마법, 말을 하실 수 없습니다!";
+				end;
+			}
+		}
+		else end;
+	}
+	else
+	{
+		set @pos, dialog(0, 0, 1, "이벤트가 진행중이지 않거나 이미 시작되었습니다.");
+		end;
+	}
+}
+
+이벤트옷상인	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @ret, list1("안녕하세요. 어떻게 오셨나요?", "의류상자");
+	if(@ret == 1) goto COS001;
+	else if(@ret == 2) goto COS003;
+	else if(@ret == 3) goto COS005;
+	else if(@ret == 4) goto COS007;
+	else if(@ret == 5) goto COS009;
+	else if(@ret == 6) goto COS0011;
+	else end;
+	end;
+COS001:
+	set @pos, dialog(0, 0, 1, "랜덤으로 이쁜옷이 나오는 상자를 판매하고있습니다");
+	if(@pos == 0) end;
+COS002:
+	set @pos, list2(@list, 0, 0, "상자의 가격은 10000000 전 이라네. 의류상자를 살텐가?", "예. 구입하고 싶습니다.", "아니오. 필요 없습니다.");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		if(get_level(@sd) < 21)
+		{
+			set @pos, dialog(0, 0, 0, "21레벨 구매가 가능합니다.");
+			end;
+		}
+		if(#broadcast2_card == 0)
+		{
+			if(get_money(@sd) < 10000000)
+			{
+				set @pos, dialog(0, 0, 0, "의류상자의 가격은 10000000 전 이라네. 돈이 부족한 것 아닌가?");
+				end;
+			}
+			else
+			{
+				set #broadcast2_card, 1;
+				set #broadcast2_card_count, 0;
+				additem @sd, name2itemid("의류상자"), 1;
+				set_money @sd, get_money(@sd)-10000000;
+				updatestatus @sd, 2;
+				set @pos, dialog(0, 0, 1, "운이 좋군. 잘 쓰시게...");
+				end;
+			}
+		}
+		else
+		{
+			set @pos, dialog(0, 0, 0, "" + (#broadcast2_card_count-36000) + "초 후에 다시 오세요.");
+			set @pos, dialog(0, 0, 0, "이미 다 떨어졌는데...");
+			end;
+		}
+	}
+	else end;
+	end;
+}
+
+유카타충전	{
+	if(#broadcast2_card == 1)
+	{
+		set #broadcast2_card_count, #broadcast2_card_count+1;
+		if(#broadcast2_card_count >= 36000)
+		{
+			set #broadcast2_card, 0;
+		}
+	}
+}

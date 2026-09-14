@@ -1,0 +1,15 @@
+@청색염유	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("청색구슬조각"), 1;
+}
+
+@자색염유	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("자색구슬조각"), 1;
+}
+
+@염유장군	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("회색구슬조각"), 1;
+}
+
+@염유왕	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("갈색보주"), 1;
+}

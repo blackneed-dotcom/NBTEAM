@@ -1,0 +1,45 @@
+@암석정령	{
+	set .@id, objid();
+
+	if(rand(1, 100) <= 20)
+	{
+		set .@target_id, get_mobtarget(.@id);
+		set .@target_sd, id2sd(.@target_id);
+		if(.@target_sd > 0)
+		{
+			if(rand(1, 5) <= 1 && spellaethered(.@target_sd, name2spellid("혼마술")) == 0)
+			{
+				if(spellaethered(.@target_sd,name2spellid("호체주술"))) end;
+				effect .@target_id, 39;
+				sound .@target_id, 79;
+
+				set_ac .@target_sd, get_ac(.@target_sd)+50;
+				spellaether .@target_sd, name2spellid("혼마술"), 60;
+				message .@target_sd, 3, get_mobname(.@id) + "이 혼마술을 가합니다";
+			}
+		}
+	}
+
+	if(rand(1, 100) >= 10)
+	{
+
+		if(mobspellaethered(.@id,name2spellid("저주")))
+			mobspelluncast .@id, name2spellid("저주");
+		if(mobspellaethered(.@id,name2spellid("혼마술")))
+			mobspelluncast .@id, name2spellid("혼마술");
+		if(mobspellaethered(.@id,name2spellid("귀염추혼소")))
+			mobspelluncast .@id, name2spellid("귀염추혼소");
+		effect .@id, 49;
+	}
+
+	callfunc "mob_atlarge_spell", 300, 0, 196, 8, rand(50000, 80000), 1, 8, 7, "암석파괴", "를", "이";
+}
+
+@저팔괴드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루7"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각7"), 1;
+}
+
+@암석토끼드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각7"), 1;
+}

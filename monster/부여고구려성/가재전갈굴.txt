@@ -1,0 +1,38 @@
+@가재	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("호박"), 1;
+}
+
+@가재장	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("진호박"), 1;
+}
+
+@전갈	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("호박"), 1;
+}
+
+@전갈장	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("진호박"), 1;
+}
+
+@서현가재	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("호박"), 1;
+}
+
+@백현재	{
+	callfunc "DROPITEM2", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("백현모"), 1;
+}
+
+@백현장	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("보라방패"), 1;
+}
+
+@현랑장	{
+	callfunc "DROPITEM2", objid(), 100, 15, name2itemid("호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("철방패"), 1;
+}
+
+@현랑전갈	{
+	callfunc "DROPITEM2", objid(), 100, 15, name2itemid("호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("현랑부"), 1;
+}

@@ -1,0 +1,26 @@
+@다람쥐	{
+	callfunc "DROPITEM", objid(), 10000, 300, name2itemid("도토리"), 100;
+	callfunc "DROPITEM2", objid(), 100, 50, name2itemid("도토리"), 1;
+	callfunc "DROPITEM2", objid(), 100, 50, name2itemid("도토리"), 1;
+	callfunc "DROPITEM2", objid(), 100, 40, name2itemid("도토리"), 1;
+}
+
+@토끼	{
+	callfunc "DROPITEM", objid(), 100, 90, name2itemid("토끼고기"), 1;
+}
+
+@암사슴	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("사슴고기"), 1;
+}
+
+@숫사슴	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("녹용"), 1;
+}
+
+@돼지	{
+	callfunc "DROPITEM", objid(), 100, 60, name2itemid("돼지고기"), 1;
+}
+
+@삽사리	{
+	callfunc "DROPITEM", objid(), 100, 50, name2itemid("고기"), 1;
+}

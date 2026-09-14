@@ -1,0 +1,15 @@
+@도삭산평웅	{
+	callfunc "DROPITEM", objid(), 1000, 8, name2itemid("동인각"), 1;
+}
+
+@도삭산진웅	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("금덩어리"), 200;
+}
+
+@도삭산평호	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("금덩어리"), 200;
+}
+
+@도삭산진호	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("금덩어리"), 200;
+}

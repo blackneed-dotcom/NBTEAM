@@ -1,0 +1,458 @@
+@Logic
+script BaramInput extends Logic
+    property string Mode = ""
+    property string Pending = ""
+    property integer FirstSlot = 0
+    property number MoveWait = 0
+    property boolean MovePending = false
+    property number ReplyWait = 0
+    property boolean FastWalk = true
+    property boolean HearWhispers = true
+    property boolean HearShouts = true
+    property boolean AllowGroup = true
+    property boolean AllowExchange = true
+    property boolean MapScroll = true
+    property boolean Transparent = false
+    property integer HelpPage = 1
+    property any KeyLink = nil
+    property any CloseLink = nil
+    property integer InventoryPage = 1
+    property boolean InventoryIcons = false
+    property number InventoryTipSeconds = 0
+    property table InventoryImages = { ["17"] = {ruid = "2fce5dbc5fd44099bc1b8e91cf9913eb", width = 24, height = 24}, ["2200"] = {ruid = "53773753a7b44c27a08b3c63f83a8aca", width = 17, height = 23}, ["3014"] = {ruid = "a292a51da7404fe68a4c8b220df9cd3c", width = 6, height = 5}, ["3018"] = {ruid = "9f7b6aae847146c3b95068e10c18ff75", width = 18, height = 11} }
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Bind the original-style inventory and existing shared key dispatcher.
+        self.Mode = ""
+        self.Pending = ""
+        self.MovePending = false
+        self.ReplyWait = 0
+        self.MoveWait = 0
+        self._T.inventory = _EntityService:GetEntityByPath("/ui/BaramInventory")
+        self._T.inventoryLinks = {}
+        self._T.inventoryRows = {}
+        self.InventoryPage = 1
+        self.InventoryIcons = false
+        self.InventoryTipSeconds = 0
+        local inventoryButton = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/InventoryButton")
+        if isvalid(inventoryButton) then
+            local link = inventoryButton:ConnectEvent(UITouchDownEvent, function(event)
+                if event.TouchId ~= -1 and event.TouchId <= 0 then return end
+                if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
+                self:OpenInventory()
+                log("[BaramInventoryUI] opened by HUD icon")
+            end)
+            table.insert(self._T.inventoryLinks, {entity = inventoryButton, link = link})
+        end
+        if isvalid(self._T.inventory) then
+            self._T.inventory.Enable = false
+            self._T.inventoryWindow = self._T.inventory:GetChildByName("Window", true)
+            for i = 1, 15 do
+                local rowIndex = i
+                local row = self._T.inventoryWindow:GetChildByName("Row" .. tostring(i))
+                self._T.inventoryRows[i] = row
+                local link = row:ConnectEvent(UITouchDownEvent, function(event)
+                    if event.TouchId == -1 or event.TouchId > 0 then self:InspectInventoryRow(rowIndex) end
+                end)
+                table.insert(self._T.inventoryLinks, {entity = row, link = link})
+            end
+            for _, buttonName in ipairs({"Previous", "Next", "ListMode", "IconMode"}) do
+                local actionName = buttonName
+                local button = self._T.inventoryWindow:GetChildByName(buttonName)
+                local link = button:ConnectEvent(UITouchDownEvent, function(event)
+                    if event.TouchId ~= -1 and event.TouchId <= 0 then return end
+                    if actionName == "Previous" then self:ChangeInventoryPage(-1)
+                    elseif actionName == "Next" then self:ChangeInventoryPage(1)
+                    else self:SetInventoryMode(actionName == "IconMode") end
+                end)
+                table.insert(self._T.inventoryLinks, {entity = button, link = link})
+            end
+        end
+        self._T.window = _EntityService:GetEntityByPath("/ui/BaramInteraction/Frame/Window")
+        if isvalid(self._T.window) then
+            self._T.window.Enable = false
+            self._T.close = self._T.window:GetChildByName("Close")
+            self.CloseLink = self._T.close:ConnectEvent(UITouchDownEvent, function() self:Close() end)
+        end
+        self.KeyLink = _InputService:ConnectEvent(KeyDownEvent, function(event) self:HandleKey(event.key) end)
+        log("[BaramKeys] original STR.RES key dispatcher ready")
+        log("[BaramMove] original walk: 80ms x 4, frames 0/1/0/2; smooth display ready")
+    end
+
+    @ExecSpace("ClientOnly")
+    method boolean Blocked()
+        return self.Mode ~= "" or self.Pending ~= ""
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Show(string title, string body, string hint)
+        -- Generic dialogs replace the inventory presentation.
+        if isvalid(self._T.inventory) then self._T.inventory.Enable = false end
+        local window = self._T.window
+        if not isvalid(window) then return end
+        window.Enable = true
+        window:GetChildByName("Title").TextGUIRendererComponent.Text = title
+        window:GetChildByName("Body").TextGUIRendererComponent.Text = body
+        window:GetChildByName("Hint").TextGUIRendererComponent.Text = hint
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Close()
+        -- Release both dialog layers and the shared gameplay input guard.
+        local wasBlocked = self:Blocked()
+        self.Mode = ""
+        self.Pending = ""
+        self.FirstSlot = 0
+        self.InventoryTipSeconds = 0
+        if isvalid(self._T.window) then self._T.window.Enable = false end
+        if isvalid(self._T.inventory) then self._T.inventory.Enable = false end
+        log("[BaramInventoryUI] closed")
+        if wasBlocked then _BaramChatRelay.InputBlockSeconds = 0.15 end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Notice(string text)
+        _BaramChatRelay:ReceiveNotice(text)
+    end
+
+    @ExecSpace("ClientOnly")
+    method string InventoryText()
+        local state = _BaramWorld.LocalState
+        local lines = {}
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            local item = state.items ~= nil and state.items[tostring(i)] or nil
+            if item ~= nil then
+                local data = _BaramWorldData:Item(item.id)
+                local label = _BaramWorldData:InventoryLetter(i) .. ": " .. data.name .. " x" .. tostring(item.count)
+                if state.equip == i then label = label .. " [무장]" end
+                if data.durability > 0 then label = label .. " (" .. tostring(item.durability) .. ")" end
+                table.insert(lines, label)
+            end
+        end
+        if #lines == 0 then return "가진 물건이 없습니다." end
+        return table.concat(lines, "\n")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OpenInventory()
+        -- Select the inventory pane without locking chat, movement or actions.
+        if not isvalid(self._T.inventory) then return end
+        local infoPanel = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/CharacterInfo")
+        if isvalid(infoPanel) then infoPanel.Enable = false end
+        if isvalid(self._T.window) then self._T.window.Enable = false end
+        self.Mode = ""
+        self.Pending = ""
+        self.FirstSlot = 0
+        self._T.inventory.Enable = true
+        self:RefreshInventory()
+        log("[BaramInventoryUI] opened")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshInventory()
+        -- winbaram 0x450C90: scan 52 slots, skip empty entries, draw 15 per page.
+        local window = self._T.inventoryWindow
+        if not isvalid(window) then return end
+        local state = _BaramWorld.LocalState
+        local items = state.items or {}
+        local slots = {}
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            if items[tostring(i)] ~= nil then table.insert(slots, i) end
+        end
+        self._T.inventorySlots = slots
+        self._T.inventoryPages = math.max(1, math.ceil(#slots / 15))
+        self.InventoryPage = math.max(1, math.min(self.InventoryPage, self._T.inventoryPages))
+        self.InventoryTipSeconds = 0
+        window:GetChildByName("Tooltip").Enable = false
+        for i = 1, 15 do
+            local slot = slots[(self.InventoryPage - 1) * 15 + i]
+            local row = self._T.inventoryRows[i]
+            row.Enable = slot ~= nil
+            if slot ~= nil then
+                local item = items[tostring(slot)]
+                local data = _BaramWorldData:Item(item.id)
+                local letter = row:GetChildByName("Letter")
+                local label = row:GetChildByName("Label")
+                local icon = row:GetChildByName("Icon")
+                letter.Enable = not self.InventoryIcons
+                label.Enable = not self.InventoryIcons
+                letter.TextGUIRendererComponent.Text = _BaramWorldData:InventoryLetter(slot) .. ": "
+                local text = data ~= nil and data.name or tostring(item.id)
+                if item.count > 1 then text = text .. " (" .. tostring(item.count) .. ")" end
+                label.TextGUIRendererComponent.Text = text
+                local image = self.InventoryImages[tostring(item.id)]
+                icon.Enable = image ~= nil
+                if self.InventoryIcons then
+                    row.UITransformComponent.anchoredPosition = Vector2(40 + ((i - 1) % 3) * 45, -40 - math.floor((i - 1) / 3) * 41)
+                    row.UITransformComponent.RectSize = Vector2(35, 35)
+                else
+                    row.UITransformComponent.anchoredPosition = Vector2(30, -46 - (i - 1) * 13)
+                    row.UITransformComponent.RectSize = Vector2(130, 13)
+                end
+                if image ~= nil then
+                    local scale = self.InventoryIcons and 1 or 0.5
+                    local width = math.floor(image.width * scale)
+                    local height = math.floor(image.height * scale)
+                    icon.SpriteGUIRendererComponent.ImageRUID = DataRef(image.ruid)
+                    icon.UITransformComponent.RectSize = Vector2(width, height)
+                    -- Native centering is integer-truncated; list images are half size.
+                    icon.UITransformComponent.anchoredPosition = Vector2(6 - math.floor(width / 2), -(self.InventoryIcons and 26 or 6) + math.floor(height / 2))
+                end
+            end
+        end
+        window:GetChildByName("PreviousDisabled").Enable = self.InventoryPage == 1
+        window:GetChildByName("NextDisabled").Enable = self.InventoryPage == self._T.inventoryPages
+        window:GetChildByName("ListSelected").Enable = not self.InventoryIcons
+        window:GetChildByName("IconSelected").Enable = self.InventoryIcons
+        self._T.inventoryState = state
+        log("[BaramInventoryUI] page=" .. tostring(self.InventoryPage) .. "/" .. tostring(self._T.inventoryPages) .. " occupied=" .. tostring(#slots) .. " icons=" .. tostring(self.InventoryIcons))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ChangeInventoryPage(integer direction)
+        -- Clamp at the first/last occupied page, as in 0x451500.
+        if not isvalid(self._T.inventory) or not self._T.inventory.Enable then return end
+        self.InventoryPage = math.max(1, math.min(self._T.inventoryPages or 1, self.InventoryPage + direction))
+        self:RefreshInventory()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetInventoryMode(boolean icons)
+        -- Original lower buttons select list (0) or icon (1), retaining the page.
+        if not isvalid(self._T.inventory) or not self._T.inventory.Enable then return end
+        self.InventoryIcons = icons
+        self:RefreshInventory()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void InspectInventoryRow(integer rowIndex)
+        -- The original 0x1C click requests a description without closing the bag.
+        if not isvalid(self._T.inventory) or not self._T.inventory.Enable then return end
+        local slot = (self._T.inventorySlots or {})[(self.InventoryPage - 1) * 15 + rowIndex]
+        if slot == nil then return end
+        local items = _BaramWorld.LocalState.items or {}
+        if items[tostring(slot)] == nil then return end
+        local item = items[tostring(slot)]
+        local data = _BaramWorldData:Item(item.id)
+        if data == nil then return end
+        local lines = {data.name, data.description}
+        if data.tooltip ~= "-" then
+            local description, replacements = string.gsub(data.tooltip, "\\n", "\n")
+            table.insert(lines, description)
+        end
+        if data.durability > 0 then table.insert(lines, "내구도 " .. tostring(item.durability) .. " / " .. tostring(data.durability)) end
+        local tooltip = self._T.inventoryWindow:GetChildByName("Tooltip")
+        tooltip:GetChildByName("Text").TextGUIRendererComponent.Text = table.concat(lines, "\n")
+        tooltip.UITransformComponent.anchoredPosition = Vector2(5, -math.min(168, 46 + (rowIndex - 1) * 13))
+        tooltip.Enable = true
+        self.InventoryTipSeconds = 10
+        log("[BaramInventoryUI] inspect slot=" .. tostring(slot) .. " letter=" .. _BaramWorldData:InventoryLetter(slot))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginItem(string command)
+        self.Pending = command
+        self.Mode = "inventory"
+        self.FirstSlot = 0
+        local labels = {use = "사용할 물건", eat = "먹을 물건", equip = "무장할 무기", armor = "입을 갑옷", unequip = "벗을 장비", drop = "버릴 물건", dropall = "다 버릴 물건", throw = "던질 물건", swap = "자리 바꿀 물건", inspect = "검사할 물건", sell = "팔 물건", give = "줄 물건", giveall = "다 줄 물건"}
+        self:Show(labels[command] or command, self:InventoryText(), "a~z / Shift+A~Z: 선택   Esc: 취소")
+        log("[BaramKeys] awaiting " .. command)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SelectSlot(integer slot)
+        local command = self.Pending
+        if command == "swap" and self.FirstSlot == 0 then
+            self.FirstSlot = slot
+            self:Show("바꿀 두 번째 물건", self:InventoryText(), "a~z / Shift+A~Z: 두 번째 칸   Esc: 취소")
+            return
+        end
+        if command == "inspect" then
+            local item = _BaramWorld.LocalState.items[tostring(slot)]
+            if item == nil then self:Notice("그 칸은 비어 있습니다.") return end
+            local data = _BaramWorldData:Item(item.id)
+            self.Pending = ""
+            self.Mode = "inspect"
+            self:Show(data.name, data.description .. "\n\n" .. string.gsub(data.tooltip, "\\n", "\n") .. "\n내구도 " .. tostring(item.durability) .. " / " .. tostring(data.durability), "Esc: 닫기")
+            return
+        end
+        if command == "sell" then _BaramWorld:Shop("sell", slot)
+        elseif command == "swap" then _BaramWorld:ItemAction(command, self.FirstSlot, slot)
+        else _BaramWorld:ItemAction(command, slot, 0) end
+        self:Close()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Help()
+        self.Mode = "help"
+        local pages = {
+            "방향키: 이동 / Shift+방향키: 방향 전환\nA: 공격   ;: 바로 앞 보기 / NPC 대화\nO: 앞 출입구 열기   ,: 줍기   Shift+,: 모두 줍기\nI: 소지품   S: 자기 상태   X→a~z: 물건 검사\nU→a~z / Ctrl+a~z: 사용   E→a~z: 먹기\nW→a~z: 무기   Shift+W→a~z: 갑옷\nShift+T: 장비 벗기\nD→a~z: 하나 버리기   Shift+D→a~z: 전부 버리기\nT→a~z: 던지기   C→a~z→a~z: 칸 바꾸기\nEnter / ': 채팅   Shift+1: 외치기\nAlt+S: 저장   Q / Alt+X: 제목 화면\n? / F1: 도움말",
+            "+: 아는 주문   Shift+Z: 주문 선택\n숫자 1~0: 주문 칸   Shift+C: 주문 칸 바꾸기\nShift+;→a~p: 감정 표현\nH / Shift+H: 앞 사람에게 물건 주기\nG: 앞 사람 그룹   Shift+G: 그룹 허가\nShift+E: 교환 허가   Ctrl+W: 접속 목록\nF4: 화면 따라가기   F5: 귓속말 듣기\nF6: 외치기 듣기   F12: 빠른 이동\nAlt+T: 건물 투명 표시\n\n원본 자료: BARAM.DAT / STR.RES\n구현되지 않은 콘텐츠는 실행 가능으로 표시하지 않습니다."
+        }
+        self:Show("키 도움말 " .. tostring(self.HelpPage) .. "/2", pages[self.HelpPage], "← →: 페이지   Esc: 닫기")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void HandleKey(KeyboardKey key)
+        -- Route inventory keys only after the title and chat input guards.
+        if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
+        local shift = _InputService:IsKeyPressed(KeyboardKey.LeftShift) or _InputService:IsKeyPressed(KeyboardKey.RightShift)
+        local ctrl = _InputService:IsKeyPressed(KeyboardKey.LeftControl) or _InputService:IsKeyPressed(KeyboardKey.RightControl)
+        local alt = _InputService:IsKeyPressed(KeyboardKey.LeftAlt) or _InputService:IsKeyPressed(KeyboardKey.RightAlt)
+        if key == KeyboardKey.Escape then self:Close() return end
+        if self.Mode == "help" and (key == KeyboardKey.LeftArrow or key == KeyboardKey.RightArrow) then self.HelpPage = 3 - self.HelpPage self:Help() return end
+        if self.Mode == "quit" then
+            if key == KeyboardKey.Y then _BaramWorld:LeaveToTitle() elseif key == KeyboardKey.N then self:Close() end
+            return
+        end
+        if self.Mode == "shop" then
+            if key == KeyboardKey.B then _BaramWorld:Shop("list", 0)
+            elseif key == KeyboardKey.S then self:BeginItem("sell")
+            elseif key == KeyboardKey.Alpha1 then _BaramWorld:Shop("buy", 1)
+            elseif key == KeyboardKey.Alpha2 then _BaramWorld:Shop("buy", 2) end
+            return
+        end
+        local slot = 0
+        for i = 1, 26 do if key == KeyboardKey.CastFrom(string.upper(string.char(96 + i))) then slot = i break end end
+        if slot > 0 and shift then slot = slot + 26 end
+        if self.Pending ~= "" then
+            if slot > 0 then self:SelectSlot(slot) end
+            return
+        end
+        if key == KeyboardKey.F1 or key == KeyboardKey.Question or (key == KeyboardKey.Slash and shift) then self:Help() return end
+        if alt then
+            if key == KeyboardKey.S then _BaramWorld:Save()
+            elseif key == KeyboardKey.X then self.Mode = "quit" self:Show("정말 끝냅니까?", "진행 정보를 저장한 뒤 제목 화면으로 돌아갑니다.", "Y: 예   N / Esc: 아니오")
+            elseif key == KeyboardKey.T then self.Transparent = not self.Transparent self:Notice(self.Transparent and "건물을 투명하게 표시합니다." or "건물 표시를 복원했습니다.") end
+            return
+        end
+        if ctrl then
+            if key == KeyboardKey.W then _BaramWorld:Users()
+            elseif slot > 0 then _BaramWorld:ItemAction("use", slot, 0) end
+            return
+        end
+        if key == KeyboardKey.F4 then self.MapScroll = not self.MapScroll self:Notice(self.MapScroll and "화면 따라가기 켬" or "화면 따라가기 끔") return end
+        if key == KeyboardKey.F5 then self.HearWhispers = not self.HearWhispers self:Notice(self.HearWhispers and "귓속말 듣기 켬" or "귓속말 듣기 끔") return end
+        if key == KeyboardKey.F6 then self.HearShouts = not self.HearShouts self:Notice(self.HearShouts and "외치기 듣기 켬" or "외치기 듣기 끔") return end
+        if key == KeyboardKey.F12 then self.FastWalk = not self.FastWalk self:Notice(self.FastWalk and "빠른 이동 켬" or "빠른 이동 끔") return end
+        if self.Mode ~= "" then
+            if key == KeyboardKey.I then self:Close() end
+            return
+        end
+        if _BaramChatRelay.InputBlockSeconds > 0 then return end
+        if isvalid(self._T.inventory) and self._T.inventory.Enable then
+            if key == KeyboardKey.PageUp then self:ChangeInventoryPage(-1) return end
+            if key == KeyboardKey.PageDown then self:ChangeInventoryPage(1) return end
+        end
+        if key == KeyboardKey.A or key == KeyboardKey.Space then _BaramWorld:Attack()
+        elseif key == KeyboardKey.Semicolon and not shift then _BaramWorld:Interact()
+        elseif key == KeyboardKey.O then _BaramWorld:OpenDoor()
+        elseif key == KeyboardKey.Comma or key == KeyboardKey.Less then _BaramWorld:Pickup(shift or key == KeyboardKey.Less)
+        elseif key == KeyboardKey.I then self:OpenInventory()
+        elseif key == KeyboardKey.S then
+            local hud = _EntityService:GetEntityByPath("/ui/BaramHUD")
+            if isvalid(hud) then
+                ---@type BaramHUDController
+                local controller = hud:GetComponent("script.BaramHUDController")
+                if isvalid(controller) then controller:ToggleInfo() end
+            end
+        elseif key == KeyboardKey.U then self:BeginItem("use")
+        elseif key == KeyboardKey.E and not shift then self:BeginItem("eat")
+        elseif key == KeyboardKey.E and shift then _BaramWorld:SetExchangeAllowed(not self.AllowExchange)
+        elseif key == KeyboardKey.W then self:BeginItem(shift and "armor" or "equip")
+        elseif key == KeyboardKey.T then
+            if shift then
+                local equip = _BaramWorld.LocalState.equip or 0
+                if equip > 0 then _BaramWorld:ItemAction("unequip", equip, 0) else self:Notice("벗을 장비가 없습니다.") end
+            else self:BeginItem("throw") end
+        elseif key == KeyboardKey.D then self:BeginItem(shift and "dropall" or "drop")
+        elseif key == KeyboardKey.C and not shift then self:BeginItem("swap")
+        elseif key == KeyboardKey.X then self:BeginItem("inspect")
+        elseif key == KeyboardKey.H then self:BeginItem(shift and "giveall" or "give")
+        elseif key == KeyboardKey.G and shift then self.AllowGroup = not self.AllowGroup self:Notice(self.AllowGroup and "그룹 허가" or "그룹 거부")
+        elseif key == KeyboardKey.Equals or key == KeyboardKey.Plus or (key == KeyboardKey.Z and shift) or (key == KeyboardKey.C and shift) then
+            self.Mode = "spells" self:Show("아는 주문", "아직 배운 주문이 없습니다.", "Esc: 닫기")
+        elseif key == KeyboardKey.Q then self.Mode = "quit" self:Show("정말 끝냅니까?", "진행 정보를 저장한 뒤 제목 화면으로 돌아갑니다.", "Y: 예   N / Esc: 아니오")
+        elseif key == KeyboardKey.Quote then
+            local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+            ---@type BaramChatHistory
+            local chat = root:GetComponent("script.BaramChatHistory")
+            chat:OpenInput()
+        end
+        local direction = -1
+        if key == KeyboardKey.UpArrow then direction = 0 elseif key == KeyboardKey.RightArrow then direction = 1 elseif key == KeyboardKey.DownArrow then direction = 2 elseif key == KeyboardKey.LeftArrow then direction = 3 end
+        if direction >= 0 then self:RequestMove(direction, shift) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RequestMove(integer direction, boolean turnOnly)
+        if self.MovePending or self.MoveWait > 0 or _BaramChatRelay:IsInputBlocked() then return end
+        local player = _UserService.LocalPlayer
+        if not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if not isvalid(visual) then return end
+        self.MovePending = true
+        self.ReplyWait = 0
+        if self.FastWalk and not turnOnly and visual.Facing == direction * 3 then visual:PredictMove(direction) end
+        _BaramWorld:Move(direction, turnOnly)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void MoveResult(integer result)
+        if not self.MovePending then return end
+        self.MovePending = false
+        if result == 1 then
+            self.MoveWait = math.max(0, _BaramWorldData.WalkFrameSeconds * 4 - self.ReplyWait)
+        else
+            self.MoveWait = _BaramWorldData.InputPollSeconds
+            local player = _UserService.LocalPlayer
+            if isvalid(player) then
+                ---@type BaramPlayerVisual
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                if isvalid(visual) then visual:CancelPrediction() end
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Refresh only after a new server snapshot while the bag is visible.
+        if isvalid(self._T.inventory) and self._T.inventory.Enable then
+            if not _BaramEntryFlow.InWorld then self:Close()
+            elseif self._T.inventoryState ~= _BaramWorld.LocalState then self:RefreshInventory() end
+            if self.InventoryTipSeconds > 0 then
+                self.InventoryTipSeconds = math.max(0, self.InventoryTipSeconds - delta)
+                if self.InventoryTipSeconds == 0 then self._T.inventoryWindow:GetChildByName("Tooltip").Enable = false end
+            end
+        end
+        self.MoveWait = math.max(0, self.MoveWait - delta)
+        if self.MovePending then
+            self.ReplyWait = self.ReplyWait + delta
+            if self.ReplyWait > 2 then self:MoveResult(0) end
+            return
+        end
+        if self.MoveWait > 0 or _BaramChatRelay:IsInputBlocked() then return end
+        local direction = -1
+        if _InputService:IsKeyPressed(KeyboardKey.UpArrow) then direction = 0
+        elseif _InputService:IsKeyPressed(KeyboardKey.RightArrow) then direction = 1
+        elseif _InputService:IsKeyPressed(KeyboardKey.DownArrow) then direction = 2
+        elseif _InputService:IsKeyPressed(KeyboardKey.LeftArrow) then direction = 3 end
+        if direction >= 0 then
+            local turn = _InputService:IsKeyPressed(KeyboardKey.LeftShift) or _InputService:IsKeyPressed(KeyboardKey.RightShift)
+            self:RequestMove(direction, turn)
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Disconnect the inventory controls across repeated play sessions.
+        for _, entry in ipairs(self._T.inventoryLinks or {}) do
+            if isvalid(entry.entity) then entry.entity:DisconnectEvent(UITouchDownEvent, entry.link) end
+        end
+        if isvalid(self._T.inventory) then self._T.inventory.Enable = false end
+        if self.KeyLink ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self.KeyLink) end
+        if isvalid(self._T.close) and self.CloseLink ~= nil then self._T.close:DisconnectEvent(UITouchDownEvent, self.CloseLink) end
+    end
+end

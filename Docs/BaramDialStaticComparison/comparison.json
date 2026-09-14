@@ -1,0 +1,47 @@
+{
+  "uiPath": "C:/Users/black/UI/ui/BaramDialStatic.ui",
+  "screenshot": "C:/Users/black/AppData/LocalLow/nexon/MapleStory Worlds/McpScreenshots/maker_play_20260914_015445_712.png",
+  "logicalResolution": [
+    1920,
+    1080
+  ],
+  "capturedResolution": [
+    1260,
+    709
+  ],
+  "configuredRect": [
+    284,
+    187
+  ],
+  "configuredPosition": [
+    0,
+    -0.5
+  ],
+  "cropRect": [
+    537,
+    293,
+    186,
+    123
+  ],
+  "rendererColor": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "preserveSprite": "NativeSize",
+  "visual": {
+    "visible": true,
+    "parchmentAndCancelPresent": true,
+    "transparentSidesShowScene": true
+  },
+  "nearestComparison": {
+    "dx": 0,
+    "dy": 0.5,
+    "count": 20230,
+    "exact": 1141,
+    "meanAbsoluteChannelError": 6.645905420991927
+  },
+  "note": "Nearest comparison uses opaque pixels in interior sample rectangle, searching subpixel phase. It is not a 1:1 equality test: screenshot is scaled. Bilinear and nearest sampling both differ. Filter versus preview resampling contribution is unresolved. Original game palette mapping and absolute placement remain unverified.",
+  "sourceArchiveUnchanged": true
+}

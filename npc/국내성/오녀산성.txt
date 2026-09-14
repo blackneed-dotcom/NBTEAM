@@ -1,0 +1,571 @@
+오녀산성제단	{
+	set .@sd, mysd();
+
+	set .@pos, dialog(0, 0, 1, "(제단에게 여쭙습니다.)");
+	if(.@pos == 0) end;
+
+	set .@pos, list2(@list, 0, 0, "큰 구름이 두 조각으로 갈라지더니, 하늘에서 웅장한 소리가 들려온다.\\n\\n무엇을 알고 싶어 나에게 기도하는 것인가..", "이 곳은 대체 무엇입니까?");
+	if(.@pos == 0) end;
+	else if(@list == 1)
+	{
+		set .@pos, dialog(0, 0, 1, "이 곳은 시간의 흐름이 뒤바뀐 곳.. 그렇기 때문에 시간에 적합하지 않은 다양한 개체들이 나온다. 그것을 우리가 7개의 문으로 봉인 해 두었다.");
+		end;
+	}
+	else end;
+}
+
+오녀산성예언자	{
+	set .@sd, mysd();
+
+	set .@pos, list2(@list, 0, 0, "이 험한곳까지 외부인이 어인일이신가?", "당신은 누구십니까? 그리고 이곳은 어디입니까?", "각 시간의문 입장제한과 위치를 알고싶습니다.", "시간의 흐름을 바로잡는 방법은 없나요?");
+	if(.@pos == 0) end;
+	else if(@list == 1)
+	{
+		set .@pos, dialog(0, 0, 1, "난 오녀산에서 하늘의 뜻을 받들어 이곳을 지키는 예언자일세");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "이곳은 높이 400척, 남북 길이는 무려 3000리나 되며 동서 너비가 600리나 되는 고구려 최강의 요새이지.");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "침략했을때도 이 오녀산성은 단 한번도 함락된적이 없었네만....");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "일본 파괴왕의 저주가 이곳까지 닿아 이곳의 시간 흐름이 뒤바뀌어버리고 말았지...");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "그렇기 때문에 이곳은 시간의 흐름에 적합하지 않은 몬스터들이 나오는거라네...");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "오녀산의 산신께서 주신 예언에 따라 7개의 문으로 봉인을 해 두었지만 나 혼자의 힘으로는 역부족이지...");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "간간히 봉인 강화재료를 모아 간신히 버티곤 있지만...이 또한 얼마나 버틸수 있을지 모르겠구먼....");
+		end;
+	}
+	else if(@list == 2)
+	{
+		set .@pos, list2(@list, 0, 0, "어떤곳의 위치를 알고싶은가?", "제1시간의문", "제2시간의문", "제3시간의문", "제4시간의문");
+		if(.@pos == 0) end;
+		else if(@list == 1)
+		{
+			set .@pos, dialog(0, 0, 1, "제1시간의문은 2차 승급 이상인 자에게만 허락된 곳이고 위치는 (39,57)에 있다네.");
+			end;
+		}
+		else if(@list == 2)
+		{
+			set .@pos, dialog(0, 0, 1, "제2시간의문은 3차 승급 이상인 자에게만 허락된 곳이고 위치는 (47,42)에 있다네.");
+			end;
+		}
+		else if(@list == 3)
+		{
+			set .@pos, dialog(0, 0, 1, "제3시간의문은 4차 승급 이상인 자에게만 허락된 곳이고 위치는 (12,55)에 있다네.");
+			end;
+		}
+		else if(@list == 4)
+		{
+			set .@pos, dialog(0, 0, 1, "제4시간의문은 5차 승급 이상에게만 허락된 곳이고 위치는 (47,58)에 있다네.");
+			end;
+		}
+/*		else if(@list == 5)
+		{
+			set .@pos, dialog(0, 0, 1, "제5시간의문은 3차승급 이상인 자에게만 허락된 곳이고 위치는 (24,41)에 있다네.");
+			end;
+		}
+		else if(@list == 6)
+		{
+			set .@pos, dialog(0, 0, 1, "제6시간의문은 5차승급을 한 자에게만 허락된 곳이고 위치는 (16,20)에 있다네.");
+			end;
+		}
+		else if(@list == 7)
+		{
+			set .@pos, dialog(0, 0, 1, "제7시간의문은 5차승급을 한 자에게만 허락된 곳이고 위치는 (56,17)에 있다네.");
+			end;
+		} */
+	}
+	else if(@list == 3)
+	{
+
+		set .@pos, dialog(0, 0, 1, "각 시간의문 안에는 시간의문을 지키는 수호자들이 있다네");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "그들은 시간의문의 봉인으로부터 몬스터들이 밖으로 빠져나가지 못하게 하는 일과 동시에 시간의 흐름을 조금씩 바로잡는 일도 하고 있긴 하네만...");
+		if(.@pos == 0) end;
+
+		set .@pos, dialog(0, 0, 1, "아무래도 사람이 적어서 애를 먹는 모양이더군...자네가 한번 시간의 문으로 가서 그들을 도와보지 않겠는가?");
+		end;
+	}
+	else end;
+}
+
+제1시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 2)
+	{
+		set .@pos, dialog(0, 0, 1, "제1시간의문은 2차 승급 이상 부터 입장이 가능합니다.");
+		end;
+	}
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제1시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("엄호수대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제2시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 3)
+	{
+		set .@pos, dialog(0, 0, 1, "제2시간의문은 3차 승급 이상 부터 입장이 가능합니다.");
+		end;
+	}
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제2시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("숲속길대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제3시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 4)
+	{
+		set .@pos, dialog(0, 0, 1, "제3시간의문은 4차 승급 이상 부터 입장이 가능합니다.");
+		end;
+	}
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제3시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("산적소굴대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제4시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 5)
+	{
+		set .@pos, dialog(0, 0, 1, "제4시간의문은 5차 승급 이상 부터 입장이 가능합니다.");
+		end;
+	}
+
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제4시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("깊은숲대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제5시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 7)
+	{
+		set .@pos, dialog(0, 0, 1, "오류로 인해 폐쇄되었습니다. 1~4문을 이용해주세요.");
+		end;
+	}
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제5시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("비류성대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제6시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 7)
+	{
+		set .@pos, dialog(0, 0, 1, "오류로 인해 폐쇄되었습니다. 1~4문을 이용해주세요.");
+		end;
+	}
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제6시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("비류수유역대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제7시간의문	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	if(get_joblevel(.@sd) < 7)
+	{
+		set .@pos, dialog(0, 0, 1, "오류로 인해 폐쇄되었습니다. 1~4문을 이용해주세요.");
+		end;
+	}
+	else
+	{
+		set .@pos, dialog(0, 0, 1, "(제7시간의문에 손을 대자 무언가에 이끌리듯한 느낌이 든다)");
+		warp .@sd, name2mapid("암석동굴대기실"), rand(18, 20), 16;
+		end;
+	}
+}
+
+제1시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece1 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의조각1 15개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece1, 1;
+			}
+	}
+	else if($Timepiece1 == 1)
+	{
+		if(countitem(name2itemid("시간의가루1")) > 149)
+		{
+			delitem .@sd, name2itemid("시간의가루1"), 150;
+			additem .@sd, name2itemid("십억경"), 10;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각1")) > 14)
+		{
+			delitem .@sd, name2itemid("시간의조각1"), 15;
+			additem .@sd, name2itemid("십억경"), 10;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의조각1 15개를 모아오시게나...");
+			end;
+		}
+	}
+}
+
+제2시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece2 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의가루2 100개 혹은 시간의조각2 10개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece2, 1;
+			}
+	}
+	else if($Timepiece2 == 1)
+	{
+		if(countitem(name2itemid("시간의가루2")) > 99)
+		{
+			delitem .@sd, name2itemid("시간의가루2"), 100;
+			additem .@sd, name2itemid("십억경"), 30;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각2")) > 9)
+		{
+			delitem .@sd, name2itemid("시간의조각2"), 10;
+			additem .@sd, name2itemid("십억경"), 30;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의가루2 100개 혹은 시간의조각2 10개를 모아오시게나...");
+			end;
+		}
+	}
+}
+
+제3시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece3 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의가루3 100개 혹은 시간의조각3 10개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece3, 1;
+			}
+	}
+	else if($Timepiece3 == 1)
+	{
+		if(countitem(name2itemid("시간의가루3")) > 99)
+		{
+			delitem .@sd, name2itemid("시간의가루3"), 100;
+			additem .@sd, name2itemid("십억경"), 50;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각3")) > 9)
+		{
+			delitem .@sd, name2itemid("시간의조각3"), 10;
+			additem .@sd, name2itemid("십억경"), 50;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의가루3 50개 혹은 시간의조각3 10개를 모아오시게나...");
+			end;
+		}
+	}
+}
+
+제4시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece4 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의가루4 100개 혹은 시간의조각4 10개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece4, 1;
+			}
+	}
+	else if($Timepiece4 == 1)
+	{
+		if(countitem(name2itemid("시간의가루4")) > 99)
+		{
+			delitem .@sd, name2itemid("시간의가루4"), 100;
+			additem .@sd, name2itemid("십억경"), 100;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각4")) > 9)
+		{
+			delitem .@sd, name2itemid("시간의조각4"), 10;
+			additem .@sd, name2itemid("십억경"), 100;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의가루4 100개 혹은 시간의조각4 10개를 모아오시게나...");
+			end;
+		}
+	}
+}
+
+제5시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece5 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의가루5 100개 혹은 시간의조각5 10개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece5, 1;
+			}
+	}
+	else if($Timepiece5 == 1)
+	{
+		if(countitem(name2itemid("시간의가루5")) > 99)
+		{
+			delitem .@sd, name2itemid("시간의가루5"), 100;
+			additem .@sd, name2itemid("십억경"), 300;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각5")) > 9)
+		{
+			delitem .@sd, name2itemid("시간의조각5"), 10;
+			additem .@sd, name2itemid("십억경"), 300;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의가루5 100개 혹은 시간의조각5 10개를 모아오시게나...");
+			end;
+		}
+	}
+}
+
+제6시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece6 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의가루6 100개 혹은 시간의조각6 5개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece6, 1;
+			}
+	}
+	else if($Timepiece6 == 1)
+	{
+		if(countitem(name2itemid("시간의가루6")) > 99)
+		{
+			delitem .@sd, name2itemid("시간의가루6"), 100;
+			additem .@sd, name2itemid("십억경"), 400;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각6")) > 4)
+		{
+			delitem .@sd, name2itemid("시간의조각6"), 5;
+			additem .@sd, name2itemid("십억경"), 400;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의가루6 100개 혹은 시간의조각6 4개를 모아오시게나...");
+			end;
+		}
+	}
+}
+
+제7시간의문수호자	{
+	set .@sd, mysd();
+	set .@id, myid();
+	
+
+	if($Timepiece7 == 0)
+	{
+		set .@pos, list2(.@list, 0, 0, "낯선이여...이곳은 시간의 흐름이 뒤바뀐 공간이라네...함부로 들어오지 않는게 좋지...무슨일로 이곳으로 들어온겐가?", "봉인을 유지하는데 도움이 될만한게...");
+			if(.@pos == 0) end;
+
+			else if(.@list == 1)
+			{
+				set .@pos, dialog(0, 0, 1, "봉인을 유지하기 위해선 이 안으로 들어가 몬스터들을 잡아서 나오는 시간의가루을 모아와야한다네");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "조금 위험한 일이기는 하지만 자네가 도와준다면 십억경으로 보상해주도록 하지!");
+				if(.@pos == 0) end;
+
+				set .@pos, dialog(0, 0, 1, "시간의가루7 50개 혹은 시간의조각7 2개를 모아오면 십억경을 주도록 하지. 그럼 잘 부탁하네!");
+				if(.@pos == 0) end;
+
+				set $Timepiece7, 1;
+			}
+	}
+	else if($Timepiece7 == 1)
+	{
+		if(countitem(name2itemid("시간의가루7")) > 49)
+		{
+			delitem .@sd, name2itemid("시간의가루7"), 50;
+			additem .@sd, name2itemid("십억경"), 5;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else if(countitem(name2itemid("시간의조각7")) > 1)
+		{
+			delitem .@sd, name2itemid("시간의조각7"), 2;
+			additem .@sd, name2itemid("십억경"), 4;
+
+			set .@pos, dialog(0, 0, 1, "수고했네! 자 여기 약속한 십억경일세!");
+			end;
+		}
+		else
+		{
+			set .@pos, dialog(0, 0, 1, "시간의가루7 50개 혹은 시간의조각7 2개를 모아오시게나...");
+			end;
+		}
+	}
+}
+비영경이펙트	{
+	effect objid(), 98;
+}

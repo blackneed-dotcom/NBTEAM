@@ -1,0 +1,803 @@
+@대지의힘	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 40, 0, @sd;
+	set_mp @sd, get_mp(@sd)-40;
+
+	set @target_id, script_target(@sd);
+	set @target_sd, id2sd(@target_id);
+
+	if(istype(@target_id) != 1)
+	{
+		message @sd, 3, "걸리지 않습니다.";
+		end;
+	}
+
+	callfunc "MANA_DELAY", 0, name2spellid("대지의힘"), @target_sd;
+
+	action @id, 6, 30, 0;
+	effect @target_id, 11;
+	sound @target_id, 21;
+
+	spellaether @target_sd, name2spellid("대지의힘"), 180;
+	set_might @target_sd, get_might(@target_sd)+3;
+	updatestatus @target_sd, 0;
+
+	if(@sd != @target_sd)
+	{
+		message @target_sd, 3, get_name(@sd) + "님이 대지의힘을 외워주셨습니다.";
+	}
+
+	message @sd, 3, "대지의힘을 외웠습니다.";
+}
+
+@대지의힘해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set_might @sd, get_might(@sd)-3;
+	updatestatus @sd, 0;
+
+	message @sd, 3, "대지의힘 해제.";
+}
+
+@노도성황	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 100, 0, @sd;
+	set_mp @sd, get_mp(@sd)-100;
+
+	set @target_id, script_target(@sd);
+
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(spellaethered(@target_sd, name2spellid("중독")) == 0 && spellaethered(@target_sd, name2spellid("노도성황")) == 0)
+		{
+			if(ismapoption(@sd, 6))
+			{
+				spellaether @target_sd, name2spellid("노도성황"), 30;
+				if(@target_id != @id) { message @sd, 3, get_name(@sd) + "님이 노도성황을 가합니다."; }
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "이미 걸려있습니다.";
+			end;
+		}
+	}
+	else if(istype(@target_id) == 2)
+	{
+		if(get_mobid(@target_id) == 1242) || (get_mobid(@target_id) == 1243) || (get_mobid(@target_id) == 1267) || (get_mobid(@target_id) == 1244) || (get_mobid(@target_id) == 1245) || (get_mobid(@target_id) == 1254) || (get_mobid(@target_id) == 1281) { message @sd, 3, "마법 보호!!"; end; }
+
+		if(mobspellaethered(@target_id, name2spellid("중독")) == 0 && mobspellaethered(@target_id, name2spellid("몬스터노도성황")) == 0)
+		{
+			mobspellaether @target_id, name2spellid("몬스터노도성황"), 15;
+		}
+		else
+		{
+			message @sd, 3, "이미 걸려있습니다.";
+			end;
+		}
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다.";
+		end;
+	}
+
+	message @sd, 3, "노도성황을 외웠습니다.";
+	callfunc "BEGINFUNC", 96, 106, 0, 0, 6, @target_id;
+	spelldelay @sd, name2spellid("노도성황"), 255;
+}
+
+@노도성황지속	{
+	set @sd, mysd();
+	set @id, myid();
+	if(istype(@id) == 1)
+	{
+		if(spellaethered(@sd, name2spellid("노도성황")) == 0) { spelluncast @sd, name2spellid("노도성황"); end; }
+
+		effect @id, 96;
+
+		set @check, get_hp(@sd)-get_maxhp(@sd)*2/100;
+
+		if(@check > 100) { set_hp @sd, @check; }
+		else { set_hp @sd, get_hp(@sd); }
+
+		showgage @id;
+	}
+}
+
+@몬스터노도성황지속	{
+	set @target_id, objid();
+	if(istype(@target_id) == 2)
+	{
+		effect @target_id, 96;
+		set @check, get_mobhp(@target_id)-get_mobmaxhp(@target_id)*2/100;
+
+		if(@check > 100) { set_mobhp @target_id, @check; }
+		else { set_mobhp @target_id, get_mobhp(@target_id); }
+	}
+}
+
+@노도성황2	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "MANA_DELAY", 100, 0, @sd;
+	set_mp @sd, get_mp(@sd)-100;
+
+	set @target_id, script_target(@sd);
+
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(spellaethered(@target_sd, name2spellid("중독")) == 0 && spellaethered(@target_sd, name2spellid("노도성황")) == 0)
+		{
+			if(ismapoption(@sd, 6))
+			{
+				spellaether @target_sd, name2spellid("노도성황2"), 5;
+				if(@target_id != @id) { message @sd, 3, get_name(@sd) + "님이 귀문진산봉'태 격 을 가합니다."; }
+			}
+			else
+			{
+				message @sd, 3, "걸리지 않습니다.";
+				end;
+			}
+		}
+		else
+		{
+			message @sd, 3, "이미 걸려있습니다.";
+			end;
+		}
+	}
+	else if(istype(@target_id) == 2)
+	{
+		if(get_mobid(@target_id) == 1242) || (get_mobid(@target_id) == 1243) || (get_mobid(@target_id) == 1244) || (get_mobid(@target_id) == 1245) || (get_mobid(@target_id) == 1254) { message @sd, 3, "마법 보호!!"; end; }
+
+		if(mobspellaethered(@target_id, name2spellid("중독")) == 0 && mobspellaethered(@target_id, name2spellid("몬스터노도성황")) == 0)
+		{
+			mobspellaether @target_id, name2spellid("몬스터노도성황2"), 15;
+		}
+		else
+		{
+			message @sd, 3, "이미 걸려있습니다.";
+			end;
+		}
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다.";
+		end;
+	}
+
+	message @sd, 3, "노도성황을 외웠습니다.";
+	callfunc "BEGINFUNC", 96, 106, 0, 0, 6, @target_id;
+	spelldelay @sd, name2spellid("노도성황"), 255;
+}
+
+@노도성황지속2	{
+	set @sd, mysd();
+	set @id, myid();
+	if(istype(@id) == 1)
+	{
+		if(spellaethered(@sd, name2spellid("노도성황2")) == 0) { spelluncast @sd, name2spellid("노도성황2"); end; }
+
+		effect @id, 84;
+
+		set @check, get_hp(@sd)-get_maxhp(@sd)*2/20;
+
+		if(@check > 100) { set_hp @sd, @check; }
+		else { set_hp @sd, get_hp(@sd); }
+
+		showgage @id;
+	}
+}
+
+@몬스터노도성황지속2	{
+	set @target_id, objid();
+	if(istype(@target_id) == 2)
+	{
+		effect @target_id, 96;
+		set @check, get_mobhp(@target_id)-get_mobmaxhp(@target_id)*2/100;
+
+		if(@check > 100) { set_mobhp @target_id, @check; }
+		else { set_mobhp @target_id, get_mobhp(@target_id); }
+	}
+}
+@저주	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	set @pk, ismapoption(@sd, 6);
+	
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	if(istype(@target_id) == 1)
+	{
+		callfunc "MANA_DELAY", 0, name2spellid("저주"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("혼마술"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("귀염추혼소"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("극혼술"), id2sd(@target_id);
+		callfunc "MANA_DELAY", 0, name2spellid("극혼술'첨"), id2sd(@target_id);
+		callfunc "NOCURSE", @target_id, 0;
+	}
+	else if(mobspellaethered(@target_id, name2spellid("혼마술")) ||
+		 mobspellaethered(@target_id, name2spellid("저주")) ||
+		 mobspellaethered(@target_id, name2spellid("귀염추혼소")) ||
+		 mobspellaethered(@target_id, name2spellid("염화")) ||
+		 mobspellaethered(@target_id, name2spellid("극혼술")) ||
+		 mobspellaethered(@target_id, name2spellid("극혼술'첨")) ||
+		 callfunc("NOCURSE", @target_id, 2) == 1)
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+	if(@pk) goto LABEL;
+	if(istype(@target_id) != 2)
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+	
+LABEL:
+	callfunc "BEGINFUNC", 13, 69, 0, 0, 6, @target_id;
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(spellaethered(@target_sd, name2spellid("호체주술")) == 1) { message @sd, 3, "저주로 부터 보호되어 있습니다."; end; }
+		spellaether @target_sd, name2spellid("저주"), 185;
+		set_ac @target_sd, get_ac(@target_sd)+40;
+		set_mp @sd, get_mp(@sd)-30;
+		if(@target_id != @id)
+		{
+			message @target_sd, 3, get_name(@sd) + "님이 저주를 걸었습니다.";
+		}
+	}
+	else if(istype(@target_id) == 2)
+	{
+		mobspellaether @target_id, name2spellid("저주"), 185;
+		set_mobac @target_id, get_mobac(@target_id)+40;
+		set_mp @sd, get_mp(@sd)-30;
+	}
+	message @sd, 3, "저주를 외웠습니다.";
+}
+
+
+@저주해제	{
+	set @id, myid();
+	set @sd, mysd();
+	set_ac @sd, get_ac(@sd)-40;
+	message @sd, 3, "저주 해제.";
+}
+
+
+@마비	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pk, ismapoption(@sd, 6);
+	set @target_id, script_target(@sd);
+	
+	callfunc "MANA_DELAY", 80, 0, @sd;
+
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(@target_id == @id || !@pk) { message @sd, 3, "걸리지 않습니다"; end; }
+		else if(@pk) { message @sd, 3, "마법 보호!!"; end; }
+		if(spellaethered(@target_sd, name2spellid("만파지독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+		else if(spellaethered(@target_sd, name2spellid("마비")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+	}
+	else if(istype(@target_id) == 2)
+	{
+		if(get_mobid(@target_id) == 1361) || (get_mobid(@target_id) == 1362) || (get_mobid(@target_id) == 1363) || (get_mobid(@target_id) == 1364) || (get_mobid(@target_id) == 1254)|| (get_mobid(@target_id) == 1286) { message @sd, 3, "마법 보호!!"; end; }
+		
+		if(mobspellaethered(@target_id, name2spellid("만파지독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+		else if(mobspellaethered(@target_id, name2spellid("마비")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+
+		if(1000 <= get_mobid(@target_id) && 1300 >= get_mobid(@target_id)) { message @sd, 3, "마법 보호!!"; end; }
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+	
+	callfunc "BEGINFUNC", 1, 70, 0, 0, 6, @target_id;
+	if(istype(@target_id) == 1)
+	{
+		spellaether @target_sd, name2spellid("마비"), 20;
+		set_siya @target_sd, 2, 0;
+		set_mp @sd, get_mp(@sd)-80;
+		if(@target_id != @id)
+		{
+			message @target_sd, 3, get_name(@sd) + "님이 마비를 걸었습니다.";
+		}
+	}
+	else if(istype(@target_id) == 2)
+	{
+		mobspellaether @target_id, name2spellid("마비"), 20;
+		set_siya @target_id, 2, 1;
+		set_mp @sd, get_mp(@sd)-80;
+	}
+	message @sd, 3, "마비를 외웠습니다.";
+}
+
+@마비해제	{
+	set @id, myid();
+	set @sd, mysd();
+	set_siya @sd, 0, 0;
+	message @sd, 3, "마비 해제.";
+}
+
+@마비지속	{
+	set @id, myid();
+
+	if(istype(@id) == 1)
+	{
+		set @sd, mysd();
+		if(get_equipitem(@sd, 6) == name2itemid("활력의목걸이") || get_equipitem(@sd, 7) == name2itemid("전설의증표") || get_equipitem(@sd, 6) == name2itemid("전설의증표") || get_equipitem(@sd, 7) == name2itemid("활력의목걸이") || get_equipitem(@sd, 0) == name2itemid("빙룡검"))
+		{
+			spelluncast @sd, name2spellid("마비");
+		}
+	}
+}
+
+@절망	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	set @pk, ismapoption(@sd, 6);
+	set @mapname$, get_mapname(@sd);
+
+	callfunc "MANA_DELAY", 80, 0, @sd;
+
+	if(@mapname$ == "청룡성입구" || @mapname$ == "청룡의성" || @mapname$ == "청룡의심장" ||
+	@mapname$ == "주작성입구" || @mapname$ == "주작의성" || @mapname$ == "주작의심장" ||
+	@mapname$ == "현무성입구" || @mapname$ == "현무의성" || @mapname$ == "현무의심장" ||
+	@mapname$ == "백호성입구" || @mapname$ == "백호의성" || @mapname$ == "백호의심장") { end; }
+
+	if(istype(@target_id) == 1) { callfunc "MANA_DELAY", 0, name2spellid("절망"), id2sd(@target_id); }
+	else if(mobspellaethered(@target_id, name2spellid("절망")) == 1)
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+	if(@pk) goto LABEL;
+	if(istype(@target_id) != 2)
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+	if(callfunc("NODESPAIR", 1, get_mobid(@target_id)) == 1) { message @sd, 3, "마법 보호!!"; end; }
+	
+LABEL:
+	callfunc "BEGINFUNC", 14, 71, 0, 0, 6, @target_id;
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		spellaether @target_sd, name2spellid("절망"), 10;
+		set_siya @target_sd, 1, 0;
+		set_mp @sd, get_mp(@sd)-80;
+		if(@target_id != @id)
+		{
+			message @target_sd, 3, get_name(@sd) + "님이 절망을 걸었습니다.";
+		}
+	}
+	else if(istype(@target_id) == 2)
+	{
+		mobspellaether @target_id, name2spellid("절망"), 10;
+		set_siya @target_id, 3, 1;
+		set_mp @sd, get_mp(@sd)-80;
+	}
+	message @sd, 3, "절망를 외웠습니다.";
+}
+
+@절망해제	{
+	set @id, myid();
+	set @sd, mysd();
+	set_siya @sd, 0, 0;
+	message @sd, 3, "절망 해제.";
+}
+
+@절망지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem(@sd, 6) == name2itemid("시력회복의귀걸이") || get_equipitem(@sd, 7) == name2itemid("시력회복의귀걸이") || get_equipitem(@sd, 7) == name2itemid("*시력회복의귀걸이") || get_equipitem(@sd, 6) == name2itemid("*시력회복의귀걸이") || get_equipitem(@sd, 7) == name2itemid("전설의증표") || get_equipitem(@sd, 6) == name2itemid("전설의증표"))
+	{
+		spelluncast @sd, name2spellid("절망");
+	}
+}
+
+//@혼돈	{
+	set @sd, mysd();
+	set @id, myid();
+	set @target_id, script_target(@sd);
+	set @pk, ismapoption(@sd, 6);
+	
+	callfunc "MANA_DELAY", 100, 0, @sd;
+	if(istype(@target_id) == 1) callfunc "MANA_DELAY", 0, 229, id2sd(@target_id);
+	else if(mobspellaethered(@target_id, name2spellid("혼돈")) == 1)
+	{
+		message @sd, 3, "이미 걸려있습니다.";
+		end;
+	}
+	if(@pk) goto LABEL;
+	if(istype(@target_id) != 2)
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+	
+LABEL:
+	callfunc "BEGINFUNC", 34, 32, 0, 0, 6, @target_id;
+	if(istype(@target_id) == 2)
+	{
+		mobspellaether @target_id, name2spellid("혼돈"), 3;
+		set_siya @target_id, 4, 1;
+		set_mp @sd, get_mp(@sd)-100;
+	}
+	spelldelay @sd, name2spellid("혼돈"), 2;
+	message @sd, 3, "혼돈를 외웠습니다.";
+}
+
+@호체주술	{
+	set @sd, mysd();
+	set @id, myid();
+	callfunc "MANA_DELAY", 160, name2spellid("호체주술"), @sd;
+	set_downrate @sd, get_downrate(@sd)+50;
+	effect @id, 62;
+	action @id, 6, 30, 94;
+	set_mp @sd, get_mp(@sd)-160;
+	message @sd, 3, "호체주술을 외웠습니다.";
+	spellaether @sd, name2spellid("호체주술"), 60;
+}
+
+@호체주술해제	{
+	set @sd, mysd();
+	set_downrate @sd, get_downrate(@sd)-50;
+	message @sd, 3, "호체주술 해제.";
+	spelldelay @sd, name2spellid("호체주술"), 255;
+}
+
+@마기지체	{
+	set @sd, mysd();
+	set @id, myid();
+	callfunc "MANA_DELAY", 160, name2spellid("마기지체"), @sd;
+	spellaether @sd, name2spellid("마기지체"), 60;
+	effect @id, 111;
+	set_mp @sd, get_mp(@sd)-160;	
+	message @sd, 3, "마기지체를 외웠습니다.";
+}
+@마기지체저주해제	{
+	set @id, myid();
+
+	if(istype(@id) == 1)
+	{
+		set @sd, mysd();
+		set_ac @sd, get_ac(@sd)-50;
+		message @sd, 3, "마기지체저주 해제.";
+	}
+	else
+	{
+		set_mobac @id, get_mobac(@id)-50;
+	}
+}
+
+@마기지체해제	{
+	set @sd, mysd();
+	set @id, myid();
+	spelldelay @sd, name2spellid("마기지체"), 200;
+	message @sd, 3, "마기지체 해제.";
+}
+
+@마기지체지속	{
+	set @sd, mysd();
+	set @id, myid();
+	set @x, get_x(@id);
+	set @y, get_y(@id);
+
+	setarray @objid[0], obj_getxy(@x-1,@y), obj_getxy(@x+1,@y), obj_getxy(@x,@y-1), obj_getxy(@x,@y+1);
+
+	for(set @i, 0; @i < 4; set @i, @i+1)
+	{
+		if(validid(@objid[@i]) == 1)
+		{
+			if(istype(@objid[@i]) == 1)
+			{ // 사람
+				set @target_id, @objid[@i];
+				set @target_sd, id2sd(@target_id);
+				if(istype(@target_id) == 1 && ismapoption(@sd,6) == 1)
+				{
+					if(spellaethered(@target_sd, name2spellid("마기지체저주")) == 1)
+					{
+						end;
+					}
+					if(spellaethered(@target_sd, name2spellid("호체주술")) == 1) { message @sd, 3, "마기지체로 부터 보호되어 있습니다."; end; }
+					spellaether @target_sd, name2spellid("마기지체저주"), 60;
+					effect @target_id, 108;
+					set_ac @target_sd, get_ac(@target_sd)+50;
+					if(@target_id != @id)
+					{
+						message @target_sd, 3, get_name(@sd) + "님이 마기지체를 걸었습니다.";
+					}
+				}
+			}
+			else if(istype(@objid[@i]) == 2)
+			{ // 몹
+				set @target_id, @objid[@i];
+				if(!mobspellaethered(@target_id, name2spellid("몹마기지체저주")))
+				{
+					effect @target_id, 108;
+					mobspellaether @target_id, name2spellid("몹마기지체저주"), 60;
+					set_mobac @target_id, get_mobac(@target_id)+50;
+				}
+			}		
+		}
+	}
+}
+
+@몹마기지체저주해제	{
+	set @id, objid();
+
+	set_mobac @id, get_mobac(@id)-50;
+}
+
+@만파지독	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pk, ismapoption(@sd, 6);
+	
+	callfunc "MANA_DELAY", 600, 0, @sd;
+	spelldelay @sd, name2spellid("만파지독"), 60;
+
+	set @x1, get_x(@id)-8;
+	set @x2, get_x(@id)+8;
+	set @y1, get_y(@id)-8;
+	set @y2, get_y(@id)+8;
+	
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > get_mapwidth(@sd) -1) { set @x2, get_mapwidth(@sd) -1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > get_mapheight(@sd)-1) { set @y2, get_mapheight(@sd) -1; }
+	
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if (@target_id > 0 && @target_id != @id)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+					if(@target_id == @id || !@pk) { continue; }
+					else if(@pk) { continue; }
+					if(spellaethered(@target_sd, name2spellid("만파지독")) == 1) { continue; }
+					else if(spellaethered(@target_sd, name2spellid("마비")) == 1) { continue; }
+				}
+				else if(istype(@target_id) == 2)
+				{
+					if(mobspellaethered(@target_id, name2spellid("만파지독")) == 1) { continue; }
+					else if(mobspellaethered(@target_id, name2spellid("마비")) == 1) { continue; }
+				}
+				else { continue; }
+				
+				callfunc "BEGINFUNC", 1, 70, 0, 0, 6, @target_id;
+				if(istype(@target_id) == 1)
+				{
+					spellaether @target_sd, name2spellid("만파지독"), 9;
+					set_siya @target_sd, 2, 0;
+					if(@target_id != @id)
+					{
+						message @target_sd, 3, get_name(@sd) + "님이 만파지독를 걸었습니다.";
+					}
+				}
+				else if(istype(@target_id) == 2)
+				{
+					mobspellaether @target_id, name2spellid("만파지독"), 9;
+					set_siya @target_id, 2, 1;
+				}
+			}
+		}
+	}
+	set_mp @sd, get_mp(@sd)-600;
+	message @sd, 3, "만파지독를 외웠습니다.";
+}
+
+@만파지독해제	{
+	set @id, myid();
+	set @sd, mysd();
+	set_siya @sd, 0, 0;
+	message @sd, 3, "만파지독 해제.";
+}
+
+@중독	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pk, ismapoption(@sd, 6);
+	set @target_id, script_target(@sd);
+	
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set_mp @sd, get_mp(@sd)-30;
+
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd == @sd || !@pk) { message @sd, 3, "걸리지 않습니다"; end; }
+		if(spellaethered(@target_sd, name2spellid("노도성황")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+		else if(spellaethered(@target_sd, name2spellid("중독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+
+		spellaether @target_sd, name2spellid("중독"), 30;
+	}
+	else if(istype(@target_id) == 2)
+	{
+		if(mobspellaethered(@target_id, name2spellid("노도성황")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+		else if(mobspellaethered(@target_id, name2spellid("몬스터중독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+
+		if(1000 <= get_mobid(@target_id) && 1300 >= get_mobid(@target_id)) { message @sd, 3, "마법 보호!!"; end; }
+
+		mobspellaether @target_id, name2spellid("몬스터중독"), 30;
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+
+	message @sd, 3, "중독을 외웠습니다.";
+	callfunc "BEGINFUNC", 14, 68, 0, 0, 6, @target_id;
+
+	//attachtimer @sd, @id, mapid(), "@중독마법", 1000;
+}
+
+@중독지속	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem(@sd, 6) == name2itemid("해독의귀걸이") || get_equipitem(@sd, 7) == name2itemid("해독의귀걸이"))
+	{
+		spelluncast @sd, name2spellid("중독");
+	}
+	else
+	{
+		effect @id, 14;
+		if(get_maxhp(@sd) <= 100000)
+		{
+			set @check, get_hp(@sd)-((get_hp(@sd)*3)/100);
+		}
+		else
+		{
+			set @check, get_hp(@sd)-(get_hp(@sd)/500);
+		}
+		if(@check > 100) { set_hp @sd, @check; }
+		else { set_hp @sd, get_hp(@sd); }
+
+		showhitgage @id;
+		}
+	}
+}
+
+@몬스터중독지속	{
+	set @target_id, objid();
+	if(istype(@target_id) == 2)
+	{
+		effect @target_id, 84;
+		if(get_mobmaxhp(@target_id) <= 100000)
+		{
+			set @check, get_mobhp(@target_id)-get_mobmaxhp(@target_id)*2/100;
+		}
+		else
+		{
+			set @check, get_mobhp(@target_id)-get_mobmaxhp(@target_id)*2/100;
+		}
+		if(@check > 100) { set_mobhp @target_id, @check; }
+		else { set_mobhp @target_id, get_mobhp(@target_id); }
+	}
+}
+
+@중독해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	message @sd, 3, "중독 해제.";
+}
+
+@중독2	{
+	set @sd, mysd();
+	set @id, myid();
+	set @pk, ismapoption(@sd, 6);
+	set @target_id, script_target(@sd);
+	
+	callfunc "MANA_DELAY", 30, 0, @sd;
+	set_mp @sd, get_mp(@sd)-30;
+
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		if(@target_sd == @sd || !@pk) { message @sd, 3, "걸리지 않습니다"; end; }
+		if(spellaethered(@target_sd, name2spellid("노도성황")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+		else if(spellaethered(@target_sd, name2spellid("중독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+
+		spellaether @target_sd, name2spellid("중독"), 30;
+	}
+	else if(istype(@target_id) == 2)
+	{
+		if(mobspellaethered(@target_id, name2spellid("노도성황")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+		else if(mobspellaethered(@target_id, name2spellid("몬스터중독")) == 1) { message @sd, 3, "이미 걸려있습니다."; end; }
+
+		if(1000 <= get_mobid(@target_id) && 1300 >= get_mobid(@target_id)) { message @sd, 3, "마법 보호!!"; end; }
+
+		mobspellaether @target_id, name2spellid("몬스터중독"), 30;
+	}
+	else
+	{
+		message @sd, 3, "걸리지 않습니다";
+		end;
+	}
+
+	message @sd, 3, "중독을 외웠습니다.";
+	callfunc "BEGINFUNC", 14, 68, 0, 0, 6, @target_id;
+
+	//attachtimer @sd, @id, mapid(), "@중독마법", 1000;
+}
+
+@중독지속2	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_equipitem(@sd, 6) == name2itemid("해독의귀걸이") || get_equipitem(@sd, 7) == name2itemid("해독의귀걸이"))
+	{
+		spelluncast @sd, name2spellid("중독");
+	}
+	else
+	{
+		effect @id, 14;
+		if(get_maxhp(@sd) <= 100000)
+		{
+			set @check, get_hp(@sd)-((get_hp(@sd)*3)/100);
+		}
+		else
+		{
+			set @check, get_hp(@sd)-(get_hp(@sd)/500);
+		}
+		if(@check > 100) { set_hp @sd, @check; }
+		else { set_hp @sd, get_hp(@sd); }
+
+		showhitgage @id;
+		}
+	}
+}
+
+@몬스터중독지속2	{
+	set @target_id, objid();
+	if(istype(@target_id) == 2)
+	{
+		effect @target_id, 84;
+		if(get_mobmaxhp(@target_id) <= 100000)
+		{
+			set @check, get_mobhp(@target_id)-get_mobmaxhp(@target_id)*2/20;
+		}
+		else
+		{
+			set @check, get_mobhp(@target_id)-get_mobmaxhp(@target_id)*2/20;
+		}
+		if(@check > 100) { set_mobhp @target_id, @check; }
+		else { set_mobhp @target_id, get_mobhp(@target_id); }
+	}
+}
+
+@중독해제2	{
+	set @sd, mysd();
+	set @id, myid();
+
+	message @sd, 3, "중독 해제.";
+}

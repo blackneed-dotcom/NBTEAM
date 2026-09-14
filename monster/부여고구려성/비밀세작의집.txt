@@ -1,0 +1,19 @@
+@일본밀정'검	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연청호박"), 1;
+}
+
+@일본밀정'유	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연녹호박"), 1;
+}
+
+@일본밀정'수	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연자호박"), 1;
+}
+
+@일본밀정두목	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("황금호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}

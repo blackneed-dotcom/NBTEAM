@@ -1,0 +1,406 @@
+@복홍잡기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 409, 31;
+
+	if($dragon_king != 1) end;
+
+	spelluncast @sd, name2spellid("복홍잡기");
+
+	set @pos, list2(@list, 0, 0, " ", "네놈이 복어대장이냐?");
+	if(@pos != 1 || @list != 1) end;
+
+	set @pos, list2(@list_2, 0, 0, "아닙니다. 저는 복어대장의 수하일뿐입니다.", "좋다. 내 질문에 한치의 거짓없이");
+	if(@pos != 1 || @list_2 != 1) end;
+
+	set @pos, list2(@list_3, 0, 0, "아닙니다. 저는 복어대장의 수하일뿐입니다.", "대답을 하면 네놈을 살려주겠다.");
+	if(@pos != 1 || @list_3 != 1) end;
+
+	set @pos, list2(@list_4, 0, 0, "예.....", "복어대장이라는 자는 어디에 있느냐?");
+	if(@pos != 1 || @list_4 != 1) end;
+
+	set @pos, list2(@list_5, 0, 0, "글쎄요... 워낙 지체가 높으신 분이라 저도 확실히는 모르겠으나, 사방이 막혀있고 입구가 좋은 곳에 살고 있다 들었습니다.", "좋다. 또 묻겠다.");
+	if(@pos != 1 || @list_5 != 1) end;
+
+	set @pos, list2(@list_6, 0, 0, " ", "복어대장이라는 자가 용왕님에게 반기를");
+	if(@pos != 1 || @list_6 != 1) end;
+
+	set @pos, list2(@list_7, 0, 0, " ", "들려 한다고 하는데, 필시 그에 공조하는");
+	if(@pos != 1 || @list_7 != 1) end;
+
+	set @pos, list2(@list_8, 0, 0, " ", "무리들이 있을 것이다.");
+	if(@pos != 1 || @list_8 != 1) end;
+
+	set @pos, list2(@list_9, 0, 0, " ", "그자들이 누구냐?");
+	if(@pos != 1 || @list_9 != 1) end;
+
+	set @pos, list2(@list_10, 0, 0, "소인이 어떻게 그런것을 알겠습니까? 복어대장이라....읍...", "왜 말을 하려다 마는 것이냐?");
+	if(@pos != 1 || @list_10 != 1) end;
+
+	set @pos, list2(@list_11, 0, 0, " ", "네 이놈! 살고 싶지 않느냐?");
+	if(@pos != 1 || @list_11 != 1) end;
+
+	set @pos, list2(@list_12, 0, 0, "아예..예.. 복어대장은 그 긴 소매에 항시 중요한 것들을 숨기고 다닌다 합니다. 거기에 뭔가 중요한 문서가 있지 않을까 합니다.", "음 그럴듯 하군.");
+	if(@pos != 1 || @list_12 != 1) end;
+
+	set @pos, list2(@list_13, 0, 0, " ", "알겠다. 그만 사라지거라.");
+	if(@pos == 1 && @list_13 == 1)
+	{
+		set $blowfish, 1;
+	}
+}
+
+@태자전음문서	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($dragon_king == 1 && $blowfish == 1)
+	{
+		if(countitem(name2itemid("태자전음문서")) == 0)
+		{
+			additem @sd, name2itemid("태자전음문서"), 1;
+			addlegend @sd, 19, 7, 0, 0, "복어장군을 생포하였다!";
+		}
+	}
+}
+
+@게장군포박	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 401, 0;
+
+	if($dragon_king != 3) end;
+
+	spelluncast @sd, name2spellid("게장군포박");
+
+	set @pos, list2(@list, 0, 0, "으...분하다...네놈에게 지다니...", "이놈, 나의 포박을 받아라", "용왕님이 너를 보자하신다.", "따라오너라");
+	if(@pos == 0) end;
+	else if(@list > 0 && @list <= 3)
+	{
+		set $crap, 1;
+		addlegend @sd, 19, 7, 0, 0, "게장군을 생포했다!";
+	}
+}
+
+@문어장군포박	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 407, 0;
+
+	if($dragon_king != 5) end;
+
+	spelluncast @sd, name2spellid("문어장군포박");
+
+	set @pos, list2(@list, 0, 0, "으으윽...", "용왕님의 부탁으로 네놈을 잡으러 왔다");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+
+	set @pos, list2(@list_2, 0, 0, "아니 용왕님이 왜 나를 잡아 오라했단 말이냐?", "네놈이 반란에 연루되어 있다고", "게장군이 다 털어놓았다.", "이제와서 발뺌하려 해도 소용없는 짓이야.");
+	if(@pos == 0) end;
+	else if(@list_2 > 0 && @list_2 <= 3)
+	{
+		set @pos, list2(@list_3, 0, 0, "반란이라니!! 나는 반란에 가담한적이 없어!!", "후후..과연 용왕님이 그 말을 믿어주실까?", "나도 못 믿겠는데,", "어찌 용왕님이 그 말을 믿어 주신단 말이냐?");
+		if(@pos == 0) end;
+		else if(@list_3 > 0 && @list_3 <= 3)
+		{
+			set @pos, list2(@list_4, 0, 0, "아..억울하구나. 억울해. 게장군이 나에게 무슨 원한이 있어서", "...");
+			if(@pos == 0) end;
+			else if(@list_4 != 1) end;
+
+			set @pos, list2(@list_5, 0, 0, "나를 끌어 들였단 말이냐. 이 일을 어찌할꼬.. 이 일을..", "나에게 하소연 해 봐야 소용 없는 짓,", "조용히 용왕님에게 가자.");
+			if(@pos == 0) end;
+			else if(@list_5 > 0 && @list_5 <= 2)
+			{
+				set @pos, list2(@list_6, 0, 0, "아..나의 충성심을 몰라 주시는 용왕님이 너무나도 야속하구나.", "...");
+				if(@pos == 0) end;
+				else if(@list_6 != 1) end;
+
+				set @pos, list2(@list_7, 0, 0, "신하가 주군의 믿음을 받지 못하면 살아 있을 가치가 없는 법.", "...");
+				if(@pos == 0) end;
+				else if(@list_7 != 1) end;
+
+				set @pos, list2(@list_8, 0, 0, "나의 결백함을 증명해 보여 용왕님에 대한 나의 충성을 보이겠다.", "...");
+				if(@pos == 0) end;
+				else if(@list_8 != 1) end;
+
+				set @pos, list2(@list_9, 0, 0, "이보게, 나의 이 마음을 다문창과 함께 꼭 용왕님께 전해 주시게.", "이런, 무슨 짓을....?");
+				if(@pos == 0) end;
+				else if(@list_9 == 1)
+				{
+					set $octopus, 1;
+					addlegend @sd, 19, 7, 0, 0, "문어장군을 생포하였다!";
+				}
+			}
+		}
+	}
+}
+
+@해마병사잡기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($dragon_king == 7)
+	{
+		if($seahorse < 100)
+		{
+			set $seahorse, $seahorse+1;
+		}
+	}
+}
+
+@해마장군잡기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($dragon_king == 7)
+	{
+		set $seahorse_king, $seahorse_king+1;
+		addlegend @sd, 19, 7, 0, 0, "해마장군을 생포하였다!";
+	}
+}
+
+@인어장군잡기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 419, 0;
+
+	if($dragon_king != 9) end;
+
+	spelluncast @sd, name2spellid("인어장군잡기");
+
+	set @pos, list2(@list, 0, 0, "네...네놈은 누구냐?", "용왕님의 부탁을 받고", "너를 사로 잡아 용왕님께 데려가려 왔다.");
+	if(@pos == 0) end;
+	else if(@list > 0 && @list <= 2)
+	{
+		set @pos, list2(@list_2, 0, 0, "요..용왕님께서 나를?", "그래, 네가 반란을 꾀한 사실을", "용왕님은 다 알고 계신다.", "또, 다른 장군들을 반란에", "끌어 들인 사실도 알고 계신다", "용왕님 앞으로 가서 모든걸 털어놓도록 해라.");
+		if(@pos == 0) end;
+		else if(@list_2 > 0 && @list_2 <= 5)
+		{
+			set @pos, dialog(0, 0, 1, "아.. 이 일을 어쩌면 좋단 말이야.. 이 일을..\\n여보시오, 용왕님께서 내 죄를 모두 알고 계신다고 하니 본인이 부정한들 무슨 소용이 있겠소만, 지금은 본인의 어미가 많이 아프셔서 그곳에 가 봐야 한다오.");
+			if(@pos == 0) end;
+
+			set @pos, list2(@list_3, 0, 0, "그러니, 며칠 후 내가 용왕님께 직접 찾아 뵈올 테니 오늘은 그냥 돌아가시면 안되오?", "흥! 그 말을 내가 어떻게 믿으라는 소리냐?", "또, 용왕님께는 뭐라 말하고?");
+			if(@pos == 0) end;
+			else if(@list_3 > 0 && @list_3 <= 2)
+			{
+				set @pos, list2(@list_4, 0, 0, "그동안 반란에 가담하였던 자들과 중요한 내용이 적힌 내통문서를 줄 터이니,", "...");
+				if(@pos == 0) end;
+				else if(@list_4 != 1) end;
+
+				set @pos, list2(@list_5, 0, 0, "이것을 용왕님에게 전해주면 될 것이오. 부탁이오", "좋다. 이리 가지고 오너라.", "아니 절대 믿을 수 없다!");
+				if(@pos == 0) end;
+				else if(@list_5 != 1) end;
+
+				set @pos, list2(@list_6, 0, 0, "여기 내통문서가 있소.", "...");
+				if(@pos == 0) end;
+				else if(@list_6 != 1) end;
+
+				set @pos, list2(@list_7, 0, 0, "내 어미를 돌보고 바로 용왕님께 찾아갈터이니 그만 놓아 주시오.", "알겠다. 내통문서도 받았으니 우선 이것을", "용왕님께 전해주겠다.", "네 어미를 돌보고 반드시 용왕님을 찾아 오너라");
+				if(@pos == 0) end;
+				else if(@list_7 > 0 && @list_7 <= 3)
+				{
+					set $mermaid, 1;
+					if(countitem(name2itemid("내통문서")) == 0)
+					{
+						additem @sd, name2itemid("내통문서"), 1;
+						addlegend @sd, 19, 7, 0, 0, "내통문서를 얻다.";
+					}
+				}
+			}
+		}
+	}
+}
+
+@상어장군잡기	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+
+	image 0, 413, 0;
+
+	spelluncast @sd, name2spellid("상어장군잡기");
+
+	if($shark_time < @nt)
+	{
+		if($shark_quest == 0 && $dragon_king == 12)
+		{
+			set @pos, list2(@list, 0, 0, "으윽... 비록 나는	잡힐지언정 우리 군사들의 사기는 절대 꺽이지 않을 것이다.", "닥쳐라", "어서 나를 따라서 용왕님을 뵈러 가자.");
+			if(@pos == 0) end;
+			else if(@list > 0 && @list <= 2)
+			{
+				set $shark_quest, 1;
+				set $shark_count, 1;
+				addlegend @sd, 19, 7, 0, 0, "상어장군을 생포하였다. [1/2]";
+			}
+		}
+		else if($shark_quest == 1 && $dragon_king == 13)
+		{
+			set @pos, list2(@list_2, 0, 0, "한번만 눈감아 주시면 평생 쓸만한 금은보화를 드리겠습니다.", "으음...그래 좋다.", "나는 금은보화 따위에 넘어가지 않는다!");
+			if(@pos == 0) end;
+			else if(@list_2 == 1)
+			{
+				set $shark_count, 2;
+				addlegend @sd, 19, 7, 0, 0, "상어장군을 생포하였다. [2/2]";
+			}
+			else if(@list_2 == 2)
+			{
+				set $shark_count, 2;
+				addlegend @sd, 19, 7, 0, 0, "상어장군을 생포하였다. [2/2]";
+			}
+		}
+	}
+}
+
+@해파리장군잡기	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 425, 0;
+
+	if($dragon_king != 15) end;
+
+	spelluncast @sd, name2spellid("해파리장군잡기");
+
+	set @pos, list2(@list, 0, 0, "네놈은 뭍사람인데 어찌하여 용왕님의 편을 드는 것이냐?", "아니면 반란군인 네놈 편을 들란 말이냐?");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+
+	set @pos, list2(@list_2, 0, 0, "뭍사람이 함부로 용궁의 일에 간섭하지 말고 썩 꺼져라", "이미 사로잡힌 주제에 말이 많구나.");
+	if(@pos == 0) end;
+	else if(@list_2 != 1) end;
+
+	set @pos, list2(@list_3, 0, 0, " ", "내 하나만 물어보겠다.");
+	if(@pos == 0) end;
+	else if(@list_3 != 1) end;
+
+	set @pos, list2(@list_4, 0, 0, " ", "네놈들의 주동자가 누구이더냐?", "필시 전략문서가 있을터, 그것이 어디있느냐?");
+	if(@pos == 0) end;
+	else if(@list_4 > 0 && @list_4 <= 2)
+	{
+		set @pos, list2(@list_5, 0, 0, "그것만큼은 절대로 말해줄 수 없다.", "어서 말하지 못할까!!");
+		if(@pos == 0) end;
+		else if(@list_5 != 1) end;
+
+		set @pos, list2(@list_6, 0, 0, "흥. 그런다고 내가 겁먹을 것 같으냐.", "정말 대단한 악질이로구나.");
+		if(@pos == 0) end;
+		else if(@list_6 != 1) end;
+
+		set $jellyfish, 1;
+		addlegend @sd, 19, 7, 0, 0, "해파리장군을 생포하였다.";
+	}
+}
+
+@전략문서	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if($dragon_king == 16)
+	{
+		if(rand(1, 100) <= 10)
+		{
+			if(countitem(name2itemid("전략문서")) == 0)
+			{
+				additem @sd, name2itemid("전략문서"), 1;
+				set @pos, dialog(0, 0, 1, "휴.. 드디어 전략문서를 구했다.");
+			}
+		}
+	}
+}
+
+@청의태자포획	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 404, 0;
+
+	spelluncast @sd, name2spellid("청의태자포획");
+
+	if($dragon_king == 18)
+	{
+		set @pos, dialog(0, 0, 1, "헉헉. 이게 어떻게 된 노릇이냐.");
+		if(@pos == 0) end;
+
+		set @pos, list2(@list, 0, 0, "나의 완벽했던 계획이 도대체 어디서부터 어그러졌단 말인가...", "완벽한 계획?");
+		if(@pos == 0) end;
+		else if(@list != 1) end;
+
+		set @pos, list2(@list_2, 0, 0, " ", "그런 일이 과연 성공할 것이라고 믿었는가?");
+		if(@pos == 0) end;
+		else if(@list_2 != 1) end;
+
+		set @pos, dialog(0, 0, 1, "이대로 죽을수는 없다. 아직 나에게는 여의주가 남아있다.");
+		if(@pos == 0) end;
+
+		set @pos, dialog(0, 0, 1, "자. 여의주여. 나에게 강한 힘을 달라. 나를 보호하라.");
+		if(@pos == 0) end;
+
+		if(countitem(name2itemid("여의주")) == 0)
+		{
+			additem @sd, name2itemid("여의주"), 1;
+			addlegend @sd, 19, 7, 0, 0, "청의태자를 생포하였다. [1/2]";
+		}
+	}
+	if($dragon_king == 19)
+	{
+		set @pos, list2(@list_3, 0, 0, "으윽. 이계로까지 도망갔다 온 나를 어떻게 발견했지...", "네놈이 아무리 날고 뛰어봐야 용왕님이");
+		if(@pos == 0) end;
+		else if(@list_3 != 1) end;
+
+		set @pos, list2(@list_4, 0, 0, " ", "너에 대해 모든걸 알고 계신다.");
+		if(@pos == 0) end;
+		else if(@list_4 != 1) end;
+
+		set @pos, dialog(0, 0, 1, "이대로 죽을수는 없다. 아직 나에게는 여의주가 남아있다.");
+		if(@pos == 0) end;
+
+		set @pos, dialog(0, 0, 1, "자. 여의주여. 나에게 강한 힘을 달라. 나를 보호하라.");
+		if(@pos == 0) end;
+
+		set @pos, list2(@list_5, 0, 0, "으윽, 으아아아악.", "헛. 이럴수가!!!");
+		if(@pos == 0) end;
+		else if(@list_5 != 1) end;
+
+		set $cjddmlxowk, 1;
+		addlegend @sd, 19, 7, 0, 0, "청의태자를 생포하였다. [2/2]";
+		set @pos, dialog(0, 0, 1, "아. 나의 꿈이....나의 야망이................");
+	}
+}
+
+@토깽이포획	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 442, 0;
+
+	if($rabbit_liver != 1 || $rabbit_liver_2 != 1 || countitem(name2itemid("토끼의간")) != 0) end;
+
+	spelluncast @sd, name2spellid("토깽이포획");
+
+	set @pos, list2(@list, 0, 0, "여보시오. 여보시오. 왜 나를 때려 잡으려 한 단 말이오?", "나는 네 간이 필요하다");
+	if(@pos == 0) end;
+	else if(@list != 1) end;
+
+	set @pos, list2(@list_2, 0, 0, "하하하.. 여보시오 " + get_name(@sd) + "님, 내 간이 얼마나 중요한 것인데 그것을 가지고 다닌단 말이오?", "그렇다면 네 간은 지금 어디에 있단 말이냐?");
+	if(@pos == 0) end;
+	else if(@list_2 != 1) end;
+
+	set @pos, dialog(0, 0, 1, "당연히 아무도 모르는 곳에 잘 숨겨 두었소. 음.. 하지만 다른분도 아닌 용왕님의 병이 위중하시다 하니, 내 기꺼이 내 간을 용왕님께 드리리다.");
+	if(@pos == 0) end;
+
+	set @pos, list2(@list_3, 0, 0, "어떻소?", "좋아, 그럼 내 여기서 기다리마", "흥, 내가 속을줄 아느냐?");
+	if(@pos == 0) end;
+	else if(@list_3 == 2)
+	{
+		additem @sd, name2itemid("토끼의간"), 1;
+		addlegend @sd, 20, 7, 0, 0, "토깽이를 성공적으로 포획했다!";
+		set @pos, dialog(0, 0, 1, "으으윽..");
+		end;
+	}
+	else end;
+}

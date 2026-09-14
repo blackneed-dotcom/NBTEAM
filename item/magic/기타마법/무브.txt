@@ -1,0 +1,606 @@
+@귀신퇴치부적	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if($myungsukboo != 1 && $myungsukboo != 3) end;
+
+	if(get_mapname(@sd) == "귀기서린집")
+	{
+		if($myungsukboo_check == 0)
+		{
+			set $myungsukboo_x, get_x(@id);
+			set $myungsukboo_y, get_y(@id);
+			set $myungsukboo_check, 1;
+		}
+		else
+		{
+			set $myungsukboo_check, 0;
+			if(get_x(@id) != $myungsukboo_x || get_y(@id) != $myungsukboo_y)
+			{
+				if(countitem(name2itemid("귀신퇴치부적")) > 0)
+				{
+					set @rand, rand(1, 100);
+					if(@rand <= 10)
+					{
+						set $myungsukboo_count, $myungsukboo_count+1;
+						delitem @sd, name2itemid("귀신퇴치부적"), 1;
+						message @sd, 3, "귀신퇴치부적 주었습니다";
+						set @pos, dialog(0, 0, 0, "이 바닥에 부적을 묻으면 귀신의 기운이 약간 약해질 것이다.");
+					}
+				}
+			}
+			set $myungsukboo_check, 0;
+		}
+	}
+}
+
+@귀신퇴치부적해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($myungsukboo == 1 || $myungsukboo == 3)
+	{
+		spellaether @sd, name2spellid("귀신퇴치부적"), 180;
+	}
+}
+
+@표신궁고문서6	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if($geumgang_rock != 8) end;
+
+	if(get_mapname(@sd) == "표신궁닌자의방9")
+	{
+		if($geumgang_rock_check == 0)
+		{
+			set $pyosingung_x, get_x(@id);
+			set $pyosingung_y, get_y(@id);
+			set $geumgang_rock_check, 1;
+		}
+		else
+		{
+			set $geumgang_rock_check, 0;
+			if(get_x(@id) != $pyosingung_x || get_y(@id) != $pyosingung_y)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 50 && @rand <= 55)
+				{
+					if(countitem(name2itemid("표신궁고문서6")) == 0)
+					{
+						additem @sd, name2itemid("표신궁고문서6"), 1;
+						set @pos, dialog(0, 0, 0, "바닥 틈 사이에서, 낡아 검게 변색된 기분나쁜 느낌의 고문서를 주웠다.");
+					}
+				}
+			}
+		}
+	}
+}
+
+@표신궁고문서6해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($geumgang_rock == 8)
+	{
+		spellaether @sd, name2spellid("표신궁고문서6"), 180;
+	}
+}
+
+@동충하초인삼	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if($donuhap != 1 && $donuhap != 2) end;
+
+	if(get_mapname(@sd) == "국경지대")
+	{
+		if($insam_check == 0)
+		{
+			set $insam_x, get_x(@id);
+			set $insam_y, get_y(@id);
+			set $insam_check, 1;
+		}
+		else
+		{
+			set $insam_check, 0;
+			if(get_x(@id) != $insam_x || get_y(@id) != $insam_y)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 50 && @rand <= 53)
+				{
+					if(countitem(name2itemid("인삼")) == 0)
+					{
+						additem @sd, name2itemid("인삼"), 1;
+						set @pos, dialog(0, 0, 0, "드디어 인삼을 찾았다! 정말 구하기 힘들구나.");
+					}
+				}
+			}
+		}
+	}
+	else if(get_mapname(@sd) == "대방성입구")
+	{
+		if($dongchung_check == 0)
+		{
+			set $dongchung_x, get_x(@id);
+			set $dongchung_y, get_y(@id);
+			set $dongchung_check, 1;
+		}
+		else
+		{
+			set $dongchung_check, 0;
+			if(get_x(@id) != $dongchung_x || get_y(@id) != $dongchung_y)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 50 && @rand <= 53)
+				{
+					if(countitem(name2itemid("동충하초")) == 0)
+					{
+						additem @sd, name2itemid("동충하초"), 1;
+						set @pos, dialog(0, 0, 0, "드디어 동충하초를 찾았다! 정말 구하기 힘들구나.");
+					}
+				}
+			}
+		}
+	}
+}
+
+@동충하초인삼해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($donuhap == 1 || $donuhap == 2)
+	{
+		spellaether @sd, name2spellid("동충하초인삼"), 180;
+	}
+}
+
+@만리향씨앗	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if($dojaeyoung != 6) end;
+
+	if(get_mapid(@sd) >= 1100 && get_mapid(@sd) <= 1119)
+	{
+		if($ssiat_check == 0)
+		{
+			set $ssiat_x, get_x(@id);
+			set $ssiat_y, get_y(@id);
+			set $ssiat_check, 1;
+		}
+		else
+		{
+			set $ssiat_check, 0;
+			if(get_x(@id) != $ssiat_x || get_y(@id) != $ssiat_y)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 40 && @rand <= 70)
+				{
+					if(countitem(name2itemid("만리향씨앗")) > 0)
+					{
+						delitem @sd, name2itemid("만리향씨앗"), 1;
+						message @sd, 3, "만리향씨앗 주었습니다";
+						set @rand, rand(1, 10);
+						if(@rand <= 9)
+						{
+							set $ssiat_count, $ssiat_count+1;
+							addlegend @sd, 35, 7, 0, 3, "만리향씨앗 " + $ssiat_count + "번 심다.";
+							message @sd, 8, "오! 이곳이 만리향 꽃을 피우기엔 정말 좋은 장소군...\\n\\n부디 잘 자라서 이쁜꽃을 피워 좋은 향기가 널리 퍼졌으면 좋겠군.";
+						}
+						else
+						{
+							message @sd, 8, "이런! 씨앗이 썩었잖아! 이래선 꽃이 안피겠는걸. 다른 씨앗을 심어야겠다.";
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@만리향씨앗해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($dojaeyoung == 6)
+	{
+		spellaether @sd, name2spellid("만리향씨앗"), 180;
+	}
+}
+
+@만리장성수리	{
+	set @sd, mysd();
+	set @id, myid();
+
+	image 0, 0, 0;
+
+	if($greatwall_repair != 1) end;
+
+	if(get_mapname(@sd) == "만리장성1" || get_mapname(@sd) == "만리장성2" || get_mapname(@sd) == "만리장성3" || get_mapname(@sd) == "만리장성4")
+	{
+		if($greatwall_repair_check == 0)
+		{
+			set $greatwall_repair_x, get_x(@id);
+			set $greatwall_repair_y, get_y(@id);
+			set $greatwall_repair_check, 1;
+		}
+		else
+		{
+			set $greatwall_repair_check, 0;
+			if(get_x(@id) != $greatwall_repair_x || get_y(@id) != $greatwall_repair_y)
+			{
+				set @rand, rand(1, 100);
+				if(@rand <= 20)
+				{
+					set @pos, dialog(0, 0, 1, "엇! 만리장성이 부숴져 가고 있군. 어서 고쳐야 할텐데...");
+					if(@pos == 0) end;
+
+					if(countitem(name2itemid("벽돌")) > 0)
+					{
+						set @pos, dialog(0, 0, 1, "벽돌을 사두길 잘했군. 어서 고치자...");
+						if(@pos == 0) end;
+
+						set @rand, rand(1, 100);
+						delitem @sd, name2itemid("벽돌"), 1;
+						message @sd, 3, "벽돌 주었습니다";
+						if(@rand <= 70)
+						{
+							set $greatwall_repair_count, $greatwall_repair_count+1;
+							addlegend @sd, 21, 7, 0, 1, "만리장성을 " + $greatwall_repair_count + "번 고치다.";
+							set @pos, dialog(0, 0, 1, "좋아.. 잘 고쳐진 것 같군..");
+						}
+						else
+						{
+							set @pos, dialog(0, 0, 1, "앗!! 벽돌이 부숴졌잖아! 이런.. 다시해야겠군.");
+						}
+					}
+					else
+					{
+						set @pos, dialog(0, 0, 1, "이런.. 벽돌이 없잖아! 벽돌을 사 와야 겠군..");
+					}
+				}
+			}
+		}
+	}
+}
+
+@만리장성수리해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($greatwall_repair == 1)
+	{
+		spellaether @sd, name2spellid("만리장성수리"), 180;
+	}
+}
+
+@적심토	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($hansangyak != 1) end;
+
+	if(get_parentmap(@sd) == 1648 || get_parentmap(@sd) == 1596 || get_parentmap(@sd) == 1698)
+	{
+		if($hansangyak_check == 0)
+		{
+			set $hansangyak_x, get_x(@id);
+			set $hansangyak_y, get_y(@id);
+			set $hansangyak_check, 1;
+		}
+		else
+		{
+			set $hansangyak_check, 0;
+			if(get_x(@id) != $hansangyak_x || get_y(@id) != $hansangyak_y)
+			{
+				set @rand, rand(1, 1000);
+				set @success, rand(1, 500);
+				if(@rand <= 150 && @success <= 100)
+				{
+					action @id, 10, 30, 0;
+					sound @id, 313;
+					if($red_rock+1 <= 10)
+					{
+						say @id, 0, get_name(@sd) + ": 아~싸~ 적심토다!";
+						set $red_rock, $red_rock+1;
+						addlegend @sd, 22, 6, 0, 1, "적심토 " + $red_rock + "꾸러미 보관중";
+					}
+					else
+					{
+						say @id, 0, get_name(@sd) + ": 아~싸~ 적심토다! 근데, 10꾸러미나 들고 있으려니 너무 무겁네. 더이상은 못들 것 같다.";
+					}
+				}
+				else if(@rand <= 75 && @success <= 75)
+				{
+					action @id, 10, 30, 0;
+					sound @id, 313;
+					if($red_rock+1 <= 10)
+					{
+						set $red_rock, $red_rock+1;
+						addlegend @sd, 22, 6, 0, 1, "적심토 " + $red_rock + "꾸러미 보관중";
+
+						say @id, 0, get_name(@sd) + "아~싸~ 적심토다!";
+						sleep(1000);
+						say @id, 0, get_name(@sd) + "엇! 그런데, 이 빛은 뭐지? 그리고, 이 따뜻한 기운은...";
+						sleep(1000);
+						say @id, 0, get_name(@sd) + "윽! 눈부셔!";
+						sleep(1000);
+						say @id, 0, get_name(@sd) + "희한한 문양이 새겨진 방패로군. 범상치 않아 보이는데?";
+						additem @sd, name2itemid("여신의방패"), 1;
+						message @sd, 3, "여신의 축복이 주변의 적들로부터 당신을 보호합니다.";
+						set_hp @sd, get_maxhp(@sd);
+						set_mp @sd, get_maxmp(@sd);
+						broadcast 5, "여신의 가호가 " + get_name(@sd) + "의 머리위에 함께 하리라.";
+					}
+				}
+			}
+		}
+	}
+}
+
+@적심토해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($hansangyak == 1)
+	{
+		spellaether @sd, name2spellid("적심토"), 180;
+	}
+}
+
+
+@태자의장난감	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($find_play_object != 1) end;
+
+	image 0, 0, 0;
+
+	if(get_mapname(@sd) == "복건성")
+	{
+		if($object_check_1 == 0)
+		{
+			set $object_x_1, get_x(@id);
+			set $object_y_1, get_y(@id);
+			set $object_check_1, 1;
+		}
+		else
+		{
+			set $object_check_1, 0;
+			if(get_x(@id) != $object_x_1 || get_y(@id) != $object_y_1)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 50 && @rand <= 55)
+				{
+					if(countitem(name2itemid("상아주사위")) == 0)
+					{
+						additem @sd, name2itemid("상아주사위"), 1;
+						message @sd, 8, "상아로 만든 예쁜 주사위를 주웠다!";
+					}
+				}
+			}
+		}
+	}
+	else if(get_mapname(@sd) == "상해1" || get_mapname(@sd) == "상해2" || get_mapname(@sd) == "상해3")
+	{
+		if($object_check_2 == 0)
+		{
+			set $object_x_2, get_x(@id);
+			set $object_y_2, get_y(@id);
+			set $object_check_2, 1;
+		}
+		else
+		{
+			set $object_check_2, 0;
+			if(get_x(@id) != $object_x_2 || get_y(@id) != $object_y_2)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 50 && @rand <= 55)
+				{
+					if(countitem(name2itemid("오색폭죽")) == 0)
+					{
+						additem @sd, name2itemid("오색폭죽"), 1;
+						message @sd, 8, "다섯가지 색 불꽃이 나는 신기한 폭죽을 주웠다!";
+					}
+				}
+			}
+		}
+	}
+	else if(get_mapname(@sd) == "강서성")
+	{
+		if($object_check_3 == 0)
+		{
+			set $object_x_3, get_x(@id);
+			set $object_y_3, get_y(@id);
+			set $object_check_3, 1;
+		}
+		else
+		{
+			set $object_check_3, 0;
+			if(get_x(@id) != $object_x_3 || get_y(@id) != $object_y_3)
+			{
+				set @rand, rand(1, 100);
+				if(@rand >= 50 && @rand <= 55)
+				{
+					if(countitem(name2itemid("청옥팽이")) == 0)
+					{
+						additem @sd, name2itemid("청옥팽이"), 1;
+						message @sd, 8, "푸른색 옥으로 만든 멋진 팽이를 주웠다!";
+					}
+				}
+			}
+		}
+	}
+}
+
+@태자의장난감해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($find_play_object == 1)
+	{
+		spellaether @sd, name2spellid("태자의장난감"), 180;
+	}
+}
+
+//@산신의보물지도	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($mountain_god_clothes != 1) end;
+
+	image 1, 2083, 0;
+
+	if(get_mapid(@sd) == 1287 || get_mapid(@sd) == 1291 || get_mapid(@sd) == 1303 || get_mapid(@sd) == 1313 || get_mapid(@sd) == 1327 || get_mapid(@sd) == 1330 || get_mapid(@sd) == 1336 || get_mapid(@sd) == 1344 || get_mapid(@sd) == 1347 || get_mapid(@sd) == 1351 || get_mapid(@sd) == 1357 || get_mapid(@sd) == 1360 || get_mapid(@sd) == 1366 || get_mapid(@sd) == 1374 || get_mapid(@sd) == 1377)
+	{
+		if($mountain_clothes_count == 0)
+		{
+			set $mountain_clothes_x, get_x(@id);
+			set $mountain_clothes_y, get_y(@id);
+			set $mountain_clothes_count, 1;
+		}
+		else
+		{
+			set $mountain_clothes_count, 0;
+			if(get_x(@id) != $mountain_clothes_x || get_y(@id) != $mountain_clothes_y)
+			{
+				set @rand, rand(1, 100);
+				set @rate, rand(1, 100);
+				if(@rand <= 20 && @rate <= 20)
+				{
+					if(countitem(name2itemid("산신의보물지도")) == 0)
+					{
+						additem @sd, name2itemid("산신의보물지도"), 1;
+						set @pos, dialog(0, 1, 0, "산신의보물지도를 발견했다!");
+					}
+				}
+			}
+		}
+	}
+}
+
+//@산신의보물지도해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($mountain_god_clothes == 1)
+	{
+		spellaether @sd, name2spellid("산신의보물지도"), 36000;
+	}
+}
+
+@여신의이슬	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($totem_clothes != 1) end;
+
+	image 0, 0, 0;
+
+	if(get_mapname(@sd) == "폭염도")
+	{
+		if($totem_clothes_count == 0)
+		{
+			set $totem_clothes_x, get_x(@id);
+			set $totem_clothes_y, get_y(@id);
+			set $totem_clothes_count, 1;
+		}
+		else
+		{
+			set $totem_clothes_count, 0;
+			if(get_x(@id) != $totem_clothes_x || get_y(@id) != $totem_clothes_y)
+			{
+				if(countitem(name2itemid("여신의이슬")) == 0 && $totem_water < 50)
+				{
+					set @rand, rand(1, 100);
+					if(@rand <= 20)
+					{
+						set $totem_water, $totem_water+1;
+						if($totem_water == 50)
+						{
+							additem @sd, name2itemid("여신의이슬"), 1;
+							addlegend @sd, 42, 7, 0, 16, "여신의이슬을 만들었다.";
+							set @pos, dialog(0, 0, 1, "투명한 이슬을 얻었다! 여신의 이슬이 완성되었다!");
+						}
+						else
+						{
+							set @rand, rand(1, 10);
+							if(@rand <= 9)
+							{
+								addlegend @sd, 42, 7, 0, 16, "투명한 이슬을 " + $totem_water + "개 구했다.";
+								set @pos, dialog(0, 0, 1, "투명한 이슬을 발견했다!\\n\\n조심조심... 투명한 이슬을 담자.");
+							}
+							else
+							{
+								set $totem_water, $totem_water-1;
+								set @pos, dialog(0, 0, 1, "아뿔사! 투명한 이슬을 흘려버렸다!");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@여신의이슬해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($totem_clothes == 1)
+	{
+		spellaether @sd, name2spellid("여신의이슬"), 180;
+	}
+}
+
+@청심초	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($alcoholic_drink != 1) end;
+
+	image 0, 0, 0;
+
+	if(get_mapid(@sd) >= 957 && get_mapid(@sd) <= 966)
+	{
+		if($alcoholic_drink_count == 0)
+		{
+			set $alcoholic_drink_x, get_x(@id);
+			set $alcoholic_drink_y, get_y(@id);
+			set $alcoholic_drink_count, 1;
+		}
+		else
+		{
+			set $alcoholic_drink_count, 0;
+			if(get_x(@id) != $alcoholic_drink_x || get_y(@id) != $alcoholic_drink_y)
+			{
+				set @rand, rand(1, 100);
+				if(@rand <= 10 && countitem(name2itemid("청심초")) < 5)
+				{
+					additem @sd, name2itemid("청심초"), 1;
+					set @pos, dialog(0, 0, 1, "청심초를 구했다!");
+				}
+			}
+		}
+	}
+}
+
+@청심초해제	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if($alcoholic_drink == 1)
+	{
+		spellaether @sd, name2spellid("청심초"), 180;
+	}
+}

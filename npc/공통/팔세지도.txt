@@ -1,0 +1,47 @@
+팔세지도	{
+	set @sd, mysd();
+	set @id, myid();
+COS001:
+	set @pos, list2(@list, 0, 0, "안녕하신가..", "네 안녕하세요");
+	if(@pos == 0) end;
+	else if(@list == 1)
+	{
+		set @pos, list2(@ice, 0, 1, "그래..무슨일로 날 찾아 왔는가??", "팔세지도를 제작해 주세요");
+		if(@pos == 0) end;
+		{
+			if(countitem(name2itemid("월요지석")) == 0) || (countitem(name2itemid("화요지석")) == 0) || (countitem(name2itemid("수요지석")) == 0) || (countitem(name2itemid("목요지석")) == 0) || (countitem(name2itemid("금요지석")) == 0) || (countitem(name2itemid("토요지석")) == 0) || (countitem(name2itemid("일요지석")) == 0)
+			{
+				set @pos, dialog(0, 0, 0, "팔세지도를 제작하기 위해선 월화수목금토일 지석이 필요하다네.");
+				end;
+			}
+			else
+			{
+				set @pos, dialog(0, 0, 1, "오..모두 모아 왔구만.. 수고했네... 어디보자.. 전체적으로 지석이 싱글탱글 하구먼.. 허허허.. 이보게..이 좋은 지석이면..장식품으로 써도 좋아 보이는데..정말 팔세지도로 만들고 싶나?.. 흠.. 그래..할 수 없지... 만들어 주겠네...");
+				if(@pos == 0) end;
+
+				delitem @sd, name2itemid("월요지석"), 1;
+				delitem @sd, name2itemid("화요지석"), 1;
+				delitem @sd, name2itemid("수요지석"), 1;
+				delitem @sd, name2itemid("목요지석"), 1;
+				delitem @sd, name2itemid("금요지석"), 1;
+				delitem @sd, name2itemid("토요지석"), 1;
+				delitem @sd, name2itemid("일요지석"), 1;
+				message @sd, 3, "요일석 주었습니다";
+
+				if(rand(1, 11) <= 3)
+				{
+					additem @sd, name2itemid("팔세지도"), 1;
+					set @pos, dialog(0, 0, 0, "자..받게나..방금 만든 팔세지도 일쎄...어떤가? 감사한가? 껄껄껄..그래..잘 가게..");
+					broadcast 5, get_name(@sd) + "님이 팔세지도 제작에 성공하셨습니다.";
+					end;
+				}
+				else
+				{
+					set @pos, dialog(0, 0, 0, "이런..제작 도중에 지석이 모두 부숴저 버렸군.. 미안하네..");
+					broadcast 5, get_name(@sd) + "님이 팔세지도 제작에 실패하셨습니다.";
+					end;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+@외칼이상어	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("상어의심장"), 1;
+}
+
+@쌍칼상어	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("상어의심장"), 1;
+}
+
+@상어장수	{
+	callfunc "DROPITEM", objid(), 10, 5, name2itemid("상어의핵"), 1;
+}
+
+@괴력선참	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 4, 2, 8, 150, rand(50000, 140000), 0, "괴력선참", "-1";
+}

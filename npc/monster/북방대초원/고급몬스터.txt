@@ -1,0 +1,74 @@
+@Ã¶º¸Àå	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("ÀåÀÎÀÇ»À"), 1;
+}
+
+@³ú¶û	{
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("±¸¹ÌÈ£²¿¸®"), 1;
+}
+
+@³ú¶û°ø°Ý	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 8, 128, rand(11000, 14500), 2, "Ãµ³ú", "-1";
+}
+
+@Ãµ¿À	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("Ãµ³â¹¬Àº°¡Áö"), 1;
+}
+
+@Ãµ¿À°ø°Ý	{
+	set @id, objid();
+	set @target_id, get_mobtarget(@id);
+	if(@target_id > 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			if(get_state(@target_sd) == 1) { end; }
+			spellcast @target_sd, name2spellid("¸Û¼®¸»ÀÌ");
+			message @target_sd, 3, get_mobname(@id) + "°¡ ¸Û¼®¸»ÀÌ °¡ÇÕ´Ï´Ù.";
+		}
+	}
+}
+
+@¸Û¼®¸»ÀÌ	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(spellaethered(@sd, name2spellid("¸Û¼®¸»ÀÌ"))) { end; }
+	else
+	{
+		callfunc "BEGINFUNC", 189, 8, 0, 0, 6, @id;
+		spellaether @sd, name2spellid("¸Û¼®¸»ÀÌ"), 20;
+	}
+}
+
+@¸Û¼®¸»ÀÌÁö¼Ó	{
+	set @target_id, myid();
+	if(istype(@target_id) == 1)
+	{
+		set @target_sd, id2sd(@target_id);
+		effect @target_id, 189;
+		set @check, get_hp(@target_sd)-((get_hp(@target_sd)*3)/100);
+		if(@check > 100) { set_hp @target_sd, @check; }
+		else { set_hp @target_sd, get_hp(@target_sd); }
+	}
+}
+
+@µ¶È­	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("¹éÇö¸ñ"), 1;
+}
+
+@½Å¸ù	{
+	callfunc "DROPITEM", objid(), 100, 35, name2itemid("ÀÚÇö¸ñ"), 1;
+}
+
+@½Å¸ù°ø°Ý	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 5, -1, 8, 106, rand(8000, 10000), 2, "¼®±¤Åº", "-1";
+}
+
+@¿±Ãá	{
+	callfunc "DROPITEM", objid(), 10000, 800, name2itemid("¹æ¿ï¹ì²¿¸®"), 1;
+}
+
+@Á¶¿Õ	{
+	callfunc "DROPITEM", objid(), 1000, 300, name2itemid("³ë¼ÛÀÇ°¡Áö"), 1;
+}

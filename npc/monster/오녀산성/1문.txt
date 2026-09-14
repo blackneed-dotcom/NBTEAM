@@ -1,0 +1,8 @@
+@대소의추격병드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루1"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각1"), 1;
+}
+
+@추격병대장드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각1"), 1;
+}

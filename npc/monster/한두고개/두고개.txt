@@ -1,0 +1,69 @@
+@용왕토끼	{
+	callfunc "DROPITEM", objid(), 180, 10, name2itemid("풍의제일검"), 1;
+	callfunc "DROPITEM", objid(), 180, 10, name2itemid("운의제일검"), 1;
+}
+
+@방어의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("방어의반지1"), 1;
+}
+
+@명중의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("명중의반지1"), 1;
+}
+
+@공격의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("공격의반지1"), 1;
+}
+
+@체력의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("체력의반지1"), 1;
+}
+
+@마력의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("마력의반지1"), 1;
+}
+
+@힘의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("힘의반지1"), 1;
+}
+
+@민첩의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("민첩의반지1"), 1;
+}
+
+@지력의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("지력의반지1"), 1;
+}
+
+@날쌘다람쥐	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("뇌진도"), 1;
+	callfunc "DROPITEM", objid(), 200, 10, name2itemid("금덩어리"), 10000;
+}
+
+@고개다람쥐	{
+	callfunc "DROPITEM", objid(), 400, 10, name2itemid("삼지창"), 1;
+}
+
+@문지기다람쥐	{
+	callfunc "DROPITEM", objid(), 50, 20, name2itemid("용왕다람쥐의방열쇠"), 1;
+}
+
+@부자다람쥐	{
+	callfunc "DROPITEM", objid(), 200, 10, name2itemid("금덩어리"), 10000;
+}
+
+@행운의다람쥐	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("운의제이검"), 1;
+}
+
+@무적다람쥐	{
+	callfunc "DROPITEM", objid(), 400, 10, name2itemid("방어의반지3"), 1;
+}
+
+@최강다람쥐	{
+	callfunc "DROPITEM", objid(), 400, 10, name2itemid("힘의반지3"), 1;
+}
+
+@용왕다람쥐	{
+	callfunc "DROPITEM", objid(), 100, 40, name2itemid("풍의제삼검"), 1;
+}

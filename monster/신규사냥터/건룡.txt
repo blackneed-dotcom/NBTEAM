@@ -1,0 +1,75 @@
+@건룡공격	{
+	set @id, objid();
+
+	if($revival != $healhp) { set $healhp, $revival; set_mobhp @id, get_mobmaxhp(@id)/10*3; }
+
+	if(mobspellaethered(@id, name2spellid("절망")) == 1) { mobspellaether @id, name2spellid("절망"), 5; }
+
+	if(rand(1, 10) <= 5) end;
+
+	set @x1, 0;
+	set @x2, mapwidth()-1;
+	set @y1, 0;
+	set @y2, mapheight()-1;
+
+	for(set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for(set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0)
+			{
+				if(istype(@target_id) == 1)
+				{
+					set @target_sd, id2sd(@target_id);
+
+					if(get_state(@target_sd) == 1) { continue; }
+
+					sound @target_id, 506;
+					effect @target_id, 141;
+
+					damage @id, @target_id, rand(1000000, 1200000), 2;
+					message @target_sd, 3, "건룡이 용의분노를 가합니다.";
+				}
+			}
+		}
+	}
+}
+
+@건룡	{
+	callfunc "DROPITEM", objid(), 100, 50, name2itemid("금나무가지"), 1;
+}
+
+//@건룡	{
+	set @id, objid();
+
+		set @map, mapid();
+		set @x1, 7;
+		set @x2, 55;
+		set @y1, 10;
+		set @y2, 50;
+
+		if (@x1 < 0) { set @x1, 0; }
+		if (@x2 > mapwidth() -1) { set @x2, mapwidth() -1; }
+		if (@y1 < 0) { set @y1, 0; }
+		if (@y2 > mapheight()-1) { set @y2, mapheight() -1; }
+
+		for (set @i, @x1; @i <= @x2; set @i, @i+1)
+		{
+			for (set @j, @y1; @j <= @y2; set @j, @j+1)
+			{
+				set @target, obj_getmxy(@map, @i, @j); 
+				if(@target > 0 && @target != @id && istype(@target) == 1)
+				{
+					set @rnd, rand(1,100);
+					if(@rnd <= 95) { set @item$, "선물상자"; }
+					else { set @item$, "금나무가지"; }
+
+					dropitem @i, @j, name2itemid(@item$), 1;
+				}
+			}
+		}
+		broadcast 5, "건룡이 사망하였습니다."; 
+	}
+	end;	
+}

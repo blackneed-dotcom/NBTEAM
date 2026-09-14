@@ -1,0 +1,100 @@
+{
+  "status": "BLOCKED_BY_UNVERIFIED_ORIGINAL_BEHAVIOR",
+  "projectRoot": "C:/Users/black/UI",
+  "sourceFiles": [
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "BODY.EPF",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/BODY.EPF",
+      "bytes": 12851159,
+      "sha256": "2c19989025ca4f03c31cbeb955ba51e7b70d8caffc15aad5c78199bf28e702fe"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "BODY.PAL",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/BODY.PAL",
+      "bytes": 12684,
+      "sha256": "48a7ac258b2bfdecc513ece558f6d51982ae7bb66d9287c14927a163f9ff2e7f"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "BODY.TBL",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/BODY.TBL",
+      "bytes": 3104,
+      "sha256": "ad6c874339d620ab3bcdf9e6a3f032300810c4cdb0477f77cc60c49f37b8044d"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "Head.EPF",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/Head.EPF",
+      "bytes": 4230475,
+      "sha256": "facef62e9c449613b1f6d24f91ba4385e54fe5864ea1c85d1b0ef13bff6c66b7"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "Head.PAL",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/Head.PAL",
+      "bytes": 1060,
+      "sha256": "06bef90d83123afee315166e26e4f3af466e8d3c3b132728640c18471ff5b2e9"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "Head.TBL",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/Head.TBL",
+      "bytes": 2480,
+      "sha256": "a7b2480f7ad9c5104224862f4664cb56c2b0e5f1b821ec2f22218876db55eb5f"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "DRWORDER.TBL",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/DRWORDER.TBL",
+      "bytes": 500,
+      "sha256": "bdd76ae3e75f3fe819ffe29754c911b57e26fef785656e6908da589cbaf166e2"
+    },
+    {
+      "originalArchive": "C:/Users/black/UI/char.dat",
+      "entry": "drworde2.tbl",
+      "destination": "C:/Users/black/UI/RootDesk/MyDesk/BaramCharacter/Source/drworde2.tbl",
+      "bytes": 60,
+      "sha256": "3d27ea38bc567bbbdbccf2ef1d0734fbd7f143fa49a05f72586dd534b17b7912"
+    }
+  ],
+  "verified": {
+    "bodyFrames": 13417,
+    "headFrames": 10300,
+    "frameBoundsValid": true,
+    "rawIndexByteCountsMatchDimensions": true,
+    "bodyPaletteBlocks": [
+      4,
+      1066,
+      2122,
+      3178,
+      4236,
+      5292,
+      6348,
+      7404,
+      8460,
+      9516,
+      10572,
+      11628
+    ],
+    "drawOrderText": "wbhs;wbhs;sbhw;sbhw;sbhw;sbhw;bhsw;sbhw;wbhs;wbhs;wbhs;wbhs;wbhs;wbhs;swbh;sbhw;sbhw;sbhw;bhsw;sbhw;bhsw;wbhs;wbhs;wbhs;sbhw;wbhs;sbhw;wsbh;wbhs;sbhw;wbhs;sbwh;wbh0;wbh0;wbh0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;wbh0;wbh0;wbh0;wbh0;wbh0;bhw0;bhw0;bhw0;bhw0;wbh0;wbh0;bhw0;bhw0;bhw0;wbh0;wbh0;wbh0;wbh0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;bhw0;wbh0;wbh0;wbh0;whb0;wbh0;whb0;wbh0;wbh0;bhw0;bhw0;rbhw;rbhw;rbhw;rbhw;rwbh;rwbh;bhwr;bhwr;bhwr;rbhw;rwbh;rwbh;bh00;bh00;bh00;bh00;bh00;bh00;bh00;bh00;"
+  },
+  "unverified": [
+    "Basic character body/head selection",
+    "Body palette association and variable palette header layout",
+    "Direction/action mapping from BODY.TBL and Head.TBL",
+    "Standing and walking sequence definitions",
+    "Movement speed and grid/continuous movement rule",
+    "Frame durations",
+    "Simultaneous diagonal input policy",
+    "Draw-order table index mapping"
+  ],
+  "notPerformed": [
+    "Encrypted/obfuscated table decoding",
+    "Client executable execution",
+    "External resource retrieval",
+    "Runtime implementation using guessed values"
+  ],
+  "originalCharArchiveSha256": "80e3e8eaebe9d4f3e5f081b42fd2c65a64d8bbfc1e062747d6a0c5be454fb495"
+}

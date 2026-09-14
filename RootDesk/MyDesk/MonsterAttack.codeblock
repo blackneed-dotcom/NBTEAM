@@ -1,0 +1,33 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "codeblock://ff8bc8db-b70b-4bfd-9aa1-be6c71203f9e",
+  "ContentType": "x-mod/codeblock",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.5.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "CoreVersion": {
+        "Major": 0,
+        "Minor": 2
+      },
+      "ScriptVersion": {
+        "Major": 1,
+        "Minor": 1
+      },
+      "Description": "",
+      "Id": "ff8bc8db-b70b-4bfd-9aa1-be6c71203f9e",
+      "Language": 1,
+      "Name": "MonsterAttack",
+      "Type": 1,
+      "Source": 0,
+      "Target": "MOD.Core.AttackComponent"
+    }
+  }
+}

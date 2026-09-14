@@ -1,0 +1,17 @@
+@폭염룡	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("선장의일기겉표지"), 1;
+}
+
+@폭염익룡	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("염룡의꼬리"), 1;
+}
+
+@폭염왕	{
+	say objid(), 0, "폭염왕: 크아아악!! 아직 주어진 사명을 다하지 못했건만...";
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("자연의인'상"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("자연의인'하"), 1;
+}
+
+@진노폭염참	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 500, 195, rand(1200000, 1500000), 0, "진노폭염참", "-1";
+}

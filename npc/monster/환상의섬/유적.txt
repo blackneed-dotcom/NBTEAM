@@ -1,0 +1,12 @@
+@열독사	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("독니"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("선장의일기9"), 1;
+}
+
+@낭아독사	{
+	callfunc "DROPITEM", objid(), 130, 20, name2itemid("노회"), 1;
+}
+
+@독사여왕	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("화염의토템"), 1;
+}

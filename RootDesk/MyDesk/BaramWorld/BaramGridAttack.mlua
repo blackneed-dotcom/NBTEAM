@@ -1,0 +1,25 @@
+@Component
+script BaramGridAttack extends AttackComponent
+    property integer Damage = 1
+
+    @ExecSpace("ServerOnly")
+    method void Swing(integer x, integer y, integer damage)
+        self.Damage = damage
+        local p = _BaramWorldData:Position(x, y)
+        self:AttackFrom(Vector2(0.20, 0.20), Vector2(p.x, p.y + 0.1), "baram.melee", nil)
+    end
+
+    method boolean IsAttackTarget(Entity defender, string attackInfo)
+        ---@type BaramCreature
+        local creature = defender:GetComponent("script.BaramCreature")
+        return isvalid(creature) and creature.Hp > 0
+    end
+
+    method integer CalcDamage(Entity attacker, Entity defender, string attackInfo)
+        return self.Damage
+    end
+
+    method boolean CalcCritical(Entity attacker, Entity defender, string attackInfo)
+        return false
+    end
+end

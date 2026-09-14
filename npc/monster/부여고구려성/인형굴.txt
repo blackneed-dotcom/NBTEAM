@@ -1,0 +1,17 @@
+@목각인형	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("호박"), 1;
+}
+
+@양철인형	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("진호박"), 1;
+}
+
+@에메랄드인형	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("진호박"), 1;
+}
+
+@인형술사	{
+	callfunc "DROPITEM2", objid(), 100, 25, name2itemid("백화검"), 1;
+	callfunc "DROPITEM", objid(), 120, 25, name2itemid("철도"), 1;
+
+}

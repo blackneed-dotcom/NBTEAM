@@ -1,0 +1,40 @@
+@마옥	{
+	callfunc "DROPITEM", objid(), 10, 1, name2itemid("곤봉"), 1;
+}
+
+@나막신던지기	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 709, 127, rand(1500, 2000), 0, "나막신던지기", "-1";
+}
+
+//@티모공격	{
+	set @myid, objid();
+	if(mobspellaethered(@myid, name2spellid("마비")) == 1) { mobspellaether @myid, name2spellid("마비"), 1; }
+	if(rand(1, 10) <= 1) { end; }
+	set @x1, get_x(@myid)-15;
+	set @x2, get_x(@myid)+15;
+	set @y1, get_y(@myid)-15;
+	set @y2, get_y(@myid)+15;
+
+	if (@x1 < 0) { set @x1, 0; }
+	if (@x2 > mapwidth()-1) { set @x2, mapwidth()-1; }
+	if (@y1 < 0) { set @y1, 0; }
+	if (@y2 > mapheight()-1) { set @y2, mapheight()-1; }
+	for (set @i, @x1; @i <= @x2; set @i, @i+1)
+	{
+		for (set @j, @y1; @j<=@y2; set @j, @j+1)
+		{
+			set @target_id, obj_getxy(@i, @j);
+			if(@target_id > 0)
+			{
+				if(istype(@target_id) == 1)
+				{
+					sound @target_id, 8;
+					effect @target_id, 140;
+					damage @myid, @target_id, rand(19500, 20000), 2;
+				}
+			}
+		}
+	}
+	if(rand(1, 10) <= 3)
+	say @myid, 0, get_mobname(@myid) + ": 티모대위출동!!!";
+}

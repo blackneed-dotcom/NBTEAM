@@ -1,0 +1,84 @@
+@Component
+script Monster extends Component
+
+	@Sync
+	property number MaxHp = 100
+
+	@Sync
+	property number Hp = 0
+
+	@Sync
+	property boolean RespawnOn = false
+
+	@Sync
+	@HideFromInspector
+	property boolean IsDead = false
+
+	@Sync
+	property number RespawnDelay = 5
+
+	@Sync
+	property number DestroyDelay = 0.6
+
+	property string DamageSkinRUID = "02c22d93421b4038b3c413b3e40b57ec"
+
+	method void OnBeginPlay()
+		-- DamageSkinId is a DataRef, not a plain string.
+		self.Hp = self.MaxHp
+		
+		local skinSetting = self.Entity.DamageSkinSettingComponent
+		if isvalid(skinSetting) then
+			skinSetting.DamageSkinId = DataRef(self.DamageSkinRUID)
+		end
+	end
+
+	@ExecSpace("ServerOnly")
+	method void Dead()
+		-- ChangeState here would collide with the StateSet (LEA-3002);
+		-- ConditionIsDead drives the DEAD transition on the next tick.
+		self.IsDead = true
+		
+		local delayHide = function()
+			self.Entity:SetVisible(false)
+			self.Entity:SetEnable(false)
+		
+			if self.RespawnOn == false then
+				self.Entity:Destroy()
+			end
+		end
+		
+		_TimerService:SetTimerOnce(delayHide, self.DestroyDelay)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void Respawn()
+		-- ConditionIsAlive drives DEAD → IDLE on the next tick.
+		self.IsDead = false
+		self.Entity:SetVisible(true)
+		self.Entity:SetEnable(true)
+		
+		self.Hp = self.MaxHp
+	end
+
+	@ExecSpace("ServerOnly")
+	@EventSender("Self")
+	handler HandleHitEvent(HitEvent event)
+		-- Skip re-Dead if already dead when this hit landed (originalHp <= 0).
+		local TotalDamage = event.TotalDamage
+		
+		local originalHp = self.Hp
+		self.Hp = self.Hp - TotalDamage
+		
+		if self.Hp > 0 or originalHp <= 0 then
+			return
+		end
+		
+		self:Dead()
+		local timerFunc = function() self:Respawn() end
+		
+		if self.RespawnOn then
+			_TimerService:SetTimerOnce(timerFunc, self.RespawnDelay)
+		end
+	end
+
+end

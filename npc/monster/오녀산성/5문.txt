@@ -1,0 +1,20 @@
+@시간왜곡	{
+	set .@id, objid();
+
+	callfunc "mob_constanting_spell", 150, 1, 176, 8, rand(6000, 7000), 1, "말갈의일격", "을";
+	//callfunc "mob_atlarge_spell", 200, 0, 177, 8, rand(7500, 12000), 1, 8, 7, "시간왜곡", "을";
+}
+
+@시간의요괴드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루5"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각5"), 1;
+}
+
+@사충괴드랍	{
+	callfunc "DROPITEM", objid(), 100, 70, name2itemid("시간의가루5"), 1;
+	callfunc "DROPITEM", objid(), 100, 30, name2itemid("시간의조각5"), 1;
+}
+
+@절연괴드랍	{
+	callfunc "DROPITEM", objid(), 100, 80, name2itemid("시간의조각5"), 1;
+}

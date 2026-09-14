@@ -1,0 +1,14 @@
+@Condition
+script ConditionIsDead extends ConditionType
+
+	method boolean OnConditionCheck(string nextStateName)
+		-- True when Monster.IsDead is set.
+		if not self.ParentComponent:IsServer() then return false end
+		local entity = self.ParentComponent.Entity
+		if not isvalid(entity) then return false end
+		local monster = entity.Monster
+		if not isvalid(monster) then return false end
+		return monster.IsDead
+	end
+
+end

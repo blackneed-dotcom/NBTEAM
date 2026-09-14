@@ -1,0 +1,63 @@
+@길림장군	{
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("운모"), 1;
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("마노"), 1;
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("석영"), 1;
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("장석"), 1;
+	callfunc "DROPITEM", objid(), 100, 7, name2itemid("장인의돌"), 1;
+}
+
+@중월장군	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("백현목"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("자현목"), 1;
+}
+
+@마려	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("적령초"), 1;
+	callfunc "DROPITEM", objid(), 100, 11, name2itemid("월로초"), 1;
+	callfunc "DROPITEM", objid(), 100, 13, name2itemid("일양초"), 1;
+}
+
+@마려마법	{
+	callfunc "MONSTER_RANGE_ATTACK", objid(), 10, 5, -1, 8, 186, rand(40000, 50000), 2, "천뇌주", 10, "천뇌주~!";
+}
+
+@소천대사	{
+	callfunc "DROPITEM", objid(), 100, 6, name2itemid("물소의뿔"), 1;
+}
+
+@소천대사공격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 112, rand(30000, 40000), 0, "폭염진화", "-1";
+}
+
+@암령	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("장인의돌"), 1;
+}
+
+@야월진랑	{
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("매의깃털"), 1;
+	callfunc "DROPITEM", objid(), 100, 10, name2itemid("물소의뿔"), 1;
+}
+
+@야월진랑공격	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 8, 95, rand(50000, 60000), 0, "뇌전화살", "-1";
+}
+
+@철거인	{
+	callfunc "DROPITEM", objid(), 300, 10, name2itemid("반짝이는돌"), 1;
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("금조각"), 1;
+}
+
+@북천황	{
+	callfunc "DROPITEM", objid(), 100, 15, name2itemid("금조각"), 1;
+}
+
+@북천황공격	{
+	if(rand(1, 2) == 1)
+	{
+		callfunc "MONSTER_ATTACK", objid(), 10, 3, -1, 72, 123, rand(100000, 200000), 0, "천황파", "-1";
+	}
+	else
+	{
+		callfunc "MONSTER_FRONT_ATTACK", objid(), 10, 5, -1, 8, 9, rand(550000, 750000), 2, "북천황난무", "북천황난무~!~!!";
+	}
+}

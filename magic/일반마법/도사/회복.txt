@@ -1,0 +1,281 @@
+@누리의기원	{
+	callfunc "MYHEALMAGIC", 30, 50, 5, 3, "누리의기원";
+}
+
+@바다의기원	{
+	callfunc "MYHEALMAGIC", 50, 100, 5, 3, "바다의기원";
+}
+
+@대지의기원	{
+	callfunc "TARGETHEALMAGIC", 50, 50, 5, 3, "대지의기원";
+}
+
+@동해의기원	{
+	callfunc "TARGETHEALMAGIC", 30, 100, 5, 5, "동해의기원";
+}
+
+@하늘의기원	{
+	callfunc "MYHEALMAGIC", 120, 200, 5, 3, "하늘의기원";
+}
+
+@천공의기원	{
+	callfunc "TARGETHEALMAGIC", 100, 200, 66, 34, "천공의기원";
+}
+
+@천공의희원	{
+	callfunc "TARGETHEALMAGICCHOM", 200, 200, 66, 34, "천공의희원";
+}
+
+@구름의기원	{
+	callfunc "TARGETHEALMAGIC", 120, 500, 66, 66, "구름의기원";
+}
+
+@구름의희원	{
+	callfunc "TARGETHEALMAGICCHOM", 480, 500, 66, 66, "구름의희원";
+}
+
+@태양의기원	{
+	callfunc "TARGETHEALMAGIC", 240, 5000, 66, 76, "태양의기원";
+}
+
+@태양의희원	{
+	callfunc "TARGETHEALMAGICCHOM", 960, 1000, 66, 76, "태양의희원";
+}
+
+@생명의기원	{
+	set @sd, mysd();
+	set @weapon$, get_equipitem_name(@sd, 0);
+	callfunc "TARGETHEALMAGIC", 300, 25000, 65, 98, "생명의기원";
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 10000, (get_maxmp(@sd)/50), 179, 111, "대모홍접선'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "적염곤봉")
+	{
+	if(@rand <= 15)
+	callfunc "TARGETHEALMAGIC", 10000, (get_maxmp(@sd)/10), 173, 111, "적염곤봉'격";
+	}
+}
+
+@백호의희원	{
+	set @sd, mysd();
+	set @weapon$, get_equipitem_name(@sd, 0);
+	if( !strcmp(@weapon$, "용겸제삼봉") ) {
+		set @delay, get_mp(@sd)/11000;
+	} else if( !strcmp(@weapon$, "용겸제사봉") ) {
+		set @delay, get_mp(@sd)/15000;
+	} else if( !strcmp(@weapon$, "용겸제오봉") ) {
+		set @delay, get_mp(@sd)/18000;
+	} else if( !strcmp(@weapon$, "용겸제육봉") ) {
+		set @delay, get_mp(@sd)/20000;
+	} else if( !strcmp(@weapon$, "용겸제칠봉") ) {
+		set @delay, get_mp(@sd)/30000;
+	} else if( !strcmp(@weapon$, "기간용겸제칠봉") ) {
+		set @delay, get_mp(@sd)/30000;
+	} else if( !strcmp(@weapon$, "[손상]용겸제칠봉") ) {
+		set @delay, get_mp(@sd)/30000;
+	} else if( !strcmp(@weapon$, "진'적염곤봉") ) {
+		set @delay, get_mp(@sd)/30000;
+	} else if( !strcmp(@weapon$, "대모홍접선'혈") ) {
+		set @delay, get_mp(@sd)/30000;
+	} else if( !strcmp(@weapon$, "용겸제팔봉") ) {
+		set @delay, get_mp(@sd)/33000;
+	} else if( !strcmp(@weapon$, "용겸제구봉") ) {
+		set @delay, get_mp(@sd)/40000;
+	} else {
+		set @delay, get_mp(@sd)/10000;
+	}
+	if(@delay > 0) { spelldelay @sd, name2spellid("백호의희원"), @delay; }
+	else { spelldelay @sd, name2spellid("백호의희원"), 1; }
+
+	callfunc "TARGETHEALMAGIC", get_mp(@sd)/2, get_mp(@sd)*2, 64, 95, "백호의희원";
+}
+
+
+@신령의기원	{
+	set @sd, mysd();
+	set @weapon$, get_equipitem_name(@sd, 0);
+
+	callfunc "TARGETHEALMAGIC", 1000, 80000, 63, 97, "신령의기원"; 
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 10000, (get_maxmp(@sd)/10), 179, 111, "대모홍접선'격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "적염곤봉")
+	{
+	if(@rand <= 15)
+	callfunc "TARGETHEALMAGIC", 10000, (get_maxmp(@sd)/10), 173, 111, "적염곤봉'격";
+	}
+}
+
+@백호의희원'첨	{
+	set @sd, mysd();
+	set @weapon$, get_equipitem_name(@sd, 0);
+	
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0)
+			{
+				if(get_mapid(@sd) == get_mapid(@target_sd))
+				{
+					set @member_count, @member_count+1;
+				}
+			}
+		}
+	}
+	else { set @member_count, 1; }
+
+	if( !strcmp(@weapon$, "용겸제삼봉") ) { set @delay, 1 + get_mp(@sd)/(16000*@member_count); }
+	else if( !strcmp(@weapon$, "진선장") ) { set @delay, 1 + get_mp(@sd)/(18000*@member_count); }
+	else if( !strcmp(@weapon$, "용겸제사봉") ) { set @delay, 1 + get_mp(@sd)/(19000*@member_count); }
+	else if( !strcmp(@weapon$, "귀문진산장'진") ) { set @delay, 1 + get_mp(@sd)/(19000*@member_count); }
+	else if( !strcmp(@weapon$, "용겸제오봉") ) { set @delay, 1 + get_mp(@sd)/(23000*@member_count); }
+	else if( !strcmp(@weapon$, "대모홍접선'혈") ) { set @delay, 1 + get_mp(@sd)/(23000*@member_count); }
+	else if( !strcmp(@weapon$, "진'적염곤봉") ) { set @delay, 1 + get_mp(@sd)/(23000*@member_count); }
+	else if( !strcmp(@weapon$, "용겸제육봉") ) { set @delay, 1 + get_mp(@sd)/(25000*@member_count); }
+	else if( !strcmp(@weapon$, "용겸제칠봉") ) { set @delay, 1 + get_mp(@sd)/(55000*@member_count); }
+	else if( !strcmp(@weapon$, "[손상]용겸제칠봉") ) { set @delay, 1 + get_mp(@sd)/(55000*@member_count); }
+	else if( !strcmp(@weapon$, "[이벤]용겸제칠봉") ) { set @delay, 1 + get_mp(@sd)/(35000*@member_count); }
+	else if( !strcmp(@weapon$, "기간용겸제칠봉") ) { set @delay, 1 + get_mp(@sd)/(55000*@member_count); }
+	else if( !strcmp(@weapon$, "귀문진산장'태") ) { set @delay, 1 + get_mp(@sd)/(35000*@member_count); }
+	else if( !strcmp(@weapon$, "용겸제팔봉") ) { set @delay, 1 + get_mp(@sd)/(85000*@member_count); }
+	else if( !strcmp(@weapon$, "용겸제구봉") ) { set @delay, 1 + get_mp(@sd)/(130000*@member_count); }
+	else { set @delay, 1 + get_mp(@sd)/(15000*@member_count); 
+}
+	if(@delay > 0) { spelldelay @sd, name2spellid("백호의희원'첨"), @delay; }
+	else { spelldelay @sd, name2spellid("백호의희원'첨"), 1; }
+
+	callfunc "CHOMHEALMAGIC", get_mp(@sd)/2, get_mp(@sd)*2, 109, 95, "백호의희원'첨";
+}
+
+@신령의기원'첨	{
+	set @sd, mysd();
+	set @hp, get_mp(@sd)/12;
+	set @mp, get_mp(@sd)/13;
+	
+	if(party(@sd) != 0)
+	{
+		for(set @i, 0; @i < partymax(); set @i, @i+1)
+		{
+			set @target_sd, party_member(@sd, @i);
+			if(@target_sd > 0) { set @member_count, @member_count+1; }
+		}
+	}
+	else { set @member_count, 1; }
+
+	set @delay, get_mp(@sd)/(30000*@member_count);
+
+	if(@hp > 100000) { set @hp, 150000; }
+	if(@mp > 50000) { set @mp, 50000; }
+
+	if(@delay > 15) { spelldelay @sd, name2spellid("신령의기원'첨"), 15; }
+	else if(@delay > 0) { spelldelay @sd, name2spellid("신령의기원'첨"), @delay; }
+	else { spelldelay @sd, name2spellid("신령의기원'첨"), 1; }
+	callfunc "CHOMHEALMAGIC", @mp, @hp, 63, 97, "신령의기원'첨";
+}
+
+@봉황의기원	{
+	set @sd, mysd();
+	set @weapon$, get_equipitem_name(@sd, 0);
+	callfunc "TARGETHEALMAGIC", 10000, 200000, 165, 505, "봉황의기원";
+	set @rand, rand(1,100);
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 1000, (get_maxmp(@sd)/2), 179, 111, "힐격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "대모홍접선'혈")
+	{
+	if(@rand <= 15)
+	callfunc "TARGETHEALMAGIC", 1000, (get_maxmp(@sd)/2), 179, 111, "힐격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "적염곤봉")
+	{
+	if(@rand <= 20)
+	callfunc "TARGETHEALMAGIC", 1000, (get_maxmp(@sd)/2), 179, 111, "힐격";
+	}
+	if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "진'적염곤봉")
+	{
+	if(@rand <= 15)
+	callfunc "CHOMHEALMAGIC", 1000, (get_maxmp(@sd)/2), 179, 111, "그룹힐격";
+	}
+	else if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "[허상]대모홍접선")
+	{
+	if(@rand <= 10)
+	callfunc "TARGETHEALMAGIC", 1000, (get_maxmp(@sd)/4+(get_maxmp(@sd)/6)), 179, 111, "힐격";
+	}
+	else if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산장")
+	{
+	if(@rand <= 10)
+	callfunc "CHOMHEALMAGIC", 1000, 30000, 149, 113, "귀문진산장의 회복";
+	}		
+	else if(isequip(@sd, 0) != 0 && get_equipitem_name(@sd, 0) == "귀문진산장'진")
+	{
+	if(@rand <= 15)
+	callfunc "CHOMHEALMAGIC", 1000, 100000, 149, 113, "귀문진산장'진의 회복";
+		}
+	}
+}
+}
+@자동기원	{
+	set @sd, mysd();
+	set @id, myid();
+	set_spellinterval @sd, get_spellinterval(@sd)-200;
+    
+	set @pk, ismapoption(@sd, 6);
+	if(@pk)
+	{
+		message @sd, 3, "사용할수없는곳입니다.";
+		end;
+	}
+	if(get_state(@sd) == 3 || get_state(@sd) == 1)
+	{
+		message @sd, 3, "사용이 불가능합니다.";
+		end;
+	}
+	if(ismapoption(@sd,48))
+	{
+		message @sd, 3, "공성맵에서는 사용이 불가능합니다.";
+		end;
+	}
+	if($heal_name$ == "백호의희원")
+	{
+		message @sd, 3, "백호의희원은 자동기원을 사용할 수 없습니다.";
+		end;
+	}
+
+	set @ts, name2sd($heal_target_name$);
+	if(@ts > 0)
+	{
+		set @x1, get_x(@id);
+		set @y1, get_y(@id);
+		set @x2, get_x(name2id($heal_target_name$));
+		set @y2, get_y(name2id($heal_target_name$));
+
+		if(@x1 > @x2) set @cha, @x1-@x2;
+		else set @cha, @x2-@x1;
+		if(@y1 > @y2) set @cha2, @y1-@y2;
+		else set @cha2, @y2-@y1;
+
+		if(@cha < 7 && @cha2 < 7)
+		{
+			if(@id != name2id($heal_target_name$))
+			{	
+				callfunc "TARGETHEALMAGIC", $mp_delay, $hp_target, $heal_effect, $heal_sound, $heal_name$, 1;
+				end;
+			}
+		}
+	}
+	else
+	{
+		message @sd, 3, "타겟이범위내에없습니다.";
+		end;
+	}
+}

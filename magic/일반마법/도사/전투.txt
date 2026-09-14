@@ -1,0 +1,24 @@
+@지진	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @user_x, get_x(@id);
+	set @user_y, get_y(@id);
+	
+	set @target_id, script_target(@sd); // 타겟
+	set @target_x, get_x(@target_id);
+	set @target_y, get_y(@target_id);
+
+	set @gap_x, @user_x - @target_x; // 내 위치와 거리 계산
+	set @gap_y, @user_y - @target_y;
+
+	if(@gap_x < 0){ set @gap_x, @gap_x * (-1); } // 거리 차가 음수일경우 양수로 변경
+	if(@gap_y < 0){ set @gap_y, @gap_y * (-1); }
+
+	if(@gap_x > 7 || @gap_y > 7)
+	{
+		message @sd, 3, "마력이 미치지 않습니다."+@gap_x+","+@gap_y;
+		end;
+	}
+	callfunc "TARGETMAGICIANCHOM", myid(), mysd(), 82, 1500, 17, "지진", 580;
+}

@@ -1,0 +1,99 @@
+@몽달귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}
+
+@독충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}
+
+@빗자루귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}
+
+@처녀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}
+
+@달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}
+
+@불귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("진호박"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("호박"), 1;
+}
+
+@갈달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("갈호박"), 1;
+}
+
+@연갈달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연갈호박"), 1;
+}
+
+@연자달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연자호박"), 1;
+}
+
+@자달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("자호박"), 1;
+}
+
+@연청달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연청호박"), 1;
+}
+
+@황달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("황호박"), 1;
+}
+
+@적달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("적호박"), 1;
+}
+
+@연녹달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연녹호박"), 1;
+}
+
+@청달걀귀신	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("청호박"), 1;
+}
+
+@황충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("황호박"), 1;
+}
+
+@적충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("적호박"), 1;
+}
+
+@연녹충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연녹호박"), 1;
+}
+
+@청충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("청호박"), 1;
+}
+
+@회충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("회호박"), 1;
+}
+
+@갈충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("갈호박"), 1;
+}
+
+@연갈충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연갈호박"), 1;
+}
+
+@연자충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("연자호박"), 1;
+}
+
+@자충	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("자호박"), 1;
+}

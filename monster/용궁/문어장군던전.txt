@@ -1,0 +1,16 @@
+@장간문어	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("문어의심장"), 1;
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("문어다리"), 1;
+}
+
+@대발문어	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("문어의심장"), 1;
+}
+
+@세발문어	{
+	callfunc "DROPITEM", objid(), 100, 20, name2itemid("문어의심장"), 1;
+}
+
+@태샅진동	{
+	callfunc "MONSTER_ATTACK", objid(), 10, 6, 2, 8, 138, rand(9000, 13000), 0, "태샅진동", "-1";
+}

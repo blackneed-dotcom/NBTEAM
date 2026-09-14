@@ -1,0 +1,150 @@
+@Component
+script BaramMinimalController extends Component
+    -- Experimental values; original client timing and movement rules are unverified.
+    property number TestMoveSpeed = 1.2
+    property number TestFrameSeconds = 0.12
+    property integer Facing = 6
+    property integer CurrentFrame = -1
+    property integer FrameChanges = 0
+    property boolean Moving = false
+    property number PhaseSeconds = 0
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Prepare a local visual actor; no combat, physics or multiplayer behavior.
+        self._T.visual = self.Entity:GetChildByName("Visual")
+        self._T.head = _SpawnService:SpawnByEntity(self._T.visual, "AppearanceHead", Vector3(0, 0.24, 0), self.Entity, false)
+        self._T.visual.TransformComponent.Position = Vector3(0, 0.24, 0)
+        self._T.head.TransformComponent.Position = Vector3(0, 0.24, 0)
+        self._T.head.SpriteRendererComponent.OrderInLayer = self._T.visual.SpriteRendererComponent.OrderInLayer + 1
+        self._T.appearanceKey = ""
+        self._T.ready = false
+        self.Facing = 6
+        self.CurrentFrame = -1
+        self.FrameChanges = 0
+        self.PhaseSeconds = 0
+        self.Moving = false
+        self:ShowFrame(6)
+        log("[BaramMinimal] begin: original body and head layers, test speed=1.2, interval=0.12")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ShowFrame(integer frameIndex)
+        -- Change only the renderer; all composite frames share the same origin.
+        local gender = _BaramEntryFlow.Gender
+        local hair = _BaramEntryFlow.Hair
+        local appearanceKey = tostring(gender) .. ":" .. tostring(hair)
+        if self.CurrentFrame == frameIndex and self._T.appearanceKey == appearanceKey then return end
+        if not isvalid(self._T.visual) then return end
+        self._T.visual.SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetBody(gender, frameIndex)
+        if isvalid(self._T.head) then self._T.head.SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetHead(hair, frameIndex) end
+        if self._T.appearanceKey ~= appearanceKey then log("[BaramAppearance] world=" .. appearanceKey) end
+        self._T.appearanceKey = appearanceKey
+        self.CurrentFrame = frameIndex
+        self.FrameChanges = self.FrameChanges + 1
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Poll held input without restarting an unchanged walking cycle.
+        if not self._T.ready then
+            local player = _UserService.LocalPlayer
+            if not isvalid(player) then return end
+            self._T.player = player
+            self._T.playerVisible = player.Visible
+            self._T.controllerEnabled = player.PlayerControllerComponent.Enable
+            player.Visible = false
+            player.PlayerControllerComponent.Enable = false
+            self._T.previousCamera = _CameraService:GetCurrentCameraComponent()
+            local cameraEntity = self.Entity.CurrentMap:GetChildByName("TestCamera")
+            self._T.followCamera = cameraEntity
+            self._T.cameraPosition = cameraEntity.TransformComponent.WorldPosition
+            self._T.cameraDamping = cameraEntity.CameraComponent.Damping
+            self._T.cameraDeadZone = cameraEntity.CameraComponent.DeadZone
+            self._T.cameraSoftZone = cameraEntity.CameraComponent.SoftZone
+            cameraEntity.CameraComponent.Damping = Vector2(0, 0)
+            cameraEntity.CameraComponent.DeadZone = Vector2(0, 0)
+            cameraEntity.CameraComponent.SoftZone = Vector2(0, 0)
+            self:FollowActorCamera()
+            _CameraService:SwitchCameraTo(cameraEntity.CameraComponent)
+            log("[BaramCamera] follow enabled: actor world position, no smoothing")
+            self._T.dialog = _EntityService:GetEntityByPath("/ui/BaramDialStatic")
+            if isvalid(self._T.dialog) then
+                self._T.dialogEnabled = self._T.dialog.Enable
+                self._T.dialog.Enable = false
+            end
+            self._T.ready = true
+            log("[BaramMinimal] ready: arrow keys; test map only")
+        end
+        if _BaramChatRelay:IsInputBlocked() then
+            self.Moving = false
+            self.PhaseSeconds = 0
+            self:ShowFrame(self.Facing)
+            self:FollowActorCamera()
+            return
+        end
+        local x = 0
+        local y = 0
+        if _InputService:IsKeyPressed(KeyboardKey.RightArrow) then x = x + 1 end
+        if _InputService:IsKeyPressed(KeyboardKey.LeftArrow) then x = x - 1 end
+        if _InputService:IsKeyPressed(KeyboardKey.UpArrow) then y = y + 1 end
+        if _InputService:IsKeyPressed(KeyboardKey.DownArrow) then y = y - 1 end
+        -- Test policy: opposing keys cancel, horizontal wins over diagonal input.
+        if x ~= 0 then y = 0 end
+        local facing = self.Facing
+        if x > 0 then facing = 3 elseif x < 0 then facing = 9
+        elseif y > 0 then facing = 0 elseif y < 0 then facing = 6 end
+        local dt = math.min(delta, 0.1)
+        local pos = self.Entity.TransformComponent.Position
+        local nx = math.max(-4, math.min(4, pos.x + x * self.TestMoveSpeed * dt))
+        local ny = math.max(-2, math.min(2, pos.y + y * self.TestMoveSpeed * dt))
+        local moving = nx ~= pos.x or ny ~= pos.y
+        if facing ~= self.Facing or moving ~= self.Moving then
+            self.PhaseSeconds = 0
+            self.Facing = facing
+            self.Moving = moving
+            log("[BaramMinimal] state facing=" .. tostring(facing) .. " moving=" .. tostring(moving))
+        end
+        if moving then
+            self.Entity.TransformComponent.Position = Vector3(nx, ny, pos.z)
+            self.PhaseSeconds = self.PhaseSeconds + dt
+            local phase = math.floor(self.PhaseSeconds / self.TestFrameSeconds) % 4
+            local offset = 0
+            if phase == 0 then offset = 1 elseif phase == 2 then offset = 2 end
+            self:ShowFrame(self.Facing + offset)
+        else
+            self:ShowFrame(self.Facing)
+        end
+        self:FollowActorCamera()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void FollowActorCamera()
+        -- Follow movement coordinates, never animation-frame rendering offsets.
+        local cameraEntity = self._T.followCamera
+        if not isvalid(cameraEntity) then return end
+        local target = self.Entity.TransformComponent.WorldPosition
+        local current = cameraEntity.TransformComponent.WorldPosition
+        cameraEntity.TransformComponent.WorldPosition = Vector3(target.x, target.y, current.z)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Restore temporary test-only visibility and controls.
+        if isvalid(self._T.followCamera) then
+            local cameraEntity = self._T.followCamera
+            cameraEntity.TransformComponent.WorldPosition = self._T.cameraPosition
+            cameraEntity.CameraComponent.Damping = self._T.cameraDamping
+            cameraEntity.CameraComponent.DeadZone = self._T.cameraDeadZone
+            cameraEntity.CameraComponent.SoftZone = self._T.cameraSoftZone
+        end
+        if isvalid(self._T.player) then
+            self._T.player.Visible = self._T.playerVisible
+            self._T.player.PlayerControllerComponent.Enable = self._T.controllerEnabled
+        end
+        if isvalid(self._T.dialog) then self._T.dialog.Enable = self._T.dialogEnabled end
+        if isvalid(self._T.previousCamera) and self._T.previousCamera.Enable and self._T.previousCamera.Entity.EnabledInHierarchy then
+            _CameraService:SwitchCameraTo(self._T.previousCamera)
+        end
+    end
+end

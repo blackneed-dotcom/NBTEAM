@@ -1,0 +1,520 @@
+중국전설무기강화장인	{
+
+	set @sd, mysd();
+	set @id, myid();
+
+	set @rand, rand(1,100);
+	if(countitem(name2itemid("얼음")) < 1 || get_purehp(@sd) < 1000)
+	{
+		set @pos, dialog(1,0,1, "[" + get_name(@sd) + "]놈아 !! 이 더운날 왜와서 날 귀찮게 하느냐. 중국전설무기 강화 하는곳이라네");
+		if(@pos == 0) end;
+		say @id, 3, "놈아 !! 이 더운날 왜와서 날 귀찮게 하느냐. 기본도 안되어있는 놈같으니라고..얼음을 가지구 오거라..";
+	}
+	else
+	{
+		set @pos, list2(@list, 1, 0, "여기는 무슨일로 왔는가?", "중국전설무기강화", "그냥 왔어요...");
+		if(@pos == 0) end;
+		else if(@list == 2)
+		{
+			set @pos, dialog(1,0,1, "여기를 그냥 왜와!! 방해하지말고 냉큼 가라!");
+			if(@pos == 0) end;
+		}
+		else if(@list == 1)
+		{
+a1:
+			set @pos, dialog(1,0,1, "중국전설무기를 강화시키러 왔다고? 그렇다면 여기를 잘찾아왔군 그래..\\n\\n");
+			if(@pos == 0) end;
+a2:
+			set @pos, dialog(1,1,1, "하지만 내가 아무리 뛰어나다고 해서 강화에 만드시 성공한다는 보장은 없네\\n\\n");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto a1;
+a3:
+			set @pos, list2(@list1_1, 1, 1, "그럼 각성을 시작하겠나?", "예", "아뇨");
+			if(@pos == 0) end;
+			else if(@pos == -1) goto a2;
+			else if(@list1_1 == 2)
+			{
+				set @pos, dialog(1,1,1, "중국전설무기 강화도 안할꺼면서 여기와서 왜 귀찮게 하느냐!");
+				if(@pos == 0) end;
+				else if(@pos == -1) goto a3;
+			}
+			else if(@list1_1 == 1)
+			{
+				if(countitem(name2itemid("정화의영혼")) < 1)
+				{
+					set @pos, dialog(1,0,1, "정화의영혼을 구해오게");
+					if(@pos == 0) end;
+				}
+				else
+				{
+
+a4:
+					set @pos, list2(@list1_2, 1, 1, "그럼 강화시킬 중국전설무기를 고르게", "구곡검", "협가검", "영후단봉", "대모홍접선");
+					if(@pos == 0) end;
+					else if(@pos == -1) goto a3;
+					else if(@list1_2 == 1)
+					{
+a5:
+						set @pos, list2(@list__, 0, 1, "강화시킬 구곡검을 고르게", "구곡검", "구곡검'흑");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto a4;
+						else if(@list__ == 1)
+						{
+a6:	
+							if(countitem(name2itemid("구곡검")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto a5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 구곡검 강화를 시작하겠네\\n구곡검를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto a5;
+
+								if(@rand <= 15)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("구곡검"), 1;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("녹호박별"), 1;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									additem @sd, name2itemid("구곡검'흑"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 구곡검'흑 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 구곡검'흑의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("녹호박별"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("구곡검"), 1;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									additem @sd, name2itemid("[손상]구곡검"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 구곡검'흑 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+						else if(@list__ == 2)
+						{
+							if(countitem(name2itemid("구곡검'흑")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto a5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 구곡검 강화를 시작하겠네\\n구곡검를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto a5;
+
+								if(@rand <= 3)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("구곡검'흑"), 1;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									delitem @sd, name2itemid("청호박별"), 2;
+									additem @sd, name2itemid("구곡천검'우"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 구곡천검'우 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 구곡천검'우의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("청호박별"), 2;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("구곡검'흑"), 1;
+									additem @sd, name2itemid("[손상]구곡검"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 구곡천검'우 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+					}
+					else if(@list1_2 == 2)
+					{
+b5:
+						set @pos, list2(@list___, 0, 1, "강화시킬 협가검을 고르게", "협가검", "협가검'염");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto a4;
+						else if(@list___ == 1)
+						{
+b6:
+							if(countitem(name2itemid("협가검")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto b5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 협가검 강화를 시작하겠네\\n협가검를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto b5;
+								
+								if(@rand <= 15)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("황호박별"), 1;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("협가검"), 1;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									additem @sd, name2itemid("협가검'염"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 협가검'염 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 협가검'염의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("황호박별"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("협가검"), 1;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									additem @sd, name2itemid("[손상]협가검"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 협가검'염 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+						else if(@list___ == 2)
+						{
+							if(countitem(name2itemid("협가검'염")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto b5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 협가검 강화를 시작하겠네 \\n협가검를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto b5;
+								
+								if(@rand <= 3)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("녹호박별"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									delitem @sd, name2itemid("협가검'염"), 1;
+									additem @sd, name2itemid("협가신검'공"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 협가신검'공 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 협가신검'공의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("녹호박별"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("협가검'염"), 1;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									additem @sd, name2itemid("[손상]협가검"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 협가신검'공 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+					}
+					else if(@list1_2 == 3)
+					{
+c5:
+						set @pos, list2(@list____, 0, 1, "강화시킬 영후단봉을 고르게", "영후단봉", "영후단봉'극");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto a4;
+						else if(@list____ == 1)
+						{
+c6:
+							if(countitem(name2itemid("영후단봉")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto c5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 영후단봉 강화를 시작하겠네\\n영후단봉를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto c5;
+
+								if(@rand <= 15)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("적호박별"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									delitem @sd, name2itemid("영후단봉"), 1;
+									additem @sd, name2itemid("영후단봉'극"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 영후단봉'극 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 영후단봉'극의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("적호박별"), 1;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("영후단봉"), 1;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									additem @sd, name2itemid("[손상]영후단봉"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 영후단봉'극 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+						else if(@list____ == 2)
+						{
+							if(countitem(name2itemid("영후단봉'극")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto c5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 영후단봉 강화를 시작하겠네\\n영후단봉를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto c5;
+
+								if(@rand <= 3)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("청호박별"), 2;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("영후단봉'극"), 1;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									additem @sd, name2itemid("진혼단봉'이"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 진혼단봉'이 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 진혼단봉'이찌의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("청호박별"), 2;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("영후단봉'극"), 1;
+									additem @sd, name2itemid("[손상]영후단봉"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 진혼단봉'이 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+					}
+					else if(@list1_2 == 4)
+					{
+d5:
+						set @pos, list2(@list_____, 0, 1, "강화시킬 대모홍접선을 고르게", "대모홍접선", "대모홍접선'혈");
+						if(@pos == 0) end;
+						else if(@pos == -1) goto a4;
+						else if(@list_____ == 1)
+						{
+d6:
+							if(countitem(name2itemid("대모홍접선")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto d5;
+								end;
+							}
+							else
+							{
+
+								set @pos, dialog(1,1,1, "좋아 그럼 대모홍접선 강화를 시작하겠네\\n대모홍접선를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto d5;
+
+								if(@rand <= 15)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("녹호박별"), 1;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									delitem @sd, name2itemid("대모홍접선"), 1;
+									additem @sd, name2itemid("대모홍접선'혈"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 대모홍접선'혈 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 대모홍접선'혈의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 1;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("녹호박별"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("강화석"), 3;
+									delitem @sd, name2itemid("은나무가지"), 10;
+									delitem @sd, name2itemid("레이드코인"), 30;
+									delitem @sd, name2itemid("대모홍접선"), 1;
+									additem @sd, name2itemid("[손상]대모홍접선"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 대모홍접선'혈 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+						else if(@list_____ == 2)
+						{
+							if(countitem(name2itemid("대모홍접선'혈")) < 1)
+							{
+								set @pos, dialog(1,1,1, "재료들을 모두 모아오게..");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto d5;
+								end;
+							}
+							else
+							{
+								set @pos, dialog(1,1,1, "좋아 그럼 대모홍접선 강화를 시작하겠네 \\n대모홍접선를 각성하는도중 방해하면 절대로 안된다네");
+								if(@pos == 0) end;
+								else if(@pos == -1) goto d5;
+
+								if(@rand <= 3)
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 5;
+									delitem @sd, name2itemid("적호박별"), 2;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("대모홍접선'혈"), 1;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									additem @sd, name2itemid("대모마령'산"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 대모마령'산 강화에 성공하셨습니다. 축하드립니다! ))";
+									set @pos, dialog(1,0,1, "하늘이 자네를 대모마령'산의 주인으로 인정하는군\\n\\n축하하네");
+									if(@pos == 0) end;
+									end;
+								}
+								else
+								{
+									delitem @sd, name2itemid("정화의영혼"), 2;
+									delitem @sd, name2itemid("은천지인패"), 1;
+									delitem @sd, name2itemid("금조각"), 3;
+									delitem @sd, name2itemid("적호박별"), 2;
+									delitem @sd, name2itemid("레이드코인"), 90;
+									delitem @sd, name2itemid("강화석"), 5;
+									delitem @sd, name2itemid("금나무가지"), 5;
+									delitem @sd, name2itemid("대모홍접선'혈"), 1;
+									additem @sd, name2itemid("[손상]대모홍접선"), 1;
+									delitem @sd, name2itemid("얼음"), 1;
+									set_purehp @sd, get_purehp(@sd) - 1000;
+									broadcast 5, "(( [" + get_name(@sd) + "]님이 대모마령'산 강화에 실패하셨습니다. ))";
+									set @pos, dialog(1,0,1, "미안하네.. 하지만 너무 낙심하지 말게나");
+									if(@pos == 0) end;
+									end;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,51 @@
+@Component
+script PlayerAttack extends AttackComponent
+
+	@HideFromInspector
+	property any Shape = nil
+
+	@ExecSpace("ServerOnly")
+	method void OnBeginPlay()
+		-- Reusable shape; AttackNormal repositions it each swing.
+		self.Shape = BoxShape(Vector2.zero, Vector2.one, 0)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void AttackNormal()
+		-- Offset the box in front of the player before firing AttackFast.
+		local playerController = self.Entity.PlayerControllerComponent
+		local transform = self.Entity.TransformComponent
+		if playerController and transform then
+			local worldPosition = transform.WorldPosition
+			local attackOffset = Vector2(worldPosition.x + 0.5 * playerController.LookDirectionX, worldPosition.y + 0.5)
+			self.Shape.Position = attackOffset
+		
+			self:AttackFast(self.Shape, nil, CollisionGroups.Monster)
+		end
+	end
+
+	method integer CalcDamage(Entity attacker, Entity defender, string attackInfo)
+		-- Flat base damage.
+		return 50
+	end
+
+	method boolean CalcCritical(Entity attacker, Entity defender, string attackInfo)
+		-- 30% crit chance.
+		return _UtilLogic:RandomDouble() < 0.3
+	end
+
+	method float GetCriticalDamageRate()
+		-- 2x on crit.
+		return 2
+	end
+
+	@ExecSpace("ServerOnly")
+	@EventSender("Self")
+	handler HandlePlayerActionEvent(PlayerActionEvent event)
+		-- Route the "Attack" action to AttackNormal.
+		if event.ActionName == "Attack" then
+			self:AttackNormal()
+		end
+	end
+
+end

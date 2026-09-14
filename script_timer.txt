@@ -1,0 +1,361 @@
+//ONTICK 모음
+ONTICK60	{
+	set @r, rand(1,2);
+	if(@r == 1)
+		callfunc("BROADCAST");
+	else
+		callfunc("SERVERBROAD");
+}
+//ONTICK4	{
+	set @nt, callfunc("Server_Nowtime");
+
+	if(#server_exp_time == @nt+1)
+	{
+		set #server_exp_time, @nt+0;
+		set #server_exprate, 15;
+		broadcast 5, "기부 시간이 종료되어 경험치 배율이 15배로 돌아왔습니다.";
+	}	
+}
+
+//ONTICK600	{
+	set @nt, callfunc("Server_Nowtime");
+
+	if(#server_exp_time == @nt+0)
+	{
+		set #server_exp_time, @nt+0;
+		set #server_exprate, 15;
+	}
+}
+
+
+//ONTICK1	{
+	set @sd, mysd();
+	set @id, myid();
+	set @nt, callfunc("Server_Nowtime");
+	
+	if(#server_exp_time < @nt)
+	{
+		set #server_exprate, 15;
+		broadcast 5, "기부 시간이 종료되어 경험치 배율이 15배로 돌아왔습니다.";
+	}
+}
+
+//ONTICK60	{
+	set @r, rand(1, 56);
+	if(@r == 1) { announce 5, "연 : 타인의 고통을 대신 감내해주실 분은 전사를... "; }
+	else if(@r == 2) { announce 5, "연 : 비밀스러운 수호자가 되고 싶으신 분들은 도적을... "; }
+	else if(@r == 3) { announce 5, "연 : 무보다 문이라고 생각하시는 분들은 주술사를... "; }
+	else if(@r == 4) { announce 5, "연 : 타인의 아픔을 치유해주고 싶으신 분들은 도사를... "; }
+	else if(@r == 5) { announce 5, "연 : 바둑, 오목을 두시려면 기원으로... "; }
+	else if(@r == 6) { announce 5, "연 : 장기, 윷놀이를 하시려면 놀이방으로... "; }
+	else if(@r == 7) { announce 5, "연 : 친구, 연인과 함께 사냥하시는 것이 더 좋아요... "; }
+	else if(@r == 8) { announce 5, "연 : 폭탄, 폭전은 무환장에서만 쓸 수 있습니다. "; }
+	else if(@r == 9) { announce 5, "연 : 새로운 성으로 가시려면, 동문, 서문 밖으로.. "; }
+	else if(@r == 10) { announce 5, "유리왕 : 우리나라는 동방예의지국 "; }
+	else if(@r == 11) { announce 5, "유리왕 : 남의 것을 훔치지 않는다."; }
+	else if(@r == 12) { announce 5, "유리왕 : 살인을 하지 않도록... "; }
+	else if(@r == 13) { announce 5, "무휼 : 강자는 약자를 돕는 법~! "; }
+	else if(@r == 14) { announce 5, "무휼 : 운영자는 절대로 유저분의 비밀번호를 묻지 않습니다. "; }
+	else if(@r == 15) { announce 5, "무휼 : 초면에는 반드시 존대말을..."; }
+	else if(@r == 16) { announce 5, "무휼 : 아이템을 복사해서 얻은 것은 복구가 안됩니다... "; }
+	else if(@r == 17) { announce 5, "무휼 : 복사한 아이템을 팔고 사는 행위를 하지맙시다. "; }
+	else if(@r == 18) { announce 5, "무휼 : 아이디 매매, 공유, 양도는 금지되어 있습니다... "; }
+	else if(@r == 19) { announce 5, "무휼 : 모두 예절바른 사람이 됩시다... "; }
+	else if(@r == 20) { announce 5, "해명：귓속말을 거부하려면? F5 키를... "; }
+	else if(@r == 21) { announce 5, "해명 : 레벨 5에서 직업 선택을 안하면? 레벨이 안오른다. "; }
+	else if(@r == 22) { announce 5, "해명 : 얼굴이 마음에 안들면 성형수술할 수 있다. "; }
+	else if(@r == 23) { announce 5, "해명 : 진짜 인생은 레벨 5부터"; }
+	else if(@r == 24) { announce 5, "괴유 : 자기가 가진 아이템을 보려면? i 키를 "; }
+	else if(@r == 25) { announce 5, "괴유 : 게임내 게시판을 보려면? b 키를 "; }
+	else if(@r == 26) { announce 5, "괴유 : 화면이 멈추면? Ctrl-r "; }
+	else if(@r == 27) { announce 5, "괴유 : 현재 사용자는? Ctrl-w "; }
+	else if(@r == 28) { announce 5, "괴유 : 상용구는? F10 키를 눌러서... "; }
+	else if(@r == 29) { announce 5, "괴유 : 아이템 다음창을 보려면? Page down 키를... "; }
+	else if(@r == 30) { announce 5, "괴유 : 대련은 무한장에서 정정당당히~ "; }
+	else if(@r == 31) { announce 5, "괴유 : 결혼을 한후에는 성전환이 안 된다. "; }
+	else if(@r == 32) { announce 5, "괴유 : 참된 고수는 힘자랑을 하지 않는 법~! "; }
+	else if(@r == 33) { announce 5, "세류 : 도움말을 보시려거든? F1 키를... "; }
+	else if(@r == 34) { announce 5, "세류 : 마법 이펙트를 보기 싫으면? F10 키로 환경설정을 "; }
+	else if(@r == 35) { announce 5, "세류 : 바람의 나라 새소식은? 공지사항 게시판으로... "; }
+	else if(@r == 36) { announce 5, "세류 : 도사와 같이 사냥하면~? 10%의 보너스 경험치를~ "; }
+	else if(@r == 37) { announce 5, "세류 : 지나간 글 보려면? Shift + 위아래 커서키를... "; }
+	else if(@r == 38) { announce 5, "세류 : 아이템 다음창을 보려면? Page down 키를 "; }
+	else if(@r == 39) { announce 5, "세류 : 상용구는? Alt + 숫자키 "; }
+	else if(@r == 40) { announce 5, "세류 : 사자후를 듣지 않으려면? F6 키를... "; }
+	else if(@r == 41) { announce 5, "세류 : 시약을 사려면? 비밀상점에서... "; }
+	else if(@r == 42) { announce 5, "세류 : 마법 매크로는? F10 키를 눌러서... "; }
+	else if(@r == 43) { announce 5, "세류 : 했던 말을 또 하고 싶으면? 이것은 비밀~ "; }
+	else if(@r == 44) { announce 5, "세류 : 2, 3벌식 전환은? '키를 누를 후, F2 키를... "; }
+	else if(@r == 45) { announce 5, "세류 : 가장 약한 동물은 토끼 "; }
+	else if(@r == 46) { announce 5, "세류 : 가장 쉬운 던전은 쥐굴 "; }
+	else if(@r == 47) { announce 5, "세류 : 죽기전에 물건은 주모에게 맡기는 지혜를... "; }
+	else if(@r == 48) { announce 5, "세류 : 죽으면 경험치 2% 잃습니다... "; }
+	else if(@r == 49) { announce 5, "세류 : 죽으면 성황당으로.. "; }
+	else if(@r == 50) { announce 5, "세류 : 결혼은 반드시 신중히... "; }
+	else if(@r == 51) { announce 5, "세류 : 죽기전에 물건은 주모에게 맡기는 지혜를... "; }
+	else if(@r == 52) { announce 5, "세류 : 친절을 배풀면 보통은... 배로 돌아온다. "; }
+	else if(@r == 53) { announce 5, "세류 : F8, F9 키로 사운드 볼륨 다운, 업~! "; }
+	else if(@r == 54) { announce 5, "세류 : 종료는 Alt+x, 또는 Alt + F4 "; }
+}
+
+//ONTIME 모음
+//ONTIME000000	{
+	announce 5, "[새벽알림]: 00시 00분 00초가 되었습니다. 나무퀘스트가 진행가능합니다.";
+}
+
+ONTIME210000	{
+	if(gettime(6, 0) == 2)
+	{
+		set #clan_start, 1;
+		set #clan_timer, 0;
+		set #clan_namecheck, 0;
+		set #clan_mapname$, "주작성";
+		set #clan_mapcheck$, #bird_castle$;
+		set #clan_battle$, #bird_castle$;
+		timecount_all 2, 3599;
+		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
+		{
+			mobspawn name2mapid("주작성입구"), (@loop-1108), 104, 2, @loop;
+		}
+		set #clan_add_score_timer, 1;
+		npcspawn 2000, 20, 0, 2, 227, "공성타이머";
+		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
+	}
+	if(gettime(6, 0) == 3)
+	{
+		set #clan_start, 1;
+		set #clan_timer, 0;
+		set #clan_namecheck, 0;
+		set #clan_mapname$, "현무성";
+		set #clan_mapcheck$, #turtle_castle$;
+		set #clan_battle$, #turtle_castle$;
+		timecount_all 2, 3599;
+		npcspawn 2003, 20, 0, 2, 227, "공성타이머";
+		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
+		{
+			mobspawn name2mapid("현무성입구"), (@loop-1108), 104, 2, @loop;
+		}
+		set #clan_add_score_timer, 1;
+
+		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
+	}
+	if(gettime(6, 0) == 4)
+	{
+		set #clan_start, 1;
+		set #clan_timer, 0;
+		set #clan_namecheck, 0;
+		set #clan_mapname$, "청룡성";
+		set #clan_mapcheck$, #dragon_castle$;
+		set #clan_battle$, #dragon_castle$;
+		timecount_all 2, 3599;
+		npcspawn 1997, 20, 0, 2, 227, "공성타이머";
+		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
+		{
+			mobspawn name2mapid("청룡성입구"), (@loop-1108), 104, 2, @loop;
+		}
+		set #clan_add_score_timer, 1;
+
+		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
+	}
+	if(gettime(6, 0) == 5)
+	{
+		set #clan_start, 1;
+		set #clan_timer, 0;
+		set #clan_namecheck, 0;
+		set #clan_mapname$, "백호성";
+		set #clan_mapcheck$, #tiger_castle$;
+		set #clan_battle$, #tiger_castle$;
+		timecount_all 2, 3599;
+		npcspawn 2041, 20, 0, 2, 227, "공성타이머";
+		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
+		{
+			mobspawn name2mapid("백호성입구"), (@loop-1108), 104, 2, @loop;
+		}
+		set #clan_add_score_timer, 1;
+
+		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
+	}
+}
+ONTIME211000	{
+	if(#clan_start == 1)
+	{
+		if(gettime(6, 0) == 2) timecount_all 2, 3000;
+		else if(gettime(6, 0) == 3) timecount_all 2, 3000;
+		else if(gettime(6, 0) == 4) timecount_all 2, 3000;
+		else if(gettime(6, 0) == 5) timecount_all 2, 3000;
+	}
+}
+
+ONTIME211500	{
+	if(gettime(6, 0) == 2)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 주작성 입구에 주작영령이 나타났습니다!";
+			mobspawn 2002, 63, 142, 2, 1284;
+		set #skull, 0;
+	}
+	if(gettime(6, 0) == 3)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 현무성 입구에 현무영령이 나타났습니다!";
+			mobspawn 2005, 74, 54, 2, 1285;
+		set #skull, 0;
+	}
+	if(gettime(6, 0) == 4)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 청룡성 입구에 청룡영령이 나타났습니다!";
+			mobspawn 1999, 66, 80, 2, 1283;
+		set #skull, 0;
+	}
+	if(gettime(6, 0) == 5)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 백호성 입구에 백호영령이 나타났습니다!";
+			mobspawn 2044, 73, 111, 2, 1282;
+		set #skull, 0;
+	}
+}
+ONTIME212000	{
+	if(#clan_start == 1)
+	{
+		if(gettime(6, 0) == 2) timecount_all 2, 2400;
+		else if(gettime(6, 0) == 3) timecount_all 2, 2400;
+		else if(gettime(6, 0) == 4) timecount_all 2, 2400;
+		else if(gettime(6, 0) == 5) timecount_all 2, 2400;
+	}
+}
+
+
+ONTIME213000	{
+	if(#clan_start == 1)
+	{
+		if(gettime(6, 0) == 2) timecount_all 2, 1800;
+		else if(gettime(6, 0) == 3) timecount_all 2, 1800;
+		else if(gettime(6, 0) == 4) timecount_all 2, 1800;
+		else if(gettime(6, 0) == 5) timecount_all 2, 1800;
+	}
+}
+
+ONTIME213500	{
+	if(gettime(6, 0) == 2)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 주작의 심장에 주작영령이 나타났습니다!";
+			mobspawn 2000, 20, 18, 2, 1284;
+		set #skull, 0;
+	}
+	if(gettime(6, 0) == 3)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 현무의 심장에 현무영령이 나타났습니다!";
+			mobspawn 2003, 15, 35, 2, 1285;
+		set #skull, 0;
+	}
+	if(gettime(6, 0) == 4)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 청룡의 심장에 청룡영령이 나타났습니다!";
+			mobspawn 1997, 20, 13, 2, 1283;
+		set #skull, 0;
+	}
+	if(gettime(6, 0) == 5)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림!] 백호의 심장에 백호영령이 나타났습니다!";
+			mobspawn 2041, 20, 18, 2, 1282;
+		set #skull, 0;
+	}
+}
+
+
+ONTIME214000	{
+	if(#clan_start == 1)
+	{
+		if(gettime(6, 0) == 2) timecount_all 2, 1200;
+		else if(gettime(6, 0) == 3) timecount_all 2, 1200;
+		else if(gettime(6, 0) == 4) timecount_all 2, 1200;
+		else if(gettime(6, 0) == 5) timecount_all 2, 1200;
+	}
+}
+
+ONTIME215000	{
+	if(#clan_start == 1)
+	{
+		if(gettime(6, 0) == 2) timecount_all 2, 600;
+		else if(gettime(6, 0) == 3) timecount_all 2, 600;
+		else if(gettime(6, 0) == 4) timecount_all 2, 600;
+		else if(gettime(6, 0) == 5) timecount_all 2, 600;
+	} 
+}
+ONTIME220500	{
+	if(gettime(6, 0) >= 2 && gettime(6, 0) <= 5)
+	{
+		set #clan_start, 0;
+	}
+}
+
+//10시 30분00초    밑에 1341이 고래 몹번호    14 부여성  75/138 좌표
+//ONTIME223000	{
+	
+	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	{
+		set #skull, 1;
+			broadcast 5, "[알림] pk12지신에서 건룡이 나타났습니다.";
+			mobspawn 1948, 29, 25, 2, 1281;
+		set #skull, 0;
+
+	}
+}
+
+// 10시20분00초  전체카운트와 세계후
+//ONTIME222000	{
+	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	{
+		broadcast 5, "[알림] 10분후 pk12지신에서 건룡이 나타납니다.";
+		timecount_all 2, 600;
+	}
+}
+
+//ONTIME230000	{
+	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	{
+		broadcast 5, "[알림] 10분후 지옥1지 에서 아수라가 나타납니다.";
+		timecount_all 2, 600;
+	}
+}
+
+//11시 10분00초 아수라
+//ONTIME231000	{
+	
+	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	{
+		set #skull,1;
+			broadcast 5, "[알림] 지옥1-10에서 아수라가 나타났습니다.";
+			mobspawn 42009, 15, 11, 2, 1267;
+		set #skull,0;
+
+	}
+}
+//나무퀘스트 0시 초기화
+ONTIME000000	{
+	
+	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	{
+		set $tree_quest_time, @nt+10;
+		broadcast 5, "[알림] 나무퀘스트/천명퀘스트가 초기화 되었습니다.";
+	}
+}
+
+// 21시 고래타임
+//ONTIME210000	{
+	set #event_whale, 1; 
+	set #whalemob, 0;
+	set #whalehp, 200000000;
+	timecount_all 2, 600;
+	broadcast 5, "[이벤트] 고래이벤트가 시작되었습니다.";
+	for(set @i, 0; @i <19; set @i, @i+1)
+	{
+		mobspawn name2mapid("고래갑판"), @i, 9, 1, name2mobid("고래"+(@i+1)+"");
+	}
+}

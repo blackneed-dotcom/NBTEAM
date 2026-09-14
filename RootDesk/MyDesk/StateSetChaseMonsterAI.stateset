@@ -1,0 +1,208 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "stateset://0e43c0d3-1ffe-413a-b4a7-187be9d87526",
+  "ContentType": "x-mod/stateset",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.5.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "id": "stateset://0e43c0d3-1ffe-413a-b4a7-187be9d87526",
+      "name": "StateSetChaseMonsterAI",
+      "stateset": {
+        "InitialStateNodeId": "d28ea3f3-c8a8-4559-87dc-828153194797",
+        "Nodes": [
+          {
+            "Id": "d28ea3f3-c8a8-4559-87dc-828153194797",
+            "PositionX": 0.0,
+            "PositionY": 0.0,
+            "IsNative": true,
+            "Name": "IDLE",
+            "NativeStateType": {
+              "$type": "MODNativeType",
+              "type": "MOD.Core.NSIdle, MOD.Core, Version=26.5.0.0, Culture=neutral, PublicKeyToken=null"
+            },
+            "ScriptStateTypeId": "",
+            "ModifiedProperties": {
+              "Properties": []
+            }
+          },
+          {
+            "Id": "98f8e672-77a0-4b16-a62a-71e659ec57a0",
+            "PositionX": 250.0,
+            "PositionY": 50.0,
+            "IsNative": true,
+            "Name": "DEAD",
+            "NativeStateType": {
+              "$type": "MODNativeType",
+              "type": "MOD.Core.NSPawnDead, MOD.Core, Version=26.5.0.0, Culture=neutral, PublicKeyToken=null"
+            },
+            "ScriptStateTypeId": "",
+            "ModifiedProperties": {
+              "Properties": []
+            }
+          },
+          {
+            "Id": "7089a7e4-b7d8-4590-8b2f-6247b3010b39",
+            "PositionX": -250.0,
+            "PositionY": 0.0,
+            "IsNative": true,
+            "Name": "HIT",
+            "NativeStateType": {
+              "$type": "MODNativeType",
+              "type": "MOD.Core.NSPawnHit, MOD.Core, Version=26.5.0.0, Culture=neutral, PublicKeyToken=null"
+            },
+            "ScriptStateTypeId": "",
+            "ModifiedProperties": {
+              "Properties": []
+            }
+          },
+          {
+            "Id": "a783b7fd-6228-4241-9791-d28d0b5d70a2",
+            "PositionX": 250.0,
+            "PositionY": -50.0,
+            "IsNative": false,
+            "Name": "CHASE",
+            "NativeStateType": null,
+            "ScriptStateTypeId": "codeblock://946dc33f-189c-45d1-bbd5-0a5ee8be4f58",
+            "ModifiedProperties": {
+              "Properties": []
+            }
+          }
+        ],
+        "Transitions": [
+          {
+            "PrevStateNodeId": "7089a7e4-b7d8-4590-8b2f-6247b3010b39",
+            "NextStateNodeId": "d28ea3f3-c8a8-4559-87dc-828153194797",
+            "TransitionConditions": [
+              {
+                "IsNative": true,
+                "NativeConditionType": {
+                  "$type": "MODNativeType",
+                  "type": "MOD.Core.NCHasTimePassed, MOD.Core, Version=26.5.0.0, Culture=neutral, PublicKeyToken=null"
+                },
+                "ScriptConditionTypeId": "",
+                "ModifiedProperties": {
+                  "Properties": [
+                    {
+                      "Name": "Duration",
+                      "Type": {
+                        "$type": "MODNativeType",
+                        "type": "System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                      },
+                      "Value": 0.5
+                    }
+                  ]
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          },
+          {
+            "PrevStateNodeId": "d28ea3f3-c8a8-4559-87dc-828153194797",
+            "NextStateNodeId": "a783b7fd-6228-4241-9791-d28d0b5d70a2",
+            "TransitionConditions": [
+              {
+                "IsNative": false,
+                "NativeConditionType": null,
+                "ScriptConditionTypeId": "codeblock://01b8d361-e251-4dbd-8de6-0758c3cb6589",
+                "ModifiedProperties": {
+                  "Properties": []
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          },
+          {
+            "PrevStateNodeId": "a783b7fd-6228-4241-9791-d28d0b5d70a2",
+            "NextStateNodeId": "d28ea3f3-c8a8-4559-87dc-828153194797",
+            "TransitionConditions": [
+              {
+                "IsNative": false,
+                "NativeConditionType": null,
+                "ScriptConditionTypeId": "codeblock://bf53547c-1740-49a3-bf1f-4c10f7cf32c3",
+                "ModifiedProperties": {
+                  "Properties": []
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          },
+          {
+            "PrevStateNodeId": "d28ea3f3-c8a8-4559-87dc-828153194797",
+            "NextStateNodeId": "98f8e672-77a0-4b16-a62a-71e659ec57a0",
+            "TransitionConditions": [
+              {
+                "IsNative": false,
+                "NativeConditionType": null,
+                "ScriptConditionTypeId": "codeblock://d8388f73-efe1-4b6c-a2b9-2614dda91f43",
+                "ModifiedProperties": {
+                  "Properties": []
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          },
+          {
+            "PrevStateNodeId": "a783b7fd-6228-4241-9791-d28d0b5d70a2",
+            "NextStateNodeId": "98f8e672-77a0-4b16-a62a-71e659ec57a0",
+            "TransitionConditions": [
+              {
+                "IsNative": false,
+                "NativeConditionType": null,
+                "ScriptConditionTypeId": "codeblock://d8388f73-efe1-4b6c-a2b9-2614dda91f43",
+                "ModifiedProperties": {
+                  "Properties": []
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          },
+          {
+            "PrevStateNodeId": "7089a7e4-b7d8-4590-8b2f-6247b3010b39",
+            "NextStateNodeId": "98f8e672-77a0-4b16-a62a-71e659ec57a0",
+            "TransitionConditions": [
+              {
+                "IsNative": false,
+                "NativeConditionType": null,
+                "ScriptConditionTypeId": "codeblock://d8388f73-efe1-4b6c-a2b9-2614dda91f43",
+                "ModifiedProperties": {
+                  "Properties": []
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          },
+          {
+            "PrevStateNodeId": "98f8e672-77a0-4b16-a62a-71e659ec57a0",
+            "NextStateNodeId": "d28ea3f3-c8a8-4559-87dc-828153194797",
+            "TransitionConditions": [
+              {
+                "IsNative": false,
+                "NativeConditionType": null,
+                "ScriptConditionTypeId": "codeblock://999c5db0-3563-465d-9d7f-7b60f61c3aea",
+                "ModifiedProperties": {
+                  "Properties": []
+                }
+              }
+            ],
+            "TransitIfAnyConditionIsTrue": true,
+            "OrderInTransit": 0
+          }
+        ]
+      }
+    }
+  }
+}

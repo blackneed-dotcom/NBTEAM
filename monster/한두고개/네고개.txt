@@ -1,0 +1,51 @@
+@방어의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("방어의반지3"), 1;
+}
+
+@명중의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("명중의반지3"), 1;
+}
+
+@공격의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("공격의반지3"), 1;
+}
+
+@체력의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("체력의반지3"), 1;
+}
+
+@마력의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("마력의반지3"), 1;
+}
+
+@힘의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("힘의반지3"), 1;
+}
+
+@민첩의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("민첩의반지3"), 1;
+}
+
+@지력의뱀	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("지력의반지3"), 1;
+}
+
+@주사	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("이백세주"), 1;
+}
+
+@대사	{
+	callfunc "DROPITEM", objid(), 10, 2, name2itemid("삼백세주"), 1;
+}
+
+@력사	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("힘의투구4"), 1;
+}
+
+@민사	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("민첩의투구4"), 1;
+}
+
+@지사	{
+	callfunc "DROPITEM", objid(), 500, 10, name2itemid("지력의투구4"), 1;
+}

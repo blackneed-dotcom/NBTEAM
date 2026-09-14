@@ -1,0 +1,289 @@
+FUNC_ITEMROUTELOG	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	set .@year$, gettime(5,0);
+	set .@month$, gettime(4,0);
+	set .@day$, gettime(3,0);
+	set .@hour$, gettime(2,0);
+	set .@min$, gettime(1,0);
+	set .@sec$, gettime(0,0,);
+
+	if(gettime(5,0) < 10) set .@year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set .@month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set .@day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set .@hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set .@min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set .@sec$, "0"+gettime(0,0);
+
+	if(mapid() < 10) set .@mapid$, "00000"+mapid();
+	else if(mapid() < 100) set .@mapid$, "0000"+mapid();
+	else if(mapid() < 1000) set .@mapid$, "000"+mapid();
+	else if(mapid() < 10000) set .@mapid$, "00"+mapid();
+	else if(mapid() < 100000) set .@mapid$, "0"+mapid();
+
+	set .@x$, get_x(.@id);
+	set .@y$, get_y(.@id);
+
+	if(get_x(.@id) < 10) set .@x$, "00"+get_x(.@id);
+	else if(get_x(.@id) < 100) set .@x$, "0"+get_x(.@id);
+
+	if(get_y(.@id) < 10) set .@y$, "00"+get_y(.@id);
+	else if(get_y(.@id) < 100) set .@y$, "0"+get_y(.@id);
+
+	set .@mapinfo$, .@mapid$+"/"+.@x$+"/"+.@y$+"";
+	set .@type$, getarg(0);
+
+	//아이피 구해오기
+	set .@ip$, "";
+	for(set .@i, 0; .@i < 4; set .@i, .@i + 1)
+	{
+		set .@ip_class$, strtok(ip(.@sd), ".", .@i);
+
+		if(atoi(.@ip_class$) < 10) set .@ip_class$, "00" + .@ip_class$;
+		else if(atoi(.@ip_class$) < 100) set .@ip_class$, "0" + .@ip_class$;
+
+		if(.@i == 3)
+			set .@ip$, .@ip$ + .@ip_class$;
+		else
+			set .@ip$, .@ip$ + .@ip_class$ + ".";
+	}
+
+	if(.@type$ == "얻음")
+	{
+		if(get_lastget_success(.@sd) == 1)
+		{
+			set .@str$, "아이템이름: " + itemid2name(get_lastget_itemid(.@sd));
+		}
+	}
+	else if(.@type$ == "떨굼")
+	{
+		set .@str$, "아이템이름: " + itemid2name(get_lastdrop_itemid(.@sd));
+	}
+	else
+	{
+		set .@str$, "";
+	}
+
+	set .@str$, .@str$ + " :: " + get_money(.@sd) + "원 " + get_itemlist(.@sd);
+
+	write_log "log/itemroute/"+.@year$+"년_"+.@month$+"월_"+.@day$+"일_"+.@hour$+"시.txt", "["+.@hour$+"시 "+.@min$+"분 "+.@sec$+"초 - " + .@ip$ + " - " +.@mapinfo$+" - " + .@type$ + "] ■ "+get_name(.@sd)+": "+ .@str$ + " \\n";
+
+	return;
+}
+//callfunc "ITEMROUTELOG", "결과", 
+FUNC_ITEMMIXLOG	{
+	set .@sd, mysd();
+	set .@id, myid();
+
+	set .@year$, gettime(5,0);
+	set .@month$, gettime(4,0);
+	set .@day$, gettime(3,0);
+	set .@hour$, gettime(2,0);
+	set .@min$, gettime(1,0);
+	set .@sec$, gettime(0,0,);
+
+	if(gettime(5,0) < 10) set .@year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set .@month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set .@day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set .@hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set .@min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set .@sec$, "0"+gettime(0,0);
+
+	if(mapid() < 10) set .@mapid$, "00000"+mapid();
+	else if(mapid() < 100) set .@mapid$, "0000"+mapid();
+	else if(mapid() < 1000) set .@mapid$, "000"+mapid();
+	else if(mapid() < 10000) set .@mapid$, "00"+mapid();
+	else if(mapid() < 100000) set .@mapid$, "0"+mapid();
+
+	set .@x$, get_x(.@id);
+	set .@y$, get_y(.@id);
+
+	if(get_x(.@id) < 10) set .@x$, "00"+get_x(.@id);
+	else if(get_x(.@id) < 100) set .@x$, "0"+get_x(.@id);
+
+	if(get_y(.@id) < 10) set .@y$, "00"+get_y(.@id);
+	else if(get_y(.@id) < 100) set .@y$, "0"+get_y(.@id);
+
+	set .@mapinfo$, .@mapid$+"/"+.@x$+"/"+.@y$+"";
+	set .@type$, getarg(0);
+	set .@str$, getarg(1);
+	
+	//아이피 구해오기
+	set .@ip$, "";
+	for(set .@i, 0; .@i < 4; set .@i, .@i + 1)
+	{
+		set .@ip_class$, strtok(ip(.@sd), ".", .@i);
+
+		if(atoi(.@ip_class$) < 10) set .@ip_class$, "00" + .@ip_class$;
+		else if(atoi(.@ip_class$) < 100) set .@ip_class$, "0" + .@ip_class$;
+
+		if(.@i == 3)
+			set .@ip$, .@ip$ + .@ip_class$;
+		else
+			set .@ip$, .@ip$ + .@ip_class$ + ".";
+	}
+
+	write_log "log/itemmix/"+.@year$+"년_"+.@month$+"월_"+.@day$+"일_"+.@hour$+"시.txt", "["+.@hour$+"시 "+.@min$+"분 "+.@sec$+"초 - " + .@ip$ + " - " +.@mapinfo$+" - " + .@type$ + "] ■ "+get_name(.@sd)+": " + .@str$ + " \\n";
+	return;
+}
+FUNC_LOGOUT_LOG	{
+
+	set .@sd, mysd();
+	set .@id, myid();
+
+	set .@year$, gettime(5,0);
+	set .@month$, gettime(4,0);
+	set .@day$, gettime(3,0);
+	set .@hour$, gettime(2,0);
+	set .@min$, gettime(1,0);
+	set .@sec$, gettime(0,0,);
+
+	if(gettime(5,0) < 10) set .@year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set .@month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set .@day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set .@hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set .@min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set .@sec$, "0"+gettime(0,0);
+
+	if(mapid() < 10) set .@mapid$, "00000"+mapid();
+	else if(mapid() < 100) set .@mapid$, "0000"+mapid();
+	else if(mapid() < 1000) set .@mapid$, "000"+mapid();
+	else if(mapid() < 10000) set .@mapid$, "00"+mapid();
+	else if(mapid() < 100000) set .@mapid$, "0"+mapid();
+
+	set .@x$, get_x(.@id);
+	set .@y$, get_y(.@id);
+
+	if(get_x(.@id) < 10) set .@x$, "00"+get_x(.@id);
+	else if(get_x(.@id) < 100) set .@x$, "0"+get_x(.@id);
+
+	if(get_y(.@id) < 10) set .@y$, "00"+get_y(.@id);
+	else if(get_y(.@id) < 100) set .@y$, "0"+get_y(.@id);
+	
+	set .@mapinfo$, .@mapid$+"/"+.@x$+"/"+.@y$+"";
+
+	//아이피 구해오기
+	set .@ip$, "";
+	for(set .@i, 0; .@i < 4; set .@i, .@i + 1)
+	{
+		set .@ip_class$, strtok(ip(.@sd), ".", .@i);
+
+		if(atoi(.@ip_class$) < 10) set .@ip_class$, "00" + .@ip_class$;
+		else if(atoi(.@ip_class$) < 100) set .@ip_class$, "0" + .@ip_class$;
+
+		if(.@i == 3)
+			set .@ip$, .@ip$ + .@ip_class$;
+		else
+			set .@ip$, .@ip$ + .@ip_class$ + ".";
+	}
+
+	set .@str$, .@str$ + " :: " + get_money(.@sd) + "원 " + get_itemlist(.@sd);
+	
+	write_log "log/loginout/"+.@year$+"년_"+.@month$+"월_"+.@day$+"일.txt", "["+.@hour$+"시 "+.@min$+"분 "+.@sec$+"초 - " + .@ip$ + " - " +.@mapinfo$+"] [LOGOUT] " + get_name(.@sd) + .@str$ + " \\n";
+
+	return;
+}
+FUNC_IPLOG	{
+
+	set @sd, mysd();
+	set @id, myid();
+	
+	//set @nt, get_nowtime();
+	
+	set @ip$, ip(@sd);
+	set @month, gettime(4, 0);
+	set @day, gettime(3, 0);
+	set @hour, gettime(2, 0);
+	set @minute, gettime(1, 0);
+	set @second, gettime(0, 0);
+	
+	set @timelog$, ""+@ip$+" @ "+@month+"월 "+@day+"일\\n└─ "+@hour+"시 "+@minute+"분 "+@second+"초 ─┘";
+	//set @timelog, @nt;
+
+
+	set $ipslot_40$, $ipslot_39$;
+	set $ipslot_39$, $ipslot_38$;
+	set $ipslot_38$, $ipslot_37$;
+	set $ipslot_37$, $ipslot_36$;
+	set $ipslot_36$, $ipslot_35$;	
+	set $ipslot_35$, $ipslot_34$;
+	set $ipslot_34$, $ipslot_33$;
+	set $ipslot_33$, $ipslot_32$;
+	set $ipslot_32$, $ipslot_31$;
+	set $ipslot_31$, $ipslot_30$;
+	set $ipslot_30$, $ipslot_29$;
+	set $ipslot_29$, $ipslot_28$;
+	set $ipslot_28$, $ipslot_27$;
+	set $ipslot_27$, $ipslot_26$;
+	set $ipslot_26$, $ipslot_25$;	
+	set $ipslot_25$, $ipslot_24$;
+	set $ipslot_24$, $ipslot_23$;
+	set $ipslot_23$, $ipslot_22$;
+	set $ipslot_22$, $ipslot_21$;
+	set $ipslot_21$, $ipslot_20$;
+	set $ipslot_20$, $ipslot_19$;
+	set $ipslot_19$, $ipslot_18$;
+	set $ipslot_18$, $ipslot_17$;
+	set $ipslot_17$, $ipslot_16$;
+	set $ipslot_16$, $ipslot_15$;	
+	set $ipslot_15$, $ipslot_14$;
+	set $ipslot_14$, $ipslot_13$;
+	set $ipslot_13$, $ipslot_12$;
+	set $ipslot_12$, $ipslot_11$;
+	set $ipslot_11$, $ipslot_10$;
+	set $ipslot_10$, $ipslot_09$;
+	set $ipslot_09$, $ipslot_08$;
+	set $ipslot_08$, $ipslot_07$;
+	set $ipslot_07$, $ipslot_06$;
+	set $ipslot_06$, $ipslot_05$;
+	set $ipslot_05$, $ipslot_04$;
+	set $ipslot_04$, $ipslot_03$;
+	set $ipslot_03$, $ipslot_02$;
+	set $ipslot_02$, $ipslot_01$;
+	set $ipslot_01$, @timelog$;
+	
+	return;
+
+}
+FUNC_LOGIN_LOG	{
+
+	set @sd, mysd();
+	set @id, myid();
+
+	set @year$, gettime(5,0);
+	set @month$, gettime(4,0);
+	set @day$, gettime(3,0);
+	set @hour$, gettime(2,0);
+	set @min$, gettime(1,0);
+	set @sec$, gettime(0,0,);
+
+	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+
+	if(mapid() < 10) set @mapid$, "00000"+mapid();
+	else if(mapid() < 100) set @mapid$, "0000"+mapid();
+	else if(mapid() < 1000) set @mapid$, "000"+mapid();
+	else if(mapid() < 10000) set @mapid$, "00"+mapid();
+	else if(mapid() < 100000) set @mapid$, "0"+mapid();
+
+	set @x$, get_x(@id);
+	set @y$, get_y(@id);
+
+	if(get_x(@id) < 10) set @x$, "00"+get_x(@id);
+	else if(get_x(@id) < 100) set @x$, "0"+get_x(@id);
+
+	if(get_y(@id) < 10) set @y$, "00"+get_y(@id);
+	else if(get_y(@id) < 100) set @y$, "0"+get_y(@id);
+	
+	set @mapinfo$, @mapid$+"/"+@x$+"/"+@y$+"";
+
+
+	write_log "log/loginout/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - "+@mapinfo$+"] [LOGIN ] "+get_name(@sd)+" ( "+ip(@sd)+" )\\n";
+
+return;
+}
