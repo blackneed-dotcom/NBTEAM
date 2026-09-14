@@ -13822,11 +13822,11 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 260,
+                "x": 300,
                 "y": -372
               },
               "OffsetMin": {
-                "x": 240,
+                "x": 280,
                 "y": -387
               },
               "Pivot": {
@@ -13845,17 +13845,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 240,
+                "x": 280,
                 "y": -372
               },
-              "Rotation": {
+              "Position": {
                 "x": 0,
                 "y": 0,
-                "z": 0
-              },
-              "Position": {
-                "x": -80,
-                "y": -132,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -13869,7 +13864,6 @@
                 "y": 1,
                 "z": 1
               },
-              "ZRotation": 0,
               "Enable": true
             },
             {
@@ -65528,9 +65522,14 @@
                 "x": 0,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
                 "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -320,
+                "y": 240,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -65544,6 +65543,7 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             }
           ],
@@ -65613,6 +65613,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -65629,6 +65634,7 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             }
           ],
@@ -65646,7 +65652,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 2,
+          "displayOrder": 0,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -65698,9 +65704,14 @@
                 "x": 4,
                 "y": -4
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
                 "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": 4,
+                "y": -4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -65714,6 +65725,7 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             }
           ],
@@ -65783,6 +65795,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -65799,16 +65816,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -65825,9 +65843,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -65863,13 +65881,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -65943,6 +65961,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -65959,16 +65982,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -66088,6 +66112,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -66104,16 +66133,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -66130,9 +66160,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -66168,13 +66198,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -66248,6 +66278,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -66264,16 +66299,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -66393,6 +66429,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -66409,16 +66450,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -66435,9 +66477,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -66473,13 +66515,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -66553,6 +66595,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -66569,16 +66616,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -66698,6 +66746,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -66714,16 +66767,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -66740,9 +66794,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -66778,13 +66832,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -66858,6 +66912,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -66874,16 +66933,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67003,6 +67063,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67019,16 +67084,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67045,9 +67111,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -67083,13 +67149,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -67163,6 +67229,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67179,16 +67250,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67308,6 +67380,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67324,16 +67401,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67350,9 +67428,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -67388,13 +67466,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -67468,6 +67546,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67484,16 +67567,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67613,6 +67697,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67629,16 +67718,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67655,9 +67745,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -67693,13 +67783,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -67773,6 +67863,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67789,16 +67884,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67918,6 +68014,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -67934,16 +68035,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -67960,9 +68062,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -67998,13 +68100,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -68078,6 +68180,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -68094,16 +68201,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -68223,6 +68331,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -68239,16 +68352,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -68265,9 +68379,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -68303,13 +68417,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -68383,6 +68497,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -68399,16 +68518,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -68528,6 +68648,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -68544,16 +68669,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -68570,9 +68696,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -68608,13 +68734,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -68688,6 +68814,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -68704,16 +68835,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -68833,6 +68965,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -68849,16 +68986,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -68875,9 +69013,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -68913,13 +69051,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -68993,6 +69131,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69009,16 +69152,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -69138,6 +69282,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69154,16 +69303,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -69180,9 +69330,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -69218,13 +69368,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -69298,6 +69448,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69314,16 +69469,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -69443,6 +69599,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69459,16 +69620,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -69485,9 +69647,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -69523,13 +69685,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -69603,6 +69765,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69619,16 +69786,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -69748,6 +69916,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69764,16 +69937,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -69790,9 +69964,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -69828,13 +70002,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -69908,6 +70082,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -69924,16 +70103,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70053,6 +70233,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70069,16 +70254,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70095,9 +70281,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -70133,13 +70319,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -70213,6 +70399,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70229,16 +70420,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70358,6 +70550,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70374,16 +70571,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70400,9 +70598,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -70438,13 +70636,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -70518,6 +70716,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70534,16 +70737,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70663,6 +70867,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70679,16 +70888,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70705,9 +70915,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -70743,13 +70953,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -70823,6 +71033,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70839,16 +71054,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -70968,6 +71184,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -70984,16 +71205,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71010,9 +71232,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -71048,13 +71270,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -71128,6 +71350,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -71144,16 +71371,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71273,6 +71501,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -71289,16 +71522,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71315,9 +71549,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -71353,13 +71587,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -71433,6 +71667,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -71449,16 +71688,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71578,6 +71818,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -71594,16 +71839,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71620,9 +71866,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -71658,13 +71904,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -71738,6 +71984,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -71754,16 +72005,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71883,6 +72135,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -71899,16 +72156,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -71925,9 +72183,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -71963,13 +72221,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -72043,6 +72301,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72059,16 +72322,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -72188,6 +72452,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72204,16 +72473,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -72230,9 +72500,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -72268,13 +72538,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -72348,6 +72618,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72364,16 +72639,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -72493,6 +72769,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72509,16 +72790,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -72535,9 +72817,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -72573,13 +72855,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -72653,6 +72935,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72669,16 +72956,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -72798,6 +73086,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72814,16 +73107,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -72840,9 +73134,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -72878,13 +73172,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -72958,6 +73252,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -72974,16 +73273,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73051,7 +73351,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 14,
+          "displayOrder": 1,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -73103,6 +73403,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -73119,16 +73424,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73145,9 +73451,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -73183,13 +73489,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -73263,8 +73569,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -73279,16 +73590,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73356,7 +73668,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 15,
+          "displayOrder": 2,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -73408,6 +73720,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -73424,16 +73741,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73450,9 +73768,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -73488,13 +73806,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -73568,8 +73886,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -73584,16 +73907,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73661,7 +73985,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 16,
+          "displayOrder": 3,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -73713,6 +74037,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -73729,16 +74058,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73755,9 +74085,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -73793,13 +74123,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -73873,8 +74203,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -73889,16 +74224,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -73966,7 +74302,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 17,
+          "displayOrder": 4,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -74018,6 +74354,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -74034,16 +74375,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74060,9 +74402,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -74098,13 +74440,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -74178,8 +74520,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -74194,16 +74541,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74271,7 +74619,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 18,
+          "displayOrder": 5,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -74323,6 +74671,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -74339,16 +74692,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74365,9 +74719,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -74403,13 +74757,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -74483,8 +74837,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -74499,16 +74858,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74576,7 +74936,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 19,
+          "displayOrder": 6,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -74628,6 +74988,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -74644,16 +75009,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74670,9 +75036,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -74708,13 +75074,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -74788,8 +75154,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -74804,16 +75175,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74881,7 +75253,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 20,
+          "displayOrder": 7,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -74933,6 +75305,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -74949,16 +75326,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -74975,9 +75353,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -75013,13 +75391,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -75093,8 +75471,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -75109,16 +75492,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -75186,7 +75570,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 21,
+          "displayOrder": 8,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -75238,6 +75622,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -75254,16 +75643,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -75280,9 +75670,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -75318,13 +75708,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -75398,8 +75788,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -75414,16 +75809,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -75491,7 +75887,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 22,
+          "displayOrder": 9,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -75543,6 +75939,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -75559,16 +75960,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -75585,9 +75987,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -75623,13 +76025,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -75703,8 +76105,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -75719,16 +76126,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -75796,7 +76204,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 23,
+          "displayOrder": 10,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -75848,6 +76256,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -75864,16 +76277,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -75890,9 +76304,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -75928,13 +76342,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -76008,8 +76422,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -76024,16 +76443,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -76101,7 +76521,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 24,
+          "displayOrder": 11,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -76153,6 +76573,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -76169,16 +76594,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -76195,9 +76621,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -76233,13 +76659,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -76313,8 +76739,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -76329,16 +76760,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -76406,7 +76838,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 25,
+          "displayOrder": 12,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -76458,6 +76890,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -76474,16 +76911,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -76500,9 +76938,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -76538,13 +76976,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -76618,8 +77056,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -76634,16 +77077,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -76711,7 +77155,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 26,
+          "displayOrder": 13,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -76763,6 +77207,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -76779,16 +77228,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -76805,9 +77255,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -76843,13 +77293,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -76923,8 +77373,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -76939,16 +77394,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77016,7 +77472,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 27,
+          "displayOrder": 14,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -77068,6 +77524,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -77084,16 +77545,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77110,9 +77572,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -77148,13 +77610,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -77228,8 +77690,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -77244,16 +77711,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77321,7 +77789,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 28,
+          "displayOrder": 15,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -77373,6 +77841,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -77389,16 +77862,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77415,9 +77889,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -77453,13 +77927,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -77533,8 +78007,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -77549,16 +78028,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77626,7 +78106,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 29,
+          "displayOrder": 16,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -77678,6 +78158,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -77694,16 +78179,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77720,9 +78206,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -77758,13 +78244,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -77838,8 +78324,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -77854,16 +78345,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -77931,7 +78423,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 30,
+          "displayOrder": 17,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -77983,6 +78475,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -77999,16 +78496,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78025,9 +78523,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -78063,13 +78561,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -78143,8 +78641,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -78159,16 +78662,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78236,7 +78740,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 31,
+          "displayOrder": 18,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -78288,6 +78792,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -78304,16 +78813,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78330,9 +78840,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -78368,13 +78878,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -78448,8 +78958,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -78464,16 +78979,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78541,7 +79057,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 32,
+          "displayOrder": 19,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -78593,6 +79109,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -78609,16 +79130,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78635,9 +79157,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -78673,13 +79195,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -78753,8 +79275,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -78769,16 +79296,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78846,7 +79374,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 33,
+          "displayOrder": 20,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -78898,6 +79426,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -78914,16 +79447,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -78940,9 +79474,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -78978,13 +79512,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -79058,8 +79592,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -79074,16 +79613,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -79151,7 +79691,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 34,
+          "displayOrder": 21,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -79203,6 +79743,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -79219,16 +79764,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -79245,9 +79791,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -79283,13 +79829,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -79363,8 +79909,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -79379,16 +79930,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -79456,7 +80008,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 35,
+          "displayOrder": 22,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -79508,6 +80060,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -79524,16 +80081,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -79550,9 +80108,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -79588,13 +80146,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -79668,8 +80226,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -79684,16 +80247,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -79761,7 +80325,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 36,
+          "displayOrder": 23,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -79813,6 +80377,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -79829,16 +80398,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -79855,9 +80425,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -79893,13 +80463,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -79973,8 +80543,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -79989,16 +80564,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80066,7 +80642,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 37,
+          "displayOrder": 24,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -80118,6 +80694,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -80134,16 +80715,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80160,9 +80742,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -80198,13 +80780,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -80278,8 +80860,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -80294,16 +80881,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80371,7 +80959,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 38,
+          "displayOrder": 25,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -80423,6 +81011,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -80439,16 +81032,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80465,9 +81059,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -80503,13 +81097,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -80583,8 +81177,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -80599,16 +81198,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80676,7 +81276,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 39,
+          "displayOrder": 26,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -80728,6 +81328,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -80744,16 +81349,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80770,9 +81376,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -80808,13 +81414,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -80888,8 +81494,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -80904,16 +81515,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -80981,7 +81593,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 40,
+          "displayOrder": 27,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -81033,6 +81645,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -81049,16 +81666,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81075,9 +81693,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -81113,13 +81731,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -81193,8 +81811,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -81209,16 +81832,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81286,7 +81910,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 41,
+          "displayOrder": 28,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -81338,6 +81962,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -81354,16 +81983,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81380,9 +82010,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -81418,13 +82048,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -81498,8 +82128,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -81514,16 +82149,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81591,7 +82227,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 42,
+          "displayOrder": 29,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -81643,6 +82279,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -81659,16 +82300,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81685,9 +82327,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -81723,13 +82365,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -81803,8 +82445,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -81819,16 +82466,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81896,7 +82544,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 43,
+          "displayOrder": 30,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -81948,6 +82596,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -81964,16 +82617,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -81990,9 +82644,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -82028,13 +82682,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -82108,8 +82762,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -82124,16 +82783,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -82201,7 +82861,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 44,
+          "displayOrder": 31,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -82253,6 +82913,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -82269,16 +82934,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -82295,9 +82961,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -82333,13 +82999,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -82413,8 +83079,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -82429,16 +83100,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -82506,7 +83178,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 45,
+          "displayOrder": 32,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -82558,6 +83230,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -82574,16 +83251,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -82600,9 +83278,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -82638,13 +83316,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -82718,8 +83396,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -82734,16 +83417,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -82811,7 +83495,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 46,
+          "displayOrder": 33,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -82863,6 +83547,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -82879,16 +83568,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -82905,9 +83595,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -82943,13 +83633,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -83023,8 +83713,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -83039,16 +83734,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -83116,7 +83812,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 47,
+          "displayOrder": 34,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -83168,6 +83864,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -83184,16 +83885,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -83210,9 +83912,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -83248,13 +83950,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -83328,8 +84030,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -83344,16 +84051,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -83421,7 +84129,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 48,
+          "displayOrder": 35,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -83473,6 +84181,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -83489,16 +84202,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -83515,9 +84229,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -83553,13 +84267,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -83633,8 +84347,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -83649,16 +84368,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -83726,7 +84446,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 49,
+          "displayOrder": 36,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -83778,6 +84498,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -83794,16 +84519,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -83820,9 +84546,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -83858,13 +84584,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -83938,8 +84664,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -83954,16 +84685,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84031,7 +84763,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 50,
+          "displayOrder": 37,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -84083,6 +84815,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -84099,16 +84836,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84125,9 +84863,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -84163,13 +84901,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -84243,8 +84981,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -84259,16 +85002,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84336,7 +85080,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 51,
+          "displayOrder": 38,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -84388,6 +85132,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -84404,16 +85153,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84430,9 +85180,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -84468,13 +85218,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -84548,8 +85298,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -84564,16 +85319,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84641,7 +85397,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 52,
+          "displayOrder": 39,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -84693,6 +85449,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -84709,16 +85470,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84735,9 +85497,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -84773,13 +85535,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -84853,8 +85615,13 @@
                 "x": -51,
                 "y": 0
               },
-              "Position": {
+              "Rotation": {
                 "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
                 "y": 0,
                 "z": 0
               },
@@ -84869,16 +85636,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -84946,7 +85714,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 53,
+          "displayOrder": 40,
           "pathConstraints": "//////",
           "revision": 0,
           "origin": {
@@ -84998,6 +85766,11 @@
                 "x": 0,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -85014,16 +85787,17 @@
                 "y": 1,
                 "z": 1
               },
+              "ZRotation": 0,
               "Enable": true
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
               "ImageRUID": {
                 "DataId": "2bdbd74b099240488bfd24774007c8eb"
               },
-              "IgnoreMapLayerCheck": false,
               "LocalPosition": {
                 "x": 0,
                 "y": 0
@@ -85040,9 +85814,9 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.10196078431372549,
-                "g": 0.10196078431372549,
-                "b": 0.10196078431372549,
+                "r": 0.101960786,
+                "g": 0.101960786,
+                "b": 0.101960786,
                 "a": 0
               },
               "DropShadow": false,
@@ -85078,13 +85852,13 @@
             },
             {
               "@type": "MOD.Core.MaskComponent",
-              "Shape": 0,
               "Padding": {
                 "left": 0,
                 "right": 0,
                 "top": 0,
                 "bottom": 0
               },
+              "Shape": 0,
               "Softness": {
                 "x": 0,
                 "y": 0
@@ -85158,6 +85932,157 @@
                 "x": -51,
                 "y": 0
               },
+              "Rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "Position": {
+                "x": -51,
+                "y": 0,
+                "z": 0
+              },
+              "QuaternionRotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "Scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "ZRotation": 0,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "AnimClipPlayType": 0,
+              "EndFrameIndex": 2147483647,
+              "IgnoreMapLayerCheck": false,
+              "ImageRUID": {
+                "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
+              },
+              "LocalPosition": {
+                "x": 0,
+                "y": 0
+              },
+              "LocalScale": {
+                "x": 1,
+                "y": 1
+              },
+              "MaterialId": "",
+              "OrderInLayer": 0,
+              "OverrideSorting": false,
+              "PlayRate": 1,
+              "PreserveSprite": 0,
+              "SortingLayer": "UI",
+              "StartFrameIndex": 0,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+              },
+              "DropShadow": false,
+              "DropShadowAngle": 120,
+              "DropShadowColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.72
+              },
+              "DropShadowDistance": 3,
+              "FillAmount": 1,
+              "FillCenter": true,
+              "FillClockWise": true,
+              "FillMethod": 0,
+              "FillOrigin": 0,
+              "FlipX": false,
+              "FlipY": false,
+              "FrameColumn": 1,
+              "FrameRate": 0,
+              "FrameRow": 1,
+              "Outline": false,
+              "OutlineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              },
+              "OutlineWidth": 3,
+              "RaycastTarget": false,
+              "Type": 0,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "264ea531-44d8-46e8-8b61-ac571ea8902a",
+        "path": "/ui/BaramHUD/Frame/JobBadge",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "JobBadge",
+          "path": "/ui/BaramHUD/Frame/JobBadge",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "////",
+          "revision": 0,
+          "origin": {
+            "type": "Model",
+            "entry_id": "UISprite",
+            "sub_entity_id": null,
+            "root_entity_id": null,
+            "replaced_model_id": null
+          },
+          "modelId": "uisprite",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "ActivePlatform": 255,
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0,
+                "y": 1
+              },
+              "AnchorsMin": {
+                "x": 0,
+                "y": 1
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 623,
+                "y": -375
+              },
+              "OffsetMin": {
+                "x": 577,
+                "y": -392
+              },
+              "Pivot": {
+                "x": 0,
+                "y": 1
+              },
+              "RectSize": {
+                "x": 46,
+                "y": 17
+              },
+              "UIMode": 1,
+              "UIScale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "UIVersion": 2,
+              "anchoredPosition": {
+                "x": 577,
+                "y": -375
+              },
               "Position": {
                 "x": 0,
                 "y": 0,
@@ -85181,7 +86106,7 @@
               "AnimClipPlayType": 0,
               "EndFrameIndex": 2147483647,
               "ImageRUID": {
-                "DataId": "8dbe6b05e5a7497b8018f657504d5fa0"
+                "DataId": "a95499432b464ebfbc8a418f6232aafb"
               },
               "IgnoreMapLayerCheck": false,
               "LocalPosition": {

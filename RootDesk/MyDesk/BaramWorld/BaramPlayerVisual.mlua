@@ -51,6 +51,8 @@ script BaramPlayerVisual extends Component
             if creature.Hp > 0 and creature.GridX == x and creature.GridY == y then return end
         end
         local target = _BaramWorldData:Position(x, y)
+        -- Do not restart a held-turn prediction when the turn acknowledgement arrives.
+        if self._T.predicted ~= nil and self._T.predicted.x == target.x and self._T.predicted.y == target.y then return end
         local users = _UserService:GetUsersByMapComponent(map.MapComponent)
         if users ~= nil then
             for _, user in ipairs(users) do
@@ -61,12 +63,15 @@ script BaramPlayerVisual extends Component
             end
         end
         self._T.predictionOrigin = self.Entity.TransformComponent.WorldPosition
+        self._T.localFacing = direction * 3
+        self._T.localFacingUntil = _UtilLogic.ElapsedSeconds + 0.75
         self._T.predicted = target
         self._T.predictionAge = 0
     end
 
     @ExecSpace("ClientOnly")
     method void CancelPrediction()
+        self._T.localFacing = nil
         if self._T.predicted ~= nil then
             self._T.predicted = nil
             self._T.path = {}
@@ -181,7 +186,14 @@ script BaramPlayerVisual extends Component
                 budget = 0
             end
         end
-        visual.TransformComponent.WorldPosition = position
+        local oldPosition = visual.TransformComponent.WorldPosition
+        if oldPosition.x ~= position.x or oldPosition.y ~= position.y or oldPosition.z ~= position.z then
+            visual.TransformComponent.WorldPosition = position
+            if self._T.measureStart ~= nil then
+                log("[MoveTrace] firstVisualMs=" .. tostring(math.floor((_UtilLogic.ElapsedSeconds - self._T.measureStart) * 1000)))
+                self._T.measureStart = nil
+            end
+        end
         -- 칸과 칸 사이에 한두 프레임 비는 건 걸음이 끊긴 게 아니다.
         -- 여기서 walkTime 을 0 으로 되돌리면 다음 칸이 phase 0 부터 다시 시작하는데,
         -- WalkFrames 의 0번이 서 있는 자세라서 걷는 자세가 씹히고 제자리걸음처럼 보인다.
@@ -198,7 +210,12 @@ script BaramPlayerVisual extends Component
         local walking = moving or resting < frameSeconds
         local phase = math.floor(self._T.walkTime / frameSeconds) % 4
         local step = walking and _BaramWorldData.WalkFrames[phase + 1] or 0
-        local bodyFrame = self.Facing + step
+        local facing = self.Facing
+        if self._T.localFacing ~= nil then
+            if self.Facing == self._T.localFacing or _UtilLogic.ElapsedSeconds >= self._T.localFacingUntil then self._T.localFacing = nil
+            else facing = self._T.localFacing end
+        end
+        local bodyFrame = facing + step
         local headFrame = bodyFrame
         local emotion = false
         local action = self._T.action or 0

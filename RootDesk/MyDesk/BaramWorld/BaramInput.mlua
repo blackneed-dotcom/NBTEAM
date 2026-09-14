@@ -8,6 +8,7 @@ script BaramInput extends Logic
     property boolean MovePending = false
     property number ReplyWait = 0
     property boolean FastWalk = true
+    property boolean TraceMovement = false
     -- 방금 서버에 보낸 걸음의 방향. 응답이 그 방향에 대한 것임을 알아야 한다.
     property integer PendingDirection = -1
     -- 서버가 돌려놨다고 확인해 준 방향. Facing 의 @Sync 가 도착하기 전까지
@@ -488,7 +489,7 @@ script BaramInput extends Logic
         local alt = _InputService:IsKeyPressed(KeyboardKey.LeftAlt) or _InputService:IsKeyPressed(KeyboardKey.RightAlt)
         if key == KeyboardKey.Escape then
             if self.Mode == "command" or self.Mode == "quit" or self.Mode == "save" then self:EndCommand()
-            else self:Close() end
+            else self:Close() _BaramProfile:Select(_UserService.LocalPlayer) end
             return
         end
         if self.Mode == "help" and (key == KeyboardKey.LeftArrow or key == KeyboardKey.RightArrow) then self.HelpPage = 3 - self.HelpPage self:Help() return end
@@ -625,6 +626,13 @@ script BaramInput extends Logic
         self.MovePending = true
         self.ReplyWait = 0
         self.PendingDirection = direction
+        self._T.turnRequest = not turnOnly and visual.Facing ~= direction * 3 and self.TurnedTo ~= direction
+        self._T.earlyPrediction = false
+        self._T.moveSentAt = _UtilLogic.ElapsedSeconds
+        if self.TraceMovement then
+            visual._T.measureStart = self._T.moveSentAt
+            log("[MoveTrace] request direction=" .. tostring(direction) .. " turn=" .. tostring(self._T.turnRequest))
+        end
         -- 방향을 꺾으면 서버가 '돌기만' 하고 결과 2 를 준다(원작 0x4D89C0).
         -- 그때 바뀐 Facing 은 @Sync 라 한 박자 뒤에야 도착한다. 그동안 예측이
         -- 안 걸려서 꺾은 뒤 첫 걸음이 왕복 두 번을 서서 기다렸다.
@@ -640,6 +648,7 @@ script BaramInput extends Logic
     method void MoveResult(integer result)
         if not self.MovePending then return end
         self.MovePending = false
+        if self.TraceMovement then log("[MoveTrace] reply=" .. tostring(result) .. " elapsedMs=" .. tostring(math.floor((_UtilLogic.ElapsedSeconds - (self._T.moveSentAt or _UtilLogic.ElapsedSeconds)) * 1000))) end
         -- 한 칸이 0.32초(WalkFrameSeconds*4)인데 왕복이 그보다 길면 그만큼 걸음이 밀린다.
         -- 끊김이 지연 때문인지 아닌지 눈으로 보려고 남긴다.
         local budget = _BaramWorldData.WalkFrameSeconds * 4
@@ -653,12 +662,14 @@ script BaramInput extends Logic
             -- 2 = 방향만 바꿨다. 0 = 막혔다.
             -- 2 면 서버가 그 방향으로 돌려놓은 게 확실하니 다음 걸음은 바로 예측한다.
             self.TurnedTo = (result == 2) and self.PendingDirection or -1
-            self.MoveWait = _BaramWorldData.InputPollSeconds
+            self.MoveWait = result == 2 and 0 or _BaramWorldData.InputPollSeconds
             local player = _UserService.LocalPlayer
             if isvalid(player) then
                 ---@type BaramPlayerVisual
                 local visual = player:GetComponent("script.BaramPlayerVisual")
-                if isvalid(visual) then visual:CancelPrediction() end
+                local keys = {KeyboardKey.UpArrow, KeyboardKey.RightArrow, KeyboardKey.DownArrow, KeyboardKey.LeftArrow}
+                local continuing = result == 2 and self._T.earlyPrediction and _InputService:IsKeyPressed(keys[self.PendingDirection + 1])
+                if isvalid(visual) and not continuing then visual:CancelPrediction() end
             end
         end
     end
@@ -686,6 +697,20 @@ script BaramInput extends Logic
         self.MoveWait = math.max(0, self.MoveWait - delta)
         if self.MovePending then
             self.ReplyWait = self.ReplyWait + delta
+            -- Original 20ms held-key polling remains; only local presentation is speculative.
+            -- The turn RPC and all server collision/cooldown checks remain authoritative.
+            if self.FastWalk and self._T.turnRequest and not self._T.earlyPrediction
+                and self.ReplyWait >= _BaramWorldData.InputPollSeconds and not _BaramChatRelay:IsInputBlocked()
+                and not _InputService:IsKeyPressed(KeyboardKey.LeftShift) and not _InputService:IsKeyPressed(KeyboardKey.RightShift) then
+                local keys = {KeyboardKey.UpArrow, KeyboardKey.RightArrow, KeyboardKey.DownArrow, KeyboardKey.LeftArrow}
+                if _InputService:IsKeyPressed(keys[self.PendingDirection + 1]) then
+                    local player = _UserService.LocalPlayer
+                    if isvalid(player) then
+                        local visual = player:GetComponent("script.BaramPlayerVisual")
+                        if isvalid(visual) then visual:PredictMove(self.PendingDirection) self._T.earlyPrediction = true end
+                    end
+                end
+            end
             if self.ReplyWait > 2 then self:MoveResult(0) end
             return
         end

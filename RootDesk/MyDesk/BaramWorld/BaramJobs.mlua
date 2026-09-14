@@ -1,0 +1,45 @@
+@Logic
+script BaramJobs extends Logic
+    -- class_db.txt: base jobs and names through fourth advancement only.
+    -- Names are metadata; no advancement, stat, level or spell rewards are applied.
+    property table Names = {
+        [0] = {"평민"},
+        [1] = {"전사", "검객", "검제", "검황", "검성"},
+        [2] = {"도적", "자객", "진검", "귀검", "태성"},
+        [3] = {"주술사", "술사", "현사", "현인", "현자"},
+        [4] = {"도사", "도인", "명인", "진인", "진선"}
+    }
+    -- winbaram.exe 0x4E66A3: job 0 -> CLASS.EPF frame 4; jobs 1..4 -> 0..3.
+    -- All five images are unmodified 46x17 CLASS.EPF pixels with NPAL5.PAL.
+    property table BadgeRuids = {
+        [0] = "a95499432b464ebfbc8a418f6232aafb",
+        [1] = "5bdffd8f6d044f9c89bb4a642e090eaf",
+        [2] = "2056c346e2214c21a761e33c02abd492",
+        [3] = "74ae484016ff46ada197683371dde694",
+        [4] = "2cfb78e0dd0e4560ae3f4c1767ecf73e"
+    }
+
+    method boolean ValidState(table state)
+        -- Accept absent legacy fields, but never silently replace malformed saved jobs.
+        local job = state.jobId
+        local rank = state.jobRank
+        if job == nil then job = 0 end
+        if rank == nil then rank = 0 end
+        if type(job) ~= "number" or type(rank) ~= "number" then return false end
+        if job ~= math.floor(job) or rank ~= math.floor(rank) then return false end
+        return job >= 0 and job <= 4 and rank >= 0 and rank <= 4 and (job ~= 0 or rank == 0)
+    end
+
+    method void InitializeState(table state)
+        -- Add only missing fields after validation; preserve all other character data.
+        if state.jobId == nil then state.jobId = 0 end
+        if state.jobRank == nil then state.jobRank = 0 end
+    end
+
+    method string GetName(integer jobId, integer jobRank)
+        -- Resolve the same original class name for HUD, profiles and server logs.
+        local names = self.Names[jobId]
+        if names == nil then return "" end
+        return names[jobRank + 1] or ""
+    end
+end
