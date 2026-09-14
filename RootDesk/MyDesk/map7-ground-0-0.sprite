@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "sprite://822d173a0364438982994a320e59f40a",
+  "ContentType": "x-mod/sprite",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "upload_keyname": "10/1d/101d1073fb0b4e19bc72c6b9655e63ce/sprite/822d173a0364438982994a320e59f40a/639249670738935420",
+      "upload_hash": "4EE9DF45019F62F3902590C54267FE0A29EE7EA5CFBEE6F5DA16843609E53D94",
+      "name": "map7-ground-0-0",
+      "resource_guid": "822d173a0364438982994a320e59f40a",
+      "resource_version": "6aa79fa15c07d346a4cd848c"
+    }
+  }
+}

@@ -1253,7 +1253,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "162dc40d5609433e827b97b8b656a9ca",
+              "SpriteRUID": "822d173a0364438982994a320e59f40a",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1319,7 +1319,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "0db04dcc93194bb39c92157d2b2c9c19",
+              "SpriteRUID": "759dba980d554458ac0c1e77c52722e6",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1385,7 +1385,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "2627206af7fb4e698dafe852ebc11242",
+              "SpriteRUID": "d92eb362714247cea4e5e53cddef2ab8",
               "Color": {
                 "r": 1,
                 "g": 1,

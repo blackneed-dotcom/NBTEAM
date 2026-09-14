@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "sprite://cacf01a3046f49018a6cd781886fb4a6",
+  "ContentType": "x-mod/sprite",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "upload_keyname": "10/1d/101d1073fb0b4e19bc72c6b9655e63ce/sprite/cacf01a3046f49018a6cd781886fb4a6/639249670848892369",
+      "upload_hash": "EEC8E58AEA6C6A8A14DE24E2FBE2B3EE3D9932B2B5AB70EB7074F579BE8A4230",
+      "name": "map315-ground-0-0",
+      "resource_guid": "cacf01a3046f49018a6cd781886fb4a6",
+      "resource_version": "6aa79facda112e195ba2c1a9"
+    }
+  }
+}

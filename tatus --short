@@ -1,0 +1,48 @@
+warning: in the working copy of 'Docs/BaramEntry/frames.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Docs/BaramSource/render.cjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Docs/BaramSource/rendered.json', LF will be replaced by CRLF the next time Git touches it
+ Docs/BaramSource/Assets/actor22-322.png            |   Bin [31m483[m -> [32m481[m bytes
+ Docs/BaramSource/Assets/actor22-323.png            |   Bin [31m447[m -> [32m445[m bytes
+ Docs/BaramSource/Assets/actor22-324.png            |   Bin [31m488[m -> [32m491[m bytes
+ Docs/BaramSource/Assets/actor22-325.png            |   Bin [31m422[m -> [32m411[m bytes
+ Docs/BaramSource/Assets/actor22-326.png            |   Bin [31m418[m -> [32m410[m bytes
+ Docs/BaramSource/Assets/actor22-327.png            |   Bin [31m411[m -> [32m402[m bytes
+ Docs/BaramSource/Assets/actor22-328.png            |   Bin [31m514[m -> [32m491[m bytes
+ Docs/BaramSource/Assets/actor22-329.png            |   Bin [31m485[m -> [32m473[m bytes
+ Docs/BaramSource/Assets/actor22-330.png            |   Bin [31m450[m -> [32m432[m bytes
+ Docs/BaramSource/Assets/actor22-331.png            |   Bin [31m419[m -> [32m407[m bytes
+ Docs/BaramSource/Assets/actor22-332.png            |   Bin [31m413[m -> [32m403[m bytes
+ Docs/BaramSource/Assets/actor22-333.png            |   Bin [31m423[m -> [32m414[m bytes
+ Docs/BaramSource/Assets/actor26-414.png            |   Bin [31m263[m -> [32m263[m bytes
+ Docs/BaramSource/Assets/actor26-415.png            |   Bin [31m292[m -> [32m292[m bytes
+ Docs/BaramSource/Assets/actor26-416.png            |   Bin [31m287[m -> [32m287[m bytes
+ Docs/BaramSource/Assets/actor26-417.png            |   Bin [31m296[m -> [32m294[m bytes
+ Docs/BaramSource/Assets/actor26-418.png            |   Bin [31m293[m -> [32m291[m bytes
+ Docs/BaramSource/Assets/actor26-419.png            |   Bin [31m301[m -> [32m300[m bytes
+ Docs/BaramSource/Assets/actor26-420.png            |   Bin [31m293[m -> [32m291[m bytes
+ Docs/BaramSource/Assets/actor26-421.png            |   Bin [31m331[m -> [32m329[m bytes
+ Docs/BaramSource/Assets/actor26-422.png            |   Bin [31m297[m -> [32m295[m bytes
+ Docs/BaramSource/Assets/actor26-423.png            |   Bin [31m294[m -> [32m292[m bytes
+ Docs/BaramSource/Assets/actor26-424.png            |   Bin [31m301[m -> [32m299[m bytes
+ Docs/BaramSource/Assets/actor26-425.png            |   Bin [31m313[m -> [32m312[m bytes
+ Docs/BaramSource/Assets/map14-objects-0-0.png      |   Bin [31m286567[m -> [32m274974[m bytes
+ Docs/BaramSource/Assets/map14-objects-0-1920.png   |   Bin [31m296850[m -> [32m280490[m bytes
+ Docs/BaramSource/Assets/map14-objects-0-2880.png   |   Bin [31m256810[m -> [32m242450[m bytes
+ Docs/BaramSource/Assets/map14-objects-0-960.png    |   Bin [31m246658[m -> [32m239241[m bytes
+ Docs/BaramSource/Assets/map14-objects-1920-0.png   |   Bin [31m202593[m -> [32m195963[m bytes
+ .../BaramSource/Assets/map14-objects-1920-1920.png |   Bin [31m239852[m -> [32m233616[m bytes
+ .../BaramSource/Assets/map14-objects-1920-2880.png |   Bin [31m257139[m -> [32m240678[m bytes
+ Docs/BaramSource/Assets/map14-objects-1920-960.png |   Bin [31m178464[m -> [32m175295[m bytes
+ Docs/BaramSource/Assets/map14-objects-2880-0.png   |   Bin [31m175362[m -> [32m170506[m bytes
+ .../BaramSource/Assets/map14-objects-2880-1920.png |   Bin [31m180064[m -> [32m159993[m bytes
+ .../BaramSource/Assets/map14-objects-2880-2880.png |   Bin [31m134571[m -> [32m128523[m bytes
+ Docs/BaramSource/Assets/map14-objects-2880-960.png |   Bin [31m177640[m -> [32m157886[m bytes
+ Docs/BaramSource/Assets/map14-objects-960-0.png    |   Bin [31m279516[m -> [32m268545[m bytes
+ Docs/BaramSource/Assets/map14-objects-960-1920.png |   Bin [31m292753[m -> [32m268279[m bytes
+ Docs/BaramSource/Assets/map14-objects-960-2880.png |   Bin [31m223285[m -> [32m207548[m bytes
+ Docs/BaramSource/Assets/map14-objects-960-960.png  |   Bin [31m180639[m -> [32m184474[m bytes
+ Docs/BaramSource/Assets/map15-objects-0-0.png      |   Bin [31m27225[m -> [32m24364[m bytes
+ Docs/BaramSource/Assets/map7-objects-0-0.png       |   Bin [31m14687[m -> [32m12308[m bytes
+ Docs/BaramSource/render.cjs                        |    30 [32m+[m[31m-[m
+ Docs/BaramSource/rendered.json                     | 20625 [32m+++++++++++++[m[31m------[m
+ 44 files changed, 13856 insertions(+), 6799 deletions(-)

@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "sprite://33b96ed87af541e89799dcf5e584dd59",
+  "ContentType": "x-mod/sprite",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "upload_keyname": "10/1d/101d1073fb0b4e19bc72c6b9655e63ce/sprite/33b96ed87af541e89799dcf5e584dd59/639249670739048700",
+      "upload_hash": "24957CE44E331D63307436990C766066742A7908DFCD548078E97112979385A3",
+      "name": "map14-ground-0-960",
+      "resource_guid": "33b96ed87af541e89799dcf5e584dd59",
+      "resource_version": "6aa79fa10b6d483fb495c0c5"
+    }
+  }
+}

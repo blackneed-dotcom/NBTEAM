@@ -1256,7 +1256,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "48c91e1eb76f4b74b00e437d6a5e0c09",
+              "SpriteRUID": "cacf01a3046f49018a6cd781886fb4a6",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1322,7 +1322,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "638f76204723423e90dd5aa25362e572",
+              "SpriteRUID": "7f81f6d4dbe54f859a30514af72fc505",
               "Color": {
                 "r": 1,
                 "g": 1,

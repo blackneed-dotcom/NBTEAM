@@ -1253,7 +1253,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "004e0e734f944d039ebf08d5fc39c816",
+              "SpriteRUID": "e2fd4bef5bb3461ca74f8240255bfa86",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1319,7 +1319,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "9265287aedbd4f57bfbc215cee8fab69",
+              "SpriteRUID": "8db66fe2109046dab0d2ca0fa4310713",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1385,7 +1385,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "8a4f7cb636ad42b7bef11ebb20bb2f7f",
+              "SpriteRUID": "d6ccbb9bf7684e23a71e633ba2d83ef7",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1451,7 +1451,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "64d04221c64c4d61b761d325c2caa420",
+              "SpriteRUID": "b42a4287988e4c30b4b972487d114644",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1517,7 +1517,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "395a4c1ce1ef4c95b23a5652e681e17a",
+              "SpriteRUID": "f4b793913b834c45bace4e607205931c",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1583,7 +1583,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "948d65bb45364e159bb67ece6e262e66",
+              "SpriteRUID": "ce26b4366f1b46139d06d217e572e3cb",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1649,7 +1649,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "56dbfe1288964a1b81a71bc3d2d51397",
+              "SpriteRUID": "0f7eadc922264c9a8d90c3fbd851d0fd",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1715,7 +1715,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "c584587fd5fc4e6db5223a429c9a2c8a",
+              "SpriteRUID": "38861d011de0428ba1624c4843a4dd92",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1781,7 +1781,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "c4efb0be99fa42ad9469569d630aa6fb",
+              "SpriteRUID": "33b96ed87af541e89799dcf5e584dd59",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1847,7 +1847,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "bcac0b09f2ce4aa096adfd93e920ddde",
+              "SpriteRUID": "cc94543d4e5b438382fe95411f8f4e04",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1913,7 +1913,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "9f9e7588ee7d4c699b428db640b1e50d",
+              "SpriteRUID": "d5ac699975c54a148ffd82bcfd10fdd0",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -1979,7 +1979,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "13fa27a2e9484ad3b9d1d9a6b6cddc63",
+              "SpriteRUID": "3be14b5fa504472fb06d26e03989d2e4",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2045,7 +2045,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "f852da3346cb4592abae4664bcfd39c9",
+              "SpriteRUID": "b2dd60592fe646f58d54e5529b3ce29d",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2111,7 +2111,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "c4d0157d4c834736b1e9eb910b54641d",
+              "SpriteRUID": "386c4f85165545318d337b4d6a82187a",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2177,7 +2177,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "dc79be5efa34420588a40a1e2af910a6",
+              "SpriteRUID": "330b9928c973477ca9db54e0cb0acf54",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2243,7 +2243,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "de025dcedbed4c41ba1dc5774951a197",
+              "SpriteRUID": "d71b0a44c8ae455c80d69e49a00d58c2",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2309,7 +2309,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "27ee7f11bd004fee88769bebfdee1351",
+              "SpriteRUID": "2ddc9b3a809349288624d345355dbb5c",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2375,7 +2375,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "372dda36b9514590add7ded7c5411236",
+              "SpriteRUID": "20efa81945c64059a83ac1da41dd409a",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2441,7 +2441,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "047465f90d774f2bb4581e289a2f04a9",
+              "SpriteRUID": "ba664f90e6f54d43a02b323e856ffd07",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2507,7 +2507,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "634e91b93c044338a37a3369337f405e",
+              "SpriteRUID": "01bb6acf8c33472c895cd6e18bc42337",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2573,7 +2573,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "a9953f791f644e9496036dd75b740db8",
+              "SpriteRUID": "23498e0354824d4084c582c9cd7f1e41",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2639,7 +2639,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "58997aa242fb48599e9afa87aba1cc0d",
+              "SpriteRUID": "3ce667606bc7478088e3d4e48c65fd6a",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2705,7 +2705,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "ab47f935da8846f7a151ca166934c341",
+              "SpriteRUID": "709f7cb703af40c8937043360dd4612a",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2771,7 +2771,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "5df8a17dd26043548165ddbda53cec07",
+              "SpriteRUID": "e50d509ee8e443a78f7e86350a72b860",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2837,7 +2837,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "fa212da59636490cbf5569b96343f0c7",
+              "SpriteRUID": "2d18d3906eac42408171b072378bd990",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2903,7 +2903,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "f9c1c238a698422f8c5ea8a5789c21e1",
+              "SpriteRUID": "aaac69bc4cf04be7b0b36a383599049e",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -2969,7 +2969,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "fce146cb764243e7beef3b6b840c791b",
+              "SpriteRUID": "ecb722c0808e4c44ba9838c93981c6b6",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -3035,7 +3035,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "66b830edd2464a08aea77071fbcc100d",
+              "SpriteRUID": "7cc5713f6af84b8fb6e7e2ab4f1d6a3c",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -3101,7 +3101,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "23e9c975e56841a5ac54cfeffef2272f",
+              "SpriteRUID": "135e992e2194486ea9088e8fe9bc1353",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -3167,7 +3167,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "09b29ea45e3047289ece522d1516c4c6",
+              "SpriteRUID": "da56bc2d825c47d68d87b0f75a84129e",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -3233,7 +3233,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "d6b5600c20a840599c01579401d30230",
+              "SpriteRUID": "d2da3ff07802469a87e0033c401a698c",
               "Color": {
                 "r": 1,
                 "g": 1,
@@ -3299,7 +3299,7 @@
             },
             {
               "@type": "MOD.Core.SpriteRendererComponent",
-              "SpriteRUID": "701ec539d328415d942ae57548c97300",
+              "SpriteRUID": "36f5a8f3f2394b2ba35c11e016140bc2",
               "Color": {
                 "r": 1,
                 "g": 1,

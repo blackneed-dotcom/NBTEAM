@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "sprite://c1cc29d581ca415580bb808a73692a7d",
+  "ContentType": "x-mod/sprite",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.7.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "upload_keyname": "10/1d/101d1073fb0b4e19bc72c6b9655e63ce/sprite/c1cc29d581ca415580bb808a73692a7d/639249670724367737",
+      "upload_hash": "C85262167FA761A984C3860FA08544CB46E539BD7328C6DE5A81F1FA6D8D925A",
+      "name": "actor26-436",
+      "resource_guid": "c1cc29d581ca415580bb808a73692a7d",
+      "resource_version": "6aa79fa03c73239c553aa548"
+    }
+  }
+}
