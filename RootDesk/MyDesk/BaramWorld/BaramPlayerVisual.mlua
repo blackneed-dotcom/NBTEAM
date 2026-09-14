@@ -1,6 +1,8 @@
 @Component
 script BaramPlayerVisual extends Component
     @Sync
+    property boolean Active = false
+    @Sync
     property integer Gender = 0
     @Sync
     property integer Hair = 0
@@ -19,6 +21,8 @@ script BaramPlayerVisual extends Component
 
     @ExecSpace("Client")
     method void ReceiveAction(integer action, integer direction, number frameSeconds, string mapId)
+        -- Ignore delayed animation packets for a character that left gameplay.
+        if not self.Active then return end
         if not isvalid(self.Entity.CurrentMap) or self.Entity.CurrentMap.Id ~= mapId then return end
         self._T.action = action
         self._T.actionDirection = math.max(0, math.min(3, direction))
@@ -85,6 +89,12 @@ script BaramPlayerVisual extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        -- All observers release the display when this player returns to the title.
+        if not self.Active then
+            if self._T.map ~= nil then self:ClearDisplay() end
+            if isvalid(self.Entity.AvatarRendererComponent) then self.Entity.AvatarRendererComponent.Enable = false end
+            return
+        end
         local map = self.Entity.CurrentMap
         if not isvalid(map) then return end
         self.Entity.Visible = true
@@ -280,9 +290,23 @@ script BaramPlayerVisual extends Component
     end
 
     @ExecSpace("ClientOnly")
-    method void OnEndPlay()
+    method void ClearDisplay()
+        -- Disconnect touch handlers before destroying local display entities.
         self:ReleaseProfileTouch()
         if isvalid(self._T.visual) then self._T.visual:Destroy() end
         if isvalid(self._T.warm) then self._T.warm:Destroy() end
+        self._T.visual = nil
+        self._T.warm = nil
+        self._T.map = nil
+        self._T.path = {}
+        self._T.predicted = nil
+        self._T.action = 0
+        log("[BaramMultiplayer] observer display released")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- The same cleanup covers disconnect and map/component destruction.
+        self:ClearDisplay()
     end
 end

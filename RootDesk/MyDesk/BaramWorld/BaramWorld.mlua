@@ -18,27 +18,56 @@ script BaramWorld extends Logic
 
     @ExecSpace("ServerOnly")
     method boolean Enter(string userId, string appearance, integer slot)
+        -- A load ticket ties every yielding operation to the same live connection.
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) or self._T.loading[userId] ~= nil then return false end
+        local record = self._T.users[userId]
+        if record ~= nil and (record.active or record.leaving or record.saving) then return false end
+        local ticket = {player = player}
+        self._T.loading[userId] = ticket
+        local ok, entered = pcall(function() return self:EnterSession(userId, appearance, slot, ticket) end)
+        if self._T.loading[userId] == ticket then self._T.loading[userId] = nil end
+        if not ok then
+            local failed = self._T.users[userId]
+            if failed ~= nil and failed.player == player then failed.active = false self:SetPublicActive(userId, false) end
+            log_error("[BaramMultiplayer] entry failed: " .. tostring(entered))
+            return false
+        end
+        return entered
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean CurrentEntry(string userId, table ticket)
+        -- A disconnected or superseded load must not publish state to a new player.
+        return self._T.loading[userId] == ticket and isvalid(ticket.player) and _UserService:GetUserEntityByUserId(userId) == ticket.player
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean EnterSession(string userId, string appearance, integer slot, table ticket)
         -- Each slot owns a separate save key; slot one keeps the original key.
         if slot < 1 or slot > 3 then return false end
-        if self._T.loading[userId] then return false end
-        local player = _UserService:GetUserEntityByUserId(userId)
+        local player = ticket.player
         if not isvalid(player) or not _BaramEntryFlow:IsValidRecord(appearance) then return false end
         local record = self._T.users[userId]
         if record ~= nil and record.tradeBusy then
             if record.trade ~= nil and record.trade.recovery then _BaramTrade:Recover(record.trade) end
+            if not self:CurrentEntry(userId, ticket) then return false end
             if record.tradeBusy then self:Notice(userId, "교환 저장 결과를 확인 중입니다.") return false end
         end
         if record ~= nil and (record.slot or 1) ~= slot then
             if record.active or not self:Flush(userId) then return false end
+            if not self:CurrentEntry(userId, ticket) then return false end
             record = nil
         end
         if record == nil then
-            self._T.loading[userId] = true
             local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
             local key = _BaramEntryFlow:SlotKey(self.StorageKey, slot)
             local recovered = _BaramTradeStore:Resolve(storage, key, _DataStorageService:GetGlobalDataStorage(_BaramTradeStore.LedgerName))
             local raw = recovered.raw
-            self._T.loading[userId] = nil
+            if not self:CurrentEntry(userId, ticket) then
+                log("[BaramMultiplayer] discarded stale load")
+                return false
+            end
             if not recovered.ok then self:Notice(userId, "진행 정보 또는 교환 저장 결과를 확인하지 못했습니다. 기존 데이터는 보존했습니다.") return false end
             local state = nil
             if raw ~= nil and raw ~= "" then
@@ -52,7 +81,8 @@ script BaramWorld extends Logic
             self._T.users[userId] = record
         end
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
-        record.active = true
+        record.player = player
+        record.active = false
         if record.allowExchange == nil then record.allowExchange = true end
         self:ExchangeSetting(record.allowExchange, userId)
         if record.allowGroup == nil then record.allowGroup = true end
@@ -61,12 +91,16 @@ script BaramWorld extends Logic
         ---@type BaramPlayerVisual
         local visual = player:GetComponent("script.BaramPlayerVisual")
         if not isvalid(visual) then visual = player:AddComponent("BaramPlayerVisual") end
-        if not isvalid(visual) then return false end
+        if not isvalid(visual) then record.active = false return false end
+        visual.Active = false
         visual.Gender = selected.gender
         visual.Hair = selected.hair
         player.PlayerControllerComponent.Enable = false
         player.PlayerComponent.PVPMode = false
         self:Place(userId, record.state.map, record.state.x, record.state.y)
+        if not self:CurrentEntry(userId, ticket) then record.active = false return false end
+        record.active = true
+        visual.Active = true
         self:Snapshot(userId)
         log("[BaramWorld] entered slot=" .. tostring(slot) .. " level=" .. tostring(record.state.level) .. " map=" .. tostring(record.state.map))
         return true
@@ -319,6 +353,7 @@ script BaramWorld extends Logic
             local count = action == "giveall" and item.count or 1
             if not self:AddItem(target.state, item.id, count, item.durability) then self:Notice(userId, "상대방의 소지품이 가득 찼습니다.") return end
             self:RemoveItem(s, slot, count)
+            self:Changed(userId)
             self:Changed(targetId)
             self:Snapshot(targetId)
             self:Notice(targetId, data.name .. " " .. tostring(count) .. "개를 받았습니다.")
@@ -362,8 +397,10 @@ script BaramWorld extends Logic
             end
             self._T.nextDrop = self._T.nextDrop + 1
             self._T.drops[self._T.nextDrop] = {map = s.map, x = x, y = y, id = item.id, count = count, durability = item.durability, expires = self.Clock + 300}
-            self:ShowDrop(self._T.drops[self._T.nextDrop])
+            local dropped = self._T.drops[self._T.nextDrop]
             self:RemoveItem(s, slot, count)
+            self:Changed(userId)
+            self:ShowDrop(dropped)
             self:Notice(userId, data.name .. " " .. tostring(count) .. "개를 내려놓았습니다.")
             if action == "throw" then self:PlayUserAction(userId, 2, 0.15) end
         else return end
@@ -383,16 +420,32 @@ script BaramWorld extends Logic
         local count = 0
         for key, drop in pairs(self._T.drops) do
             if drop.map == s.map and drop.x == s.x and drop.y == s.y and drop.expires > self.Clock then
-                if not self:AddItem(s, drop.id, drop.count, drop.durability) then self:Notice(userId, "소지품이 가득 찼습니다.") break end
-                if isvalid(drop.entity) then drop.entity:Destroy() end
-                self._T.drops[key] = nil
-                count = count + 1
-                if not all then break end
+                local result = self:ClaimDrop(s, self._T.drops, key)
+                if result < 0 then self:Notice(userId, "소지품이 가득 찼습니다.") break end
+                if result > 0 then
+                    self:Changed(userId)
+                    if isvalid(drop.entity) then drop.entity:Destroy() end
+                    count = count + 1
+                    if not all then break end
+                end
             end
         end
         if count > 0 then self:Changed(userId) self:Snapshot(userId) self:PlayUserAction(userId, 4, 0.3) end
         self:Notice(userId, count > 0 and "물건을 주웠습니다." or "발밑에 주울 물건이 없습니다.")
         log("[BaramInventory] pickup=" .. tostring(count))
+    end
+
+    @ExecSpace("ServerOnly")
+    method integer ClaimDrop(table state, table drops, integer key)
+        -- Claim before renderer/RPC work; failure restores the exact unmodified drop.
+        local drop = drops[key]
+        if drop == nil or drop.map ~= state.map or drop.x ~= state.x or drop.y ~= state.y or drop.expires <= self.Clock then return 0 end
+        drops[key] = nil
+        if not self:AddItem(state, drop.id, drop.count, drop.durability) then
+            drops[key] = drop
+            return -1
+        end
+        return 1
     end
 
     @ExecSpace("ServerOnly")
@@ -536,8 +589,16 @@ script BaramWorld extends Logic
 
     @ExecSpace("Server")
     method void Users()
+        -- Do not advertise title/loading characters as active world participants.
+        local caller = self:GetRecord(senderUserId)
+        if caller == nil or not caller.active then return end
         local names = {}
-        for _, player in ipairs(_UserService.UserEntities.Values) do if isvalid(player) then table.insert(names, player.PlayerComponent.Nickname) end end
+        for _, player in ipairs(_UserService.UserEntities.Values) do
+            if isvalid(player) then
+                local record = self:GetRecord(player.PlayerComponent.UserId)
+                if record ~= nil and record.active then table.insert(names, player.PlayerComponent.Nickname) end
+            end
+        end
         self:ShowUsers(table.concat(names, "\n"), senderUserId)
     end
 
@@ -550,10 +611,22 @@ script BaramWorld extends Logic
     @ExecSpace("Server")
     method void LeaveToTitle()
         -- Cancel reservations before leaving, but never interrupt an uncertain commit.
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.leaving or r.tradeBusy then return end
         _BaramTrade:CancelFor(senderUserId, "교환이 취소되었습니다.")
-        if not self:Flush(senderUserId) then self:Notice(senderUserId, "저장 중입니다. 잠시 후 다시 시도해 주세요.") return end
+        r.leaving = true
+        r.active = false
+        local saved = self:Flush(userId)
+        if self._T.users[userId] ~= r then return end
+        r.leaving = false
+        if not saved then
+            r.active = isvalid(r.player) and _UserService:GetUserEntityByUserId(userId) == r.player
+            self:Notice(userId, "저장 중입니다. 잠시 후 다시 시도해 주세요.")
+            return
+        end
         _BaramParty:LeaveFor(senderUserId)
-        self._T.users[senderUserId].active = false
+        self:SetPublicActive(userId, false)
         _BaramEntryFlow:SendSlots(senderUserId)
         self:ReturnToTitle(senderUserId)
     end
@@ -621,8 +694,9 @@ script BaramWorld extends Logic
 
     @ExecSpace("ServerOnly")
     method void Damage(string userId, integer amount)
+        -- Characters at the title/loading screen cannot receive gameplay damage.
         local r = self._T.users[userId]
-        if r == nil or r.state.hp <= 0 then return end
+        if r == nil or not r.active or r.state.hp <= 0 or amount <= 0 then return end
         if r.tradeBusy then r.deferredDamage = (r.deferredDamage or 0) + amount return end
         if r.trade ~= nil then _BaramTrade:CancelFor(userId, "공격받아 교환이 취소되었습니다.") end
         r.state.hp = math.max(0, r.state.hp - amount)
@@ -688,7 +762,7 @@ script BaramWorld extends Logic
             self._T.flush = 60
             for userId, r in pairs(self._T.users) do
                 if r.dirty and not r.tradeBusy then self:Flush(userId) end
-                if not r.active and not r.dirty and not r.tradeBusy and not r.saving then self._T.users[userId] = nil end
+                self:ReleaseInactive(userId, r)
             end
             for key, drop in pairs(self._T.drops) do if drop.expires <= self.Clock then
                 if isvalid(drop.entity) then drop.entity:Destroy() end
@@ -701,11 +775,33 @@ script BaramWorld extends Logic
     @EventSender("Service", "UserService")
     handler HandleLeave(UserLeaveEvent event)
         -- Retain uncertain trade/save records; do not discard recovery information.
+        self._T.loading[event.UserId] = nil
         _BaramParty:LeaveFor(event.UserId)
         local r = self._T.users[event.UserId]
-        if r ~= nil then r.active = false end
+        if r ~= nil then r.active = false r.leaving = true end
+        self:SetPublicActive(event.UserId, false)
         _BaramTrade:CancelFor(event.UserId, "상대방이 접속을 종료하여 교환이 취소되었습니다.")
-        if self:Flush(event.UserId) then self._T.users[event.UserId] = nil end
-        self._T.loading[event.UserId] = nil
+        self:Flush(event.UserId)
+        if r ~= nil then r.leaving = false self:ReleaseInactive(event.UserId, r) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ReleaseInactive(string userId, table record)
+        -- Re-check identity and dirty state after storage yielded to other events.
+        if self._T.users[userId] ~= record then return end
+        if not record.active and not record.dirty and not record.tradeBusy and not record.saving and not record.leaving and self._T.loading[userId] == nil then
+            self._T.users[userId] = nil
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void SetPublicActive(string userId, boolean active)
+        -- Public presence contains no private inventory, currency or storage data.
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if isvalid(visual) then visual.Active = active end
+        log("[BaramMultiplayer] public active=" .. tostring(active))
     end
 end
