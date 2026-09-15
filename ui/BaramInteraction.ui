@@ -452,7 +452,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.141176477,
                 "g": 0.09803922,
@@ -647,7 +647,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.141176477,
                 "g": 0.09803922,
@@ -842,7 +842,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.141176477,
                 "g": 0.09803922,
@@ -1147,7 +1147,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.141176477,
                 "g": 0.09803922,

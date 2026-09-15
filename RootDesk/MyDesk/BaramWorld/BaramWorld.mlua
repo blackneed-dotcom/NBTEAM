@@ -111,6 +111,9 @@ script BaramWorld extends Logic
         _BaramJobs:InitializeState(record.state)
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
         if selected.nickname == "" then return false end
+        -- Character creation owns these choices, including existing saved slots.
+        record.state.nation = selected.nation
+        record.state.totem = selected.totem
         player.PlayerComponent.Nickname = selected.nickname
         record.player = player
         record.active = false
@@ -293,6 +296,7 @@ script BaramWorld extends Logic
                     visual.DisplayMaxHp = r.state.maxHp
                     visual.DisplayLevel = r.state.level
                     visual.DisplayName = player.PlayerComponent.Nickname
+                    visual.ClanId = _BaramChatChannels:GetClanMembership(userId)
                 end
             end
             self:ReceiveState(_HttpService:JSONEncode(r.state), userId)
@@ -307,6 +311,7 @@ script BaramWorld extends Logic
         ---@type BaramHUDController
         local hud = root:GetComponent("script.BaramHUDController")
         local s = self.LocalState
+        hud:SetIdentity(s.nation, s.totem)
         hud:SetJob(s.jobId or 0, s.jobRank or 0)
         hud.Gold = s.gold
         hud.Experience = s.exp

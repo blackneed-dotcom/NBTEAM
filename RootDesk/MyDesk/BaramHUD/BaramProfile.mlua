@@ -539,49 +539,39 @@ script BaramProfile extends Logic
 
     @ExecSpace("ClientOnly")
     method void Draw(Entity field, string value, boolean leftAligned)
-        -- Share the original bitmap glyph renderer with other original-client windows.
+        -- Render shared nickname, speech and information fields with Galmuri11.
         if not isvalid(field) then return end
-        local points = {}
-        local i = 1
-        local total = 0
-        -- Decode UTF-8 explicitly; the original font is a BMP Unicode font.
-        while i <= #value and #points < 24 do
-            local c = string.byte(value, i)
-            local cp = c
-            local count = 1
-            if c >= 240 then count = 4 cp = 63
-            elseif c >= 224 and i + 2 <= #value then
-                cp = (c - 224) * 4096 + (string.byte(value, i + 1) - 128) * 64 + string.byte(value, i + 2) - 128
-                count = 3
-            elseif c >= 192 and i + 1 <= #value then
-                cp = (c - 192) * 64 + string.byte(value, i + 1) - 128
-                count = 2
-            end
-            i = i + count
-            if cp < 0 or cp > 65535 then cp = 63 end
-            local row = self.FontWidths[math.floor(cp / 256) + 1]
-            local code = string.sub(row, cp % 256 + 1, cp % 256 + 1)
-            if code == "0" then cp = 63 code = "6" end
-            local width = code == "C" and 12 or 6
-            if total + width > field.UITransformComponent.RectSize.x then break end
-            table.insert(points, {cp = cp, width = width})
-            total = total + width
+        local renderer = field.TextGUIRendererComponent
+        if not isvalid(renderer) then
+            renderer = field:AddComponent("TextGUIRendererComponent")
+            renderer.FontColor = Color.white
+            local first = field:GetChildByName("Glyph1")
+            if isvalid(first) then renderer.FontColor = first:GetChildByName("Atlas").SpriteGUIRendererComponent.Color end
         end
-        local x = leftAligned and 0 or field.UITransformComponent.RectSize.x - total
-        for n = 1, 24 do
-            local glyph = field:GetChildByName("Glyph" .. tostring(n))
-            local point = points[n]
-            glyph.Enable = point ~= nil
-            if point ~= nil then
-                glyph.UITransformComponent.anchoredPosition = Vector2(x, 0)
-                glyph.UITransformComponent.RectSize = Vector2(point.width, 12)
-                local atlas = glyph:GetChildByName("Atlas")
-                local cell = point.cp % 16384
-                atlas.SpriteGUIRendererComponent.ImageRUID = DataRef(self.FontPages[math.floor(point.cp / 16384) + 1])
-                atlas.UITransformComponent.anchoredPosition = Vector2(-(cell % 128) * 16, math.floor(cell / 128) * 16)
-                x = x + point.width
-            end
+        for i = 1, 32 do
+            local glyph = field:GetChildByName("Glyph" .. tostring(i))
+            if isvalid(glyph) then glyph.Enable = false end
         end
+        renderer.Font = "Galmuri11"
+        renderer.FontSize = 11
+        renderer.BestFit = false
+        renderer.IsRichText = false
+        renderer.HorizontalAlignment = leftAligned and TextHorizontalAlignmentOption.Left or TextHorizontalAlignmentOption.Right
+        renderer.VerticalAlignment = TextVerticalAlignmentOption.Top
+        -- Original client rows are 12px high; Truncate hides the taller font line box.
+        -- Limit horizontal text explicitly while allowing Galmuri11's line box to render.
+        renderer.Overflow = TextOverflowMode.Overflow
+        local available = field.UITransformComponent.RectSize.x
+        if available > 0 and renderer:GetPreferredWidth(value) > available then
+            local fitted = ""
+            for _, cp in utf8.codes(value) do
+                local nextText = fitted .. utf8.char(cp)
+                if renderer:GetPreferredWidth(nextText) > available then break end
+                fitted = nextText
+            end
+            value = fitted
+        end
+        renderer.Text = value
     end
 
     @ExecSpace("ClientOnly")
