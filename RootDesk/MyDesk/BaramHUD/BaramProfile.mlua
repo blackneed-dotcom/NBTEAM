@@ -330,6 +330,8 @@ script BaramProfile extends Logic
     method void Request(string userId, integer serial)
         local caller = senderUserId
         local viewer = _UserService:GetUserEntityByUserId(caller)
+        -- A queued request may arrive after the requesting player disconnected.
+        if not isvalid(viewer) then return end
         local target = _UserService:GetUserEntityByUserId(userId)
         local a = _BaramWorld:GetRecord(caller)
         local b = _BaramWorld:GetRecord(userId)
@@ -347,6 +349,10 @@ script BaramProfile extends Logic
         -- Clan/title/history remain empty; class uses the shared saved job metadata.
         local data = {name = target.PlayerComponent.Nickname, gender = visual.Gender, hair = visual.Hair, item = equipped ~= nil and equipped.id or 0, weaponName = weaponData ~= nil and weaponData.name or "", exchange = b.allowExchange ~= false, group = b.allowGroup ~= false}
         data.jobId = b.state.jobId or 0
+        for i = 1, 2 do
+            local accessory = b.state.items[tostring(b.state["aux" .. tostring(i)] or 0)]
+            data["aux" .. tostring(i)] = accessory ~= nil and accessory.id or 0
+        end
         data.jobRank = b.state.jobRank or 0
         self:Receive(userId, serial, _HttpService:JSONEncode(data), caller)
     end
@@ -356,6 +362,14 @@ script BaramProfile extends Logic
         -- Refresh the selected character's profile and placeholder combat stats.
         if self.SelectedUser ~= userId or self.Serial ~= serial then return end
         if raw == "" or not self:TargetPresent() then self:Close() return end
+        -- Refresh may register scripts before the updated UI tree is ready.
+        -- Leave the signature untouched so the regular profile poll retries.
+        if not isvalid(self.Window) then return end
+        local information = self.Window:GetChildByName("Information")
+        if not isvalid(information) then return end
+        for _, name in ipairs({"Body", "Head", "HeldWeapon", "Auxiliary1", "Auxiliary2"}) do
+            if not isvalid(information:GetChildByName(name)) then return end
+        end
         if self._T.signature ~= raw then
             local data = _HttpService:JSONDecode(raw)
             self:Text("Name", data.name)
@@ -369,11 +383,24 @@ script BaramProfile extends Logic
             self:Text("Clan", "")
             self:Text("ClanTitle", "")
             local content = self.Window:GetChildByName("Information")
-            content:GetChildByName("Body").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(data.gender, 6))
+            local weaponArt = _BaramAppearance:GetWeapon(data.item, 6)
+            local pose = weaponArt ~= "" and 18 or 6
+            local body = content:GetChildByName("Body")
+            -- Motion frames are 96x96 (foot 48,72); idle frames are 48x72 (foot 24,60).
+            -- Both align to the preview's fixed foot position (96,172).
+            body.UITransformComponent.RectSize = weaponArt ~= "" and Vector2(96, 96) or Vector2(48, 72)
+            body.UITransformComponent.anchoredPosition = weaponArt ~= "" and Vector2(48, -100) or Vector2(72, -112)
+            body.SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(data.gender, pose))
             content:GetChildByName("Head").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetHead(data.hair, 6))
-            local weapon = content:GetChildByName("Weapon")
-            weapon.Enable = data.item == 17
-            if data.item ~= 0 and data.item ~= 17 then log("[BaramProfile] missing original equipment resource for item " .. tostring(data.item)) end
+            local weapon = content:GetChildByName("HeldWeapon")
+            weapon.Enable = weaponArt ~= ""
+            if weapon.Enable then weapon.SpriteGUIRendererComponent.ImageRUID = DataRef(weaponArt) end
+            for i = 1, 2 do
+                local icon = content:GetChildByName("Auxiliary" .. tostring(i))
+                local art = _BaramInput.InventoryImages[tostring(data["aux" .. tostring(i)] or 0)]
+                icon.Enable = art ~= nil
+                if art ~= nil then icon.SpriteGUIRendererComponent.ImageRUID = DataRef(art.ruid) end
+            end
             self._T.signature = raw
             log("[BaramProfile] data name=" .. data.name .. " equipment=" .. tostring(data.item))
         end

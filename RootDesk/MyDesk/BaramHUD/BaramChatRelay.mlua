@@ -3,6 +3,8 @@ script BaramChatRelay extends Logic
     -- Session-wide transport. UI references and editing state remain client-only.
     property boolean IsEditing = false
     property number InputBlockSeconds = 0
+    -- Temporary public command: disable here, or remove this block and TryCreateItem.
+    property boolean TemporaryItemCommandEnabled = true
 
     @ExecSpace("ServerOnly")
     method void OnBeginPlay()
@@ -30,8 +32,54 @@ script BaramChatRelay extends Logic
     @ExecSpace("Server")
     method void RequestMessage(string message)
         -- Resolve identity on the server and deliver to the same map instance only.
+        if self:TryCreateItem(senderUserId, message) then return end
         if message == "/진단" then self:SendDiagnostics(senderUserId) return end
         _BaramChatChannels:Send(senderUserId, message)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean TryCreateItem(string userId, string message)
+        local command = string.match(message, "^%s*(%S+)")
+        if command ~= "/아이템생성" then return false end
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not self.TemporaryItemCommandEnabled or not isvalid(player) then return true end
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then
+            self:ReceiveNotice("현재 상태에서는 아이템을 생성할 수 없습니다.", userId)
+            return true
+        end
+        local name, digits = string.match(message, "^%s*/아이템생성%s+(.+)%s+(%d+)%s*$")
+        local count = tonumber(digits)
+        if name == nil or count == nil or count < 1 or count > 4294967295 then
+            self:ReceiveNotice("사용법: /아이템생성 이름 갯수 (예: /아이템생성 목도 1)", userId)
+            return true
+        end
+        name = string.match(name, "^%s*(.-)%s*$")
+        local item = nil
+        for _, data in pairs(_BaramWorldData.Items) do
+            if data.name == name then
+                if item ~= nil then
+                    self:ReceiveNotice("같은 이름의 아이템이 여러 개 있어 생성할 수 없습니다.", userId)
+                    return true
+                end
+                item = data
+            end
+        end
+        if item == nil then
+            self:ReceiveNotice("원본 데이터에 없는 아이템 이름입니다: " .. name, userId)
+            return true
+        end
+        local art = _BaramInput.InventoryImages[tostring(item.id)]
+        if art == nil or art.ruid == nil or art.ruid == "" then
+            self:ReceiveNotice("바닥에 표시할 원본 이미지가 없는 아이템입니다.", userId)
+            return true
+        end
+        _BaramWorld:DropLoot(r.state.map, r.state.x, r.state.y, item.id, count)
+        local drop = _BaramWorld._T.drops[_BaramWorld._T.nextDrop]
+        drop.durability = item.durability
+        self:ReceiveNotice(name .. " " .. tostring(count) .. "개를 발밑에 생성했습니다.", userId)
+        log("[TemporaryItemDrop] item=" .. tostring(item.id) .. " count=" .. tostring(count) .. " user=" .. userId)
+        return true
     end
 
     @ExecSpace("ServerOnly")

@@ -177,7 +177,10 @@ script BaramWorld extends Logic
         r.state.y = y
         ---@type BaramPlayerVisual
         local pv = player:GetComponent("script.BaramPlayerVisual")
-        if isvalid(pv) then pv.MapId = mapId end
+        if isvalid(pv) then
+            pv.GridPosition = Vector3(x, y, mapId)
+            pv.MapId = mapId
+        end
         -- [단일 맵 구조] 바람 맵마다 MSW 씬을 따로 두지 않는다. 모두 캔버스 한 장 위에 있고,
         -- 바람 맵이 바뀌면 클라이언트가 그림만 갈아끼운다(BaramMapView). 씬 전환도 텔레포트도
         -- 없으므로 워프에 드는 비용이 사라진다. 텔레포트는 로그인 때 캔버스로 한 번뿐이다.
@@ -219,11 +222,23 @@ script BaramWorld extends Logic
     method void Move(integer direction, boolean turnOnly)
         local userId = senderUserId
         local result = self:MoveChecked(userId, direction, turnOnly)
-        self:MoveReply(result, userId)
+        local r = self._T.users[userId]
+        if r ~= nil then self:MoveReply(result, r.state.map, r.state.x, r.state.y, userId) end
     end
 
     @ExecSpace("Client")
-    method void MoveReply(integer result)
+    method void MoveReply(integer result, integer mapId, integer x, integer y)
+        -- Apply the authoritative cell before completing prediction; keep inventory state intact.
+        local s = self.LocalState
+        if s ~= nil and s.map == mapId then
+            s.x = x
+            s.y = y
+            local root = _EntityService:GetEntityByPath("/ui/BaramHUD")
+            if isvalid(root) then
+                local hud = root:GetComponent("script.BaramHUDController")
+                if isvalid(hud) then hud:SetCoordinates(x, y) end
+            end
+        end
         _BaramInput:MoveResult(result)
     end
 
@@ -270,8 +285,8 @@ script BaramWorld extends Logic
         end
         -- A portal sends only the destination teleport, never an old-map position first.
         player.PlayerComponent:SetPosition(_BaramWorldData:Position(x, y))
+        visual.GridPosition = Vector3(x, y, s.map)
         self:Changed(userId)
-        self:Snapshot(userId)
         return 1
     end
 
@@ -293,6 +308,8 @@ script BaramWorld extends Logic
                 local visual = player:GetComponent("script.BaramPlayerVisual")
                 if isvalid(visual) then
                     visual.DisplayHp = r.state.hp
+                    local equipped = r.state.items[tostring(r.state.equip)]
+                    visual.WeaponItemId = equipped ~= nil and equipped.id or 0
                     visual.DisplayMaxHp = r.state.maxHp
                     visual.DisplayLevel = r.state.level
                     visual.DisplayName = player.PlayerComponent.Nickname

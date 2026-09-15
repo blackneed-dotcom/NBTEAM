@@ -94,7 +94,7 @@ script BaramInput extends Logic
                 local row = self._T.inventoryWindow:GetChildByName("Row" .. tostring(i))
                 self._T.inventoryRows[i] = row
                 local link = row:ConnectEvent(UITouchDownEvent, function(event)
-                    if event.TouchId == -1 or event.TouchId > 0 then self:InspectInventoryRow(rowIndex) end
+                    self:ClickInventoryRow(rowIndex, event.TouchId)
                 end)
                 table.insert(self._T.inventoryLinks, {entity = row, link = link})
             end
@@ -427,6 +427,31 @@ script BaramInput extends Logic
     end
 
     @ExecSpace("ClientOnly")
+    method void ClickInventoryRow(integer rowIndex, integer touchId)
+        if self.ActivePane ~= "inventory" or not self._T.inventory.Enable or _BaramChatRelay.IsEditing then return end
+        if touchId == -3 then
+            self._T.lastItemClick = nil
+            self:InspectInventoryRow(rowIndex)
+            return
+        end
+        if touchId ~= -1 and touchId < 1 then return end
+        local slot = (self._T.inventorySlots or {})[(self.InventoryPage - 1) * 15 + rowIndex]
+        local item = slot ~= nil and (_BaramWorld.LocalState.items or {})[tostring(slot)] or nil
+        if item == nil then self._T.lastItemClick = nil return end
+        local now = _UtilLogic.ElapsedSeconds
+        local previous = self._T.lastItemClick
+        self._T.lastItemClick = {slot=slot, id=item.id, time=now, icons=self.InventoryIcons, page=self.InventoryPage}
+        if previous == nil or previous.slot ~= slot or previous.id ~= item.id or previous.icons ~= self.InventoryIcons or previous.page ~= self.InventoryPage or now - previous.time > 0.35 then return end
+        self._T.lastItemClick = nil
+        self._T.inventoryWindow:GetChildByName("Tooltip").Enable = false
+        if self.Mode ~= "" then return end
+        local data = _BaramWorldData:Item(item.id)
+        if data == nil then return end
+        _BaramWorld:ItemAction(data.type == 0 and "equip" or "use", slot, 0)
+        log("[BaramInventoryUI] double-click use slot=" .. tostring(slot))
+    end
+
+    @ExecSpace("ClientOnly")
     method void InspectInventoryRow(integer rowIndex)
         -- The original 0x1C click requests a description without closing the bag.
         if self.ActivePane ~= "inventory" then return end
@@ -438,7 +463,8 @@ script BaramInput extends Logic
         local item = items[tostring(slot)]
         local data = _BaramWorldData:Item(item.id)
         if data == nil then return end
-        local lines = {data.name, data.description}
+        local lines = {data.name .. "  (" .. tostring(item.count) .. "개)"}
+        if data.description ~= "-" and data.description ~= "" then table.insert(lines, data.description) end
         if data.tooltip ~= "-" then
             local description, replacements = string.gsub(data.tooltip, "\\n", "\n")
             table.insert(lines, description)
@@ -446,7 +472,7 @@ script BaramInput extends Logic
         if data.durability > 0 then table.insert(lines, "내구도 " .. tostring(item.durability) .. " / " .. tostring(data.durability)) end
         local tooltip = self._T.inventoryWindow:GetChildByName("Tooltip")
         tooltip:GetChildByName("Text").TextGUIRendererComponent.Text = table.concat(lines, "\n")
-        tooltip.UITransformComponent.anchoredPosition = Vector2(5, -math.min(168, 46 + (rowIndex - 1) * 13))
+        tooltip.UITransformComponent.anchoredPosition = Vector2(-232, -math.min(120, 36 + (rowIndex - 1) * 13))
         tooltip.Enable = true
         self.InventoryTipSeconds = 10
         log("[BaramInventoryUI] inspect slot=" .. tostring(slot) .. " letter=" .. _BaramWorldData:InventoryLetter(slot))

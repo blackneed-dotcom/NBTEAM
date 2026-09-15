@@ -33,6 +33,15 @@ script BaramHUDController extends Component
         self._T.infoPanel = self.Entity:GetChildByName("CharacterInfo", true)
         self._T.infoButton = self.Entity:GetChildByName("InfoButton", true)
         self._T.infoClick = self._T.infoButton:ConnectEvent(UITouchDownEvent, function(evt) self:ToggleInfo() end)
+        self._T.userListButton = self.Entity:GetChildByName("UserListButton", true)
+        if isvalid(self._T.userListButton) then
+            self._T.userListClick = self._T.userListButton:ConnectEvent(UITouchDownEvent, function(evt)
+                if evt.TouchId ~= -1 and evt.TouchId < 1 then return end
+                if not _BaramEntryFlow.InWorld or _BaramChatRelay:IsInputBlocked() then return end
+                _BaramWorld:Users()
+                log("[BaramUserList] opened by map icon")
+            end)
+        end
         self._T.infoKey = _InputService:ConnectEvent(KeyDownEvent, function(evt)
             if _BaramChatRelay:IsInputBlocked() then return end
             if evt.key == KeyboardKey.Escape and isvalid(self._T.infoPanel) then self._T.infoPanel.Enable = false end
@@ -311,6 +320,7 @@ script BaramHUDController extends Component
 
     @ExecSpace("ClientOnly")
     method void OnEndPlay()
+        if isvalid(self._T.userListButton) and self._T.userListClick ~= nil then self._T.userListButton:DisconnectEvent(UITouchDownEvent, self._T.userListClick) end
         if self._T.infoKey ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self._T.infoKey) end
         if isvalid(self._T.infoButton) and self._T.infoClick ~= nil then self._T.infoButton:DisconnectEvent(UITouchDownEvent, self._T.infoClick) end
         self:RestoreWorldCamera()

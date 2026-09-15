@@ -10,6 +10,8 @@ script BaramPlayerVisual extends Component
     @Sync
     property integer MapId = 14
     @Sync
+    property Vector3 GridPosition = Vector3(0, 0, 0)
+    @Sync
     property integer Facing = 6
     @Sync
     property integer Step = 0
@@ -23,6 +25,8 @@ script BaramPlayerVisual extends Component
     property string DisplayName = ""
     @Sync
     property string ClanId = ""
+    @Sync
+    property integer WeaponItemId = 0
 
     @ExecSpace("ServerOnly")
     method void PlayAction(integer action, number frameSeconds)
@@ -77,8 +81,9 @@ script BaramPlayerVisual extends Component
         if users ~= nil then
             for _, user in ipairs(users) do
                 if user ~= self.Entity then
-                    local p = user.TransformComponent.WorldPosition
-                    if math.abs(p.x - target.x) < 0.01 and math.abs(p.y - target.y) < 0.01 then return end
+                    local other = user:GetComponent("script.BaramPlayerVisual")
+                    if isvalid(other) and other.Active and other.GridPosition.z == s.map
+                        and other.GridPosition.x == x and other.GridPosition.y == y then return end
                 end
             end
         end
@@ -88,7 +93,7 @@ script BaramPlayerVisual extends Component
             self._T.warpTo = crossing
             self:AimCamera(crossing)
         end
-        self._T.predictionOrigin = self.Entity.TransformComponent.WorldPosition
+        self._T.predictionOrigin = self:MovementTarget()
         self._T.localFacing = direction * 3
         self._T.localFacingUntil = _UtilLogic.ElapsedSeconds + 0.75
         self._T.predicted = target
@@ -106,7 +111,7 @@ script BaramPlayerVisual extends Component
             -- "안 바뀌었다"로 보고 웨이포인트를 안 만든다. 그림은 칸 중간에 멈춰 서고,
             -- 다음 걸음에서 거기서부터 대각선으로 미끄러진다.
             -- 걸음 도중에 방향을 꺾으면(서버가 결과 2를 준다) 바로 이 경로를 탄다.
-            local here = self.Entity.TransformComponent.WorldPosition
+            local here = self:MovementTarget()
             if isvalid(self._T.visual) then
                 local shown = self._T.visual.TransformComponent.WorldPosition
                 if math.abs(shown.x - here.x) > 0.001 or math.abs(shown.y - here.y) > 0.001 then
@@ -116,6 +121,23 @@ script BaramPlayerVisual extends Component
             end
             self._T.target = here
         end
+    end
+
+    @ExecSpace("ClientOnly")
+    method Vector3 MovementTarget()
+        -- Use one atomic grid sample instead of interpolated physics coordinates.
+        local p = self.Entity.TransformComponent.WorldPosition
+        if self.Entity == _UserService.LocalPlayer then
+            local s = _BaramWorld.LocalState
+            if s ~= nil and s.x ~= nil then
+                local cell = _BaramWorldData:Position(s.x, s.y)
+                return Vector3(cell.x, cell.y, p.z)
+            end
+        elseif self.GridPosition.z > 0 then
+            local cell = _BaramWorldData:Position(self.GridPosition.x, self.GridPosition.y)
+            return Vector3(cell.x, cell.y, p.z)
+        end
+        return p
     end
 
     @ExecSpace("ClientOnly")
@@ -379,18 +401,15 @@ script BaramPlayerVisual extends Component
                 self._T.warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
             end
         end
-        local target = self.Entity.TransformComponent.WorldPosition
-        -- [단일 맵 구조] 캔버스에는 발판이 없어 플레이어 엔티티가 물리로 조금씩 밀린다.
-        -- 그 미세한 이동이 매 프레임 걸음 웨이포인트로 쌓여서, 키를 안 눌러도 한 방향으로
-        -- 계속 걸어가고 워프할 때도 도착 칸까지 걸어서 간다. 한 프레임에 조금씩이라
-        -- "멀리 뛰면 순간이동" 판정에도 안 걸린다.
-        -- 그래서 내 그림 자리는 엔티티가 아니라 서버가 준 칸에서 직접 뽑는다.
-        if map.Name == "baramcanvas" and self.Entity == _UserService.LocalPlayer then
-            local c = _BaramWorld.LocalState
-            if c ~= nil and c.x ~= nil then
-                local p = _BaramWorldData:Position(c.x, c.y)
-                target = Vector3(p.x, p.y, target.z)
-            end
+        local target = self:MovementTarget()
+        -- A logical map change is a teleport even when both cells happen to be nearby.
+        if self.Entity ~= _UserService.LocalPlayer and self.GridPosition.z > 0
+            and self._T.gridMap ~= self.GridPosition.z then
+            self._T.gridMap = self.GridPosition.z
+            visual.TransformComponent.WorldPosition = target
+            self._T.target = target
+            self._T.path = {}
+            self._T.walkTime = 0
         end
         local predicted = self._T.predicted
         if predicted ~= nil then
@@ -498,18 +517,42 @@ script BaramPlayerVisual extends Component
                 self._T.actionAge = self._T.actionAge + delta
             end
         end
-        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(bodyFrame) .. ":" .. tostring(headFrame) .. ":" .. tostring(emotion)
+        local weaponFrame = -1
+        if self.WeaponItemId ~= 0 then
+            if bodyFrame < 12 then
+                weaponFrame = bodyFrame
+                bodyFrame = bodyFrame + 12
+            elseif bodyFrame >= 24 and bodyFrame < 32 then weaponFrame = bodyFrame - 12 end
+        end
+        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(bodyFrame) .. ":" .. tostring(headFrame) .. ":" .. tostring(emotion) .. ":" .. tostring(self.WeaponItemId)
         if signature ~= self._T.signature then
             local body = visual:GetChildByName("Body").SpriteRendererComponent
             local head = visual:GetChildByName("Head").SpriteRendererComponent
             body.SpriteRUID = _BaramAppearance:GetBody(self.Gender, bodyFrame)
             head.SpriteRUID = emotion and _BaramAppearance:GetEmotion(self.Hair, headFrame) or _BaramAppearance:GetHead(self.Hair, headFrame)
             local lower = math.min(body.OrderInLayer, head.OrderInLayer)
+            if self._T.bodyOrder == nil then self._T.bodyOrder = lower end
+            lower = self._T.bodyOrder
             local upper = math.max(lower + 1, math.max(body.OrderInLayer, head.OrderInLayer))
             local order = _BaramAppearance:GetDrawOrder(bodyFrame)
             local bodyAbove = (string.find(order, "b") or 1) > (string.find(order, "h") or 2)
             body.OrderInLayer = bodyAbove and upper or lower
             head.OrderInLayer = bodyAbove and lower or upper
+            local weapon = visual:GetChildByName("HeldWeapon")
+            local art = _BaramAppearance:GetWeapon(self.WeaponItemId, weaponFrame)
+            if art ~= "" and not isvalid(weapon) then
+                weapon = _SpawnService:SpawnByEntity(body.Entity, "HeldWeapon", Vector3.zero, visual)
+                weapon.TransformComponent.Position = body.Entity.TransformComponent.Position
+            end
+            if isvalid(weapon) then
+                weapon.Enable = art ~= ""
+                if art ~= "" then
+                    weapon.SpriteRendererComponent.SpriteRUID = art
+                    body.OrderInLayer = lower + (string.find(order, "b") or 1)
+                    head.OrderInLayer = lower + (string.find(order, "h") or 2)
+                    weapon.SpriteRendererComponent.OrderInLayer = lower + (string.find(order, "w") or 3)
+                end
+            end
             self._T.signature = signature
             if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " emotion=" .. tostring(emotion)) end
         end

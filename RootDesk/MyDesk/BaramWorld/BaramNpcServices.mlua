@@ -19,11 +19,11 @@ script BaramNpcServices extends Logic
 
     @ExecSpace("ServerOnly")
     method table Record(string userId, integer npcId)
-        -- Revalidate identity, map, distance and all existing transaction locks.
+        -- Clicked NPCs are usable anywhere on the same map; retain transaction locks.
         local r = _BaramWorld:GetRecord(userId)
         local npc = self:Npc(npcId)
         if r == nil or npc == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then return nil end
-        if npc.map ~= r.state.map or math.abs(npc.x-r.state.x)+math.abs(npc.y-r.state.y)>2 then return nil end
+        if npc.map ~= r.state.map then return nil end
         return r
     end
 
