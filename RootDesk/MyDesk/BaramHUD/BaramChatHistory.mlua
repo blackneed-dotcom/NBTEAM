@@ -35,7 +35,7 @@ script BaramChatHistory extends Component
         _BaramChatRelay.IsEditing = false
         self._T.keySubscription = _InputService:ConnectEvent(KeyDownEvent, function(evt)
             if evt.key == KeyboardKey.Return or evt.key == KeyboardKey.KeypadEnter then
-                if not _BaramChatRelay:IsInputBlocked() then self:OpenInput() end
+                if not self._T.reopenBlocked and not _BaramChatRelay:IsInputBlocked() then self:OpenInput() end
             elseif evt.key == KeyboardKey.Escape and _BaramChatRelay.IsEditing then
                 self:CloseInput()
             end
@@ -45,7 +45,7 @@ script BaramChatHistory extends Component
         end)
         self._T.endSubscription = self.InputField.Entity:ConnectEvent(TextInputEndEditEvent, function(evt)
             -- EndEdit can precede Submit; defer cancellation to the next frame.
-            if _BaramChatRelay.IsEditing then self._T.closePending = true end
+            if _BaramChatRelay.IsEditing and not self._T.openingKey then self._T.closePending = true end
         end)
         log("[BaramChat] custom input ready: Enter=open/send, Escape=cancel")
     end
@@ -71,7 +71,7 @@ script BaramChatHistory extends Component
 
     @ExecSpace("ClientOnly")
     method void OpenInput()
-        -- Block gameplay immediately and focus only after the opening key is released.
+        -- Focus immediately; ignore only the opening key's own submit event.
         if not isvalid(self.InputField) or _BaramInput:Blocked() then return end
         _BaramChatRelay.IsEditing = true
         self._T.closePending = false
@@ -80,6 +80,9 @@ script BaramChatHistory extends Component
         self.InputPanel.Enable = true
         self.InputHint.Enable = false
         self.InputField.Text = ""
+        self._T.openingKey = true
+        self.InputField:ActivateInputField()
+        self._T.focusRequested = true
         log("[BaramChat] input opened")
     end
 
@@ -112,7 +115,9 @@ script BaramChatHistory extends Component
         self.InputPurpose = ""
         if isvalid(self.InputField) then self.InputField.PlaceHolder = self._T.defaultPlaceholder or "" end
         _BaramChatRelay.IsEditing = false
-        _BaramChatRelay.InputBlockSeconds = 0.15
+        _BaramChatRelay.InputBlockSeconds = 0
+        self._T.reopenBlocked = true
+        self._T.openingKey = false
         self._T.closePending = false
         self._T.focusPending = false
         self._T.focusRequested = false
@@ -126,7 +131,7 @@ script BaramChatHistory extends Component
     @ExecSpace("ClientOnly")
     method void SubmitMessage(string message)
         -- Send once through the server, without a duplicate local echo.
-        if not _BaramChatRelay.IsEditing or self._T.focusPending then return end
+        if not _BaramChatRelay.IsEditing or self._T.openingKey then return end
         local text = string.gsub(message or "", "%c", " ")
         text = string.match(text, "^%s*(.-)%s*$") or ""
         local purpose = self.InputPurpose
@@ -146,6 +151,15 @@ script BaramChatHistory extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        -- Release-key guards prevent duplicate open/send without a fixed delay.
+        if self._T.reopenBlocked or self._T.openingKey then
+            local openingHeld = _InputService:IsKeyPressed(KeyboardKey.Return) or _InputService:IsKeyPressed(KeyboardKey.KeypadEnter)
+            if not openingHeld then self._T.reopenBlocked = false end
+            if self._T.openingKey and not openingHeld then
+                local channelHeld = _InputService:IsKeyPressed(KeyboardKey.Quote) or _InputService:IsKeyPressed(KeyboardKey.DoubleQuote) or _InputService:IsKeyPressed(KeyboardKey.Exclaim) or _InputService:IsKeyPressed(KeyboardKey.Alpha1)
+                if not channelHeld then self._T.openingKey = false end
+            end
+        end
         if self._T.dirty then self._T.dirty = false self:RefreshLines() end
         -- Resolve delayed input focus and clear local history when changing maps.
         local player = _UserService.LocalPlayer
@@ -161,14 +175,12 @@ script BaramChatHistory extends Component
         end
         if self._T.closePending then self:CloseInput() end
         if self._T.focusPending and isvalid(self.InputField) then
-            if _InputService:IsKeyPressed(KeyboardKey.Return) or _InputService:IsKeyPressed(KeyboardKey.KeypadEnter) then return end
-            if _InputService:IsKeyPressed(KeyboardKey.Quote) or _InputService:IsKeyPressed(KeyboardKey.DoubleQuote) or _InputService:IsKeyPressed(KeyboardKey.Exclaim) or _InputService:IsKeyPressed(KeyboardKey.Alpha1) then return end
-            if not self._T.focusRequested then
-                self.InputField:ActivateInputField()
-                self._T.focusRequested = true
-            elseif self.InputField.IsFocused then
+            if self.InputField.IsFocused then
                 self._T.focusPending = false
                 log("[BaramChat] input focused")
+            elseif not self._T.openingKey then
+                self.InputField:ActivateInputField()
+                self._T.focusRequested = true
             end
         end
     end
@@ -207,7 +219,7 @@ script BaramChatHistory extends Component
             start = finish + 1
         end
         while #self._T.messages > 5 do table.remove(self._T.messages, 1) end
-        self._T.dirty = true
+        self:RefreshLines()
     end
 
     @ExecSpace("ClientOnly")

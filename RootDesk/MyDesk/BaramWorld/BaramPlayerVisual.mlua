@@ -13,6 +13,14 @@ script BaramPlayerVisual extends Component
     property integer Facing = 6
     @Sync
     property integer Step = 0
+    @Sync
+    property integer DisplayHp = 0
+    @Sync
+    property integer DisplayMaxHp = 0
+    @Sync
+    property integer DisplayLevel = 0
+    @Sync
+    property string DisplayName = ""
 
     @ExecSpace("ServerOnly")
     method void PlayAction(integer action, number frameSeconds)
@@ -118,22 +126,31 @@ script BaramPlayerVisual extends Component
     method void PrepareCamera(Entity map)
         -- Camera setup is map-scoped; following the bodyless visual stays per-frame.
         if self.Entity ~= _UserService.LocalPlayer or not isvalid(map) then return end
-        if self._T.cameraMap ~= map or not isvalid(self._T.camera) then
+        if self._T.previousCameraBlend == nil then
+            self._T.previousCameraBlend = _CameraService.TransitionBlendTime
+            -- Keep cuts enabled during the engine's automatic map-camera switch too.
+            _CameraService.TransitionBlendTime = 0
+        end
+        local changedMap = self._T.cameraMap ~= map
+        if changedMap or not isvalid(self._T.camera) then
             self._T.camera = map:GetChildByName("TestCamera")
             self._T.cameraMap = map
         end
         local camera = self._T.camera
         if not isvalid(camera) then return end
         local current = _CameraService:GetCurrentCameraComponent()
-        if current == camera.CameraComponent then return end
+        if current == camera.CameraComponent and not changedMap then return end
         camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera)
         camera.CameraComponent.Damping = Vector2(0, 0)
         camera.CameraComponent.DeadZone = Vector2(0, 0)
         camera.CameraComponent.SoftZone = Vector2(0, 0)
-        local blend = _CameraService.TransitionBlendTime
-        _CameraService.TransitionBlendTime = 0
         _CameraService:SwitchCameraTo(camera.CameraComponent)
-        _CameraService.TransitionBlendTime = blend
+        -- Apply the existing viewport policy before rendering the destination frame.
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD")
+        if isvalid(root) then
+            local hud = root:GetComponent("script.BaramHUDController")
+            if isvalid(hud) then hud:ApplyWorldPresentation() end
+        end
         log("[BaramMap] camera ready map=" .. map.Name)
     end
 
@@ -288,6 +305,8 @@ script BaramPlayerVisual extends Component
         if self.Entity.AvatarRendererComponent.Enable then self.Entity.AvatarRendererComponent.Enable = false end
         if self.Entity == _UserService.LocalPlayer and self.Entity.PlayerControllerComponent.Enable then self.Entity.PlayerControllerComponent.Enable = false end
         if self._T.map ~= map then
+            if isvalid(self._T.overhead) then self._T.overhead:Destroy() end
+            self._T.overhead = nil
             self:ReleaseProfileTouch()
             if isvalid(self._T.visual) then self._T.visual:Destroy() end
             if isvalid(self._T.warm) then self._T.warm:Destroy() self._T.warm = nil end
@@ -338,6 +357,7 @@ script BaramPlayerVisual extends Component
         local mine = _BaramWorld.LocalState
         if self.Entity ~= _UserService.LocalPlayer and mine ~= nil and mine.map ~= nil and mine.map ~= self.MapId then
             if visual.Visible then visual.Visible = false end
+            if isvalid(self._T.overhead) and self._T.overhead.Enable then self._T.overhead.Enable = false end
             return
         end
         if not visual.Visible then visual.Visible = true end
@@ -495,6 +515,63 @@ script BaramPlayerVisual extends Component
                 camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
             end
         end
+        self:UpdateOverhead(position)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void UpdateOverhead(Vector3 position)
+        -- Name only, rendered with the original BARAM00.EFT glyphs.
+        local localPlayer = _UserService.LocalPlayer
+        -- [단일 맵 구조] 이제 모두 같은 씬이라 CurrentMap 비교로는 못 가른다. 바람 맵 번호로 본다.
+        local mine = _BaramWorld.LocalState
+        local away = mine ~= nil and mine.map ~= nil and mine.map ~= self.MapId
+        if not isvalid(localPlayer) or away then
+            if isvalid(self._T.overhead) then self._T.overhead.Enable = false end
+            return
+        end
+        if not isvalid(self._T.overhead) then
+            local canvas = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ActorLabels")
+            if not isvalid(canvas) then return end
+            local template = canvas:GetChildByName("Template")
+            if not isvalid(template) then return end
+            self._T.overhead = _SpawnService:SpawnByEntity(template, "Actor_" .. self.Entity.Id, Vector3.zero, canvas, true)
+            if not isvalid(self._T.overhead) then return end
+            self._T.overheadName = self._T.overhead:GetChildByName("Name")
+            self._T.overheadName.UITransformComponent.UIScale = Vector3(0.75, 0.75, 1)
+            self._T.overheadText = nil
+            self._T.overheadX = nil
+            log("[BaramActorLabel] created")
+        end
+        local label = self._T.overhead
+        local text = self.DisplayName
+        if text ~= self._T.overheadText then
+            local width = 0
+            local available = self.DisplayName ~= ""
+            for _, cp in utf8.codes(text) do
+                local widths = _BaramProfile.FontWidths[math.floor(cp / 256) + 1]
+                local code = widths ~= nil and string.sub(widths, cp % 256 + 1, cp % 256 + 1) or "0"
+                if code == "0" or code == "" then available = false end
+                width = width + (code == "C" and 12 or 6)
+            end
+            self._T.overheadName.Enable = available
+            if available then
+                _BaramProfile:Draw(self._T.overheadName, text, true)
+                self._T.overheadName.UITransformComponent.anchoredPosition = Vector2(-width * self._T.overheadName.UITransformComponent.UIScale.x / 2, -6)
+            elseif self.DisplayName ~= "" then
+                log_warning("[BaramActorLabel] original name glyph unavailable")
+            end
+            self._T.overheadText = text
+        end
+        local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y))
+        local x = screen.x * 640 / _UILogic.ScreenWidth
+        local y = (screen.y / _UILogic.ScreenHeight - 1) * 480
+        local visible = _BaramEntryFlow.InWorld and x >= 16 and x <= 422 and y <= -20 and y >= -372
+        if label.Enable ~= visible then label.Enable = visible end
+        if visible and (x ~= self._T.overheadX or y ~= self._T.overheadY) then
+            label.UITransformComponent.anchoredPosition = Vector2(x, y)
+            self._T.overheadX = x
+            self._T.overheadY = y
+        end
     end
 
 
@@ -528,7 +605,13 @@ script BaramPlayerVisual extends Component
     @ExecSpace("ClientOnly")
     method void ClearDisplay()
         -- Disconnect touch handlers before destroying local display entities.
+        if self._T.previousCameraBlend ~= nil then
+            _CameraService.TransitionBlendTime = self._T.previousCameraBlend
+            self._T.previousCameraBlend = nil
+        end
         self:ReleaseProfileTouch()
+        if isvalid(self._T.overhead) then self._T.overhead:Destroy() end
+        self._T.overhead = nil
         if isvalid(self._T.visual) then self._T.visual:Destroy() end
         if isvalid(self._T.warm) then self._T.warm:Destroy() end
         if isvalid(self._T.chunkWarm) then self._T.chunkWarm:Destroy() end

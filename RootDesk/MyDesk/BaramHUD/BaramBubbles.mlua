@@ -70,25 +70,16 @@ script BaramBubbles extends Logic
         end
         local dark = Color(0,0,0,0.65)
         local white = Color.white
-        local mid = math.floor(w/2)
         if fresh or bubble.width ~= w or bubble.height ~= h then
         rect(1,2,w-2,h-4,dark)
         rect(2,1,w-4,1,dark)
         rect(2,h-2,w-4,1,dark)
-        rect(mid-4,h-1,9,1,dark)
         rect(2,0,w-4,1,white)
         rect(0,2,1,h-4,white)
         rect(w-1,2,1,h-4,white)
-        rect(2,h-1,mid-6,1,white)
-        rect(mid+5,h-1,w-mid-7,1,white)
+        rect(2,h-1,w-4,1,white)
         rect(1,1,1,1,white) rect(w-2,1,1,1,white)
         rect(1,h-2,1,1,white) rect(w-2,h-2,1,1,white)
-        for i = 0,4 do
-            rect(mid-4+i,h+i,9-i*2,1,dark)
-            rect(mid-5+i,h+i,1,1,white)
-            rect(mid+5-i,h+i,1,1,white)
-        end
-        rect(mid,h+5,1,1,white)
         for i = index+1,40 do bubble.pixels[i].entity.Enable = false end
         end
         for i = 1, math.max(#lines, #bubble.rows) do
@@ -145,7 +136,8 @@ script BaramBubbles extends Logic
                 local visible = point.x >= 16 and point.x <= 422 and point.y <= -20 and point.y >= -372
                 if bubble.entity.Enable ~= visible then bubble.entity.Enable = visible end
                 local x = math.max(16, math.min(422 - bubble.width, point.x - bubble.width / 2))
-                local y = math.min(-20, point.y + bubble.height + 5)
+                local lift = _BaramHealthBars:IsVisible(player) and 11 or 0
+                local y = math.min(-20, point.y + bubble.height + 5 + lift)
                 if bubble.x ~= x or bubble.y ~= y then
                     bubble.entity.UITransformComponent.anchoredPosition = Vector2(x, y)
                     bubble.x = x bubble.y = y

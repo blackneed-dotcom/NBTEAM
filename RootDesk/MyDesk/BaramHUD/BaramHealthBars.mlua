@@ -1,0 +1,90 @@
+@Logic
+script BaramHealthBars extends Logic
+    @ExecSpace("Client")
+    method void ShowHit(Entity actor, integer hp, integer maximum, string mapId)
+        -- winbaram.exe 484290: 24x6, 22 fill pixels; 4684E2: 500ms per hit.
+        local player = _UserService.LocalPlayer
+        if not isvalid(actor) or not isvalid(player) or not isvalid(player.CurrentMap) then return end
+        if not _BaramEntryFlow.InWorld or player.CurrentMap.Id ~= mapId or actor.CurrentMap ~= player.CurrentMap then return end
+        self:Remove(actor)
+        if hp <= 0 or maximum <= 0 then return end
+        local canvas = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ActorLabels")
+        if not isvalid(canvas) then return end
+        local template = canvas:GetChildByName("HealthTemplate")
+        if not isvalid(template) then return end
+        local entity = _SpawnService:SpawnByEntity(template, "Health_" .. actor.Id, Vector3.zero, canvas, true)
+        if not isvalid(entity) then return end
+        local percent = math.floor(math.max(0, math.min(100, hp * 100 / maximum)))
+        local width = math.floor(22 * percent / 100)
+        local fill = entity:GetChildByName("Fill")
+        fill.Enable = width > 0
+        fill.UITransformComponent.UIScale = Vector3(math.max(1, width), 4, 1)
+        -- BARAM.PAL indices 12,14,2; background index 128. Original EFT pixel only.
+        local color = Color(0, 171/255, 0, 1)
+        if width < 7 then color = Color(1, 87/255, 87/255, 1)
+        elseif width < 12 then color = Color(1, 1, 87/255, 1) end
+        fill:GetChildByName("Atlas").SpriteGUIRendererComponent.Color = color
+        if self._T.bars == nil then self._T.bars = {} end
+        self._T.bars[actor.Id] = {actor = actor, entity = entity, map = actor.CurrentMap, remaining = 0.5}
+        entity.Enable = false
+        self:Position(self._T.bars[actor.Id])
+        log("[BaramHealth] hit actor=" .. actor.Name .. " width=" .. tostring(width) .. " duration=0.5")
+    end
+
+    @ExecSpace("ClientOnly")
+    method boolean IsVisible(Entity actor)
+        -- Speech follows the same timer and actual visibility as the bar.
+        if not isvalid(actor) or self._T.bars == nil then return false end
+        local bar = self._T.bars[actor.Id]
+        return bar ~= nil and bar.remaining > 0 and isvalid(bar.entity) and bar.entity.Enable
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Position(table bar)
+        -- Match the smoothed client actor used by names and speech.
+        local position = bar.actor.TransformComponent.WorldPosition
+        local visual = bar.actor:GetComponent("script.BaramPlayerVisual")
+        if isvalid(visual) and isvalid(visual._T.visual) then position = visual._T.visual.TransformComponent.WorldPosition end
+        local creature = bar.actor:GetComponent("script.BaramCreature")
+        if isvalid(creature) and isvalid(creature._T.sprite) then
+            position = creature._T.sprite.TransformComponent.WorldPosition - (creature._T.spriteOffset or Vector3.zero)
+        end
+        local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y + 0.4))
+        local x = screen.x * 640 / _UILogic.ScreenWidth
+        local y = (screen.y / _UILogic.ScreenHeight - 1) * 480
+        bar.entity.UITransformComponent.anchoredPosition = Vector2(math.floor(x - 12), math.floor(y + 11))
+        bar.entity.Enable = x >= 28 and x <= 410 and y <= -31 and y >= -372
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Remove(Entity actor)
+        -- A repeated hit replaces the previous timer, as the client does.
+        if not isvalid(actor) or self._T.bars == nil then return end
+        local bar = self._T.bars[actor.Id]
+        if bar ~= nil and isvalid(bar.entity) then bar.entity:Destroy() end
+        self._T.bars[actor.Id] = nil
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Expire even when off screen; release on map changes and logout.
+        local player = _UserService.LocalPlayer
+        for id, bar in pairs(self._T.bars or {}) do
+            bar.remaining = bar.remaining - delta
+            if bar.remaining <= 0 or not _BaramEntryFlow.InWorld or not isvalid(player) or not isvalid(bar.actor) or not isvalid(bar.entity) or player.CurrentMap ~= bar.map or bar.actor.CurrentMap ~= bar.map then
+                if isvalid(bar.entity) then bar.entity:Destroy() end
+                self._T.bars[id] = nil
+                log("[BaramHealth] hidden actor=" .. id)
+            else
+                self:Position(bar)
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- UI clones belong to this client session.
+        for _, bar in pairs(self._T.bars or {}) do if isvalid(bar.entity) then bar.entity:Destroy() end end
+        self._T.bars = {}
+    end
+end

@@ -1,361 +1,493 @@
-//ONTICK 모음
-ONTICK60	{
-	set @r, rand(1,2);
-	if(@r == 1)
-		callfunc("BROADCAST");
-	else
-		callfunc("SERVERBROAD");
-}
-//ONTICK4	{
-	set @nt, callfunc("Server_Nowtime");
-
-	if(#server_exp_time == @nt+1)
-	{
-		set #server_exp_time, @nt+0;
-		set #server_exprate, 15;
-		broadcast 5, "기부 시간이 종료되어 경험치 배율이 15배로 돌아왔습니다.";
-	}	
+ONTICK300	{
+	callfunc "ONTICK300";
 }
 
-//ONTICK600	{
-	set @nt, callfunc("Server_Nowtime");
-
-	if(#server_exp_time == @nt+0)
+FUNC_ONTICK300	{
+	if(#count_timer2 > get_nowtime())
 	{
-		set #server_exp_time, @nt+0;
-		set #server_exprate, 15;
+		//timecount_all 2, #count_timer-get_nowtime();
+		announce 5, ""+#count_message3$+""+#count_message4$+"";
 	}
-}
 
+	set @year$, gettime(5,0);
+	set @month$, gettime(4,0);
+	set @day$, gettime(3,0);
+	set @hour$, gettime(2,0);
+	set @min$, gettime(1,0);
+	set @sec$, gettime(0,0,);
 
-//ONTICK1	{
-	set @sd, mysd();
-	set @id, myid();
-	set @nt, callfunc("Server_Nowtime");
+	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+
+	write_log "log/sessioncount/"+@year$+"년_"+@month$+"월.txt", "[_"+@day$+"일	"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	"+session_count()+"	\\n";
 	
-	if(#server_exp_time < @nt)
+	callfunc "토로라비젠";
+
+return;
+}
+
+
+
+ONTICK360	{
+	callfunc "ONTICK360";
+}
+
+FUNC_ONTICK360	{
+	if(#주작의성$ != "")
 	{
-		set #server_exprate, 15;
-		broadcast 5, "기부 시간이 종료되어 경험치 배율이 15배로 돌아왔습니다.";
+		set_clanmoney #주작의성$, get_clanmoney(#주작의성$) + (15000/40);
 	}
+
+	if(#현무의성$ != "")
+	{
+		set_clanmoney #현무의성$, get_clanmoney(#현무의성$) + (13000/40);
+	}
+
+	if(#청룡의성$ != "")
+	{
+		set_clanmoney #청룡의성$, get_clanmoney(#청룡의성$) + (15000/40);
+	}
+
+	if(#백호의성$ != "")
+	{
+		set_clanmoney #백호의성$, get_clanmoney(#백호의성$) + (17000/40);
+	}
+
+
+return;
 }
 
-//ONTICK60	{
-	set @r, rand(1, 56);
-	if(@r == 1) { announce 5, "연 : 타인의 고통을 대신 감내해주실 분은 전사를... "; }
-	else if(@r == 2) { announce 5, "연 : 비밀스러운 수호자가 되고 싶으신 분들은 도적을... "; }
-	else if(@r == 3) { announce 5, "연 : 무보다 문이라고 생각하시는 분들은 주술사를... "; }
-	else if(@r == 4) { announce 5, "연 : 타인의 아픔을 치유해주고 싶으신 분들은 도사를... "; }
-	else if(@r == 5) { announce 5, "연 : 바둑, 오목을 두시려면 기원으로... "; }
-	else if(@r == 6) { announce 5, "연 : 장기, 윷놀이를 하시려면 놀이방으로... "; }
-	else if(@r == 7) { announce 5, "연 : 친구, 연인과 함께 사냥하시는 것이 더 좋아요... "; }
-	else if(@r == 8) { announce 5, "연 : 폭탄, 폭전은 무환장에서만 쓸 수 있습니다. "; }
-	else if(@r == 9) { announce 5, "연 : 새로운 성으로 가시려면, 동문, 서문 밖으로.. "; }
-	else if(@r == 10) { announce 5, "유리왕 : 우리나라는 동방예의지국 "; }
-	else if(@r == 11) { announce 5, "유리왕 : 남의 것을 훔치지 않는다."; }
-	else if(@r == 12) { announce 5, "유리왕 : 살인을 하지 않도록... "; }
-	else if(@r == 13) { announce 5, "무휼 : 강자는 약자를 돕는 법~! "; }
-	else if(@r == 14) { announce 5, "무휼 : 운영자는 절대로 유저분의 비밀번호를 묻지 않습니다. "; }
-	else if(@r == 15) { announce 5, "무휼 : 초면에는 반드시 존대말을..."; }
-	else if(@r == 16) { announce 5, "무휼 : 아이템을 복사해서 얻은 것은 복구가 안됩니다... "; }
-	else if(@r == 17) { announce 5, "무휼 : 복사한 아이템을 팔고 사는 행위를 하지맙시다. "; }
-	else if(@r == 18) { announce 5, "무휼 : 아이디 매매, 공유, 양도는 금지되어 있습니다... "; }
-	else if(@r == 19) { announce 5, "무휼 : 모두 예절바른 사람이 됩시다... "; }
-	else if(@r == 20) { announce 5, "해명：귓속말을 거부하려면? F5 키를... "; }
-	else if(@r == 21) { announce 5, "해명 : 레벨 5에서 직업 선택을 안하면? 레벨이 안오른다. "; }
-	else if(@r == 22) { announce 5, "해명 : 얼굴이 마음에 안들면 성형수술할 수 있다. "; }
-	else if(@r == 23) { announce 5, "해명 : 진짜 인생은 레벨 5부터"; }
-	else if(@r == 24) { announce 5, "괴유 : 자기가 가진 아이템을 보려면? i 키를 "; }
-	else if(@r == 25) { announce 5, "괴유 : 게임내 게시판을 보려면? b 키를 "; }
-	else if(@r == 26) { announce 5, "괴유 : 화면이 멈추면? Ctrl-r "; }
-	else if(@r == 27) { announce 5, "괴유 : 현재 사용자는? Ctrl-w "; }
-	else if(@r == 28) { announce 5, "괴유 : 상용구는? F10 키를 눌러서... "; }
-	else if(@r == 29) { announce 5, "괴유 : 아이템 다음창을 보려면? Page down 키를... "; }
-	else if(@r == 30) { announce 5, "괴유 : 대련은 무한장에서 정정당당히~ "; }
-	else if(@r == 31) { announce 5, "괴유 : 결혼을 한후에는 성전환이 안 된다. "; }
-	else if(@r == 32) { announce 5, "괴유 : 참된 고수는 힘자랑을 하지 않는 법~! "; }
-	else if(@r == 33) { announce 5, "세류 : 도움말을 보시려거든? F1 키를... "; }
-	else if(@r == 34) { announce 5, "세류 : 마법 이펙트를 보기 싫으면? F10 키로 환경설정을 "; }
-	else if(@r == 35) { announce 5, "세류 : 바람의 나라 새소식은? 공지사항 게시판으로... "; }
-	else if(@r == 36) { announce 5, "세류 : 도사와 같이 사냥하면~? 10%의 보너스 경험치를~ "; }
-	else if(@r == 37) { announce 5, "세류 : 지나간 글 보려면? Shift + 위아래 커서키를... "; }
-	else if(@r == 38) { announce 5, "세류 : 아이템 다음창을 보려면? Page down 키를 "; }
-	else if(@r == 39) { announce 5, "세류 : 상용구는? Alt + 숫자키 "; }
-	else if(@r == 40) { announce 5, "세류 : 사자후를 듣지 않으려면? F6 키를... "; }
-	else if(@r == 41) { announce 5, "세류 : 시약을 사려면? 비밀상점에서... "; }
-	else if(@r == 42) { announce 5, "세류 : 마법 매크로는? F10 키를 눌러서... "; }
-	else if(@r == 43) { announce 5, "세류 : 했던 말을 또 하고 싶으면? 이것은 비밀~ "; }
-	else if(@r == 44) { announce 5, "세류 : 2, 3벌식 전환은? '키를 누를 후, F2 키를... "; }
-	else if(@r == 45) { announce 5, "세류 : 가장 약한 동물은 토끼 "; }
-	else if(@r == 46) { announce 5, "세류 : 가장 쉬운 던전은 쥐굴 "; }
-	else if(@r == 47) { announce 5, "세류 : 죽기전에 물건은 주모에게 맡기는 지혜를... "; }
-	else if(@r == 48) { announce 5, "세류 : 죽으면 경험치 2% 잃습니다... "; }
-	else if(@r == 49) { announce 5, "세류 : 죽으면 성황당으로.. "; }
-	else if(@r == 50) { announce 5, "세류 : 결혼은 반드시 신중히... "; }
-	else if(@r == 51) { announce 5, "세류 : 죽기전에 물건은 주모에게 맡기는 지혜를... "; }
-	else if(@r == 52) { announce 5, "세류 : 친절을 배풀면 보통은... 배로 돌아온다. "; }
-	else if(@r == 53) { announce 5, "세류 : F8, F9 키로 사운드 볼륨 다운, 업~! "; }
-	else if(@r == 54) { announce 5, "세류 : 종료는 Alt+x, 또는 Alt + F4 "; }
+ONTICK1800	{
+	callfunc "ONTICK1800";
 }
 
-//ONTIME 모음
-//ONTIME000000	{
-	announce 5, "[새벽알림]: 00시 00분 00초가 되었습니다. 나무퀘스트가 진행가능합니다.";
+
+FUNC_ONTICK1800	{
+	
+
+	for(set @i, 0; @i < session_count(); set @i, @i+1)
+	{
+		set @target_sd, get_session(@i);
+		if(@target_sd > 0 )
+		{
+			//message @target_sd, 3, "휴식좀 하면서 겜합시다 제발;";
+			if(get_level(@target_sd) >= 56 && get_joblevel(@target_sd) < 2)
+			{
+				additem @target_sd, 9117, 1;
+				message @target_sd, 3, "황금도토리가 인벤토리에 쏘옥~!";			
+			}
+		}
+	}
+
+return;
+
+	for(set @i, 0; @i < session_count(); set @i, @i+1)
+	{
+		set @target_sd, get_session(@i);
+		if(@target_sd > 0 )
+		{
+			//message @target_sd, 3, "휴식좀 하면서 겜합시다 제발;";
+			if(get_level(@target_sd) == 99)
+			{
+				set @item, rand(14214, 14220);
+				additem @target_sd, @item, 1;
+				message @target_sd, 3, itemid2name(@item)+"이 인벤토리에 쏘옥~";			
+			}
+		}
+	}
+
+return;
+
 }
+
+
+ONTICK3600	{
+callfunc "ONTICK3600";
+}
+
+
+
+FUNC_ONTICK3600	{
+
+return;
+	for(set @i, 0; @i < session_count(); set @i, @i+1)
+	{
+		set @target_sd, get_session(@i);
+		if(@target_sd > 0 )
+		{
+			//message @target_sd, 3, "휴식좀 하면서 겜합시다 제발;";
+			if(get_level(@target_sd) == 99)
+			{
+				set @item, rand(14214, 14220);
+				additem @target_sd, @item, 1;
+				message @target_sd, 3, itemid2name(@item)+"이 인벤토리에 쏘옥~";			
+			}
+		}
+	}
+
+return;
+}
+
+
+
+ONTICK60	{
+	callfunc "ONTICK60";
+}
+
+FUNC_ONTICK60	{
+	if(#count_timer > get_nowtime())
+	{
+		timecount_all 2, #count_timer-get_nowtime();
+		announce 5, ""+#count_message1$+""+#count_message2$+"";
+	}
+
+
+	set @rand, rand(1, 5);
+
+	if(@rand == 1)
+	{
+		announce 5, "향수GM: 아이디 혼동 사기를 항상 조심합시다.";
+	}
+	else if(@rand == 2)
+	{
+		announce 5, "향수GM: F2를 누르면 홈페이지로 이동이 가능 합니다.";
+	}
+	else if(@rand == 3)
+	{
+		announce 5, "향수GM: 유저간 도박 행위는 엄격하게 금지되어 처벌됩니다.";
+	}
+	else if(@rand == 4)
+	{
+		announce 5, "향수GM: 2차비밀번호 등록은 아이디의 소유권을 지키는 방법!";
+	}
+	else if(@rand == 5)
+	{
+		announce 5, "향수GM: 현재 저희서버 배율은" + #server_exprate + "배 입니다.";
+	}
+
+
+
+return;
+}
+
+ONTICK10	{
+	callfunc "ONTICK10";
+}
+
+FUNC_ONTICK10	{
+	set @year$, gettime(5,0);
+	set @month$, gettime(4,0);
+	set @day$, gettime(3,0);
+	set @hour$, gettime(2,0);
+	set @min$, gettime(1,0);
+	set @sec$, gettime(0,0);
+
+	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+
+
+	set #boss_timer, #boss_timer + 1;
+	set @boss_timer, #boss_timer;
+
+	if(#custom_segyehoo > 0)
+	{
+
+		set @custom, #custom_segyehoo;
+	
+		set @check, @boss_timer % @custom;
+	
+		if(@check == 0)
+		{
+			announce 4, "" + #count_message7$ + "" + #count_message8$ + "";
+		}
+
+	}
+
+	if(@boss_timer%1170 == 0)
+	{
+		// 유성지
+		if(#boss_1_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	유성지\\n";
+			mobspawn 1829, rand(9, 16), rand(4, 17), 2, 1129;
+			set #boss_1_die, 0;
+		}
+		//else { mobspawn 1829, rand(9, 16), rand(30, 40), 2, 1129; }
+
+	}
+	if(@boss_timer%2340 == 0)
+	{
+		// 해골왕
+		if(#boss_2_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	해골왕\\n";
+			mobspawn 1844, rand(2, 42), rand(9, 13), 2, 1141;
+			set #boss_2_die, 0;
+		}
+
+	}
+	if(@boss_timer%1567 == 0)
+	{
+		// 묵룡
+		if(#boss_3_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	묵룡\\n";
+			mobspawn 662, rand(7, 16), rand(5, 18), 2, 1106;
+			set #boss_3_die, 0;
+		}
+
+	}
+	if(@boss_timer%1605 == 0)
+	{
+		// 감룡
+		if(#boss_4_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	감룡\\n";
+			mobspawn 663, rand(7, 16), rand(5, 18), 2, 1105;
+			set #boss_4_die, 0;
+		}
+
+	}
+	if(@boss_timer%1594 == 0)
+	{
+		// 흑룡
+		
+		if(#boss_5_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	흑룡\\n";
+			mobspawn 664, rand(7, 16), rand(5, 18), 2, 1107;
+			set #boss_5_die, 0;
+		}
+
+	}
+	if(@boss_timer%1601 == 0)
+	{
+		// 진룡
+		
+		if(#boss_6_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	진룡\\n";
+			mobspawn 665, rand(7, 16), rand(5, 18), 2, 1108;
+			set #boss_6_die, 0;
+		}
+
+	}
+	if(@boss_timer%1440 == 0)
+	{
+		// 진시황릉 동인패
+		if(#boss_7_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	만년원귀\\n";
+			mobspawn 3815, rand(5, 14), rand(6, 22), 2, 540;
+			set #boss_7_die, 0;
+		}
+
+	}
+	if(@boss_timer%540 == 0)
+	{
+		// 천구굴 동천패 2군데
+		if(#boss_8_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	불의천신\\n";
+			mobspawn 3039, rand(5, 15), rand(5, 15), 2, 535;
+			mobspawn 3069, rand(5, 15), rand(5, 15), 2, 535;
+			set #boss_8_die, 0;
+		}
+
+	}
+	if(@boss_timer%900 == 0)
+	{
+		// 후굴 동지패
+		
+		if(#boss_9_die == 1)
+		{
+			write_log "log/bosstime/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	젠	마계천신\\n";
+			mobspawn 3029, rand(4, 12), rand(4, 12), 2, 537;
+			set #boss_9_die, 0;
+		}
+
+	}
+return;
+}
+
+
+ONTICK10800	{
+	callfunc "ONTICK10800";
+}
+
+FUNC_ONTICK10800	{
+
+	
+return;
+}
+
+ONTICK43200	{
+	callfunc "ONTICK43200";
+}
+
+FUNC_ONTICK43200	{
+	callfunc "PK천상미궁셔플";
+	callfunc "천상미궁셔플";
+	
+return;
+}
+
+
+
+ONTIME000000	{
+	announce 5, "[새벽알림]: 00시 00분 00초가 되었습니다. 쉬어가면서하세요.";
+
+	npcspawn 10946, 1, 1, 2, 498, "보름달";
+}
+
 
 ONTIME210000	{
-	if(gettime(6, 0) == 2)
-	{
-		set #clan_start, 1;
-		set #clan_timer, 0;
-		set #clan_namecheck, 0;
-		set #clan_mapname$, "주작성";
-		set #clan_mapcheck$, #bird_castle$;
-		set #clan_battle$, #bird_castle$;
-		timecount_all 2, 3599;
-		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-		{
-			mobspawn name2mapid("주작성입구"), (@loop-1108), 104, 2, @loop;
-		}
-		set #clan_add_score_timer, 1;
-		npcspawn 2000, 20, 0, 2, 227, "공성타이머";
-		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-	}
-	if(gettime(6, 0) == 3)
-	{
-		set #clan_start, 1;
-		set #clan_timer, 0;
-		set #clan_namecheck, 0;
-		set #clan_mapname$, "현무성";
-		set #clan_mapcheck$, #turtle_castle$;
-		set #clan_battle$, #turtle_castle$;
-		timecount_all 2, 3599;
-		npcspawn 2003, 20, 0, 2, 227, "공성타이머";
-		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-		{
-			mobspawn name2mapid("현무성입구"), (@loop-1108), 104, 2, @loop;
-		}
-		set #clan_add_score_timer, 1;
-
-		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-	}
-	if(gettime(6, 0) == 4)
-	{
-		set #clan_start, 1;
-		set #clan_timer, 0;
-		set #clan_namecheck, 0;
-		set #clan_mapname$, "청룡성";
-		set #clan_mapcheck$, #dragon_castle$;
-		set #clan_battle$, #dragon_castle$;
-		timecount_all 2, 3599;
-		npcspawn 1997, 20, 0, 2, 227, "공성타이머";
-		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-		{
-			mobspawn name2mapid("청룡성입구"), (@loop-1108), 104, 2, @loop;
-		}
-		set #clan_add_score_timer, 1;
-
-		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-	}
-	if(gettime(6, 0) == 5)
-	{
-		set #clan_start, 1;
-		set #clan_timer, 0;
-		set #clan_namecheck, 0;
-		set #clan_mapname$, "백호성";
-		set #clan_mapcheck$, #tiger_castle$;
-		set #clan_battle$, #tiger_castle$;
-		timecount_all 2, 3599;
-		npcspawn 2041, 20, 0, 2, 227, "공성타이머";
-		for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-		{
-			mobspawn name2mapid("백호성입구"), (@loop-1108), 104, 2, @loop;
-		}
-		set #clan_add_score_timer, 1;
-
-		announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-	}
+	// 아래 주석 풀어주면 공성 시작해요.
+	callfunc "ONTIME210000";
 }
-ONTIME211000	{
-	if(#clan_start == 1)
+
+
+FUNC_ONTIME210000	{
+	//callfunc "옥좌공성시작";
+	//callfunc "점수공성시작";
+
+
+	if(gettime(6, 0) >= 2 && gettime(6, 0) <= 5)
 	{
-		if(gettime(6, 0) == 2) timecount_all 2, 3000;
-		else if(gettime(6, 0) == 3) timecount_all 2, 3000;
-		else if(gettime(6, 0) == 4) timecount_all 2, 3000;
-		else if(gettime(6, 0) == 5) timecount_all 2, 3000;
+		set #공성전진행, 0;
+		callfunc "선점공성시작";
+	}
+
+
+return;
+}
+
+
+ONTIME100001	{
+	if(gettime(4, 0) == 6 && gettime(3, 0) == 6)
+	{
+		announce 5, "[안내]: 오늘은 현충일 입니다.";
+		announce 5, "[안내]: 지금부터 약 1분간, 호국영령과 순국선열을 기리기 위한";
+		announce 5, "[안내]: 묵념을 드리겠습니다. 다 같이 참여해 주시기 바랍니다.";
+		timecount_all 2, 60;
 	}
 }
 
-ONTIME211500	{
-	if(gettime(6, 0) == 2)
+ONTIME220001	{
+	if(gettime(4, 0) == 6 && gettime(3, 0) == 6)
 	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 주작성 입구에 주작영령이 나타났습니다!";
-			mobspawn 2002, 63, 142, 2, 1284;
-		set #skull, 0;
-	}
-	if(gettime(6, 0) == 3)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 현무성 입구에 현무영령이 나타났습니다!";
-			mobspawn 2005, 74, 54, 2, 1285;
-		set #skull, 0;
-	}
-	if(gettime(6, 0) == 4)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 청룡성 입구에 청룡영령이 나타났습니다!";
-			mobspawn 1999, 66, 80, 2, 1283;
-		set #skull, 0;
-	}
-	if(gettime(6, 0) == 5)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 백호성 입구에 백호영령이 나타났습니다!";
-			mobspawn 2044, 73, 111, 2, 1282;
-		set #skull, 0;
+		announce 5, "[안내]: 오늘은 현충일 입니다.";
+		announce 5, "[안내]: 지금부터 약 1분간, 호국영령과 순국선열을 기리기 위한";
+		announce 5, "[안내]: 묵념을 드리겠습니다.  다 같이 참여해 주시기 바랍니다.";
+		timecount_all 2, 60;
 	}
 }
-ONTIME212000	{
-	if(#clan_start == 1)
-	{
-		if(gettime(6, 0) == 2) timecount_all 2, 2400;
-		else if(gettime(6, 0) == 3) timecount_all 2, 2400;
-		else if(gettime(6, 0) == 4) timecount_all 2, 2400;
-		else if(gettime(6, 0) == 5) timecount_all 2, 2400;
-	}
-}
+
+
 
 
 ONTIME213000	{
-	if(#clan_start == 1)
-	{
-		if(gettime(6, 0) == 2) timecount_all 2, 1800;
-		else if(gettime(6, 0) == 3) timecount_all 2, 1800;
-		else if(gettime(6, 0) == 4) timecount_all 2, 1800;
-		else if(gettime(6, 0) == 5) timecount_all 2, 1800;
-	}
+	//점수공성
+	//callfunc "ONTIME213000";
+
+
 }
 
-ONTIME213500	{
-	if(gettime(6, 0) == 2)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 주작의 심장에 주작영령이 나타났습니다!";
-			mobspawn 2000, 20, 18, 2, 1284;
-		set #skull, 0;
-	}
-	if(gettime(6, 0) == 3)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 현무의 심장에 현무영령이 나타났습니다!";
-			mobspawn 2003, 15, 35, 2, 1285;
-		set #skull, 0;
-	}
-	if(gettime(6, 0) == 4)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 청룡의 심장에 청룡영령이 나타났습니다!";
-			mobspawn 1997, 20, 13, 2, 1283;
-		set #skull, 0;
-	}
-	if(gettime(6, 0) == 5)
-	{
-		set #skull, 1;
-			broadcast 5, "[알림!] 백호의 심장에 백호영령이 나타났습니다!";
-			mobspawn 2041, 20, 18, 2, 1282;
-		set #skull, 0;
-	}
+FUNC_ONTIME213000	{
+	announce 5, "제 1스코어 : " + #clanpoint_01$ + "";
+	announce 5, "제 2스코어 : " + #clanpoint_02$ + "";
+	announce 5, "제 3스코어 : " + #clanpoint_03$ + "";
+	announce 5, "제 4스코어 : " + #clanpoint_04$ + "";
+	announce 5, "제 5스코어 : " + #clanpoint_05$ + "";
+
+return;
 }
 
 
-ONTIME214000	{
-	if(#clan_start == 1)
-	{
-		if(gettime(6, 0) == 2) timecount_all 2, 1200;
-		else if(gettime(6, 0) == 3) timecount_all 2, 1200;
-		else if(gettime(6, 0) == 4) timecount_all 2, 1200;
-		else if(gettime(6, 0) == 5) timecount_all 2, 1200;
-	}
+
+ONTIME220000	{
+	//점수공성
+	callfunc "ONTIME220000";
 }
 
-ONTIME215000	{
-	if(#clan_start == 1)
+FUNC_ONTIME220000	{
+	if(#공성전진행 == 1)
 	{
-		if(gettime(6, 0) == 2) timecount_all 2, 600;
-		else if(gettime(6, 0) == 3) timecount_all 2, 600;
-		else if(gettime(6, 0) == 4) timecount_all 2, 600;
-		else if(gettime(6, 0) == 5) timecount_all 2, 600;
-	} 
-}
-ONTIME220500	{
-	if(gettime(6, 0) >= 2 && gettime(6, 0) <= 5)
-	{
-		set #clan_start, 0;
-	}
-}
 
-//10시 30분00초    밑에 1341이 고래 몹번호    14 부여성  75/138 좌표
-//ONTIME223000	{
+	setarray @문파명$[1], #clanpoint_01$, #clanpoint_02$, #clanpoint_03$, #clanpoint_04$, #clanpoint_05$, #clanpoint_06$, #clanpoint_07$, #clanpoint_08$, #clanpoint_09$, #clanpoint_10$, #clanpoint_11$;
 	
-	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	for(set @i, 1; @i <= 11; set @i, @i + 1)
 	{
-		set #skull, 1;
-			broadcast 5, "[알림] pk12지신에서 건룡이 나타났습니다.";
-			mobspawn 1948, 29, 25, 2, 1281;
-		set #skull, 0;
+		set @mon, gettime(4, 0);
+		set @day, gettime(3, 0);
 
+		write_log "log/clanbattle/"+@mon+".txt", ""+@day+"	["+@i+"] "+@문파명$[@i]+"\\n";
+
+		if(@문파명$[@i] != "")
+		{
+			set_bystring "@"+@문파명$[@i]+"", get_bystring("@"+@문파명$[@i]+"") + 1;
+		}
+
+		//announce 5, "[ "+@문파명$[@i]+" ]문파의 점수 : " + get_bystring("@"+@문파명$[@i]+"") + "";
 	}
-}
 
-// 10시20분00초  전체카운트와 세계후
-//ONTIME222000	{
-	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
+	for(set @j, 0; @j <= 10; set @j, @j + 1)
 	{
-		broadcast 5, "[알림] 10분후 pk12지신에서 건룡이 나타납니다.";
-		timecount_all 2, 600;
+		if(get_bystring("@"+@문파명$[@j]+"") > get_bystring("@"+@짱센놈$+"") )
+		{
+			set @짱센놈$, @문파명$[@j];
+		}
 	}
-}
-
-//ONTIME230000	{
-	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
-	{
-		broadcast 5, "[알림] 10분후 지옥1지 에서 아수라가 나타납니다.";
-		timecount_all 2, 600;
-	}
-}
-
-//11시 10분00초 아수라
-//ONTIME231000	{
 	
-	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
-	{
-		set #skull,1;
-			broadcast 5, "[알림] 지옥1-10에서 아수라가 나타났습니다.";
-			mobspawn 42009, 15, 11, 2, 1267;
-		set #skull,0;
+	if(gettime(6, 0) == 1) { set @신수$, "황룡"; }
+	else if(gettime(6, 0) == 2) { set @신수$, "주작"; }
+	else if(gettime(6, 0) == 3) { set @신수$, "현무"; }
+	else if(gettime(6, 0) == 4) { set @신수$, "청룡"; }
+	else if(gettime(6, 0) == 5) { set @신수$, "백호"; }
+	else { 	set @신수$, "황룡"; }
 
-	}
-}
-//나무퀘스트 0시 초기화
-ONTIME000000	{
 	
-	if(gettime(6, 0) == 1 || gettime(6, 0) == 2 || gettime(6, 0) == 3 || gettime(6, 0) == 4 || gettime(6, 0) == 5 || gettime(6, 0) == 6 || gettime(6, 0) == 0)
-	{
-		set $tree_quest_time, @nt+10;
-		broadcast 5, "[알림] 나무퀘스트/천명퀘스트가 초기화 되었습니다.";
+	timecount_all 2, 1;
+	set_bystring "#"+@신수$+"의성$", @짱센놈$;
+	announce 5, "[정보] "+@짱센놈$+" 문파가 "+@신수$+"의성을 탈환합니다.";
+
+	set #공성전진행, 0;
+	
+	if(gettime(6, 0) == 1) { set @sex, 1; }
+	else if(gettime(6, 0) == 2) { set @mapid, 2000; }
+	else if(gettime(6, 0) == 3) { set @mapid, 2003; }
+	else if(gettime(6, 0) == 4) { set @mapid, 1997; }
+	else if(gettime(6, 0) == 5) { set @mapid, 2041; }
+
+	deleteallmob name2mobid("공성카운트"), @mapid;
+
+	attachtimer 0, 0, @mapid, "공성카운트죽음", 0;
+
+
 	}
+return;
 }
 
-// 21시 고래타임
-//ONTIME210000	{
-	set #event_whale, 1; 
-	set #whalemob, 0;
-	set #whalehp, 200000000;
-	timecount_all 2, 600;
-	broadcast 5, "[이벤트] 고래이벤트가 시작되었습니다.";
-	for(set @i, 0; @i <19; set @i, @i+1)
-	{
-		mobspawn name2mapid("고래갑판"), @i, 9, 1, name2mobid("고래"+(@i+1)+"");
-	}
+
+
+
+ONTIME235959	{
+	//점수공성
+	callfunc "ONTIME235959";
 }
+
+FUNC_ONTIME235959	{
+
+return;
+}
+
+
+

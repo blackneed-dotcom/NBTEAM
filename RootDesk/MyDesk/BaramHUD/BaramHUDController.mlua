@@ -39,6 +39,9 @@ script BaramHUDController extends Component
         end)
         self._T.worldCamera = nil
         self._T.rows = {}
+        self._T.numberText = {}
+        self._T.coordinates = nil
+        self._T.coordinateRow = nil
         self._T.last = ""
         for _, rowName in ipairs({"Hp", "Mp", "Level", "Experience", "Gold", "Strength", "Dexterity", "Intelligence"}) do
             local row = self.Entity:GetChildByName("Row" .. rowName, true)
@@ -63,6 +66,8 @@ script BaramHUDController extends Component
         if not isvalid(row) then row = self.Entity:GetChildByName("RowCoordinates", true) self._T.coordinateRow = row end
         if not isvalid(row) then return end
         for i = 1, 9 do
+            -- Walking normally changes one digit, not all eight original sprites.
+            if self._T.coordinates ~= nil and string.sub(self._T.coordinates, i, i) == string.sub(text, i, i) then continue end
             local glyph = row:GetChildByName("Digit" .. tostring(i))
             local digit = tonumber(string.sub(text, i, i))
             glyph.Enable = digit ~= nil
@@ -132,7 +137,11 @@ script BaramHUDController extends Component
         if rowName == "Level" then count = 2 end
         if rowName == "Strength" or rowName == "Dexterity" or rowName == "Intelligence" then count = 3 end
         if #digits > count then digits = string.rep("9", count) end
+        local text = string.rep(" ", count - #digits) .. digits
+        local previous = self._T.numberText[rowName]
+        if previous == text then return end
         for i = 1, count do
+            if previous ~= nil and string.sub(previous, i, i) == string.sub(text, i, i) then continue end
             local entity = row:GetChildByName("Digit" .. tostring(i))
             local index = i - (count - #digits)
             entity.Enable = index > 0
@@ -144,12 +153,16 @@ script BaramHUDController extends Component
                 entity.SpriteGUIRendererComponent.ImageRUID = glyphs[digit + 1]
             end
         end
+        self._T.numberText[rowName] = text
     end
 
     @ExecSpace("ClientOnly")
     method void RefreshDisplay()
         -- Quantize clipping to whole source pixels, preserving gauge texture.
         if self._T.rows == nil then return end
+        local state = tostring(self.Hp) .. ":" .. tostring(self.MaxHp) .. ":" .. tostring(self.Mp) .. ":" .. tostring(self.MaxMp) .. ":" .. tostring(self.Level) .. ":" .. tostring(self.Experience) .. ":" .. tostring(self.Gold) .. ":" .. tostring(self.Strength) .. ":" .. tostring(self.Dexterity) .. ":" .. tostring(self.Intelligence)
+        -- ReceiveState calls SetVitals for every step, even when only map/x/y changed.
+        if state == self._T.last then return end
         local hp = math.max(0, math.min(self.Hp, math.max(0, self.MaxHp)))
         local mp = math.max(0, math.min(self.Mp, math.max(0, self.MaxMp)))
         local hpRatio = 0
@@ -166,7 +179,7 @@ script BaramHUDController extends Component
         self:DrawNumber("Strength", self.Strength)
         self:DrawNumber("Dexterity", self.Dexterity)
         self:DrawNumber("Intelligence", self.Intelligence)
-        self._T.last = tostring(self.Hp) .. ":" .. tostring(self.MaxHp) .. ":" .. tostring(self.Mp) .. ":" .. tostring(self.MaxMp) .. ":" .. tostring(self.Level) .. ":" .. tostring(self.Experience) .. ":" .. tostring(self.Gold) .. ":" .. tostring(self.Strength) .. ":" .. tostring(self.Dexterity) .. ":" .. tostring(self.Intelligence)
+        self._T.last = state
     end
 
     @ExecSpace("ClientOnly")
