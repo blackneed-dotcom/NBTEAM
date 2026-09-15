@@ -1,0 +1,15 @@
+{
+  "expected": 83008,
+  "checked": 83008,
+  "uniqueNames": 83008,
+  "errors": [],
+  "sourceHashes": {
+    "mon.dat": true,
+    "TILE.DAT": true,
+    "BARAM.DAT": true,
+    "MISC.DAT": true,
+    "bint.dat": true,
+    "char.dat": true
+  },
+  "sourceCombinations": 91015
+}

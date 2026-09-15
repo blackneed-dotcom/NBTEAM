@@ -1,0 +1,12 @@
+// Lossless client archive extraction helpers. Source format reference: https://github.com/DizzyThermal/TKViewer
+const fs = require('node:fs/promises');
+const zlib = require('node:zlib');
+function datEntries(b){var a=[];for(var i=0;i<b.readUInt32LE(0)-1;i++){var p=4+i*17;a.push({name:b.subarray(p+4,p+17).toString('ascii').split('\0')[0],start:b.readUInt32LE(p),end:b.readUInt32LE(p+17)});}return a;}
+function datMap(b){return Object.fromEntries(datEntries(b).map(e=>[e.name.toLowerCase(),b.subarray(e.start,e.end)]));}
+function decodeTbl(enc){var k=[75,25,31,29,26,9,12,12,83,73,19,17,29,23,6,29,9,6,8,27,28,1,30,29,3,5,9];for(var i=0;i<26;i++)k[i+1]^=k[i];var out=Buffer.alloc(enc.length/2);for(var i=0;i<enc.length/8;i++){var idx=((-0x1234568-i*4)>>>0)%27,block=Buffer.alloc(8);for(var j=0;j<8;j++){block[j]=enc[i*8+j]^k[idx];idx=(idx+26)%27;}var a=block.readUInt32BE(0),b=block.readUInt32BE(4);out.writeUInt32LE((a^((a^b)&0x55555555))>>>0,i*4);}return out;}
+function palList(b){var a=[],p=b.toString('ascii',0,9)==='DLPalette'?0:4;while(p<b.length){if(b.toString('ascii',p,p+9)!=='DLPalette')throw Error('palette header '+p);var q=p+32+b.readUInt32LE(p+24)*2;a.push(b.subarray(q,q+1024));p=q+1024;}return a;}
+function rgbaFrame(b,i,pal,dye=0){var at=12+b.readUInt32LE(8)+i*16,t=b.readInt16LE(at),l=b.readInt16LE(at+2),h=b.readInt16LE(at+4)-t,w=b.readInt16LE(at+6)-l,start=b.readUInt32LE(at+8),end=b.readUInt32LE(at+12);if(w<0||h<0||w*h!==end-start||12+end>at)throw Error('frame '+i+' bounds');var rgba=Buffer.alloc(Math.max(1,w)*Math.max(1,h)*4),visible=0;for(var j=0;j<w*h;j++){var c=b[12+start+j];if(c){if(c>=48)c=(c+dye*8)&255;pal.copy(rgba,j*4,c*4,c*4+3);rgba[j*4+3]=255;visible++;}}return {w:Math.max(1,w),h:Math.max(1,h),left:l,top:t,rgba,visible,empty:!w||!h};}
+function crc(b){var c=0xffffffff;for(var x of b){c^=x;for(var k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^0xffffffff)>>>0;}
+function chunk(t,b){var d=Buffer.concat([Buffer.from(t),b]),h=Buffer.alloc(4),c=Buffer.alloc(4);h.writeUInt32BE(b.length);c.writeUInt32BE(crc(d));return Buffer.concat([h,d,c]);}
+function png(f){var ih=Buffer.alloc(13);ih.writeUInt32BE(f.w);ih.writeUInt32BE(f.h,4);ih[8]=8;ih[9]=6;var rows=Buffer.alloc(f.h*(f.w*4+1));for(var y=0;y<f.h;y++)f.rgba.copy(rows,y*(f.w*4+1)+1,y*f.w*4,(y+1)*f.w*4);return Buffer.concat([Buffer.from('89504e470d0a1a0a','hex'),chunk('IHDR',ih),chunk('IDAT',zlib.deflateSync(rows)),chunk('IEND',Buffer.alloc(0))]);}
+module.exports = { datEntries, datMap, decodeTbl, palList, rgbaFrame, png };

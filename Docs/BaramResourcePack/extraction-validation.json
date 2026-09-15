@@ -1,0 +1,18 @@
+{
+  "total": 5565,
+  "uniqueNames": 5565,
+  "items": 2956,
+  "magic": 2609,
+  "itemBaseFrames": 2474,
+  "magicFamilies": {
+    "effect.epf": 2487,
+    "chrefx.epf": 12,
+    "frmlefx.epf": 43,
+    "frmrefx.epf": 43,
+    "itemefx.epf": 12,
+    "magefx.epf": 12
+  },
+  "tableBytesConsumed": 48892,
+  "tableBytes": 48892,
+  "pngErrors": []
+}

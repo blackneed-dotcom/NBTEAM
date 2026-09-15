@@ -1,0 +1,16 @@
+{
+  "groupCode": "FqXhK",
+  "expected": 5565,
+  "remoteCount": 5565,
+  "items": 2956,
+  "magicFrames": 2609,
+  "missing": [],
+  "duplicates": [],
+  "unexpected": [],
+  "badProperties": [],
+  "badResources": [],
+  "thumbnailMetadataCheck": {
+    "status": "connector_endpoint_unavailable",
+    "detail": "Bulk metadata returned resultCode 2 and no resultData for two new resources and two previously registered known resources. Group storage list confirms all 5565 resources, compiled win files, ownership, names, and properties. No runtime playback verification was performed."
+  }
+}
