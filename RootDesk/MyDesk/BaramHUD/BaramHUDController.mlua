@@ -49,6 +49,14 @@ script BaramHUDController extends Component
         end
         self._T.hpFill = self.Entity:GetChildByName("HpFill", true)
         self._T.mpFill = self.Entity:GetChildByName("MpFill", true)
+        -- ui6.png: colored remainder stays on the right; depletion advances from the left.
+        self._T.hpFill.SpriteGUIRendererComponent.FillOrigin = 1
+        self._T.mpFill.SpriteGUIRendererComponent.FillOrigin = 1
+        -- Expand one opaque original EFT pixel to cover each complete 100x11 trough.
+        for _, name in ipairs({"HpBackground", "MpBackground"}) do
+            local background = self.Entity:GetChildByName(name, true)
+            if isvalid(background) then background.UITransformComponent.UIScale = Vector3(100, 11, 1) end
+        end
         self._T.jobBadge = self.Entity:GetChildByName("JobBadge", true)
         self._T.jobSignature = nil
         self:SetJob(_BaramWorld.LocalState.jobId or 0, _BaramWorld.LocalState.jobRank or 0)

@@ -1,5 +1,8 @@
 @Logic
 script BaramHealthBars extends Logic
+    property number DisplayScale = 1.5
+    property number HeadHeight = 0.48
+    property number HeadGap = 4
     @ExecSpace("Client")
     method void ShowHit(Entity actor, integer hp, integer maximum, string mapId)
         -- winbaram.exe 484290: 24x6, 22 fill pixels; 4684E2: 500ms per hit.
@@ -14,6 +17,7 @@ script BaramHealthBars extends Logic
         if not isvalid(template) then return end
         local entity = _SpawnService:SpawnByEntity(template, "Health_" .. actor.Id, Vector3.zero, canvas, true)
         if not isvalid(entity) then return end
+        entity.UITransformComponent.UIScale = Vector3(self.DisplayScale, self.DisplayScale, 1)
         local percent = math.floor(math.max(0, math.min(100, hp * 100 / maximum)))
         local width = math.floor(22 * percent / 100)
         local fill = entity:GetChildByName("Fill")
@@ -49,11 +53,23 @@ script BaramHealthBars extends Logic
         if isvalid(creature) and isvalid(creature._T.sprite) then
             position = creature._T.sprite.TransformComponent.WorldPosition - (creature._T.spriteOffset or Vector3.zero)
         end
-        local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y + 0.4))
+        -- Original actor layers are centered at +0.24 in a 48px canvas: top is +0.48.
+        local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y + self.HeadHeight))
         local x = screen.x * 640 / _UILogic.ScreenWidth
         local y = (screen.y / _UILogic.ScreenHeight - 1) * 480
-        bar.entity.UITransformComponent.anchoredPosition = Vector2(math.floor(x - 12), math.floor(y + 11))
-        bar.entity.Enable = x >= 28 and x <= 410 and y <= -31 and y >= -372
+        local width = 24 * self.DisplayScale
+        local height = 6 * self.DisplayScale
+        bar.top = math.floor(y + self.HeadGap + height)
+        local left = math.floor(x - width / 2)
+        bar.entity.UITransformComponent.anchoredPosition = Vector2(left, bar.top)
+        bar.entity.Enable = left >= 16 and left + width <= 422 and bar.top <= -20 and bar.top - height >= -372
+    end
+
+    @ExecSpace("ClientOnly")
+    method number BubbleLift(Entity actor, number headY)
+        -- Keep speech above the actual scaled bar instead of a fixed 11px offset.
+        if not self:IsVisible(actor) then return 0 end
+        return math.max(0, self._T.bars[actor.Id].top - headY)
     end
 
     @ExecSpace("ClientOnly")

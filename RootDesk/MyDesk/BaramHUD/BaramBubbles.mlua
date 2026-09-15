@@ -136,7 +136,7 @@ script BaramBubbles extends Logic
                 local visible = point.x >= 16 and point.x <= 422 and point.y <= -20 and point.y >= -372
                 if bubble.entity.Enable ~= visible then bubble.entity.Enable = visible end
                 local x = math.max(16, math.min(422 - bubble.width, point.x - bubble.width / 2))
-                local lift = _BaramHealthBars:IsVisible(player) and 11 or 0
+                local lift = _BaramHealthBars:BubbleLift(player, point.y)
                 local y = math.min(-20, point.y + bubble.height + 5 + lift)
                 if bubble.x ~= x or bubble.y ~= y then
                     bubble.entity.UITransformComponent.anchoredPosition = Vector2(x, y)
