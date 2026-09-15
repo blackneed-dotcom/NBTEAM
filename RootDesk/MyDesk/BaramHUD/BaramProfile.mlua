@@ -355,7 +355,12 @@ script BaramProfile extends Logic
         end
         data.jobRank = b.state.jobRank or 0
         -- The same permanent attack bonus is added by BaramWorld.Attack.
-        data.attack = _BaramItemCodex:AttackBonus(b.state)
+        local bonuses = _BaramItemCodex:TotalStats(b.state)
+        data.attack = bonuses.attack or 0
+        data.defense = bonuses.defense or 0
+        data.accuracy = bonuses.accuracy or 0
+        data.evasion = bonuses.evasion or 0
+        data.critical = bonuses.critical or 0
         self:Receive(userId, serial, _HttpService:JSONEncode(data), caller)
     end
 
@@ -376,7 +381,7 @@ script BaramProfile extends Logic
             local data = _HttpService:JSONDecode(raw)
             self:Text("Name", data.name)
             self._T.profileData = data
-            self:UpdateCombatStats(0, data.attack or 0, 0, 0, 0, 0)
+            self:UpdateCombatStats(0, data.attack or 0, data.defense or 0, data.accuracy or 0, data.evasion or 0, data.critical or 0)
             self.ExchangeAllowed = data.exchange ~= false
             self.GroupAllowed = data.group ~= false
             self:RefreshList()

@@ -1,22 +1,51 @@
 @Logic
 script BaramItemCodex extends Logic
     property table Entries = {
-        {id=3014, name="도토리", monster="다람쥐", region="초보사냥터", reward="공격력 +1", stats={attack=1}},
-        {id=3018, name="토끼고기", monster="토끼", region="초보사냥터", reward="보상 추후 추가"},
-        {id=3019, name="쥐고기", monster="쥐 · 큰쥐 · 시궁쥐", region="쥐굴", reward="보상 추후 추가"},
-        {id=9028, name="박쥐고기", monster="박쥐 · 빨간박쥐", region="쥐굴", reward="보상 추후 추가"},
-        {id=3020, name="뱀고기", monster="독사 · 백사", region="뱀굴", reward="보상 추후 추가"},
-        {id=3032, name="웅담", monster="곰", region="곰굴", reward="보상 추후 추가"}
+        {id=3014, name="도토리", monster="다람쥐", region="초보사냥터"},
+        {id=3018, name="토끼고기", monster="토끼", region="초보사냥터"},
+        {id=3019, name="쥐고기", monster="쥐 · 큰쥐 · 시궁쥐", region="쥐굴"},
+        {id=9028, name="박쥐고기", monster="박쥐 · 빨간박쥐", region="쥐굴"},
+        {id=3020, name="뱀고기", monster="독사 · 백사", region="뱀굴"},
+        {id=3032, name="웅담", monster="평웅", region="곰굴"},
+        {id=3023, name="곰가죽", monster="곰", region="곰굴"},
+        {id=3038, name="산돼지고기", monster="산돼지", region="돼지굴"},
+        {id=3039, name="숲돼지고기", monster="숲돼지", region="돼지굴"},
+        {id=3017, name="돼지고기", monster="돼지", region="초보사냥터"},
+        {id=9014, name="닭고기", monster="장닭 · 검은닭", region="닭왕굴"},
+        {id=3022, name="여우모피", monster="흑여우 · 백여우 외", region="여우굴"},
+        {id=3024, name="호랑이가죽", monster="호랑이", region="곰굴"},
+        {id=3028, name="자호의가죽", monster="자호 · 친자호 · 적호", region="자호굴"},
+        {id=9023, name="진호의가죽", monster="진호", region="곰굴"},
+        {id=3026, name="적호의가죽", monster="획득 몬스터 미확인", region="원본 드롭 정보 없음"},
+        {id=10043, name="호박", monster="몽달귀신 · 독충 외", region="흉가"},
+        {id=10056, name="진호박", monster="몽달귀신 · 처녀귀신 외", region="흉가"},
+        {id=10054, name="황호박", monster="황달걀귀신 · 황충", region="흉가"},
+        {id=10051, name="적호박", monster="적달걀귀신 · 적충", region="흉가"},
+        {id=10044, name="녹호박", monster="녹두귀 · 사두귀", region="백향의방"},
+        {id=10052, name="청호박", monster="청달걀귀신 · 청충", region="흉가"},
+        {id=10047, name="연갈호박", monster="연갈달걀귀신 · 연갈충", region="흉가"},
+        {id=10055, name="회호박", monster="회충", region="흉가"},
+        {id=10045, name="갈호박", monster="갈달걀귀신 · 갈충", region="흉가"},
+        {id=10053, name="황금호박", monster="백호왕 · 적호왕 외", region="호굴"},
+        {id=10049, name="연자호박", monster="연자달걀귀신 · 연자충", region="흉가"},
+        {id=10048, name="연녹호박", monster="연녹달걀귀신 · 연녹충", region="흉가"},
+        {id=10046, name="자호박", monster="자달걀귀신 · 자충", region="흉가"},
+        {id=10050, name="연청호박", monster="연청달걀귀신", region="흉가"},
+        {id=17, name="목도", monster="무기 상점", region="구매", kind=1, required=1, rewardKey="attack"}
     }
+
+    method integer Required(table entry)
+        return entry.required or 100
+    end
 
     method boolean Valid(table s)
         -- Old saves without codex progress remain valid; only known bounded counters are accepted.
         if s.codex == nil then return true end
         if type(s.codex) ~= "table" then return false end
         for key, value in pairs(s.codex) do
-            local known = false
-            for _, entry in ipairs(self.Entries) do if key == tostring(entry.id) then known = true break end end
-            if not known or type(value) ~= "number" or value ~= math.floor(value) or value < 0 or value > 100 then return false end
+            local maximum = 0
+            for _, entry in ipairs(self.Entries) do if key == tostring(entry.id) then maximum = self:Required(entry) break end end
+            if maximum==0 or type(value) ~= "number" or value ~= math.floor(value) or value < 0 or value > maximum then return false end
         end
         return true
     end
@@ -35,12 +64,28 @@ script BaramItemCodex extends Logic
     method table TotalStats(table s)
         -- One shared sum for combat, profiles, and the codex reward summary.
         local totals={}
-        for _,entry in ipairs(self.Entries) do
-            if self:Progress(s,entry.id)>=100 then
-                for key,value in pairs(entry.stats or {}) do totals[key]=(totals[key] or 0)+value end
+        for index,entry in ipairs(self.Entries) do
+            if self:Progress(s,entry.id)>=self:Required(entry) then
+                local key=self:RewardKey(index)
+                totals[key]=(totals[key] or 0)+1
             end
         end
         return totals
+    end
+
+    method string RewardKey(integer index)
+        -- Append new entries to preserve saved item IDs and the five-stat reward cycle.
+        local keys={"attack","defense","accuracy","evasion","critical"}
+        local entry=self.Entries[index]
+        if entry.rewardKey~=nil then return entry.rewardKey end
+        local order=0
+        for i=1,index do if (self.Entries[i].kind or 0)==(entry.kind or 0) then order=order+1 end end
+        return keys[(order-1)%5+1]
+    end
+
+    method string RewardText(integer index)
+        local names={attack="공격력",defense="방어력",accuracy="명중",evasion="회피",critical="치명타"}
+        return names[self:RewardKey(index)] .. " +1"
     end
 
     method integer Owned(table s, integer itemId)
@@ -60,7 +105,7 @@ script BaramItemCodex extends Logic
         local entry = self.Entries[index]
         if entry == nil or not self:Valid(s) or amount < 1 or amount ~= math.floor(amount) then return false end
         local progress = self:Progress(s, entry.id)
-        if amount > 100-progress or amount > self:Owned(s, entry.id) then return false end
+        if amount > self:Required(entry)-progress or amount > self:Owned(s, entry.id) then return false end
         local remaining = amount
         for i=1,_BaramWorldData.InventoryCapacity do
             local item = s.items[tostring(i)]
@@ -82,7 +127,7 @@ script BaramItemCodex extends Logic
         local r = _BaramWorld:GetRecord(senderUserId)
         local entry = self.Entries[index]
         if r == nil or entry == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then return end
-        local maximum = math.min(100-self:Progress(r.state,entry.id),self:Owned(r.state,entry.id))
+        local maximum = math.min(self:Required(entry)-self:Progress(r.state,entry.id),self:Owned(r.state,entry.id))
         if maximum <= 0 then _BaramWorld:Notice(senderUserId,"등록할 아이템이 없습니다.") return end
         r.codexSerial = (r.codexSerial or 0)+1
         r.codexPrompt = {token=r.codexSerial,index=index,expires=_BaramWorld.Clock+60}
@@ -91,24 +136,29 @@ script BaramItemCodex extends Logic
 
     @ExecSpace("Server")
     method void Register(integer token, integer amount)
+        self:Commit(senderUserId,token,amount)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Commit(string userId, integer token, integer amount)
         -- Reject replay, stale dialogs, concurrent trades, and inventory changes since the prompt.
-        local r = _BaramWorld:GetRecord(senderUserId)
+        local r = _BaramWorld:GetRecord(userId)
         if r == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then return end
         local prompt = r.codexPrompt
         if prompt == nil or prompt.token ~= token or prompt.expires < _BaramWorld.Clock then return end
         r.codexPrompt = nil
         if not self:Apply(r.state,prompt.index,amount) then
-            _BaramWorld:Notice(senderUserId,"보유 수량과 남은 등록 수량을 확인해 주세요.")
-            self:Result(false,senderUserId)
+            _BaramWorld:Notice(userId,"보유 수량과 남은 등록 수량을 확인해 주세요.")
+            self:Result(false,userId)
             return
         end
-        _BaramWorld:Changed(senderUserId)
-        _BaramWorld:Snapshot(senderUserId)
-        self:Result(true,senderUserId)
+        _BaramWorld:Changed(userId)
+        _BaramWorld:Snapshot(userId)
+        self:Result(true,userId)
         local entry = self.Entries[prompt.index]
         local progress = self:Progress(r.state,entry.id)
-        _BaramWorld:Notice(senderUserId,entry.name .. " " .. tostring(amount) .. "개 등록 (" .. tostring(progress) .. "/100)")
-        if entry.id == 3014 and progress == 100 then _BaramWorld:Notice(senderUserId,"도토리 도감 완성! 공격력 +1") end
+        _BaramWorld:Notice(userId,entry.name .. " " .. tostring(amount) .. "개 등록 (" .. tostring(progress) .. "/" .. tostring(self:Required(entry)) .. ")")
+        if progress == self:Required(entry) then _BaramWorld:Notice(userId,entry.name .. " 도감 완성! " .. self:RewardText(prompt.index)) end
         log("[ItemCodex] registered index=" .. tostring(prompt.index) .. " amount=" .. tostring(amount) .. " progress=" .. tostring(progress))
     end
 
@@ -130,8 +180,17 @@ script BaramItemCodex extends Logic
         self:Bind(self._T.stats:GetChildByName("Panel"):GetChildByName("Close"),function() self._T.stats.Enable=false end)
         self:Bind(self._T.window:GetChildByName("Close"),function() self:Close() end)
         self._T.category=0
+        self._T.kind=0
         self._T.page=1
         self._T.visible={}
+        self._T.kindMenu=self._T.window:GetChildByName("KindMenu")
+        self._T.kindMenu.Enable=false
+        self:Bind(self._T.window:GetChildByName("Title"),function()
+            if self._T.prompt.Enable or self._T.stats.Enable then return end
+            self._T.kindMenu.Enable=not self._T.kindMenu.Enable
+        end)
+        self:Bind(self._T.kindMenu:GetChildByName("Materials"),function() self:SelectKind(0) end)
+        self:Bind(self._T.kindMenu:GetChildByName("Items"),function() self:SelectKind(1) end)
         self:Bind(self._T.window:GetChildByName("Unregistered"),function() self:SelectCategory(0) end)
         self:Bind(self._T.window:GetChildByName("Registered"),function() self:SelectCategory(1) end)
         self:Bind(self._T.window:GetChildByName("Previous"),function() self:TurnPage(-1) end)
@@ -143,14 +202,15 @@ script BaramItemCodex extends Logic
                 local s = _BaramWorld.LocalState
                 local entryIndex = self._T.visible[index]
                 local entry = self.Entries[entryIndex or 0]
-                if entry ~= nil and self:Owned(s,entry.id)>0 and self:Progress(s,entry.id)<100 then self:Prepare(entryIndex) end
+                if entry ~= nil and self:Owned(s,entry.id)>0 and self:Progress(s,entry.id)<self:Required(entry) then self:Prepare(entryIndex) end
             end)
         end
         self:Bind(self._T.prompt:GetChildByName("Confirm"),function() self:Submit() end)
         self:Bind(self._T.prompt:GetChildByName("Cancel"),function() self._T.prompt.Enable=false self._T.token=nil end)
         self._T.key = _InputService:ConnectEvent(KeyDownEvent,function(event)
             if event.key ~= KeyboardKey.Escape or not self._T.root.Enable then return end
-            if self._T.stats.Enable then self._T.stats.Enable=false
+            if self._T.kindMenu.Enable then self._T.kindMenu.Enable=false
+            elseif self._T.stats.Enable then self._T.stats.Enable=false
             elseif self._T.prompt.Enable then self._T.prompt.Enable=false self._T.token=nil else self:Close() end
         end)
         log("[ItemCodex] UI ready")
@@ -174,6 +234,7 @@ script BaramItemCodex extends Logic
         self._T.root.Enable=true
         self._T.prompt.Enable=false
         self._T.stats.Enable=false
+        self._T.kindMenu.Enable=false
         self._T.window.UITransformComponent.anchoredPosition=Vector2(0,0)
         self._T.window.UITransformComponent.UIScale=Vector3(2.4,2.4,1)
         self._T.prompt.UITransformComponent.UIScale=Vector3(2.4,2.4,1)
@@ -188,6 +249,7 @@ script BaramItemCodex extends Logic
     @ExecSpace("ClientOnly")
     method void ShowStats()
         if self._T.prompt.Enable then return end
+        self._T.kindMenu.Enable=false
         local panel=self._T.stats:GetChildByName("Panel")
         panel.SpriteGUIRendererComponent.Color=Color.white
         panel.SpriteGUIRendererComponent.ImageRUID=DataRef("4924358c7b674d64a7166b5f224b0e31")
@@ -224,26 +286,58 @@ script BaramItemCodex extends Logic
     method void Prompt(integer index, integer token, integer maximum)
         -- Display only a live server-approved quantity prompt.
         if not isvalid(self._T.root) or not self._T.root.Enable or _BaramInput.Mode~="codex" then return end
+        if (self.Entries[index].kind or 0)~=(self._T.kind or 0) then return end
         self._T.token=token
         self._T.maximum=maximum
+        self._T.promptIndex=index
+        self._T.confirming=false
+        self._T.pendingAmount=nil
+        self._T.kindMenu.Enable=false
         self._T.prompt.Enable=true
+        if (self.Entries[index].kind or 0)==1 and self:Required(self.Entries[index])==1 then
+            self:ReviewRegistration(1)
+            return
+        end
+        self._T.input.Enable=true
+        self._T.prompt:GetChildByName("Confirm"):GetChildByName("Label").TextGUIRendererComponent.Text="확인"
+        self._T.prompt:GetChildByName("Cancel"):GetChildByName("Label").TextGUIRendererComponent.Text="취소"
         self._T.prompt:GetChildByName("Question").TextGUIRendererComponent.Text=self.Entries[index].name .. " 몇 개를 등록할까요?\n등록 가능: 1~" .. tostring(maximum) .. "개\n등록한 아이템은 소모됩니다."
         self._T.input.TextGUIRendererInputComponent.Text=tostring(maximum)
         self._T.input.TextGUIRendererInputComponent:ActivateInputField()
     end
 
     @ExecSpace("ClientOnly")
+    method void ReviewRegistration(integer amount)
+        -- Keep the token and amount locally; only the Yes action commits them.
+        self._T.pendingAmount=amount
+        self._T.confirming=true
+        self._T.input.Enable=false
+        local name=self.Entries[self._T.promptIndex].name
+        self._T.prompt:GetChildByName("Question").TextGUIRendererComponent.Text=name .. " " .. tostring(amount) .. "개\n정말로 등록하시겠습니까?\n등록한 아이템은 소모됩니다."
+        self._T.prompt:GetChildByName("Confirm"):GetChildByName("Label").TextGUIRendererComponent.Text="예"
+        self._T.prompt:GetChildByName("Cancel"):GetChildByName("Label").TextGUIRendererComponent.Text="아니오"
+        log("[CodexConfirm] review item=" .. name .. " amount=" .. tostring(amount))
+    end
+
+    @ExecSpace("ClientOnly")
     method void Submit()
         -- Never send zero, negative, fractional, or excessive quantities.
         if self._T.token==nil then return end
+        if self._T.confirming then
+            local token=self._T.token
+            local amount=self._T.pendingAmount
+            self._T.token=nil
+            self._T.pendingAmount=nil
+            self._T.confirming=false
+            self._T.prompt.Enable=false
+            self:Register(token,amount)
+            return
+        end
         local amount=tonumber(self._T.input.TextGUIRendererInputComponent.Text)
         if amount==nil or amount~=math.floor(amount) or amount<1 or amount>self._T.maximum then
             _BaramInput:Notice("1~" .. tostring(self._T.maximum) .. "개를 입력해 주세요.") return
         end
-        local token=self._T.token
-        self._T.token=nil
-        self._T.prompt.Enable=false
-        self:Register(token,amount)
+        self:ReviewRegistration(amount)
     end
 
     @ExecSpace("Client")
@@ -256,9 +350,20 @@ script BaramItemCodex extends Logic
     method table FilterEntries(table s, integer category)
         local indices={}
         for index,entry in ipairs(self.Entries) do
-            if (self:Progress(s,entry.id)>=100) == (category==1) then table.insert(indices,index) end
+            if (entry.kind or 0)==(self._T.kind or 0) and (self:Progress(s,entry.id)>=self:Required(entry)) == (category==1) then table.insert(indices,index) end
         end
         return indices
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SelectKind(integer kind)
+        if self._T.prompt.Enable or self._T.stats.Enable then return end
+        self._T.kind=kind
+        self._T.kindMenu.Enable=false
+        self._T.category=0
+        self._T.page=1
+        self:Refresh()
+        log("[CodexKind] selected=" .. tostring(kind))
     end
 
     @ExecSpace("ClientOnly")
@@ -283,7 +388,13 @@ script BaramItemCodex extends Logic
         if s==nil or not isvalid(self._T.window) then return end
         self._T.state=s
         local total=0
-        for _,entry in ipairs(self.Entries) do if self:Progress(s,entry.id)>=100 then total=total+1 end end
+        local entryCount=0
+        for _,entry in ipairs(self.Entries) do
+            if (entry.kind or 0)==(self._T.kind or 0) then
+                entryCount=entryCount+1
+                if self:Progress(s,entry.id)>=self:Required(entry) then total=total+1 end
+            end
+        end
         local indices=self:FilterEntries(s,self._T.category or 0)
         self._T.pages=math.max(1,math.ceil(#indices/6))
         self._T.page=math.max(1,math.min(self._T.page or 1,self._T.pages))
@@ -296,16 +407,16 @@ script BaramItemCodex extends Logic
             if index~=nil then
             local entry=self.Entries[index]
             row:GetChildByName("Name").TextGUIRendererComponent.Text=entry.name
-            row:GetChildByName("Reward").TextGUIRendererComponent.Text=entry.reward
+            row:GetChildByName("Reward").TextGUIRendererComponent.Text=self:RewardText(index)
             row:GetChildByName("Source").TextGUIRendererComponent.Text=entry.monster .. "\n" .. entry.region
             local progress=self:Progress(s,entry.id)
             local owned=self:Owned(s,entry.id)
-            row:GetChildByName("Count").TextGUIRendererComponent.Text=tostring(progress) .. "/100  보유 " .. tostring(owned)
+            row:GetChildByName("Count").TextGUIRendererComponent.Text=tostring(progress) .. "/" .. tostring(self:Required(entry)) .. "  보유 " .. tostring(owned)
             local button=row:GetChildByName("Register")
-            local enabled=owned>0 and progress<100
+            local enabled=owned>0 and progress<self:Required(entry)
             button.UITouchReceiveComponent.Enable=enabled
             button.SpriteGUIRendererComponent.Color=enabled and Color.white or Color(0.55,0.55,0.55,1)
-            button:GetChildByName("Label").TextGUIRendererComponent.Text=progress==100 and "완료" or "등록"
+            button:GetChildByName("Label").TextGUIRendererComponent.Text=progress==self:Required(entry) and "완료" or "등록"
             local art=_BaramInput.InventoryImages[tostring(entry.id)]
             row:GetChildByName("Icon").Enable=art~=nil
             if art~=nil then
@@ -316,7 +427,11 @@ script BaramItemCodex extends Logic
             end
             end
         end
-        self._T.window:GetChildByName("Progress").TextGUIRendererComponent.Text="등록 " .. tostring(total) .. "/" .. tostring(#self.Entries)
+        self._T.window:GetChildByName("Progress").TextGUIRendererComponent.Text="등록 " .. tostring(total) .. "/" .. tostring(entryCount)
+        local title=self._T.window:GetChildByName("Title")
+        title.TextGUIRendererComponent.Text=(self._T.kind or 0)==0 and "재료 도감 ▾" or "아이템 도감 ▾"
+        title.SpriteGUIRendererComponent.ImageRUID=DataRef("42f935a1778245afb0d9636bc0d7b8fe")
+        title.SpriteGUIRendererComponent.Color=Color.white
         self:RefreshStats()
         self._T.window:GetChildByName("Page").TextGUIRendererComponent.Text=tostring(self._T.page) .. " / " .. tostring(self._T.pages)
         local empty=self._T.window:GetChildByName("Empty")
