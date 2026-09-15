@@ -22,7 +22,9 @@ script BaramCreature extends Component
     -- CustomFontGroupSet 의 Fonts 목록에는 그런 폰트가 없었기 때문이다(그룹 규칙만
     -- 그 이름을 가리키는 끊어진 참조였다). 실제로 등록된 건 Galmuri14 와 Chosun 뿐.
     -- Galmuri9 을 리소스로 올려 등록하면 LabelFont 를 그 이름으로 바꾸면 된다.
-    property boolean ShowLabel = true
+    -- 이름표는 끈다. 원본엔 몹 머리 위에 이름이 안 뜬다. 모션 볼 때 쓰려고 켜놨던 건데
+    -- 이제 볼 거 다 봤고 글씨가 커서 그림을 가린다. 다시 볼 일 있으면 여기만 켜면 된다.
+    property boolean ShowLabel = false
     property string LabelFont = "Galmuri14"
     -- 크기는 BaramInput.CreatureLabelScale 하나로 26마리를 한꺼번에 조절한다(F10).
 

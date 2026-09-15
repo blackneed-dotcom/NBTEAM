@@ -276,6 +276,53 @@ script BaramScriptRuntime extends Logic
         return false
     end
 
+    -- ------------------------------------------------------------------
+    -- 마법창
+    --
+    -- "아는 주문"은 지금 전부 보여준다. 옮겨놓은 주문이 곧 아는 주문이라,
+    -- 주문을 더 뽑으면 목록도 저절로 늘어난다. 나중에 직업/레벨로 거를 때는
+    -- 여기 한 군데만 고치면 된다.
+    -- ------------------------------------------------------------------
+    @ExecSpace("ServerOnly")
+    method table SpellSlots()
+        if not self:Ensure() then return {} end
+        if self._T.slots ~= nil then return self._T.slots end
+        local slots = {}
+        local seen = {}
+        local index = 0
+        for _, spell in ipairs(_BaramSpellData.Spells) do
+            if spell.cast ~= "-" and spell.cast ~= "" and not seen[spell.name]
+                and self._T.S[spell.cast] ~= nil and index < 52 then
+                seen[spell.name] = true
+                index = index + 1
+                slots[tostring(index)] = {name = spell.name, id = spell.id, mp = spell.mp, kind = spell.kind}
+            end
+        end
+        self._T.slots = slots
+        return slots
+    end
+
+    @ExecSpace("Server")
+    method void RequestSpells()
+        self:ReceiveSpells(_HttpService:JSONEncode(self:SpellSlots()), senderUserId)
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveSpells(string raw)
+        _BaramInput.SkillSlots = _HttpService:JSONDecode(raw)
+        _BaramInput:SpellsArrived()
+    end
+
+    @ExecSpace("Server")
+    method void CastSlot(integer slot)
+        local spell = self:SpellSlots()[tostring(slot)]
+        if spell == nil then
+            _BaramWorld:Notice(senderUserId, "그 칸엔 주문이 없습니다.")
+            return
+        end
+        self:Cast(senderUserId, spell.name)
+    end
+
     @ExecSpace("ServerOnly")
     method table Account(string userId)
         local a = self._T.accounts[userId]

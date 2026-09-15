@@ -5,9 +5,6 @@ script BaramInput extends Logic
     property integer FirstSlot = 0
     property number MoveWait = 0
     property number AttackWait = 0
-    -- F10. 몹 이름표 크기. 몹 한 마리가 한 칸(0.24 월드유닛)이라 글자는 그보다 작아야 한다.
-    property number CreatureLabelScale = 0.06
-
     -- F9. 켜면 걸음 왕복과 워프 시간을 화면에 띄운다.
     -- log() 는 메이커 콘솔에만 나와서 실제 서버에 접속하면 볼 수가 없다.
     property boolean ShowTiming = false
@@ -34,7 +31,7 @@ script BaramInput extends Logic
     property table SkillSlots = {}
     property boolean InventoryIcons = false
     property number InventoryTipSeconds = 0
-    property table InventoryImages = { ["10500"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10501"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10502"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10503"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10504"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10505"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10506"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10507"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["9014"] = {ruid = "12016e7299484f1db2576879786148c4", width = 16, height = 14}, ["9023"] = {ruid = "c3197a4530f844649f84f61ca699fe8d", width = 23, height = 24}, ["9028"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["17"] = {ruid = "2fce5dbc5fd44099bc1b8e91cf9913eb", width = 24, height = 24}, ["2200"] = {ruid = "53773753a7b44c27a08b3c63f83a8aca", width = 17, height = 23}, ["3014"] = {ruid = "a292a51da7404fe68a4c8b220df9cd3c", width = 6, height = 5}, ["3018"] = {ruid = "9f7b6aae847146c3b95068e10c18ff75", width = 18, height = 11}, ["1737"] = {ruid = "81bd7875268f47f285259c6455e82d26", width = 19, height = 23}, ["1738"] = {ruid = "335fd49f0b3347c795ca92bded8b3f03", width = 19, height = 23}, ["1740"] = {ruid = "e6ba1a22c76d434a91a4366adceb1652", width = 19, height = 23}, ["1741"] = {ruid = "d8da5489ffa0405c84bd22b3f7fe0532", width = 19, height = 23}, ["1742"] = {ruid = "c6a4af3a323e43afa04f6b943d8cd7e4", width = 19, height = 23}, ["2201"] = {ruid = "e873aa855681427d98f44fcf3d2fdd44", width = 16, height = 22}, ["2202"] = {ruid = "42873cabc35846beb27a92b78c53f80c", width = 12, height = 21}, ["2203"] = {ruid = "fe9f8ce9524f46efab5873334e455322", width = 12, height = 21}, ["2204"] = {ruid = "a7377e3fac9d42989434cfd7cfc4eaa0", width = 12, height = 21}, ["2205"] = {ruid = "07f3309323b644aba898f9ab22212784", width = 16, height = 18}, ["2211"] = {ruid = "b30a46ba33c442a0b104143d794b2656", width = 12, height = 21}, ["3016"] = {ruid = "8b1b41f5a3c7468f9de12d1ad67c62bd", width = 20, height = 8}, ["3017"] = {ruid = "44205877f4b24c3080ff5e18d8e121aa", width = 24, height = 14}, ["3019"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["3020"] = {ruid = "262ec34c79314e5bb6cece0ccb806d4d", width = 7, height = 7}, ["3021"] = {ruid = "f6e37407f0374e4c9d8556a89f48b24a", width = 20, height = 19}, ["3022"] = {ruid = "0e3db91193bc4c5f9367db0f83a5b7a8", width = 20, height = 19}, ["3023"] = {ruid = "01a5fdd0271a4cf6a9be3bf34059e7c9", width = 24, height = 24}, ["3024"] = {ruid = "ce2d22c0becd41f98410b0902aab2ae9", width = 23, height = 24}, ["3025"] = {ruid = "977a3aed4a0447ccad5494396851cb81", width = 24, height = 24}, ["3026"] = {ruid = "452eae2093984cae9735ba18741f313d", width = 23, height = 24}, ["3028"] = {ruid = "08e5d4d12d9c45a390eefa648a3f6cf9", width = 23, height = 24}, ["3029"] = {ruid = "7a5942ed1c0344f3ad8d6ed815d351bb", width = 24, height = 24}, ["3030"] = {ruid = "de48b3c18ff7405597ff42147f609f07", width = 24, height = 24}, ["3031"] = {ruid = "f35cecaa829f4f9e863c2926448216e2", width = 24, height = 20}, ["3032"] = {ruid = "9391b8eafb1a415093c7e02fbf907000", width = 7, height = 8}, ["3033"] = {ruid = "37287a9c4161402193d48e81ea215d3a", width = 23, height = 23}, ["3037"] = {ruid = "377ea41d6f4045bb92eac9d64ffb8b51", width = 24, height = 24}, ["3038"] = {ruid = "f18092c0d8d4481fba44bdb01d2baa6e", width = 20, height = 8}, ["3039"] = {ruid = "f8d776de1dc94c71bddb284b147e3773", width = 20, height = 8}, ["3040"] = {ruid = "93eef87ce22d4783a70f50d9005d47e2", width = 7, height = 7}, ["4000"] = {ruid = "3cc092228ead4ae19ba8b5db7889df28", width = 14, height = 20}, ["4001"] = {ruid = "d7894c1c5b8b460badb22fff196e4362", width = 14, height = 20}, ["4003"] = {ruid = "3e0e7ab9fec047aba51e426731e6f1de", width = 14, height = 20}, ["10043"] = {ruid = "e4e849f86de54b0da37d522ad62da5a2", width = 19, height = 19}, ["10044"] = {ruid = "7f520ae9c1f241ccb4c96e137987aab1", width = 19, height = 19}, ["10045"] = {ruid = "0f7f1bb91c47422ca992c4d2a0d84dba", width = 19, height = 19}, ["10046"] = {ruid = "42c0edd9cb594131ac00de2af909e8d8", width = 19, height = 19}, ["10047"] = {ruid = "7c90f4bc15f64e00ab6c34cc4ee15d53", width = 19, height = 19}, ["10048"] = {ruid = "5784cccbc9e24ae48e3d9ca1eced569f", width = 19, height = 19}, ["10049"] = {ruid = "d8eacc4f7b344e249f6f9bc852a3f8cf", width = 19, height = 19}, ["10050"] = {ruid = "dafc286101874b2aad5605116f85bfa9", width = 19, height = 19}, ["10051"] = {ruid = "a76f1de8ed5d40aebdb87e543f42583a", width = 19, height = 19}, ["10052"] = {ruid = "0913f5f1be8242eb84959e4b6ed51595", width = 19, height = 19}, ["10053"] = {ruid = "75a369a397864eb1bc91231fa305e95d", width = 19, height = 19}, ["10054"] = {ruid = "1da2f852a2884c3aa2d5dc51b7598272", width = 19, height = 19}, ["10055"] = {ruid = "b7a4c979d21943e29e254def1bc223de", width = 19, height = 19}, ["10056"] = {ruid = "c81e89aa9c7240d8a34e200bf23f7edd", width = 19, height = 19}, ["10117"] = {ruid = "55e24113c0d54b5284ae063e1eb41c34", width = 11, height = 12}, ["10156"] = {ruid = "ebf909ecbb6043b481c8cb801ac30cdd", width = 29, height = 27}, ["20211"] = {ruid = "27ad0362fb9e4e478a55b4ba612491e3", width = 22, height = 7}, ["50200"] = {ruid = "e6c4ea94530545d58f8374edc1887657", width = 20, height = 22} }
+    property table InventoryImages = { ["17"] = {ruid = "2fce5dbc5fd44099bc1b8e91cf9913eb", width = 24, height = 24}, ["2200"] = {ruid = "53773753a7b44c27a08b3c63f83a8aca", width = 17, height = 23}, ["3014"] = {ruid = "a292a51da7404fe68a4c8b220df9cd3c", width = 6, height = 5}, ["3018"] = {ruid = "9f7b6aae847146c3b95068e10c18ff75", width = 18, height = 11}, ["1737"] = {ruid = "81bd7875268f47f285259c6455e82d26", width = 19, height = 23}, ["1738"] = {ruid = "335fd49f0b3347c795ca92bded8b3f03", width = 19, height = 23}, ["1740"] = {ruid = "e6ba1a22c76d434a91a4366adceb1652", width = 19, height = 23}, ["1741"] = {ruid = "d8da5489ffa0405c84bd22b3f7fe0532", width = 19, height = 23}, ["1742"] = {ruid = "c6a4af3a323e43afa04f6b943d8cd7e4", width = 19, height = 23}, ["2201"] = {ruid = "e873aa855681427d98f44fcf3d2fdd44", width = 16, height = 22}, ["2202"] = {ruid = "42873cabc35846beb27a92b78c53f80c", width = 12, height = 21}, ["2203"] = {ruid = "fe9f8ce9524f46efab5873334e455322", width = 12, height = 21}, ["2204"] = {ruid = "a7377e3fac9d42989434cfd7cfc4eaa0", width = 12, height = 21}, ["2205"] = {ruid = "07f3309323b644aba898f9ab22212784", width = 16, height = 18}, ["2211"] = {ruid = "b30a46ba33c442a0b104143d794b2656", width = 12, height = 21}, ["3016"] = {ruid = "8b1b41f5a3c7468f9de12d1ad67c62bd", width = 20, height = 8}, ["3017"] = {ruid = "44205877f4b24c3080ff5e18d8e121aa", width = 24, height = 14}, ["3019"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["3020"] = {ruid = "262ec34c79314e5bb6cece0ccb806d4d", width = 7, height = 7}, ["3021"] = {ruid = "f6e37407f0374e4c9d8556a89f48b24a", width = 20, height = 19}, ["3022"] = {ruid = "0e3db91193bc4c5f9367db0f83a5b7a8", width = 20, height = 19}, ["3023"] = {ruid = "01a5fdd0271a4cf6a9be3bf34059e7c9", width = 24, height = 24}, ["3024"] = {ruid = "ce2d22c0becd41f98410b0902aab2ae9", width = 23, height = 24}, ["3025"] = {ruid = "977a3aed4a0447ccad5494396851cb81", width = 24, height = 24}, ["3026"] = {ruid = "452eae2093984cae9735ba18741f313d", width = 23, height = 24}, ["3028"] = {ruid = "08e5d4d12d9c45a390eefa648a3f6cf9", width = 23, height = 24}, ["3029"] = {ruid = "7a5942ed1c0344f3ad8d6ed815d351bb", width = 24, height = 24}, ["3030"] = {ruid = "de48b3c18ff7405597ff42147f609f07", width = 24, height = 24}, ["3031"] = {ruid = "f35cecaa829f4f9e863c2926448216e2", width = 24, height = 20}, ["3032"] = {ruid = "9391b8eafb1a415093c7e02fbf907000", width = 7, height = 8}, ["3033"] = {ruid = "37287a9c4161402193d48e81ea215d3a", width = 23, height = 23}, ["3037"] = {ruid = "377ea41d6f4045bb92eac9d64ffb8b51", width = 24, height = 24}, ["3038"] = {ruid = "f18092c0d8d4481fba44bdb01d2baa6e", width = 20, height = 8}, ["3039"] = {ruid = "f8d776de1dc94c71bddb284b147e3773", width = 20, height = 8}, ["3040"] = {ruid = "93eef87ce22d4783a70f50d9005d47e2", width = 7, height = 7}, ["4000"] = {ruid = "3cc092228ead4ae19ba8b5db7889df28", width = 14, height = 20}, ["4001"] = {ruid = "d7894c1c5b8b460badb22fff196e4362", width = 14, height = 20}, ["4003"] = {ruid = "3e0e7ab9fec047aba51e426731e6f1de", width = 14, height = 20}, ["10043"] = {ruid = "e4e849f86de54b0da37d522ad62da5a2", width = 19, height = 19}, ["10044"] = {ruid = "7f520ae9c1f241ccb4c96e137987aab1", width = 19, height = 19}, ["10045"] = {ruid = "0f7f1bb91c47422ca992c4d2a0d84dba", width = 19, height = 19}, ["10046"] = {ruid = "42c0edd9cb594131ac00de2af909e8d8", width = 19, height = 19}, ["10047"] = {ruid = "7c90f4bc15f64e00ab6c34cc4ee15d53", width = 19, height = 19}, ["10048"] = {ruid = "5784cccbc9e24ae48e3d9ca1eced569f", width = 19, height = 19}, ["10049"] = {ruid = "d8eacc4f7b344e249f6f9bc852a3f8cf", width = 19, height = 19}, ["10050"] = {ruid = "dafc286101874b2aad5605116f85bfa9", width = 19, height = 19}, ["10051"] = {ruid = "a76f1de8ed5d40aebdb87e543f42583a", width = 19, height = 19}, ["10052"] = {ruid = "0913f5f1be8242eb84959e4b6ed51595", width = 19, height = 19}, ["10053"] = {ruid = "75a369a397864eb1bc91231fa305e95d", width = 19, height = 19}, ["10054"] = {ruid = "1da2f852a2884c3aa2d5dc51b7598272", width = 19, height = 19}, ["10055"] = {ruid = "b7a4c979d21943e29e254def1bc223de", width = 19, height = 19}, ["10056"] = {ruid = "c81e89aa9c7240d8a34e200bf23f7edd", width = 19, height = 19}, ["10117"] = {ruid = "55e24113c0d54b5284ae063e1eb41c34", width = 11, height = 12}, ["10156"] = {ruid = "ebf909ecbb6043b481c8cb801ac30cdd", width = 29, height = 27}, ["20211"] = {ruid = "27ad0362fb9e4e478a55b4ba612491e3", width = 22, height = 7}, ["50200"] = {ruid = "e6c4ea94530545d58f8374edc1887657", width = 20, height = 22} }
 
     @ExecSpace("ClientOnly")
     method void OnBeginPlay()
@@ -44,24 +41,8 @@ script BaramInput extends Logic
         self.MovePending = false
         self.ReplyWait = 0
         self.MoveWait = 0
-        self._T.nextMoveAt = 0
         self._T.inventory = _EntityService:GetEntityByPath("/ui/BaramInventory")
         self._T.inventoryLinks = {}
-        self._T.quitDialog = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ExitConfirm")
-        if isvalid(self._T.quitDialog) then self._T.quitDialog.Enable = false end
-        for _, action in ipairs({"ExitButton", "Yes", "No"}) do
-            local name = action
-            local path = name == "ExitButton" and "/ui/BaramHUD/Frame/ExitButton" or "/ui/BaramHUD/Frame/ExitConfirm/Window/" .. name
-            local button = _EntityService:GetEntityByPath(path)
-            if isvalid(button) then
-                local link = button:ConnectEvent(UITouchDownEvent, function(event)
-                    if event.TouchId ~= -1 and event.TouchId <= 0 then return end
-                    if name == "ExitButton" then self:BeginConfirmation("quit")
-                    else self:AnswerQuit(name == "Yes") end
-                end)
-                table.insert(self._T.inventoryLinks, {entity = button, link = link})
-            end
-        end
         self._T.inventoryRows = {}
         self.InventoryPage = 1
         self.ActivePane = "inventory"
@@ -95,7 +76,7 @@ script BaramInput extends Logic
                 local row = self._T.inventoryWindow:GetChildByName("Row" .. tostring(i))
                 self._T.inventoryRows[i] = row
                 local link = row:ConnectEvent(UITouchDownEvent, function(event)
-                    self:ClickInventoryRow(rowIndex, event.TouchId)
+                    if event.TouchId == -1 or event.TouchId > 0 then self:InspectInventoryRow(rowIndex) end
                 end)
                 table.insert(self._T.inventoryLinks, {entity = row, link = link})
             end
@@ -141,8 +122,6 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void Close()
-        _BaramUserList:Close()
-        if isvalid(self._T.quitDialog) then self._T.quitDialog.Enable = false end
         -- Release both dialog layers and the shared gameplay input guard.
         local wasBlocked = self:Blocked()
         _BaramNpcServices:Close()
@@ -238,20 +217,15 @@ script BaramInput extends Logic
     end
 
     @ExecSpace("ClientOnly")
-    method boolean IsEquippedSlot(table state, integer slot)
-        -- Equipment is displayed in the character window, not in the carried-item list.
-        return slot > 0 and (state.equip == slot or state.aux1 == slot or state.aux2 == slot)
-    end
-
-    @ExecSpace("ClientOnly")
     method string InventoryText()
         local state = _BaramWorld.LocalState
         local lines = {}
         for i = 1, _BaramWorldData.InventoryCapacity do
             local item = state.items ~= nil and state.items[tostring(i)] or nil
-            if item ~= nil and not self:IsEquippedSlot(state, i) then
+            if item ~= nil then
                 local data = _BaramWorldData:Item(item.id)
                 local label = _BaramWorldData:InventoryLetter(i) .. ": " .. data.name .. " x" .. tostring(item.count)
+                if state.equip == i then label = label .. " [무장]" end
                 if data.durability > 0 then label = label .. " (" .. tostring(item.durability) .. ")" end
                 table.insert(lines, label)
             end
@@ -287,6 +261,7 @@ script BaramInput extends Logic
         self.ActivePane = "skills"
         self.InventoryPage = 1
         self:RefreshInventory()
+        self:AskSpells()
         log("[BaramSkillsUI] original SPELLINV opened")
     end
 
@@ -317,7 +292,7 @@ script BaramInput extends Logic
         local items = state.items or {}
         local slots = {}
         for i = 1, _BaramWorldData.InventoryCapacity do
-            if items[tostring(i)] ~= nil and not self:IsEquippedSlot(state, i) then table.insert(slots, i) end
+            if items[tostring(i)] ~= nil then table.insert(slots, i) end
         end
         self._T.inventorySlots = slots
         self._T.inventoryPages = math.max(1, math.ceil(#slots / 15))
@@ -433,31 +408,6 @@ script BaramInput extends Logic
     end
 
     @ExecSpace("ClientOnly")
-    method void ClickInventoryRow(integer rowIndex, integer touchId)
-        if self.ActivePane ~= "inventory" or not self._T.inventory.Enable or _BaramChatRelay.IsEditing then return end
-        if touchId == -3 then
-            self._T.lastItemClick = nil
-            self:InspectInventoryRow(rowIndex)
-            return
-        end
-        if touchId ~= -1 and touchId < 1 then return end
-        local slot = (self._T.inventorySlots or {})[(self.InventoryPage - 1) * 15 + rowIndex]
-        local item = slot ~= nil and (_BaramWorld.LocalState.items or {})[tostring(slot)] or nil
-        if item == nil then self._T.lastItemClick = nil return end
-        local now = _UtilLogic.ElapsedSeconds
-        local previous = self._T.lastItemClick
-        self._T.lastItemClick = {slot=slot, id=item.id, time=now, icons=self.InventoryIcons, page=self.InventoryPage}
-        if previous == nil or previous.slot ~= slot or previous.id ~= item.id or previous.icons ~= self.InventoryIcons or previous.page ~= self.InventoryPage or now - previous.time > 0.35 then return end
-        self._T.lastItemClick = nil
-        self._T.inventoryWindow:GetChildByName("Tooltip").Enable = false
-        if self.Mode ~= "" then return end
-        local data = _BaramWorldData:Item(item.id)
-        if data == nil then return end
-        _BaramWorld:ItemAction(data.type == 0 and "equip" or "use", slot, 0)
-        log("[BaramInventoryUI] double-click use slot=" .. tostring(slot))
-    end
-
-    @ExecSpace("ClientOnly")
     method void InspectInventoryRow(integer rowIndex)
         -- The original 0x1C click requests a description without closing the bag.
         if self.ActivePane ~= "inventory" then return end
@@ -469,8 +419,7 @@ script BaramInput extends Logic
         local item = items[tostring(slot)]
         local data = _BaramWorldData:Item(item.id)
         if data == nil then return end
-        local lines = {data.name .. "  (" .. tostring(item.count) .. "개)"}
-        if data.description ~= "-" and data.description ~= "" then table.insert(lines, data.description) end
+        local lines = {data.name, data.description}
         if data.tooltip ~= "-" then
             local description, replacements = string.gsub(data.tooltip, "\\n", "\n")
             table.insert(lines, description)
@@ -478,7 +427,7 @@ script BaramInput extends Logic
         if data.durability > 0 then table.insert(lines, "내구도 " .. tostring(item.durability) .. " / " .. tostring(data.durability)) end
         local tooltip = self._T.inventoryWindow:GetChildByName("Tooltip")
         tooltip:GetChildByName("Text").TextGUIRendererComponent.Text = table.concat(lines, "\n")
-        tooltip.UITransformComponent.anchoredPosition = Vector2(-232, -math.min(120, 36 + (rowIndex - 1) * 13))
+        tooltip.UITransformComponent.anchoredPosition = Vector2(5, -math.min(168, 46 + (rowIndex - 1) * 13))
         tooltip.Enable = true
         self.InventoryTipSeconds = 10
         log("[BaramInventoryUI] inspect slot=" .. tostring(slot) .. " letter=" .. _BaramWorldData:InventoryLetter(slot))
@@ -498,7 +447,6 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void EndCommand()
-        if isvalid(self._T.quitDialog) then self._T.quitDialog.Enable = false end
         -- Release command selection while keeping the inventory/status pane open.
         self.Mode = ""
         self.Pending = ""
@@ -544,16 +492,6 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void BeginConfirmation(string mode)
-        if mode == "quit" then
-            if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing or _BaramTrade.SessionId ~= "" then return end
-            if not isvalid(self._T.quitDialog) then return end
-            self:Close()
-            _BaramProfile:Close()
-            self.Mode = "quit"
-            self._T.quitDialog.Enable = true
-            log("[BaramExit] confirmation opened")
-            return
-        end
         -- STR.RES lines 4 and 36: one-line Y/N questions for quit and save.
         self.Mode = mode
         self.Pending = ""
@@ -561,12 +499,49 @@ script BaramInput extends Logic
         self:SetCommandPrompt(mode == "quit" and "정말 끝냅니까? (Y/N) " or "개인정보를 서버에 저장 할까요? (Y/N) ")
     end
 
+    -- Shift+Z: 원본의 "쓸 마법은?" 한 줄 물음. 창을 안 열고 글자 하나로 바로 쏜다.
     @ExecSpace("ClientOnly")
-    method void AnswerQuit(boolean accepted)
-        if self.Mode ~= "quit" then return end
-        self:EndCommand()
-        log("[BaramExit] accepted=" .. tostring(accepted))
-        if accepted then _BaramWorld:LeaveToTitle() end
+    method void BeginSpell()
+        if not _BaramEntryFlow.InWorld then return end
+        self.Pending = "spell"
+        self.Mode = "command"
+        self.FirstSlot = 0
+        if isvalid(self._T.window) then self._T.window.Enable = false end
+        self:SetCommandPrompt("쓸 마법은? [" .. self:SpellChoices() .. " ?] ")
+        self:AskSpells()
+    end
+
+    -- 주문 목록 받아오기. 마법 엔진이 클라이언트 쪽에 안 올라와 있어도 창은 열려야 하므로
+    -- 여기서 막고, 왜 비었는지는 한 번만 알려준다.
+    @ExecSpace("ClientOnly")
+    method void AskSpells()
+        local ok = pcall(function() _BaramScriptRuntime:RequestSpells() end)
+        if ok then return end
+        if self._T.spellWarned then return end
+        self._T.spellWarned = true
+        self:Notice("주문 목록을 못 받았습니다. 마법 엔진이 클라이언트에 안 올라왔습니다.")
+    end
+
+    @ExecSpace("ClientOnly")
+    method string SpellChoices()
+        local parts = {}
+        for slot = 1, 52 do
+            if self.SkillSlots[tostring(slot)] ~= nil then
+                table.insert(parts, _BaramWorldData:InventoryLetter(slot))
+            end
+        end
+        return table.concat(parts, "")
+    end
+
+    -- 서버가 주문 목록을 보내오면 이미 떠 있는 물음과 창을 다시 그린다.
+    @ExecSpace("ClientOnly")
+    method void SpellsArrived()
+        if self.Pending == "spell" then
+            self:SetCommandPrompt("쓸 마법은? [" .. self:SpellChoices() .. " ?] ")
+        end
+        if isvalid(self._T.inventory) and self._T.inventory.Enable and self.ActivePane == "skills" then
+            self:RefreshInventory()
+        end
     end
 
     @ExecSpace("ClientOnly")
@@ -632,8 +607,35 @@ script BaramInput extends Logic
         self:Show("키 도움말 " .. tostring(self.HelpPage) .. "/2", pages[self.HelpPage], "← →: 페이지   Esc: 닫기")
     end
 
+    -- '+'(아는 주문) 키 이름이 환경에 따라 갈린다. KeyboardKey.Equals 가 없는 이름이면
+    -- 비교가 조용히 거짓이 돼서 키가 죽은 것처럼 보인다. 있는 이름만 모아 두고 견준다.
+    @ExecSpace("ClientOnly")
+    method boolean IsSpellBookKey(KeyboardKey key)
+        if self._T.bookKeys == nil then
+            local keys = {}
+            local function add(getter)
+                local ok, value = pcall(getter)
+                if ok and value ~= nil then table.insert(keys, value) end
+            end
+            add(function() return KeyboardKey.Equals end)
+            add(function() return KeyboardKey.Equal end)
+            add(function() return KeyboardKey.Plus end)
+            add(function() return KeyboardKey.KeypadPlus end)
+            add(function() return KeyboardKey.CastFrom("=") end)
+            add(function() return KeyboardKey.CastFrom("+") end)
+            self._T.bookKeys = keys
+        end
+        for _, value in ipairs(self._T.bookKeys) do
+            if key == value then return true end
+        end
+        return false
+    end
+
     @ExecSpace("ClientOnly")
     method void HandleKey(KeyboardKey key)
+        -- F9 를 켜두면 누른 키 이름이 그대로 뜬다. 어떤 키가 안 잡히는지
+        -- 짐작하지 말고 보라고 둔 것이다.
+        if self.ShowTiming then self:Notice("키: " .. tostring(key)) end
         -- Route inventory keys only after the title and chat input guards.
         if _BaramTrade.SessionId ~= "" then _BaramTradeUI:Key(key) return end
         if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
@@ -643,19 +645,11 @@ script BaramInput extends Logic
         local ctrl = _InputService:IsKeyPressed(KeyboardKey.LeftControl) or _InputService:IsKeyPressed(KeyboardKey.RightControl)
         local alt = _InputService:IsKeyPressed(KeyboardKey.LeftAlt) or _InputService:IsKeyPressed(KeyboardKey.RightAlt)
         if key == KeyboardKey.Escape then
-            -- Codex owns its nested popup dismissal; do not also close the parent here.
-            if self.Mode == "codex" then return end
-            if self.Mode == "users" then self:Close()
-            elseif self.Mode == "command" or self.Mode == "quit" or self.Mode == "save" then self:EndCommand()
+            if self.Mode == "command" or self.Mode == "quit" or self.Mode == "save" then self:EndCommand()
             else self:Close() _BaramProfile:Select(_UserService.LocalPlayer) end
             return
         end
         if self.Mode == "help" and (key == KeyboardKey.LeftArrow or key == KeyboardKey.RightArrow) then self.HelpPage = 3 - self.HelpPage self:Help() return end
-        if self.Mode == "quit" then
-            if key == KeyboardKey.Y then self:AnswerQuit(true)
-            elseif key == KeyboardKey.N then self:AnswerQuit(false) end
-            return
-        end
         if self.Mode == "quit" or self.Mode == "save" then
             if key == KeyboardKey.Y then
                 local action = self.Mode
@@ -694,6 +688,26 @@ script BaramInput extends Logic
                 end
                 return
             end
+            if self.Pending == "spell" then
+                if key == KeyboardKey.Question or (key == KeyboardKey.Slash and shift) then
+                    for index = 1, 52 do
+                        local spell = self.SkillSlots[tostring(index)]
+                        if spell ~= nil then
+                            self:Notice(_BaramWorldData:InventoryLetter(index) .. ": " .. spell.name)
+                        end
+                    end
+                    return
+                end
+                if slot > 0 then
+                    if self.SkillSlots[tostring(slot)] == nil then
+                        self:Notice("그 칸엔 주문이 없습니다.")
+                        return
+                    end
+                    self:EndCommand()
+                    _BaramScriptRuntime:CastSlot(slot)
+                end
+                return
+            end
             if key == KeyboardKey.Question or (key == KeyboardKey.Slash and shift) then self:ShowCommandChoices() return end
             if self.Pending == "unequip" then
                 if key == KeyboardKey.W and not shift then
@@ -723,15 +737,6 @@ script BaramInput extends Logic
         if key == KeyboardKey.F6 then self.HearShouts = not self.HearShouts _BaramChatChannels:SetListening(self.HearWhispers, self.HearShouts) self:Notice(self.HearShouts and "외치기듣기  : ON" or "외치기듣기  : OFF") return end
         if key == KeyboardKey.F7 then self:CanvasTest() return end
         if key == KeyboardKey.F8 then self:CanvasSwap() return end
-        if key == KeyboardKey.F10 then
-            -- 눈으로 보면서 맞추는 게 빠르다. 마음에 드는 값이 나오면 그 숫자를 기본값으로 박으면 된다.
-            local steps = {0.02, 0.03, 0.04, 0.06, 0.09, 0.12, 0.18}
-            local index = 1
-            for i, v in ipairs(steps) do if math.abs(v - self.CreatureLabelScale) < 0.001 then index = i % #steps + 1 break end end
-            self.CreatureLabelScale = steps[index]
-            self:Notice("이름표 크기 " .. tostring(self.CreatureLabelScale))
-            return
-        end
         if key == KeyboardKey.F9 then self.ShowTiming = not self.ShowTiming self:Notice(self.ShowTiming and "응답시간 보기  : ON" or "응답시간 보기  : OFF") return end
         if key == KeyboardKey.F12 then self.FastWalk = not self.FastWalk self:Notice(self.FastWalk and "빠른 이동 켬" or "빠른 이동 끔") return end
         if self.Mode ~= "" then
@@ -778,7 +783,10 @@ script BaramInput extends Logic
                     if isvalid(chat) then chat:OpenGroupInput() end
                 end
             end
-        elseif key == KeyboardKey.Equals or key == KeyboardKey.Plus or (key == KeyboardKey.Z and shift) or (key == KeyboardKey.C and shift) then
+        elseif key == KeyboardKey.Z and shift then
+            -- 원본 도움말대로 갈랐다. + 는 "아는 주문"(창), Shift+Z 는 "주문 선택"(물음).
+            self:BeginSpell()
+        elseif self:IsSpellBookKey(key) or (key == KeyboardKey.C and shift) then
             self:OpenSkills()
         elseif key == KeyboardKey.Q then self:BeginConfirmation("quit")
         elseif key == KeyboardKey.Quote or key == KeyboardKey.DoubleQuote or key == KeyboardKey.Exclaim or (key == KeyboardKey.Alpha1 and shift) then
@@ -797,7 +805,6 @@ script BaramInput extends Logic
     @ExecSpace("ClientOnly")
     method void RequestMove(integer direction, boolean turnOnly)
         if self.MovePending or self.MoveWait > 0 or _BaramChatRelay:IsInputBlocked() then return end
-        if _UtilLogic.ElapsedSeconds < (self._T.nextMoveAt or 0) then return end
         local player = _UserService.LocalPlayer
         if not isvalid(player) then return end
         ---@type BaramPlayerVisual
@@ -806,14 +813,21 @@ script BaramInput extends Logic
         self.MovePending = true
         self.ReplyWait = 0
         self.PendingDirection = direction
+        self._T.turnRequest = not turnOnly and visual.Facing ~= direction * 3 and self.TurnedTo ~= direction
+        self._T.earlyPrediction = false
         self._T.moveSentAt = _UtilLogic.ElapsedSeconds
-        self._T.nextMoveAt = self._T.moveSentAt + _BaramWorldData.WalkFrameSeconds * 4
         if self.TraceMovement then
             visual._T.measureStart = self._T.moveSentAt
-            log("[MoveTrace] request direction=" .. tostring(direction) .. " turn=" .. tostring(turnOnly))
+            log("[MoveTrace] request direction=" .. tostring(direction) .. " turn=" .. tostring(self._T.turnRequest))
         end
-        -- Predict direction changes immediately; the server now turns and moves together.
-        if self.FastWalk and not turnOnly then visual:PredictMove(direction) end
+        -- 방향을 꺾으면 서버가 '돌기만' 하고 결과 2 를 준다(원작 0x4D89C0).
+        -- 그때 바뀐 Facing 은 @Sync 라 한 박자 뒤에야 도착한다. 그동안 예측이
+        -- 안 걸려서 꺾은 뒤 첫 걸음이 왕복 두 번을 서서 기다렸다.
+        -- 서버가 이미 돌려놨다고 알려준 방향이면 Sync 를 기다리지 않고 예측한다.
+        if self.FastWalk and not turnOnly
+            and (visual.Facing == direction * 3 or self.TurnedTo == direction) then
+            visual:PredictMove(direction)
+        end
         _BaramWorld:Move(direction, turnOnly)
     end
 
@@ -836,24 +850,31 @@ script BaramInput extends Logic
         end
         if result == 1 then
             self.TurnedTo = self.PendingDirection
-            -- The reply frame must not subtract delta twice and send the next step early.
-            self.MoveWait = 0
+            self.MoveWait = math.max(0, _BaramWorldData.WalkFrameSeconds * 4 - self.ReplyWait)
         else
             -- 2 = 방향만 바꿨다. 0 = 막혔다.
+            -- 2 면 서버가 그 방향으로 돌려놓은 게 확실하니 다음 걸음은 바로 예측한다.
             self.TurnedTo = (result == 2) and self.PendingDirection or -1
             self.MoveWait = result == 2 and 0 or _BaramWorldData.InputPollSeconds
-            self._T.nextMoveAt = 0
             local player = _UserService.LocalPlayer
             if isvalid(player) then
                 ---@type BaramPlayerVisual
                 local visual = player:GetComponent("script.BaramPlayerVisual")
-                if isvalid(visual) then visual:CancelPrediction() end
+                local keys = {KeyboardKey.UpArrow, KeyboardKey.RightArrow, KeyboardKey.DownArrow, KeyboardKey.LeftArrow}
+                local continuing = result == 2 and self._T.earlyPrediction and _InputService:IsKeyPressed(keys[self.PendingDirection + 1])
+                if isvalid(visual) and not continuing then visual:CancelPrediction() end
             end
         end
     end
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        -- 접속하고 한 번만 주문 목록을 받아둔다. 안 받아두면 Shift+Z 물음에
+        -- 고를 글자가 안 뜬다.
+        if _BaramEntryFlow.InWorld and not self._T.spellsAsked then
+            self._T.spellsAsked = true
+            self:AskSpells()
+        end
         -- Refresh only after a new server snapshot while the bag is visible.
         if isvalid(self._T.inventory) and self._T.inventory.Enable then
             if not _BaramEntryFlow.InWorld then self:Close()
@@ -875,6 +896,20 @@ script BaramInput extends Logic
         self.MoveWait = math.max(0, self.MoveWait - delta)
         if self.MovePending then
             self.ReplyWait = self.ReplyWait + delta
+            -- Original 20ms held-key polling remains; only local presentation is speculative.
+            -- The turn RPC and all server collision/cooldown checks remain authoritative.
+            if self.FastWalk and self._T.turnRequest and not self._T.earlyPrediction
+                and self.ReplyWait >= _BaramWorldData.InputPollSeconds and not _BaramChatRelay:IsInputBlocked()
+                and not _InputService:IsKeyPressed(KeyboardKey.LeftShift) and not _InputService:IsKeyPressed(KeyboardKey.RightShift) then
+                local keys = {KeyboardKey.UpArrow, KeyboardKey.RightArrow, KeyboardKey.DownArrow, KeyboardKey.LeftArrow}
+                if _InputService:IsKeyPressed(keys[self.PendingDirection + 1]) then
+                    local player = _UserService.LocalPlayer
+                    if isvalid(player) then
+                        local visual = player:GetComponent("script.BaramPlayerVisual")
+                        if isvalid(visual) then visual:PredictMove(self.PendingDirection) self._T.earlyPrediction = true end
+                    end
+                end
+            end
             if self.ReplyWait > 2 then self:MoveResult(0) end
             return
         end
