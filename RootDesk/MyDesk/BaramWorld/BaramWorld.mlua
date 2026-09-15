@@ -220,7 +220,6 @@ script BaramWorld extends Logic
         r.nextMove = self.Clock + _BaramWorldData.WalkFrameSeconds * 4
         r.dialog = nil
         visual.Step = visual.Step % 2 + 1
-        player.PlayerComponent:SetPosition(_BaramWorldData:Position(x, y))
         for _, p in ipairs(_BaramWorldData.Portals) do
             if p.from == s.map and p.x == x and p.y == y and s.level >= p.minLevel and s.level <= p.maxLevel then
                 self:Place(userId, p.to, p.toX, p.toY)
@@ -228,6 +227,8 @@ script BaramWorld extends Logic
                 return 1
             end
         end
+        -- A portal sends only the destination teleport, never an old-map position first.
+        player.PlayerComponent:SetPosition(_BaramWorldData:Position(x, y))
         self:Changed(userId)
         self:Snapshot(userId)
         return 1
@@ -243,8 +244,21 @@ script BaramWorld extends Logic
 
     @ExecSpace("ServerOnly")
     method void Snapshot(string userId)
+        -- Publish only display values through the existing player replication path.
         local r = self._T.users[userId]
-        if r ~= nil then self:ReceiveState(_HttpService:JSONEncode(r.state), userId) end
+        if r ~= nil then
+            local player = _UserService:GetUserEntityByUserId(userId)
+            if isvalid(player) then
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                if isvalid(visual) then
+                    visual.DisplayHp = r.state.hp
+                    visual.DisplayMaxHp = r.state.maxHp
+                    visual.DisplayLevel = r.state.level
+                    visual.DisplayName = player.PlayerComponent.Nickname
+                end
+            end
+            self:ReceiveState(_HttpService:JSONEncode(r.state), userId)
+        end
     end
 
     @ExecSpace("Client")
@@ -455,7 +469,8 @@ script BaramWorld extends Logic
             self:Changed(userId)
             self:ShowDrop(dropped)
             self:Notice(userId, data.name .. " " .. tostring(count) .. "개를 내려놓았습니다.")
-            if action == "throw" then self:PlayUserAction(userId, 2, 0.15) end
+            if action == "throw" then self:PlayUserAction(userId, 2, 0.15)
+            else self:PlayUserAction(userId, 4, 0.3) end
         else return end
         self:Changed(userId)
         self:Snapshot(userId)
@@ -851,6 +866,8 @@ script BaramWorld extends Logic
         if r.tradeBusy then r.deferredDamage = (r.deferredDamage or 0) + amount return end
         if r.trade ~= nil then _BaramTrade:CancelFor(userId, "공격받아 교환이 취소되었습니다.") end
         r.state.hp = math.max(0, r.state.hp - amount)
+        local actor = _UserService:GetUserEntityByUserId(userId)
+        if isvalid(actor) and isvalid(actor.CurrentMap) then _BaramHealthBars:ShowHit(actor, r.state.hp, r.state.maxHp, actor.CurrentMap.Id) end
         self:PlayUserAction(userId, 9, 0.15)
         if r.state.hp == 0 then
             r.state.hp = 1
@@ -903,10 +920,11 @@ script BaramWorld extends Logic
             table.insert(r.deferredKills, {kind = kind, x = x, y = y})
             return
         end
-        r.state.exp = r.state.exp + (kind == 1 and 10 or 5)
+        local gained = kind == 1 and 10 or 5
         local oldLevel = r.state.level
-        local exp = _BaramLevelData.SourceExperience[0]
-        while r.state.level < 5 and r.state.exp >= exp[r.state.level + 1] do r.state.level = r.state.level + 1 end
+        local experienceMessage = _BaramLevelData:GainMessage(r.state.jobId or 0, oldLevel, gained)
+        r.state.exp = r.state.exp + gained
+        r.state.level = _BaramLevelData:ResolveLevel(r.state.jobId or 0, oldLevel, r.state.exp)
         if r.state.level > oldLevel then self:Notice(userId, "레벨 " .. tostring(r.state.level) .. "이 되었습니다.") end
         if kind == 1 then
             -- Literal original branch: 300/10000 for 100; three extra DROPITEM2 rolls.
@@ -918,7 +936,7 @@ script BaramWorld extends Logic
         r.state.guide = math.max(1, r.state.guide)
         self:Changed(userId)
         self:Snapshot(userId)
-        self:Notice(userId, "처치! 경험치 " .. tostring(kind == 1 and 10 or 5) .. " 획득")
+        self:Notice(userId, experienceMessage)
         log("[BaramCombat] kill kind=" .. tostring(kind) .. " exp=" .. tostring(r.state.exp))
     end
 

@@ -1,270 +1,753 @@
-//db
+@import: db/const_db.txt
 @import: db/script_essential.txt
 @import: db/script_timer.txt
-@import: db/broadcast.txt
+@import: db/user_title.txt
+@import: db_test/test.txt
 
-//function
-@import: function/Remainder_Functions.txt
-@import: function/Monster_Functions.txt
-@import: function/Server_Functions.txt
-@import: function/Attack_Functions.txt
-@import: function/LOG.txt
-//item
-@import: item/기타/착용스크립트.txt
-@import: item/기타/사용스크립트.txt
-@import: item/갑옷/착용스크립트.txt
-@import: item/갑옷/사용스크립트.txt
-@import: item/무기/착용스크립트.txt
-@import: item/무기/사용스크립트.txt
-@import: item/반지/착용스크립트.txt
-@import: item/반지/사용스크립트.txt
-@import: item/방패/착용스크립트.txt
-@import: item/방패/사용스크립트.txt
-@import: item/투구/착용스크립트.txt
-@import: item/투구/사용스크립트.txt
-@import: item/보조/착용스크립트.txt
-@import: item/보조/사용스크립트.txt
+/* --------------------------------------------------
+		db_function
+-------------------------------------------------- */
+// ->		USER_FUNCTIONS			<- //
 
-//magic
-@import: magic/아이템마법/격.txt
-@import: magic/일반마법/공통/기타.txt
-@import: magic/일반마법/공통/보조.txt
-@import: magic/일반마법/공통/전투.txt
-@import: magic/일반마법/공통/회복.txt
-@import: magic/일반마법/전사/기타.txt
-@import: magic/일반마법/전사/보조.txt
-@import: magic/일반마법/전사/전투.txt
-@import: magic/일반마법/전사/회복.txt
-@import: magic/일반마법/도적/기타.txt
-@import: magic/일반마법/도적/보조.txt
-@import: magic/일반마법/도적/전투.txt
-@import: magic/일반마법/도적/회복.txt
-@import: magic/일반마법/술사/기타.txt
-@import: magic/일반마법/술사/보조.txt
-@import: magic/일반마법/술사/전투.txt
-@import: magic/일반마법/술사/회복.txt
-@import: magic/일반마법/도사/기타.txt
-@import: magic/일반마법/도사/보조.txt
-@import: magic/일반마법/도사/전투.txt
-@import: magic/일반마법/도사/회복.txt
-@import: magic/일반마법/운영자/기타.txt
-@import: magic/일반마법/운영자/보조.txt
-@import: magic/일반마법/운영자/전투.txt
-@import: magic/일반마법/운영자/회복.txt
-@import: magic/기타마법/무브.txt
-@import: magic/기타마법/포획.txt
-@import: magic/기타마법/보조.txt
-@import: magic/일반마법/추가마법/도적용.txt
-@import: magic/일반마법/추가마법/술사용.txt
-@import: magic/일반마법/추가마법/전사용.txt
-@import: magic/일반마법/추가마법/도사용.txt
+@import: db_func/U_Attribute.txt
+@import: db_func/U_Check.txt
+@import: db_func/U_Common.txt
+@import: db_func/U_Donation.txt
+@import: db_func/U_Equip.txt
+@import: db_func/U_ETC.txt
+@import: db_func/U_Floor.txt
+@import: db_func/U_Hongbo.txt
+@import: db_func/U_Item.txt
+@import: db_func/U_Magic.txt
+@import: db_func/U_Move.txt
+@import: db_func/U_Quest.txt
+@import: db_func/U_Say.txt
+@import: db_func/U_Tempcode.txt
+@import: db_func/U_Warp.txt
+@import: db_func/Utility_Func.txt
 
-//monster
-@import: monster/환상의섬/가릉도해변.txt
-@import: monster/환상의섬/고균도복합상점.txt
-@import: monster/환상의섬/난파선.txt
-@import: monster/환상의섬/열대림.txt
-@import: monster/환상의섬/유적.txt
-@import: monster/환상의섬/절벽.txt
-@import: monster/환상의섬/폐허동굴.txt
-@import: monster/환상의섬/화산굴.txt
-@import: monster/한두고개/한고개.txt
-@import: monster/한두고개/두고개.txt
-@import: monster/한두고개/세고개.txt
-@import: monster/한두고개/네고개.txt
-@import: monster/중국/고양이굴.txt
-@import: monster/중국/괴성굴.txt
-@import: monster/중국/기린굴.txt
-@import: monster/중국/남양,남경.txt
-@import: monster/중국/뇌신굴.txt
-@import: monster/중국/무슈후슈굴.txt
-@import: monster/중국/살쾡이굴.txt
-@import: monster/중국/선비족.txt
-@import: monster/중국/악어굴.txt
-@import: monster/중국/염유굴.txt
-@import: monster/중국/장안성강속.txt
-@import: monster/중국/진시황릉.txt
-@import: monster/중국/천구굴.txt
-@import: monster/중국/천리마굴.txt
-@import: monster/중국/코뿔소굴.txt
-@import: monster/중국/후굴.txt
-@import: monster/중국/흉노족.txt
-@import: monster/일본/늑대인간굴.txt
-@import: monster/일본/무사의방.txt
-@import: monster/일본/문려의방.txt
-@import: monster/일본/문지기의방.txt
-@import: monster/일본/백향의방.txt
-@import: monster/일본/본성입구.txt
-@import: monster/일본/비밀통로.txt
-@import: monster/일본/선녀의방.txt
-@import: monster/일본/숲지대.txt
-@import: monster/일본/유성지의방.txt
-@import: monster/일본/이가닌자집.txt
-@import: monster/일본/파괴왕의방.txt
-@import: monster/일본/해골왕의방.txt
-@import: monster/일본/해안가.txt
-@import: monster/일본/표신궁.txt
-@import: monster/용궁/게장군던전.txt
-@import: monster/용궁/문어장군던전.txt
-@import: monster/용궁/복어장군던전.txt
-@import: monster/용궁/상어장군던전.txt
-@import: monster/용궁/인어장군던전.txt
-@import: monster/용궁/청의태자던전.txt
-@import: monster/용궁/해마장군던전.txt
-@import: monster/용궁/해파리장군던전.txt
-@import: monster/신극지방/신극지방.txt
-@import: monster/산적굴/산적굴.txt
-@import: monster/북방대초원/초급몬스터.txt
-@import: monster/북방대초원/중급몬스터.txt
-@import: monster/북방대초원/고급몬스터.txt
-@import: monster/북방대초원/최고급몬스터.txt
-@import: monster/부여고구려성/가재전갈굴.txt
-@import: monster/부여고구려성/거미사마귀굴.txt
-@import: monster/부여고구려성/곰호랑이굴.txt
-@import: monster/부여고구려성/도깨비굴.txt
-@import: monster/부여고구려성/돼지굴.txt
-@import: monster/부여고구려성/뱀굴.txt
-@import: monster/부여고구려성/부여고구려성.txt
-@import: monster/부여고구려성/비밀세작의집.txt
-@import: monster/부여고구려성/사슴굴.txt
-@import: monster/부여고구려성/여우굴.txt
-@import: monster/부여고구려성/유령굴.txt
-@import: monster/부여고구려성/인형굴.txt
-@import: monster/부여고구려성/자호굴.txt
-@import: monster/부여고구려성/쥐굴.txt
-@import: monster/부여고구려성/초보사냥터.txt
-@import: monster/부여고구려성/해골굴.txt
-@import: monster/부여고구려성/흉가굴.txt
-@import: monster/부여고구려성/흑령굴.txt
-@import: monster/부여고구려성/흑해골굴.txt
-@import: monster/미궁/미궁.txt
-@import: monster/도삭산/1~50층.txt
-@import: monster/도삭산/51~100층.txt
-@import: monster/도삭산/101~150층.txt
-@import: monster/도삭산/151~200층.txt
-@import: monster/도삭산/201~250층.txt
-@import: monster/도삭산/251~300층.txt
-@import: monster/도삭산/301~350층.txt
-@import: monster/도삭산/351~400층.txt
-@import: monster/도삭산/401~450층.txt
-@import: monster/도삭산/451~500층.txt
-@import: monster/도삭산/501~550층.txt
-@import: monster/도삭산/551~600층.txt
-@import: monster/도삭산/651~700층.txt
-@import: monster/도삭산/701~750층.txt
-@import: monster/도삭산/801~1000층.txt
-@import: monster/길림성/길림성.txt
-@import: monster/길림성/승급던전.txt
-@import: monster/극지방/극지방.txt
-@import: monster/12지신유적/개왕굴.txt
-@import: monster/12지신유적/닭왕굴.txt
-@import: monster/12지신유적/돼지왕굴.txt
-@import: monster/12지신유적/말왕굴.txt
-@import: monster/12지신유적/뱀왕굴.txt
-@import: monster/12지신유적/소왕굴.txt
-@import: monster/12지신유적/수화룡의방.txt
-@import: monster/12지신유적/양왕굴.txt
-@import: monster/12지신유적/용굴.txt
-@import: monster/12지신유적/용왕의침소.txt
-@import: monster/12지신유적/원숭이왕굴.txt
-@import: monster/12지신유적/쥐왕굴.txt
-@import: monster/12지신유적/토끼왕굴.txt
-@import: monster/12지신유적/호굴.txt
-@import: monster/4차승급몬스터/광동성신전.txt
-@import: monster/4차승급몬스터/국내성신전.txt
-@import: monster/4차승급몬스터/부여성신전.txt
-@import: monster/4차승급몬스터/장안성신전.txt
-@import: monster/4차승급몬스터/일본신궁신전.txt
-@import: monster/5차승급몬스터/5차승급몬스터.txt
-@import: monster/수로/지하수로.txt
-@import: monster/신규사냥터/설원.txt
-@import: monster/신규사냥터/백두촌.txt
-@import: monster/신규사냥터/백두봉.txt
-@import: monster/신규사냥터/대초원.txt
-@import: monster/신규사냥터/비밀산적.txt
-@import: monster/신규사냥터/팔요동굴.txt
-@import: monster/신규사냥터/귀문혈마동.txt
-@import: monster/신규사냥터/흉선연합.txt
-@import: monster/신규사냥터/대도둑의집.txt
-@import: monster/신규사냥터/메마른섬.txt
-@import: monster/신규사냥터/보스레이드.txt
-@import: monster/신규사냥터/지하감옥.txt
-@import: monster/신규사냥터/건룡.txt
-@import: monster/신규사냥터/지옥.txt
-@import: monster/이벤트/사냥이벤트.txt
-@import: monster/6차승급몬스터/이무기.txt
-@import: monster/7차승급몬스터/7차몹.txt
-@import: monster/추가몹마법.txt
-@import: monster/구양성/구양성.txt
-@import: monster/진원관/진원관.txt
+@import: db_func/GM_Module_Func.txt
 
-//npc
-@import: npc/공통/일본무기.txt
-@import: npc/공통/축구.txt
-@import: npc/공통/중국무기.txt
-@import: npc/12지신의유적/상점.txt
-@import: npc/12지신의유적/일반.txt
-@import: npc/공통/퀴즈이벤트.txt
-@import: npc/공통/문파옷포목상.txt
-@import: npc/공통/메마른섬.txt
-@import: npc/공통/세시마을.txt
-@import: npc/공통/이벤트상인.txt
-@import: npc/공통/휴식의방.txt
-@import: npc/공통/교환권.txt
-@import: npc/공통/홍보관련.txt
-@import: npc/공통/스탬프.txt
-@import: npc/공통/기간제.txt
-@import: npc/공통/용의방패.txt
-@import: npc/공통/팔세지도.txt
-@import: npc/공통/엔피시이벤트.txt
-@import: npc/공통/문파관련.txt
-@import: npc/공통/성황.txt
-@import: npc/공통/직업.txt
-@import: npc/공통/영혼사.txt
-@import: npc/공통/floor_script.txt
-@import: npc/공통/일반.txt
-@import: npc/공통/레이드교환.txt
-@import: npc/공통/보스레이드.txt
-@import: npc/공통/레이드.txt
-@import: npc/국내성/상점.txt
-@import: npc/국내성/일반.txt
-@import: npc/낙랑/일반.txt
-@import: npc/도삭산/상점.txt
-@import: npc/도삭산/일반.txt
-@import: npc/부여성/상점.txt
-@import: npc/부여성/일반.txt
-@import: npc/북방대초원/상점.txt
-@import: npc/북방대초원/일반.txt
-@import: npc/극지방/상점.txt
-@import: npc/극지방/일반.txt
-@import: npc/용궁/상점.txt
-@import: npc/용궁/일반.txt
-@import: npc/일본/상점.txt
-@import: npc/일본/일반.txt
-@import: npc/중국/상점.txt
-@import: npc/중국/일반.txt
-@import: npc/천상계/랑구륜.txt
-@import: npc/천상계/부구륜.txt
-@import: npc/천상계/선구륜.txt
-@import: npc/천상계/은구륜.txt
-@import: npc/천상계/정구륜.txt
-@import: npc/천상계/천성랑.txt
-@import: npc/천상계/천성현.txt
-@import: npc/천상계/무타.txt
-@import: npc/천상계/5차.txt
-@import: npc/환상의섬/상점.txt
-@import: npc/환상의섬/일반.txt
-@import: npc/신부여성/상점.txt
-@import: npc/공통/6차.txt
-@import: npc/공통/7차.txt
-@import: npc/공통/6차승급.txt
+@import: db_func/GM_Module_Control.txt
+@import: db_func/GM_Module_Event.txt
+@import: db_func/GM_Module_Playable.txt
+@import: db_func/GM_Module_System.txt
+@import: db_func/GM_Event_Module.txt
+@import: db_func/1GM_Event_Module.txt
 
-//indun
-@import: monster/오녀산성/1문.txt
-@import: monster/오녀산성/2문.txt
-@import: monster/오녀산성/3문.txt
-@import: monster/오녀산성/4문.txt
-@import: monster/오녀산성/5문.txt
-@import: monster/오녀산성/6문.txt
-@import: monster/오녀산성/7문.txt
-@import: npc/국내성/오녀산성.txt
+
+// ->		MOB_FUNCTIONS			<- //
+
+@import: db_func/Mob_Magic_Func.txt
+@import: db_func/Mob_Common_Func.txt
+@import: db_func/Mob_AI_Func.txt
+
+// ->		NPC_FUNCTIONS			<- //
+
+@import: db_func/Npc_Say_Func.txt
+
+/* --------------------------------------------------
+		db_item
+-------------------------------------------------- */
+
+//무기---------------------------------------------
+@import: db_item/0w/Attack.txt
+@import: db_item/0w/Removal.txt
+@import: db_item/0w/Cash.txt
+@import: db_item/0w/Special.txt
+@import: db_item/0w/ETC.txt
+
+//갑옷---------------------------------------------
+@import: db_item/1a/Special.txt
+@import: db_item/1a/Removal.txt
+@import: db_item/1a/Cash.txt
+
+//방패---------------------------------------------
+@import: db_item/2s/Removal.txt
+
+//투구---------------------------------------------
+@import: db_item/3h/Removal.txt
+@import: db_item/3h/cash.txt
+
+//반지---------------------------------------------
+@import: db_item/4r/Removal.txt
+@import: db_item/4r/cash.txt
+
+
+//보조---------------------------------------------
+@import: db_item/5c/Removal.txt
+
+
+//기타---------------------------------------------
+@import: db_item/6e/Cash.txt
+@import: db_item/6e/Use.txt
+@import: db_item/6e/Box.txt
+@import: db_item/6e/agit.txt
+@import: db_item/6e/Quest.txt
+@import: db_item/6e/profile.txt
+
+//무기---------------------------------------------
+@import: db_item/enchant/weapon.txt
+@import: db_item/enchant/armor.txt
+@import: db_item/enchant/shield.txt
+@import: db_item/enchant/helmet.txt
+@import: db_item/enchant/ring.txt
+@import: db_item/enchant/bojo.txt
+@import: db_item/enchant/etc.txt
+
+
+/* --------------------------------------------------
+		db_magic
+-------------------------------------------------- */
+
+@import: db_magic/mob/Mez.txt
+
+@import: db_magic/etc/Quest_Capture.txt
+@import: db_magic/etc/Quest_Move.txt
+@import: db_magic/etc/Transform.txt
+@import: db_magic/etc/Sub_Module.txt
+@import: db_magic/etc/Event.txt
+
+@import: db_magic/cash/Exp.txt
+@import: db_magic/cash/Others.txt
+
+@import: db_magic/Item_Magic/Front_Attack.txt
+@import: db_magic/Item_Magic/Front_Curse.txt
+@import: db_magic/Item_Magic/Front_Toxic.txt
+@import: db_magic/Item_Magic/Wearable_Buff.txt
+@import: db_magic/Item_Magic/Use_Buff.txt
+
+@import: db_magic/common/General_Usable.txt
+@import: db_magic/common/Range_Attack.txt
+@import: db_magic/common/Common_Magics.txt
+@import: db_magic/common/Clan_Magics.txt
+
+@import: db_magic/warrior/Attack.txt
+@import: db_magic/warrior/Heal.txt
+@import: db_magic/warrior/Buff.txt
+@import: db_magic/warrior/General.txt
+
+@import: db_magic/rogue/Attack.txt
+@import: db_magic/rogue/Heal.txt
+@import: db_magic/rogue/Buff.txt
+@import: db_magic/rogue/General.txt
+
+@import: db_magic/wizard/Attack.txt
+@import: db_magic/wizard/Heal.txt
+@import: db_magic/wizard/Debuff.txt
+@import: db_magic/wizard/Buff.txt
+@import: db_magic/wizard/General.txt
+
+@import: db_magic/guru/Attack.txt
+@import: db_magic/guru/Heal.txt
+@import: db_magic/guru/Debuff.txt
+@import: db_magic/guru/Buff.txt
+@import: db_magic/guru/General.txt
+@import: db_magic/guru/Aid.txt
+
+
+@import: db_magic/GM/General.txt
+@import: db_magic/GM/Heal.txt
+
+/* --------------------------------------------------
+		db_monster
+-------------------------------------------------- */
+//괴물상자
+
+@import: db_monster/괴물상자/괴물상자.txt
+
+
+//4차승급
+@import: db_monster/4차승급/광동성신전.txt
+@import: db_monster/4차승급/국내성신전.txt
+@import: db_monster/4차승급/부여성신전.txt
+@import: db_monster/4차승급/일본신궁신전.txt
+@import: db_monster/4차승급/장안성신전.txt
+@import: db_monster/4차승급/신전공격스킬.txt
+
+
+//12지신의유적
+@import: db_monster/12지신의유적/쥐왕굴.txt
+@import: db_monster/12지신의유적/소왕굴.txt
+@import: db_monster/12지신의유적/호왕굴.txt
+@import: db_monster/12지신의유적/토끼왕굴.txt
+
+@import: db_monster/12지신의유적/용왕굴.txt
+@import: db_monster/12지신의유적/뱀왕굴.txt
+@import: db_monster/12지신의유적/말왕굴.txt
+@import: db_monster/12지신의유적/양왕굴.txt
+
+@import: db_monster/12지신의유적/원숭이왕굴.txt
+@import: db_monster/12지신의유적/닭왕굴.txt
+@import: db_monster/12지신의유적/개왕굴.txt
+@import: db_monster/12지신의유적/돼지왕굴.txt
+
+@import: db_monster/12지신의유적/수화룡의방.txt
+@import: db_monster/12지신의유적/용왕의침소.txt
+
+
+//극지방
+@import: db_monster/극지방/극지방.txt
+@import: db_monster/극지방/신극지방.txt
+@import: db_monster/극지방/설원지방.txt
+
+
+//길림성
+
+@import: db_monster/길림성/길림성.txt
+@import: db_monster/길림성/승급던전.txt
+
+
+//도삭산
+
+@import: db_monster/도삭산/1~50층.txt
+@import: db_monster/도삭산/51~100층.txt
+@import: db_monster/도삭산/101~150층.txt
+@import: db_monster/도삭산/151~200층.txt
+@import: db_monster/도삭산/201~250층.txt
+@import: db_monster/도삭산/251~300층.txt
+@import: db_monster/도삭산/301~350층.txt
+@import: db_monster/도삭산/351~400층.txt
+@import: db_monster/도삭산/401~450층.txt
+@import: db_monster/도삭산/451~500층.txt
+@import: db_monster/도삭산/501~550층.txt
+@import: db_monster/도삭산/551~600층.txt
+@import: db_monster/도삭산/601~650층.txt
+@import: db_monster/도삭산/651~700층.txt
+@import: db_monster/도삭산/701~750층.txt
+@import: db_monster/도삭산/801~1000층.txt
+
+//부여대미궁
+@import: db_monster/백두촌/대각봉.txt
+@import: db_monster/백두촌/소연지봉.txt
+@import: db_monster/백두촌/대연지봉.txt
+@import: db_monster/백두촌/청석봉.txt
+@import: db_monster/백두촌/백운봉.txt
+@import: db_monster/백두촌/녹명봉.txt
+@import: db_monster/백두촌/천문봉.txt
+@import: db_monster/백두촌/망천후.txt
+@import: db_monster/백두촌/백두봉.txt
+@import: db_monster/백두촌/백두폭포.txt
+@import: db_monster/백두촌/백두산천지.txt
+@import: db_monster/백두촌/요일동굴.txt
+
+
+
+//부여대미궁
+
+@import: db_monster/부여대미궁/미궁.txt
+
+
+//기본성 (부여 / 고구려)
+
+@import: db_monster/기본성/가재전갈굴.txt
+@import: db_monster/기본성/거미사마귀굴.txt
+@import: db_monster/기본성/곰호랑이굴.txt
+@import: db_monster/기본성/도깨비굴.txt
+@import: db_monster/기본성/돼지굴.txt
+@import: db_monster/기본성/뱀굴.txt
+@import: db_monster/기본성/부여고구려성.txt
+@import: db_monster/기본성/비밀세작의집.txt
+@import: db_monster/기본성/사슴굴.txt
+@import: db_monster/기본성/여우굴.txt
+@import: db_monster/기본성/유령굴.txt
+@import: db_monster/기본성/인형굴.txt
+@import: db_monster/기본성/자호굴.txt
+@import: db_monster/기본성/진원관.txt
+@import: db_monster/기본성/쥐굴.txt
+@import: db_monster/기본성/초보사냥터.txt
+@import: db_monster/기본성/해골굴.txt
+@import: db_monster/기본성/흉가굴.txt
+@import: db_monster/기본성/흑령굴.txt
+@import: db_monster/기본성/흑해골굴.txt
+
+
+//부여국내산성
+@import: db_monster/부여국내산성/우물.txt
+@import: db_monster/부여국내산성/지하.txt
+@import: db_monster/부여국내산성/연못.txt
+
+
+//북방대초원
+
+@import: db_monster/북방대초원/초급몬스터.txt
+@import: db_monster/북방대초원/고급몬스터.txt
+@import: db_monster/북방대초원/중급몬스터.txt
+@import: db_monster/북방대초원/최고급몬스터.txt
+
+//산적굴
+
+@import: db_monster/산적굴/산적굴.txt
+
+
+//문파성
+
+@import: db_monster/문파성/지하수로.txt
+@import: db_monster/문파성/지하사마귀.txt
+@import: db_monster/문파성/지하해골.txt
+@import: db_monster/문파성/지하흉가.txt
+
+
+//용궁
+
+@import: db_monster/용궁/게장군던전.txt
+@import: db_monster/용궁/문어장군던전.txt
+@import: db_monster/용궁/복어장군던전.txt
+@import: db_monster/용궁/상어장군던전.txt
+@import: db_monster/용궁/인어장군던전.txt
+@import: db_monster/용궁/해마장군던전.txt
+@import: db_monster/용궁/청의태자던전.txt
+@import: db_monster/용궁/해파리장군던전.txt
+
+
+//일본
+
+@import: db_monster/일본/늑대인간굴.txt
+@import: db_monster/일본/무사의방.txt
+@import: db_monster/일본/문려의방.txt
+@import: db_monster/일본/문지기의방.txt
+@import: db_monster/일본/백향의방.txt
+@import: db_monster/일본/본성입구.txt
+@import: db_monster/일본/비밀통로.txt
+@import: db_monster/일본/선녀의방.txt
+@import: db_monster/일본/숲지대.txt
+@import: db_monster/일본/유성지의방.txt
+@import: db_monster/일본/이가닌자의집.txt
+@import: db_monster/일본/파괴왕의방.txt
+@import: db_monster/일본/표신궁.txt
+@import: db_monster/일본/해골왕의방.txt
+@import: db_monster/일본/해안가.txt
+@import: db_monster/일본/특전실.txt
+
+
+
+
+
+//중국
+
+@import: db_monster/중국/고양이굴.txt
+@import: db_monster/중국/괴성굴.txt
+@import: db_monster/중국/기린굴.txt
+@import: db_monster/중국/기타.txt
+@import: db_monster/중국/남양,남경.txt
+@import: db_monster/중국/뇌신굴.txt
+@import: db_monster/중국/무슈후슈굴.txt
+@import: db_monster/중국/살쾡이굴.txt
+@import: db_monster/중국/선비족.txt
+@import: db_monster/중국/악어굴.txt
+@import: db_monster/중국/염유굴.txt
+@import: db_monster/중국/장안성강속.txt
+@import: db_monster/중국/진시황릉.txt
+@import: db_monster/중국/천구굴.txt
+@import: db_monster/중국/천리마굴.txt
+@import: db_monster/중국/코뿔소굴.txt
+@import: db_monster/중국/후굴.txt
+@import: db_monster/중국/흉노족.txt
+@import: db_monster/중국/흉선연합군.txt
+
+
+//한두고개
+
+@import: db_monster/한두고개/한고개.txt
+@import: db_monster/한두고개/두고개.txt
+@import: db_monster/한두고개/세고개.txt
+@import: db_monster/한두고개/네고개.txt
+
+
+//환상의섬
+
+@import: db_monster/환상의섬/가릉도해변.txt
+@import: db_monster/환상의섬/고균도복합상점.txt
+@import: db_monster/환상의섬/난파선.txt
+@import: db_monster/환상의섬/열대림.txt
+@import: db_monster/환상의섬/유적.txt
+@import: db_monster/환상의섬/절벽.txt
+@import: db_monster/환상의섬/폐허동굴.txt
+@import: db_monster/환상의섬/화산굴.txt
+
+
+//이벤트몬스터
+
+@import: db_monster/이벤트몬스터/고래.txt
+@import: db_monster/이벤트몬스터/특별몬스터.txt
+@import: db_monster/이벤트몬스터/사냥이벤트.txt
+@import: db_monster/이벤트몬스터/게이바.txt
+@import: db_monster/이벤트몬스터/유저몹.txt
+
+
+//단군
+
+@import: db_monster/단군/유저몹.txt
+@import: db_monster/단군/사냥몹.txt
+
+
+
+//단군
+
+
+/* --------------------------------------------------
+		db_npc
+	0:공통	1:일반	2:퀘스트단위
+-------------------------------------------------- */
+//시작
+@import: db_npc/0_고성낙일/일반.txt
+@import: db_npc/0_고성낙일/함수.txt
+
+//불홍상점
+@import: db_npc/0_불홍상점/일반.txt
+@import: db_npc/0_불홍상점/함수.txt
+
+//신수의제단
+@import: db_npc/0_신수의제단/일반.txt
+@import: db_npc/0_신수의제단/함수.txt
+
+
+//홍보, 후원 메뉴
+@import: db_npc/0_곰의계곡/홍보메뉴.txt
+@import: db_npc/0_곰의계곡/홍보함수.txt
+@import: db_npc/0_곰의계곡/후원메뉴.txt
+@import: db_npc/0_곰의계곡/후원함수.txt
+
+//기부관련
+@import: db_npc/0_기부관련/일반.txt
+@import: db_npc/0_기부관련/함수1.txt
+@import: db_npc/0_기부관련/함수2.txt
+
+//홍보관련
+@import: db_npc/0_홍보관련/홍보.txt
+@import: db_npc/0_홍보관련/게시물.txt
+@import: db_npc/0_홍보관련/웹하드.txt
+@import: db_npc/0_홍보관련/추천인.txt
+@import: db_npc/0_홍보관련/방송.txt
+@import: db_npc/0_홍보관련/페북.txt
+@import: db_npc/0_홍보관련/영상.txt
+
+
+//금화관련
+@import: db_npc/0_금화관련/일반.txt
+@import: db_npc/0_금화관련/모듈.txt
+
+
+//직업의길
+@import: db_npc/0_직업의길/직업함수.txt
+@import: db_npc/0_직업의길/직업전사.txt
+@import: db_npc/0_직업의길/직업도적.txt
+@import: db_npc/0_직업의길/직업술사.txt
+@import: db_npc/0_직업의길/직업도사.txt
+
+
+//뱃사공
+@import: db_npc/0_뱃사공/일반.txt
+
+
+//영혼사
+@import: db_npc/0_영혼사/영혼사기본.txt
+
+//성황할머니
+@import: db_npc/0_성황할머니/일반.txt
+
+//초보지원시스템
+@import: db_npc/0_초보지원/01.txt
+@import: db_npc/0_초보지원/02.txt
+@import: db_npc/0_초보지원/03.txt
+@import: db_npc/0_초보지원/04.txt
+@import: db_npc/0_초보지원/05.txt
+@import: db_npc/0_초보지원/06.txt
+@import: db_npc/0_초보지원/07.txt
+@import: db_npc/0_초보지원/08.txt
+@import: db_npc/0_초보지원/09.txt
+@import: db_npc/0_초보지원/10.txt
+@import: db_npc/0_초보지원/11.txt
+@import: db_npc/0_초보지원/12.txt
+@import: db_npc/0_초보지원/13.txt
+@import: db_npc/0_초보지원/14.txt
+@import: db_npc/0_초보지원/15.txt
+@import: db_npc/0_초보지원/16.txt
+@import: db_npc/0_초보지원/17.txt
+@import: db_npc/0_초보지원/18.txt
+@import: db_npc/0_초보지원/19.txt
+@import: db_npc/0_초보지원/20.txt
+@import: db_npc/0_초보지원/성장지도교본.txt
+@import: db_npc/0_초보지원/엔피씨.txt
+@import: db_npc/0_초보지원/일반.txt
+@import: db_npc/0_초보지원/함수.txt
+
+
+//사냥터안내
+@import: db_npc/0_사냥터안내/기본성일반.txt
+
+//환수시스템
+@import: db_npc/0_환수시스템/공통함수.txt
+@import: db_npc/0_환수시스템/인공지능.txt
+
+
+//공통스크립트
+@import: db_npc/1_공통/일반.txt
+@import: db_npc/1_공통/진원관.txt
+
+
+//12지신의유적
+@import: db_npc/1_12지신의유적/일반.txt
+@import: db_npc/1_12지신의유적/상점.txt
+
+//길림성
+@import: db_npc/1_길림성/일반.txt
+
+//기본성인던
+@import: db_npc/1_기본성인던/공통함수.txt
+@import: db_npc/1_기본성인던/도깨비굴지하.txt
+@import: db_npc/1_기본성인던/사마귀전갈굴지하.txt
+@import: db_npc/1_기본성인던/여우굴지하.txt
+@import: db_npc/1_기본성인던/자호굴지하.txt
+@import: db_npc/1_기본성인던/해골유령굴지하.txt
+@import: db_npc/1_기본성인던/흉가지하.txt
+@import: db_npc/1_기본성인던/흑해골흑유령굴지하.txt
+
+//국내성
+@import: db_npc/1_국내성/일반.txt
+@import: db_npc/1_국내성/상점.txt
+@import: db_npc/1_국내성/국내놀이방.txt
+
+//부여성
+@import: db_npc/1_부여성/일반.txt
+@import: db_npc/1_부여성/상점.txt
+@import: db_npc/1_부여성/부여놀이방.txt
+
+
+
+//백제 (위례성)
+@import: db_npc/1_백제/일반.txt
+@import: db_npc/1_백제/상점.txt
+@import: db_npc/1_백제/마한인던.txt
+@import: db_npc/1_백제/낭산인던.txt
+@import: db_npc/1_백제/와산인던.txt
+@import: db_npc/1_백제/구양인던.txt
+@import: db_npc/1_백제/칠중하인던.txt
+
+
+//문파
+@import: db_npc/1_문파/공성.txt
+@import: db_npc/1_문파/공성함수.txt
+
+@import: db_npc/1_문파/공성함수_선점공성.txt
+@import: db_npc/1_문파/공성함수_성물공성.txt
+@import: db_npc/1_문파/공성함수_옥좌공성.txt
+
+@import: db_npc/1_문파/문파관리.txt
+@import: db_npc/1_문파/문파관리함수_문파대리인.txt
+@import: db_npc/1_문파/문파관리함수_문파원.txt
+@import: db_npc/1_문파/문파관리함수_외교.txt
+
+@import: db_npc/1_문파/신수성.txt
+@import: db_npc/1_문파/신수성함수.txt
+
+
+
+
+//안드로메다, 단군
+@import: db_npc/1_단군/일반.txt
+@import: db_npc/1_단군/둘러보다.txt
+@import: db_npc/1_단군/5차승급.txt
+
+
+
+//둔귀촌
+@import: db_npc/1_귀문동/일반.txt
+@import: db_npc/1_귀문동/귀문동_core_function.txt
+@import: db_npc/1_귀문동/귀문동_mobgen_function.txt
+@import: db_npc/1_귀문동/귀문성.txt
+@import: db_npc/1_귀문동/귀문동1.txt
+@import: db_npc/1_귀문동/귀문동2.txt
+@import: db_npc/1_귀문동/귀문동3.txt
+@import: db_npc/1_귀문동/귀문동4.txt
+@import: db_npc/1_귀문동/귀문혈동1.txt
+@import: db_npc/1_귀문동/귀문혈동2.txt
+@import: db_npc/1_귀문동/귀문혈동3.txt
+@import: db_npc/1_귀문동/귀문혈동4.txt
+@import: db_npc/1_귀문동/귀문마동1.txt
+@import: db_npc/1_귀문동/귀문마동2.txt
+@import: db_npc/1_귀문동/귀문마동3.txt
+@import: db_npc/1_귀문동/귀문마동4.txt
+@import: db_npc/1_귀문동/귀문암동1.txt
+@import: db_npc/1_귀문동/귀문암동2.txt
+@import: db_npc/1_귀문동/둔귀촌.txt
+
+//@import: db_npc/1_귀문동/귀문동함수.txt
+
+//극지방
+@import: db_npc/1_극지방/상점.txt
+@import: db_npc/1_극지방/설원지방.txt
+@import: db_npc/1_극지방/일반.txt
+
+
+//초보자의길
+@import: db_npc/1_초보자의길/초보자도우미.txt
+
+
+//도삭산
+
+@import: db_npc/1_도삭산/상점.txt
+@import: db_npc/1_도삭산/일반.txt
+
+//북방대초원
+
+@import: db_npc/1_북방대초원/일반.txt
+@import: db_npc/1_북방대초원/상점.txt
+
+//백두촌, 백두산
+@import: db_npc/1_백두촌/일반.txt
+@import: db_npc/1_백두촌/함수.txt
+@import: db_npc/1_백두촌/상점.txt
+
+
+//백제
+@import: db_npc/1_백제/구양성.txt
+
+
+//세시마을
+
+@import: db_npc/1_세시마을/김장집.txt
+@import: db_npc/1_세시마을/단오집.txt
+@import: db_npc/1_세시마을/동지집.txt
+@import: db_npc/1_세시마을/명경사.txt
+@import: db_npc/1_세시마을/삼짇집.txt
+@import: db_npc/1_세시마을/섣달집.txt
+@import: db_npc/1_세시마을/설날집.txt
+@import: db_npc/1_세시마을/유두집.txt
+@import: db_npc/1_세시마을/중구집.txt
+@import: db_npc/1_세시마을/중화집.txt
+@import: db_npc/1_세시마을/촌장집.txt
+@import: db_npc/1_세시마을/추석집.txt
+@import: db_npc/1_세시마을/칠석집.txt
+@import: db_npc/1_세시마을/칠성당.txt
+@import: db_npc/1_세시마을/세시마을기타.txt
+
+//산성공성전
+@import: db_npc/1_산성전/부여국내산성.txt
+@import: db_npc/1_산성전/워프좌표.txt
+@import: db_npc/1_산성전/옥좌.txt
+@import: db_npc/1_산성전/선필.txt
+@import: db_npc/1_산성전/퀘스트.txt
+@import: db_npc/1_산성전/산성관리인.txt
+
+
+//신부여성
+@import: db_npc/1_신부여성/상점.txt
+@import: db_npc/1_신부여성/일반.txt
+
+
+//신국내성
+@import: db_npc/1_신국내성/상점.txt
+@import: db_npc/1_신국내성/일반.txt
+
+
+//용궁
+@import: db_npc/1_용궁/상점.txt
+@import: db_npc/1_용궁/일반.txt
+
+//오녀산성
+@import: db_npc/1_오녀산성/워프.txt
+@import: db_npc/1_오녀산성/일반.txt
+
+//일본
+@import: db_npc/1_일본/상점.txt
+@import: db_npc/1_일본/일반.txt
+@import: db_npc/1_일본/워프.txt
+
+
+//중국
+@import: db_npc/1_중국/남경류.txt
+@import: db_npc/1_중국/소림사.txt
+@import: db_npc/1_중국/상점.txt
+@import: db_npc/1_중국/일반.txt
+@import: db_npc/1_중국/만리장성.txt
+@import: db_npc/1_중국/무타.txt
+
+//천상계
+@import: db_npc/1_천상계/랑구륜.txt
+@import: db_npc/1_천상계/부구륜.txt
+@import: db_npc/1_천상계/선구륜.txt
+@import: db_npc/1_천상계/은구륜.txt
+@import: db_npc/1_천상계/정구륜.txt
+@import: db_npc/1_천상계/천성랑.txt
+@import: db_npc/1_천상계/천성현.txt
+
+//한두고개
+@import: db_npc/1_한두고개/네고개.txt
+
+//환상의섬
+@import: db_npc/1_환상의섬/일반.txt
+@import: db_npc/1_환상의섬/상점.txt
+
+//황금성
+@import: db_npc/1_황금성/시스템.txt
+@import: db_npc/1_황금성/사방신수.txt
+
+//4차승급
+@import: db_npc/2_4차승급/일반.txt
+
+
+//이벤트
+@import: db_npc/2_이벤트/가정의달.txt
+@import: db_npc/2_이벤트/경험치.txt
+@import: db_npc/2_이벤트/경매.txt
+@import: db_npc/2_이벤트/게이바.txt
+@import: db_npc/2_이벤트/땅따먹기.txt
+@import: db_npc/2_이벤트/뚝배기깨기.txt
+@import: db_npc/2_이벤트/더게임오브데스.txt
+@import: db_npc/2_이벤트/배심원.txt
+@import: db_npc/2_이벤트/부롱대미궁.txt
+@import: db_npc/2_이벤트/부여장터.txt
+@import: db_npc/2_이벤트/사냥이벤트.txt
+@import: db_npc/2_이벤트/서바이벌달리기.txt
+@import: db_npc/2_이벤트/오엑스.txt
+@import: db_npc/2_이벤트/용무기.txt
+@import: db_npc/2_이벤트/칠지도.txt
+@import: db_npc/2_이벤트/토토.txt
+@import: db_npc/2_이벤트/톨루이.txt
+@import: db_npc/2_이벤트/청태룰렛.txt
+@import: db_npc/2_이벤트/어버이날.txt
+@import: db_npc/2_이벤트/색깔무한장.txt
+@import: db_npc/2_이벤트/식목일.txt
+@import: db_npc/2_이벤트/묵언수행.txt
+@import: db_npc/2_이벤트/한정판매상인.txt
+@import: db_npc/2_이벤트/크리스마스.txt
+@import: db_npc/2_이벤트/한글자아이디.txt
+@import: db_npc/2_이벤트/천명.txt
+@import: db_npc/2_이벤트/폭피.txt
+@import: db_npc/2_이벤트/무궁화꽃이피었습니다.txt
+@import: db_npc/2_이벤트/마동참가신청.txt
+@import: db_npc/2_이벤트/초혼의장인.txt
+@import: db_npc/2_이벤트/남북무한대전.txt
+@import: db_npc/2_이벤트/기타.txt
+@import: db_npc/2_이벤트/경마.txt
+@import: db_npc/2_이벤트/윤도이벤트.txt
+@import: db_npc/2_이벤트/아이디변경권.txt
+@import: db_npc/2_이벤트/동서점령전.txt
+
+
+
+/* --------------------------------------------------
+
+-------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+
+-------------------------------------------------- */

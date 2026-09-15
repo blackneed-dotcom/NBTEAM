@@ -189,12 +189,14 @@ script BaramCreature extends Component
     @ExecSpace("ServerOnly")
     @EventSender("Self")
     handler HandleHit(HitEvent event)
-        if self.Hp <= 0 or not isvalid(event.AttackerEntity) then return end
+        if self.Hp <= 0 or event.TotalDamage <= 0 or not isvalid(event.AttackerEntity) then return end
         local player = event.AttackerEntity.PlayerComponent
         if not isvalid(player) then return end
         local r = _BaramWorld:GetRecord(player.UserId)
         if r == nil or r.state.map ~= 315 then return end
         self.Hp = math.max(0, self.Hp - event.TotalDamage)
+        local maximum = self.SourceId == 1 and 15 or 10
+        _BaramHealthBars:ShowHit(self.Entity, self.Hp, maximum, self.Entity.CurrentMap.Id)
         self.AggroUser = player.UserId
         if self.Hp == 0 then
             self.DeadWait = 30

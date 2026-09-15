@@ -1,4 +1,1816 @@
+ONSEMICOLON	{
+	callfunc "ONSEMICOLON";
+}
+
+FUNC_ONSEMICOLON	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_side(@id) == 0)
+	{
+		set @target_id, obj_getfront();
+		set @mapobject, get_mapobject(get_x(@id), get_y(@id)-1);
+		
+		if(@mapobject == 1619 || @mapobject == 1620)
+		{
+			set @target_x, get_x(@id);
+			set @target_y, get_y(@id)-1;
+			
+			if(@mapobject == 1620)
+			{
+				set @target_x, get_x(@id)-1;
+				set @target_y, get_y(@id)-1;
+			}
+			
+			paperpopup @sd, 18, 10, "<"+get_mapname(@sd)+" 게시판... 끄려면 ESC를 누르세요...>\\n\\n"+get_mapboarddata(@target_x, @target_y);
+		}
+		
+
+	}
+	else if(get_side(@id) == 1)
+	{
+		set @target_id, obj_getfront();
+	}
+	else if(get_side(@id) == 2)
+	{
+		set @target_id, obj_getfront();
+	}
+	else if(get_side(@id) == 3)
+	{
+		set @target_id, obj_getfront();
+	}
+	
+	if(@target_id != 0)
+	{
+		if(istype(@target_id) == 1)
+		{
+			set @target_sd, id2sd(@target_id);
+			set @tg_job, get_job(@target_sd);
+
+			switch(@tg_job)
+			{
+				case 0:
+					set @job$, "평민";
+					break;
+
+				case 1:
+					if(get_joblevel(@target_sd) == 0) { set @job$, "전사"; }
+					if(get_joblevel(@target_sd) == 1) { set @job$, "검객"; }
+					if(get_joblevel(@target_sd) == 2) { set @job$, "검제"; }
+					if(get_joblevel(@target_sd) == 3) { set @job$, "검황"; }
+					if(get_joblevel(@target_sd) == 4) { set @job$, "검성"; }
+					break;
+				case 2:
+					if(get_joblevel(@target_sd) == 0) { set @job$, "도적"; }
+					if(get_joblevel(@target_sd) == 1) { set @job$, "자객"; }
+					if(get_joblevel(@target_sd) == 2) { set @job$, "진검"; }
+					if(get_joblevel(@target_sd) == 3) { set @job$, "귀검"; }
+					if(get_joblevel(@target_sd) == 4) { set @job$, "태성"; }
+					break;
+				case 3:
+					if(get_joblevel(@target_sd) == 0) { set @job$, "주술사"; }
+					if(get_joblevel(@target_sd) == 1) { set @job$, "술사"; }
+					if(get_joblevel(@target_sd) == 2) { set @job$, "현사"; }
+					if(get_joblevel(@target_sd) == 3) { set @job$, "현인"; }
+					if(get_joblevel(@target_sd) == 4) { set @job$, "현자"; }
+					break;
+				case 4:
+					if(get_joblevel(@target_sd) == 0) { set @job$, "도사"; }
+					if(get_joblevel(@target_sd) == 1) { set @job$, "도인"; }
+					if(get_joblevel(@target_sd) == 2) { set @job$, "명인"; }
+					if(get_joblevel(@target_sd) == 3) { set @job$, "진인"; }
+					if(get_joblevel(@target_sd) == 4) { set @job$, "진선"; }
+					break;
+			}
+			
+			set_sdsegment(@target_sd);
+			set @msg$, $업적칭호$;
+			set_sdsegment(@sd);
+
+			message @sd, 3, ""+get_name(@target_sd)+"("+@job$+"): "+@msg$+"";
+		}
+		/*
+		else if(istype(@target_id) == 2)
+		{
+			message @sd, 3, get_mobname(@target_id);
+		}
+		else if(istype(@target_id) == 3)
+		{
+			message @sd, 3, get_npcname(@target_id);
+		}
+		*/
+	}
+
+return;
+}
+
+ONATTACH	{
+	callfunc "ONATTACH";
+}
+
+FUNC_ONATTACH	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_side(@id) == 0)
+	{
+		set @mapobject, get_mapobject(get_x(@id), get_y(@id)-1);
+		if(@mapobject == 1619 || @mapobject == 1620)
+		{
+		
+			//message @sd, 0, get_mapboarddata(get_x(@id), get_y(@id)-1);
+		
+			set @attach_slot, get_lastslot(@id);
+			set @item_id, get_item(@sd, @attach_slot);
+
+			if(@item_id > 0)
+			{
+				set @item_name$, itemid2name(@item_id);
+				if(@item_name$ == "노란비서") { set @check, 1; }
+				else if(@item_name$ == "소환비서") { set @check, 1; }
+				else if(@item_name$ == "장안성비서") { set @check, 1; }
+				else if(@item_name$ == "대방성비서") { set @check, 1; }
+				else if(@item_name$ == "부여성비서") { set @check, 1; }
+				else if(@item_name$ == "국내성비서") { set @check, 1; }
+				else if(@item_name$ == "귀환비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산100층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산200층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산300층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산400층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산500층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산600층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산700층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산800층비서") { set @check, 1; }
+				else if(@item_name$ == "도삭산900층비서") { set @check, 1; }
+
+
+				if(@check == 1)
+				{
+					if(countitem(name2itemid(@item_name$)) > 0)
+					{
+						delitem @sd, name2itemid(@item_name$), 1;
+						message @sd, 3, ""+@item_name$+" 붙였습니다.";
+
+						set @pos, input2(@msg$, 0, 12, "붙일 메시지는?", "", "");
+						
+						if(@pos == 0) return;
+						else
+						{
+							set @target_x, get_x(@id);
+							set @target_y, get_y(@id)-1;
+							if(@mapobject == 1620)
+							{
+								set @target_x, get_x(@id)-1;
+								set @target_y, get_y(@id)-1;
+							}
+							
+							set @list_1$, get_name(@sd) + ": " +@msg$ + " ("+gettime(2, 0)+":"+gettime(1, 0)+":"+gettime(0, 0)+")\\n";
+							set @list_2$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 0) + "\\n";
+							set @list_3$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 1) + "\\n";
+							set @list_4$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 2) + "\\n";
+							set @list_5$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 3) + "\\n";
+							set @list_6$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 4) + "\\n";
+							set @list_7$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 5) + "\\n";
+							set @list_8$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 6) + "\\n";
+							set @list_9$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 7) + "\\n";
+							set @list_10$, strtok(get_mapboarddata(@target_x, @target_y), "\\n", 8) + "\\n";
+							
+							set @board_data$, @list_1$ + @list_2$ + @list_3$ + @list_4$ + @list_5$ + @list_6$ + @list_7$ + @list_8$ + @list_9$ + @list_10$;
+							
+							set_mapboarddata @target_x, @target_y, @board_data$;
+							paperpopup @sd, 18, 10, "<"+get_mapname(@sd)+" 게시판... 끄려면 ESC를 누르세요...>\\n\\n"+get_mapboarddata(@target_x, @target_y);
+						}
+					}
+				}
+				else
+				{
+					message @sd, 3, "붙일 수 없는 물건입니다.";
+				}
+			}
+		}
+		else
+		{
+			message @sd, 3, "그런 곳에는 붙일 수 없습니다.";
+		}
+	}
+
+
+return;
+}
+
+ONLEVELUP	{
+	callfunc "ONLEVELUP";
+}
+
+FUNC_ONLEVELUP	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_job(@sd) == 0)
+	{
+				
+		set_purewill @sd, get_will(@sd);
+		set_puremight @sd, get_might(@sd);
+		set_puregrace @sd, get_grace(@sd);
+
+		set_purehp @sd, get_purehp(@sd) + ( 45 + rand(1, 11) );
+		set_puremp @sd, get_puremp(@sd) + ( 30 + rand(1, 11) );
+
+		if(get_level(@sd)%2 > 0)
+		{
+			set_purewill @sd, get_purewill(@sd) + 1;
+			set_puregrace @sd, get_puregrace(@sd) + 1;
+		}
+		else
+		{
+			set_puremight @sd, get_puremight(@sd) + 1;
+		}
+	}
+	else if(get_job(@sd) == 1)
+	{
+		set @might_val, get_might(@sd) - get_puremight(@sd);
+		set @will_val, get_will(@sd) - get_purewill(@sd);
+		set @grace_val, get_grace(@sd) - get_puregrace(@sd);
+
+		set_purehp @sd, get_purehp(@sd) + ( 70 + rand(1, 11) );
+		set_puremp @sd, get_puremp(@sd) + ( 10 + rand(1, 11) );
+
+		set_puremight @sd, get_puremight(@sd) + 1;
+
+		if(get_level(@sd)%2 > 0)
+		{
+			set_purewill @sd, get_purewill(@sd) + 1;
+		}
+		if(get_level(@sd)%3 > 0)
+		{
+			set_puregrace @sd, get_puregrace(@sd) + 1;
+		}
+	}
+	else if(get_job(@sd) == 2)
+	{
+		set @might_val, get_might(@sd) - get_puremight(@sd);
+		set @will_val, get_will(@sd) - get_purewill(@sd);
+		set @grace_val, get_grace(@sd) - get_puregrace(@sd);
+
+		set_purehp @sd, get_purehp(@sd) + ( 55 + rand(1, 11) );
+		set_puremp @sd, get_puremp(@sd) + ( 20 + rand(1, 11) );
+
+		set_purewill @sd, get_purewill(@sd) + 1;
+
+		if(get_level(@sd)%2 > 0)
+		{
+		set_puremight @sd, get_puremight(@sd) + 1;
+		}
+		if(get_level(@sd)%3 > 0)
+		{
+			set_puregrace @sd, get_puregrace(@sd) + 1;
+		}
+	}
+	else if(get_job(@sd) == 3)
+	{
+		set @might_val, get_might(@sd) - get_puremight(@sd);
+		set @will_val, get_will(@sd) - get_purewill(@sd);
+		set @grace_val, get_grace(@sd) - get_puregrace(@sd);
+
+		set_purehp @sd, get_purehp(@sd) + ( 35 + rand(1, 11) );
+		set_puremp @sd, get_puremp(@sd) + ( 35 + rand(1, 11) );
+
+		set_puregrace @sd, get_puregrace(@sd) + 1;
+
+		if(get_level(@sd)%2 > 0)
+		{
+			set_puremight @sd, get_puremight(@sd) + 1;
+		}
+		if(get_level(@sd)%3 > 0)
+		{
+			set_purewill @sd, get_purewill(@sd) + 1;
+		}
+	}
+	else if(get_job(@sd) == 4)
+	{
+		set @might_val, get_might(@sd) - get_puremight(@sd);
+		set @will_val, get_will(@sd) - get_purewill(@sd);
+		set @grace_val, get_grace(@sd) - get_puregrace(@sd);
+
+		set_purehp @sd, get_purehp(@sd) + ( 45 + rand(1, 11) );
+		set_puremp @sd, get_puremp(@sd) + ( 30 + rand(1, 11) );
+
+		set_puregrace @sd, get_puregrace(@sd) + 1;
+
+		if(get_level(@sd)%3 > 0)
+		{
+			set_purewill @sd, get_purewill(@sd) + 1;
+			set_puremight @sd, get_puremight(@sd) + 1;
+		}
+	}
+
+	set_might @sd, get_puremight(@sd) + @might_val;
+	set_grace @sd, get_puregrace(@sd) + @grace_val;
+	set_will @sd, get_purewill(@sd) + @will_val;
+
+	set_hp @sd, get_maxhp(@sd);
+	set_mp @sd, get_maxmp(@sd);
+
+	effect @id, 2;
+
+	message @sd, 3, "레벨업!!";
+
+	if(get_level(@sd) == 99)
+	{
+		set @year$, gettime(5,0);
+		set @month$, gettime(4,0);
+		set @day$, gettime(3,0);
+		set @hour$, gettime(2,0);
+		set @min$, gettime(1,0);
+		set @sec$, gettime(0,0);
+
+		if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+		if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+		if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+		if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+		if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+		if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+
+		if(get_job(@sd) == 1) { set @job$, "전사"; }
+		if(get_job(@sd) == 2) { set @job$, "도적"; }
+		if(get_job(@sd) == 3) { set @job$, "주술사"; }
+		if(get_job(@sd) == 4) { set @job$, "도사"; }
+
+		if(get_joblevel(@sd) == 0)
+		{
+			announce 5, "<< ["+get_name(@sd)+"("+@job$+")] 님께서 99레벨을 달성하셨습니다. 축하합니다! >>";
+		}
+		else
+		{
+			announce 5, "<< ["+get_name(@sd)+"("+@job$+")] 님께서 "+get_joblevel(@sd)+"차승급을 달성하셨습니다. 축하합니다! >>";
+		}
+		
+		write_log "log/levelup/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"/"+get_joblevel(@sd)+"차승급):	레벨 99달성\\n";
+	}
+	else
+	{
+		set @year$, gettime(5,0);
+		set @month$, gettime(4,0);
+		set @day$, gettime(3,0);
+		set @hour$, gettime(2,0);
+		set @min$, gettime(1,0);
+		set @sec$, gettime(0,0);
+
+		if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+		if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+		if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+		if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+		if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+		if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+
+		if(get_job(@sd) == 1) { set @job$, "전사"; }
+		if(get_job(@sd) == 2) { set @job$, "도적"; }
+		if(get_job(@sd) == 3) { set @job$, "주술사"; }
+		if(get_job(@sd) == 4) { set @job$, "도사"; }
+
+		if(get_level(@sd) >= 0 && get_level(@sd) < 10)
+		{ 
+			write_log "log/statistics/10/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 10 && get_level(@sd) < 20)
+		{ 
+			write_log "log/statistics/20/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 20 && get_level(@sd) < 30)
+		{ 
+			write_log "log/statistics/30/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 30 && get_level(@sd) < 40)
+		{ 
+			write_log "log/statistics/40/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 40 && get_level(@sd) < 50)
+		{ 
+			write_log "log/statistics/50/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 50 && get_level(@sd) < 60)
+		{ 
+			write_log "log/statistics/60/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 60 && get_level(@sd) < 70)
+		{ 
+			write_log "log/statistics/70/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 70 && get_level(@sd) < 80)
+		{ 
+			write_log "log/statistics/80/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 80 && get_level(@sd) < 90)
+		{ 
+			write_log "log/statistics/90/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+		else if(get_level(@sd) >= 90 && get_level(@sd) < 99)
+		{ 
+			write_log "log/statistics/99/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+		}
+
+		write_log "log/statistics/all/"+get_name(@sd)+".txt", "["+@year$+"년_"+@month$+"월_"+@day$+"일"+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+"("+@job$+"):	"+get_level(@sd)+"\\n";
+	}
+
+return;
+}
+
+ONPARTY	{
+	callfunc "ONPARTY";
+}
+
+FUNC_ONPARTY	{
+	set @sd, mysd();
+	set @id, myid();
+
+return;
+}
+
+
+ONKILL	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @last, lastkillmobid(@sd);
+
+	callfunc "WOONGDAM_TEXTBOOK";
+	callfunc "SERVERQUEST";
+	//callfunc "특명왕퀘사냥";
+	callfunc "KINGQUEST";
+
+
+	// 최근에 이 함수를 호출한 지 3초도 안 지났으면 그냥 return한다
+	if(get_nowtime() - $@onkill_time < 4) { end; }
+	else { set $@onkill_time, get_nowtime(); }
+
+
+	if(isequip(@sd, 0) == 1)
+	{
+		set @equip_itemid, get_equip(@sd, 0);
+		callfunc itemid2name(@equip_itemid)+"옵션";
+	
+		if(@s_mindam+25 < get_s_mindam(@sd) ) { set @bugcheck, 1; }
+		if(@s_maxdam+25 < get_s_maxdam(@sd) ) { set @bugcheck, 1; }
+		if(@l_mindam+25 < get_l_mindam(@sd) ) { set @bugcheck, 1; }
+		if(@l_maxdam+25 < get_l_maxdam(@sd) ) { set @bugcheck, 1; }
+
+		if(@bugcheck == 1)
+		{
+			set $@버그사용자, $@버그사용자 + 1;
+			write_log "log/bug/"+gettime(5, 0)+"년_"+gettime(4, 0)+"월_"+gettime(3, 0)+"일.txt", "W_D["+gettime(2, 0)+"시 "+gettime(1, 0)+"분 "+gettime(0, 0)+"초] □ "+get_name(@sd)+": smin "+get_s_mindam(@sd)+" smax "+get_s_maxdam(@sd)+" lmin "+get_l_mindam(@sd)+" lmax "+get_l_maxdam(@sd)+" \\n";
+			message @sd, 0, "[초강력경고] 데미지 버그입니다. 옷다벗고 /버그해결을 사용해 주세요.";
+			message @sd, 0, "모든 장비 착용해제를 하려면 [쉬프트]와 [T]를 누른 뒤 [A]해주세요.";
+			message @sd, 0, "현재 버그 ["+$@버그사용자+"]회 사용중입니다. 해당 로그가 운영자에게 리포트 됩니다...";
+
+			if($@버그사용자 > 5)
+			{
+				set $@버그사용자, 0;
+				set $silence0, 10;
+				warp @sd, 2545, rand(5, 10), rand(5, 10);
+			}
+		}	
+	}
+	else
+	{
+		if(20 < get_s_mindam(@sd) ) { set @bugcheck, 1; }
+		if(20 < get_s_maxdam(@sd) ) { set @bugcheck, 1; }
+		if(20 < get_l_mindam(@sd) ) { set @bugcheck, 1; }
+		if(20 < get_l_maxdam(@sd) ) { set @bugcheck, 1; }
+
+		if(@bugcheck == 1)
+		{
+			set $@버그사용자, $@버그사용자 + 1;
+			write_log "log/bug/"+gettime(5, 0)+"년_"+gettime(4, 0)+"월_"+gettime(3, 0)+"일.txt", "N_D["+gettime(2, 0)+"시 "+gettime(1, 0)+"분 "+gettime(0, 0)+"초] □ "+get_name(@sd)+": smin "+get_s_mindam(@sd)+" smax "+get_s_maxdam(@sd)+" lmin "+get_l_mindam(@sd)+" lmax "+get_l_maxdam(@sd)+" \\n";
+			message @sd, 0, "[초강력경고] 데미지 버그입니다. 옷다벗고 /버그해결을 사용해 주세요.";
+			message @sd, 0, "현재 버그 ["+$@버그사용자+"]회 사용중입니다. 해당 로그가 운영자에게 리포트 됩니다...";
+
+			if($@버그사용자 > 5)
+			{
+				set $@버그사용자, 0;
+				set $silence0, 10;
+				warp @sd, 2545, rand(5, 10), rand(5, 10);
+			}
+		}
+	}
+	//set_userexpevent @sd, 1000;
+	// 500은 기본값+50%, 1000은 기본값+100%임.
+	// 즉 100은 기본값 +10%임.
+
+	callfunc "EXP_CHECK";
+	callfunc "DUNGAP";
+	callfunc "BUGCHECK";
+	callfunc "십억경변환";
+	callfunc "SESICHON";
+}
+
+FUNC_EXP_CHECK	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @승급패널티, 2;
+
+	if(party(@sd) != 0)
+	{
+		//setarray @party_session[0], 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+
+		for(set @i, 0; @i <= partymax(); set @i, @i+1)
+		{
+			set @party_session[@i], party_member(@sd, @i);
+			if(@party_session[@i] > 0)
+			{
+				if(get_mapid(@party_session[@i]) == get_mapid(@sd))
+				{
+					if(get_level(@sd) != get_level(@party_session[@i]) )
+					{
+						set @spread, get_level(@sd) - get_level(@party_session[@i]);
+						
+						if(@spread < 0)
+						{
+							set @spread, @spread * -1;
+						}
+						
+						set @level_spread, @spread * 10;
+					}
+
+
+					if(@high_joblv < get_joblevel(@party_session[@i]) )
+					{
+						set @high_joblv, get_joblevel(@party_session[@i]);
+					}
+
+					if(get_job(@party_session[@i]) == 1)
+					{
+						set @job_1bonus, 0;
+					}
+					else if(get_job(@party_session[@i]) == 2)
+					{
+						set @job_2bonus, 0;
+					}
+					else if(get_job(@party_session[@i]) == 3)
+					{
+						//set @job_3bonus, 100;
+						set @job_3bonus, 0;
+					}
+					else if(get_job(@party_session[@i]) == 4)
+					{
+						//set @job_4bonus, 0;
+						set @job_4bonus, 100;
+						set @dosa_check, @dosa_check + 1;
+					}
+				
+					set @party_samemap, @party_samemap + 1;
+
+					if(get_joblevel(@sd) != get_joblevel(@party_session[@i]) )
+					{
+						set @승급패널티, 1;
+					}
+				}
+				set @party_max, @party_max + 1;
+			}
+		}
+
+		set @job_bonus, @job_1bonus + @job_2bonus + @job_3bonus + @job_4bonus;
+		
+		/*
+		switch(@party_samemap)
+		{
+			case 0: set @party_bonus, 0; break;
+			case 1: set @party_bonus, 0; break;
+			case 2: set @party_bonus, 800; break;
+			case 3: set @party_bonus, 700; break;
+			case 4: set @party_bonus, 400; break;
+			case 5: set @party_bonus, 450; break;
+			case 6: set @party_bonus, 300; break;
+			case 7: set @party_bonus, 50; break;
+			case 8: set @party_bonus, 0; break;
+			case 9: set @party_bonus, 0; break;
+			case 10: set @party_bonus, 0; break;
+			case 11: set @party_bonus, 0; break;
+			case 12: set @party_bonus, 0; break;
+			default: set @party_bonus, 0; break;
+		}
+		*/
+
+
+		switch(@party_samemap)
+		{
+			case 0: set @party_bonus, 0; break;
+			case 1: set @party_bonus, 0; break;
+			case 2: set @party_bonus, 300; break;
+			case 3: set @party_bonus, 400; break;
+			case 4: set @party_bonus, 300; break;
+			case 5: set @party_bonus, 300; break;
+			case 6: set @party_bonus, 100; break;
+			case 7: set @party_bonus, 0; break;
+			case 8: set @party_bonus, 0; break;
+			case 9: set @party_bonus, 0; break;
+			case 10: set @party_bonus, 0; break;
+			case 11: set @party_bonus, 0; break;
+			case 12: set @party_bonus, 0; break;
+			default: set @party_bonus, 0; break;
+		}
+
+		for(set @j, 0; @j < @party_max; set @j, @j+1)
+		{
+			if(get_mapid(@sd) == get_mapid(@party_session[@j]) )
+			{
+				set @bonus_exp, 0;
+
+				if(get_joblevel(@party_session[@j]) < @high_joblv )
+				{
+					set @exp, 0;
+					
+					set @penalty, @high_joblv - get_joblevel(@party_session[@j]);
+					if( @penalty > 5 ) { set @penalty, 5; }
+
+					if(@penalty == 1) { set @exp, -100; }
+					else if(@penalty == 2) { set @exp, -500; }
+					else if(@penalty == 3) { set @exp, -900; }
+					else if(@penalty == 4) { set @exp, -1500; }
+					else
+					{
+						set @exp, -2000;
+					}
+				}
+				else
+				{
+					set @exp, 0;
+				}
+
+				if(spellaethered(@party_session[@j], name2spellid("우루삼10")) == 1) { set @bonus_exp, 100; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼20")) == 1) { set @bonus_exp, 200; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼30")) == 1) { set @bonus_exp, 300; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼40")) == 1) { set @bonus_exp, 400; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼50")) == 1) { set @bonus_exp, 500; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼60")) == 1) { set @bonus_exp, 600; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼70")) == 1) { set @bonus_exp, 700; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼80")) == 1) { set @bonus_exp, 800; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼90")) == 1) { set @bonus_exp, 900; }
+				else if(spellaethered(@party_session[@j], name2spellid("우루삼100")) == 1) { set @bonus_exp, 1000; }
+
+				if(get_nation(@party_session[@j]) == 1) { set @nation, 50; }
+
+				set @sum, @exp + @job_bonus + @party_bonus + @bonus_exp + @nation - @level_spread;
+				//set @sum, @exp + @job_bonus + @party_bonus + @bonus_exp + @nation;
+				if(@sum <= -1000) { set @sum, -999; }
+
+				set_userexpevent @party_session[@j], @sum;
+			}
+		}
+	}
+	else
+	{
+		set @bonus_exp, 0;
+		if(spellaethered(@sd, name2spellid("우루삼10")) == 1) { set @bonus_exp, 100; }
+		else if(spellaethered(@sd, name2spellid("우루삼20")) == 1) { set @bonus_exp, 200; }
+		else if(spellaethered(@sd, name2spellid("우루삼30")) == 1) { set @bonus_exp, 300; }
+		else if(spellaethered(@sd, name2spellid("우루삼40")) == 1) { set @bonus_exp, 400; }
+		else if(spellaethered(@sd, name2spellid("우루삼50")) == 1) { set @bonus_exp, 500; }
+		else if(spellaethered(@sd, name2spellid("우루삼60")) == 1) { set @bonus_exp, 600; }
+		else if(spellaethered(@sd, name2spellid("우루삼70")) == 1) { set @bonus_exp, 700; }
+		else if(spellaethered(@sd, name2spellid("우루삼80")) == 1) { set @bonus_exp, 800; }
+		else if(spellaethered(@sd, name2spellid("우루삼90")) == 1) { set @bonus_exp, 900; }
+		else if(spellaethered(@sd, name2spellid("우루삼100")) == 1) { set @bonus_exp, 1000; }
+
+		if(get_nation(@sd) == 1) { set @nation, 50; }
+		set_userexpevent @sd, @bonus_exp + @bomu + @nation;
+
+		set_userexpevent @sd, @bonus_exp + @bomu;
+	}
+
+return;
+}
+
+
+FUNC_ONMAGIC	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "AVOID_OVERLAP";
+
+	if(spellaethered(@sd, name2spellid("마기금성술")) == 1)
+	{	
+		message @sd, 3, "마법이 봉인되어 있습니다.";
+		end;
+	}
+
+return;
+}
+
+ONCLICK	{
+	set @sd, mysd();
+	set @id, myid();
+	callfunc "ONCLICK";
+}
+
+FUNC_ONCLICK	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @last_id, get_lastid(@id);
+
+	if(istype(@last_id) == 1)
+	{
+		set @last_sd, id2sd(@last_id);
+		set @tg_job, get_job(@last_sd);
+
+		switch(@tg_job)
+		{
+			case 0:
+				set @job$, "평민";
+				break;
+
+			case 1:
+				if(get_joblevel(@last_sd) == 0) { set @job$, "전사"; }
+				if(get_joblevel(@last_sd) == 1) { set @job$, "검객"; }
+				if(get_joblevel(@last_sd) == 2) { set @job$, "검제"; }
+				if(get_joblevel(@last_sd) == 3) { set @job$, "검황"; }
+				if(get_joblevel(@last_sd) == 4) { set @job$, "검성"; }
+				break;
+			case 2:
+				if(get_joblevel(@last_sd) == 0) { set @job$, "도적"; }
+				if(get_joblevel(@last_sd) == 1) { set @job$, "자객"; }
+				if(get_joblevel(@last_sd) == 2) { set @job$, "진검"; }
+				if(get_joblevel(@last_sd) == 3) { set @job$, "귀검"; }
+				if(get_joblevel(@last_sd) == 4) { set @job$, "태성"; }
+				break;
+			case 3:
+				if(get_joblevel(@last_sd) == 0) { set @job$, "주술사"; }
+				if(get_joblevel(@last_sd) == 1) { set @job$, "술사"; }
+				if(get_joblevel(@last_sd) == 2) { set @job$, "현사"; }
+				if(get_joblevel(@last_sd) == 3) { set @job$, "현인"; }
+				if(get_joblevel(@last_sd) == 4) { set @job$, "현자"; }
+				break;
+			case 4:
+				if(get_joblevel(@last_sd) == 0) { set @job$, "도사"; }
+				if(get_joblevel(@last_sd) == 1) { set @job$, "도인"; }
+				if(get_joblevel(@last_sd) == 2) { set @job$, "명인"; }
+				if(get_joblevel(@last_sd) == 3) { set @job$, "진인"; }
+				if(get_joblevel(@last_sd) == 4) { set @job$, "진선"; }
+				break;
+		}
+
+		//message @last_sd, 3, ""+get_name(@sd)+"의 빗자루가 나를 쓸고있다.";
+
+
+		if($last_click < get_nowtime() )
+		{
+			set_sdsegment(@last_sd);
+			if($자리비움 == 1)
+			{
+				message @sd, 8, $자리비움$;
+			}
+			set_sdsegment(@sd);
+			set $last_click, get_nowtime() + 5;
+		}
+		
+		set_sdsegment(@last_sd);
+		set @msg$, $업적칭호$;
+		set_sdsegment(@sd);
+
+		message @sd, 3, ""+get_name(@last_sd)+"("+@job$+"): "+@msg$+"";
+	}
+
+	set $onclick, $onclick + 1;
+	//message @sd, 3, "CLICK !"+$onclick+"";
+
+	if($onclick > 3000)
+	{
+		write_log "log/click_bomb.txt", gettime(4, 0)+"	"+gettime(3, 0)+"	"+gettime(2, 0)+"	"+gettime(1, 0)+"	"+gettime(0, 0)+"	"+get_name(@sd)+" \\n";
+		getoutofhere @sd;
+	}
+
+
+	
+return;
+}
+
+ONDESCRIBE	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "ITEM_DESCRIBE";
+}
+
+FUNC_ITEM_DESCRIBE	{
+	set @sd, mysd();
+	set @id, myid();
+	set @slot, get_lastslot(@id);
+
+	set @desc_mode, 1;
+
+	set @itemid, get_item(@sd, @slot);
+	if(get_itemtype(@itemid) < 6)
+	{
+		set @함수명$, itemid2name(@itemid) + "옵션";
+
+		set @등급, get_itemattribute(@sd, @slot, _아이템등급);
+
+		callfunc "어트리뷰트조사";
+		callfunc "어트리뷰트로드";
+		
+		callfunc @함수명$, @강화, @등급;
+
+		set @txt$, callfunc("물품감정");
+
+		//set @slot_data$, @slot_data$ + "\\n각인1: " + @att_01$ + " (+" +@att_01+ ")";
+		//set @slot_data$, @slot_data$ + "\\n각인2: " + @att_02$ + " (+" +@att_02+ ")";
+
+		set @now_dura, get_item_dura(@sd, @slot);
+		set @max_dura, get_equip_maxdura(@sd, @slot+8);
+
+		if(@now_dura > @max_dura)
+		{
+			set @belong_warning$, "＊ 귀속이 일시적으로 해제 된 아이템 입니다.\\n해당 아이템은 사용(착용)시 재 귀속됩니다.\\n사용과 거래에 각별히 주의해주시기 바랍니다.\\n\\n";
+		}
+
+		
+		set @period, get_itemattribute(@sd, @slot, _기간제아이템);
+		if(@period > 0)
+		{
+			set @get_nowtime, get_nowtime();
+			set @period_time, @period - @get_nowtime;
+
+			if(@period_time < 0)
+			{
+				set @남은시간$, "\\n\\n남은시간: 없음\\n＊아이템 보관 불가.";
+				//message @sd, 3, "사용시간이 다 되어 "+itemid2name(@itemid)+" 사라집니다.";
+				//del_item @sd, @slot, 1;
+			}
+			else
+			{
+				if(@period_time >= 86400)
+				{
+					set @day, @period_time / 86400;
+					set @hour, (@period_time % 86400) / 3600;
+					set @min, ((@period_time % 86400) % 3600 ) / 60;
+					set @sec, (((@period_time % 86400) % 3600 ) % 60 ) % 60;
+
+					set @남은시간$, "\\n\\n남은시간: "+@day+"일 "+@hour+"시 "+@min+"분 "+@sec+"초\\n＊아이템 보관 불가.";
+				}
+				else if(@period_time >= 3600 && @period_time < 86400)
+				{
+					set @hour, @period_time / 3600;
+					set @min, (@period_time % 3600 ) / 60;
+					set @sec, ((@period_time % 3600 ) % 60 ) % 60;
+
+					set @남은시간$, "\\n\\n남은시간: "+@hour+"시 "+@min+"분 "+@sec+"초\\n＊아이템 보관 불가.";
+				}
+				else if(@period_time >= 60 && @period_time < 3600)
+				{
+					set @min, @period_time / 60;
+					set @sec, (@period_time % 60 ) % 60;
+					
+					set @남은시간$, "\\n\\n남은시간: "+@min+"분 "+@sec+"초\\n＊아이템 보관 불가.";
+				}
+				else if(@period_time >= 1 && @period_time < 60)
+				{
+					set @sec, @period_time % 60;
+					
+					set @남은시간$, "\\n\\n남은시간: "+@sec+"초\\n＊아이템 보관 불가.";
+				}
+				else
+				{
+					set @남은시간$, "\\n\\n남은시간: "+@period_time+"초\\n＊아이템 보관 불가.";
+				}
+			}
+			
+		}
+
+		set_export @text$ + "\\n" + @profile$ + "\\n"+@belong_warning$+"" + @slot_data$ + @남은시간$;
+
+		
+	}
+	else
+	{
+		set @함수명$, itemid2name(@itemid) + "정보";
+		callfunc @함수명$;
+		set @t_n$, itemid2name(@itemid);
+		
+		set_export "이름: "+@t_n$+"\\n\\n가격: "+@가격$+" 전\\n타입: "+@타입$+"\\n\\n"+@설명$+"";
+	}
+
+return;
+}
+
+ONTRADE	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @year$, gettime(5,0);
+	set @month$, gettime(4,0);
+	set @day$, gettime(3,0);
+	set @hour$, gettime(2,0);
+	set @min$, gettime(1,0);
+	set @sec$, gettime(0,0);
+
+	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
+	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
+	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
+	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
+	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
+	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
+
+
+	set @max, trademax(@sd);
+	set @money, get_tradedmoney(@sd);
+
+	if(.target_sd == 0)
+	{
+		set .target_sd, @sd;
+		set @name$, get_name(.target_sd);
+	}
+	else
+	{
+		set .target_sd, 0;
+	}
+
+	for(set @i, 0; @i < @max; set @i, @i+1)
+	{
+		set @list, get_tradeditem(@sd, @i);
+		set @dura, get_tradeditem_dura(@sd, @i);
+		set @amount, get_tradeditem_amount(@sd, @i);
+
+		if(@list != -1) { set @txt$, @txt$ + "["+@i+"] "+itemid2name(@list)+"(" + @list + " ,"+@amount+"개, "+@dura+"내구)	"; }
+		else { set @txt$, @txt$; }
+	}
+
+	write_log "log/trade/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초]	□ "+get_name(@sd)+":	["+@money+" 전]	"+@txt$+" \\n";
+
+
+	save(1);
+	save(2);
+
+}
+
+ONTHROW	{
+	callfunc "ONTHROW";
+}
+
+
+FUNC_ONTHROW	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	set @logtime$, gettime(4,0) + "" + gettime(3,0) + "" + gettime(2,0) + "" + gettime(1,0) + "" + gettime(0,0) + "";
+	write_log "db_customlog/drop/"+get_name(@sd)+""+gettime(4,0)+".txt", get_nowtime()+ "	"+@logtime$+"\\n";
+	
+	set @count1, countitem(get_lastdrop_itemid(@sd));
+	set @count2, countitem(get_lastdrop_itemid(@sd));
+	
+	set @side, get_side(@id);
+
+	callfunc "ITEMLOG", "T"+@side+"", itemid2name(get_lastdrop_itemid(@sd)), ""+@count1+"→"+@count2+"";
+
+
+return;
+}
+
+FUNC_ONMIX	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @mix_many, get_mix_many(@sd);
+	
+	for(set @i, 0; @i <= @mix_many; set @i, @i + 1)
+	{
+		//해골왕의뼈 귀속 아이템
+		if(get_mix_itemid(@sd, @i) == 12468)
+		{
+			set @slot, get_lastslot(@id);
+			set @itemid, get_item(@sd, @slot);
+			
+			//해골갑옷
+			if(@itemid == 3000)
+			{
+				callfunc "지급아이템귀속처리";
+			}
+		}
+		//유성지의보패 귀속 아이템
+		else if(get_mix_itemid(@sd, @i) == 12469)
+		{
+			set @slot, get_lastslot(@id);
+			set @itemid, get_item(@sd, @slot);
+			
+			if(@itemid == 3001)
+			{
+				callfunc "지급아이템귀속처리";
+			}
+		}
+		//순수의강철 귀속 아이템
+		else if(get_mix_itemid(@sd, @i) == 12470)
+		{
+			set @slot, get_lastslot(@id);
+			set @itemid, get_item(@sd, @slot);
+			
+			if(@itemid == 1022 || @itemid == 1221 || @itemid == 1418 || @itemid == 1620)
+			{
+				callfunc "지급아이템귀속처리";
+			}
+		}
+		
+		if(get_mix_attribute(@sd, @i, _아이템교환불가) == 1)
+		{
+			//message @sd, 0, "tsetkjsakdfjksadjfk";
+		
+			set @slot, get_lastslot(@id);
+			set @itemid, get_item(@sd, @slot);
+			
+			// 천공투구, 비룡투구, 황금투구, 쇄자황금투구
+			if(@itemid == 4044 || @itemid == 4045 || @itemid == 4046 || @itemid == 4047 )
+			{
+				callfunc "지급아이템귀속처리";
+			}
+			// 천공장갑, 비룡장갑, 황금장갑, 쇄자황금장갑
+			else if(@itemid == 5217 || @itemid == 5215 || @itemid == 5213 || @itemid == 5212 )
+			{
+				callfunc "지급아이템귀속처리";
+			}
+			// 천공팔찌, 비룡팔찌, 황금팔찌, 쇄자황금팔찌
+			else if(@itemid == 5417 || @itemid == 5415 || @itemid == 5413 || @itemid == 5412 )
+			{
+				callfunc "지급아이템귀속처리";
+			}
+			// 천공반지, 비룡반지, 황금반지, 쇄자황금반지
+			else if(@itemid == 5617 || @itemid == 5615 || @itemid == 5613 || @itemid == 5612 )
+			{
+				callfunc "지급아이템귀속처리";
+			}
+			// 천공선류, 비룡선류, 황금선류, 쇄자황금선류
+			else if(@itemid == 5816 || @itemid == 5814 || @itemid == 5812 || @itemid == 5813 )
+			{
+				callfunc "지급아이템귀속처리";
+			}
+		}
+	}
+	
+
+return;
+}
+
+ONMIX	{
+	set @sd, mysd();
+	set @id, myid();
+
+	callfunc "ONMIX";
+	callfunc "ONMIX_LOG";
+
+	//callfunc "ONMIX_GRADE";
+	if($업적 == 14)
+	{
+		if($check == 30)
+		{
+			set @slot, get_lastslot(@id);
+			set @itemid, get_item(@sd, @slot);
+			
+			set @name$, itemid2name(@itemid);
+			if(@name$ == "탁주")
+			{
+				message @sd, 0, "[임무15] 탁주 조합 성공! 다시 F1 키를 눌러 임무를 진행하세요.";
+				set $check, 40;
+			}		
+		}
+	}
+
+}
+
+FUNC_DEBUGMODE	{
+
+	set @sd, mysd();
+	set @script$, getarg(0);
+
+	return;
+}
+
+ONLOAD	{
+	callfunc "ONLOAD";
+}
+
+FUNC_ONLOAD	{
+	attachtimer 0, 0, name2mapid("압록강"), "천명시작", 1000;
+	callfunc "SERVER_EXPRATE";
+	set #BOSS1_KILL_TIME, callfunc("Server_Nowtime");
+	set #BOSS2_KILL_TIME, callfunc("Server_Nowtime");
+	set #BOSS3_KILL_TIME, callfunc("Server_Nowtime");
+	set #BOSS4_KILL_TIME, callfunc("Server_Nowtime");
+	set #BOSS5_KILL_TIME, callfunc("Server_Nowtime");
+	set #BOSS6_KILL_TIME, callfunc("Server_Nowtime");
+	return;
+}
+
+FUNC_SERVER_EXPRATE	{
+	set_expevent #server_exprate;
+}
+
+
+ONDAMAGED	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_lastdamaged_type(@sd) > 0)
+	{
+		callfunc "내구도소모", 1;
+	}
+
+	if(get_hp(@sd) < 0) 
+	{
+		message @sd, 0, "[알림] 체력버그 사용 감지로 인하여 버그해결이 실행됩니다.";
+		pcdead @sd;
+		callfunc "DEADEXP";
+		callfunc "BUGCLEAR";	
+	}
+
+	callfunc "마기지체ONDAMAGED";
+
+}
+
+ONDROP	{
+	callfunc "ONDROP";
+}
+
+FUNC_ONDROP	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	// 돈 버그 해결
+	if(get_lastdrop_itemid(@sd) > 60000);
+	{
+		set $money_count, $money_count + 1;
+		if($money_count > 10)
+		{
+			set $money_count, 0;
+			for(set @loop, 0; @loop <= 20; set @loop, @loop + 1)
+			{
+				getitemmap @sd, get_x(@id), get_y(@id);
+			}
+			getoutofhere @sd;
+		}
+	}
+
+	set @logtime$, gettime(4,0) + "" + gettime(3,0) + "" + gettime(2,0) + "" + gettime(1,0) + "" + gettime(0,0) + "";
+	write_log "db_customlog/drop/"+get_name(@sd)+""+gettime(4,0)+".txt", get_nowtime()+ "	"+@logtime$+"\\n";
+	
+	set @slot, get_dropitem_slot(@sd);
+	set @all, get_dropitem_all(@sd);
+	set @item_num1, get_item(@sd, @slot);
+	set @count1, countitem(@item_num1);
+
+
+
+
+
+	set @list, list1("정말 버리시겠습니까?", "예", "아뇨");
+	if(@list == 0) end;
+	else if(@list == 1)
+	{
+		drop_item @sd, @slot, @all, 0;	
+		action @id, 4, 50, 0;
+		sound @id, 406;	
+		set @item_num2, get_item(@sd, @slot);
+		set @count2, countitem(@item_num2);
+
+		callfunc "ITEMLOG", "D", itemid2name(@item_num1), ""+@count1+"→"+@count2+"";
+
+		if($dropbug_warning > 20)
+		{
+			getitemmap @sd, get_x(@id), get_y(@id);
+			callfunc "ITEMLOG", "[GET  D]", get_lastget_itemid(@sd);
+			message @sd, 0, "[알림] 아이템 버리기 버그 사용이 감지되었습니다."; 
+			message @sd, 0, "[알림] 서버의 안정성을 위하여 관련 기능이 제한 됩니다."; 
+			message @sd, 0, "[알림] 운영자(향수GM)에게 문의하시기 바랍니다."; 
+			set_flag @sd, "drop", 0;
+		}
+		
+		set $droped, $droped + 1;
+		if($droped == 0)
+		{
+			set $droped_time1, get_nowtime();
+		}
+		else if($droped > 0)
+		{
+			if($droped > 10)
+			{
+				set @compare, get_nowtime() - $droped_time1;
+				if(@compare < 5)
+				{
+					set $dropbug_warning, $dropbug_warning + 1;
+					
+					for(set @i, 0; @i <= 10; set @i, @i + 1)
+					{
+						getitemmap @sd, get_x(@id), get_y(@id);	
+					}
+					set $droped, 0;
+					getoutofhere @sd;
+				}
+				else
+				{
+					set $droped, 0;
+				}
+			}
+			
+		}
+		
+
+
+		//callfunc "ITEMLOG", "[DROP  ]", get_lastdrop_itemid(@sd);
+	}
+
+return;
+}
+
+ONGET	{
+	callfunc "ONGET";
+	
+//	callfunc "ITEMLOG", "[GET   ]", get_lastget_itemid(@sd);
+}
+
+FUNC_ONGET	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @count1, countitem(get_lastget_itemid(@sd));
+	set @count2, countitem(get_lastget_itemid(@sd));
+	
+	if(get_lastget_itemid(@sd) >= 60000)
+	{
+		set @count1, get_money(@sd);
+		set @count2, get_money(@sd);
+	}
+
+	callfunc "ITEMLOG", "G", itemid2name(get_lastget_itemid(@sd)), ""+@count1+"→"+@count2+"";
+
+return;
+}
+
+FUNC_ONMOVE_QUEST_FLAG_UPDATE	{
+	if($myungsukboo == 1 || $myungsukboo == 3)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 1;
+	if($singoong_anex_history >= 16)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 2;
+	if($donuhap == 1 || $donuhap == 2)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 4;
+	if($dojaeyoung == 6)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 8;
+	if($greatwall_repair == 1)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 16;
+	if($hansangyak == 1)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 32;
+	if($find_play_object == 1)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 64;
+	if($mountain_god_clothes == 1)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 128;
+	if($totem_clothes == 1)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 256;
+	if($alcoholic_drink == 2)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 512;
+	if($mugi == 2)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 1024;
+	if($백두산 == 14)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 2048;
+	
+//	if(get_mapname(@sd) == "세시호수" && @tile >= 10238 && @tile <= 10240)
+		set $@onmove_quest_flag, $@onmove_quest_flag | 2048;
+	return;
+}
+
+ONMOVE	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(rand(1, 100) < 5)
+	{
+		if($@onmove_quest_flag > 0)
+		{
+			set @rand, rand(0, 2147483647) & $@onmove_quest_flag;
+			
+			if(@rand & 1) callfunc "MOVE_GHOSTEDHOUSE";
+			if(@rand & 2) callfunc "MOVE_JAPANOF6";
+			if(@rand & 4) callfunc "MOVE_DONGCHOONG";
+			if(@rand & 8) callfunc "MOVE_MANLEEHYANG";
+			if(@rand & 16) callfunc "MOVE_GREATWALLFIX";
+			if(@rand & 32) callfunc "MOVE_REDSOIL";
+			if(@rand & 64) callfunc "MOVE_PRINCETOY";
+			if(@rand & 128) callfunc "MOVE_SPIRITS800";
+			if(@rand & 256) callfunc "MOVE_GODDESSDEW";
+			if(@rand & 512) callfunc "MOVE_BLUESEED";
+			if(@rand & 1024) callfunc "MOVE_FANTAWEAPON";
+			//if(@rand & 2048) callfunc "MOVE_BAEKDOOCHON";
+		}
+	}
+	
+	
+/*
+	if(spellaethered(@sd, name2spellid("지옥무영")))
+	{
+		if($@지옥무영mapid != mapid()) spelluncast mysd(), name2spellid("지옥무영");
+		else
+		{
+			if(validid($@지옥무영id0)) { move $@지옥무영id0, rand(0, 3); }
+			if(validid($@지옥무영id1)) { move $@지옥무영id1, rand(0, 3); }
+			if(validid($@지옥무영id2)) { move $@지옥무영id2, rand(0, 3); }
+			if(validid($@지옥무영id3)) { move $@지옥무영id3, rand(0, 3); }
+		}
+	}
+*/
+
+	
+
+	if($자리비움 == 1)
+	{
+		set $자리비움, 0;
+	}
+}
+
+ONSWING	{
+	set @sd, mysd();
+	set @id, myid();
+	set @x, get_x(@id);
+	set @y, get_y(@id);
+
+
+	if(spellaethered(@sd, name2spellid("지옥무영")))
+	{
+		if($@지옥무영mapid != mapid()) spelluncast mysd(), name2spellid("지옥무영");
+		else
+		{
+			if(validid($@지옥무영id0)) { action $@지옥무영id0, 1, 20, 0; }
+			if(validid($@지옥무영id1)) { action $@지옥무영id1, 1, 20, 0; }
+			if(validid($@지옥무영id2)) { action $@지옥무영id2, 1, 20, 0; }
+			if(validid($@지옥무영id3)) { action $@지옥무영id3, 1, 20, 0; }
+		}
+	}
+
+	if(obj_getfront() > 0)
+	{
+		callfunc "ONSWING", obj_getfront();
+	}
+
+	if(spellaethered(@sd, name2spellid("후면공격")) == 1)
+	{
+		set @side, get_side(@id);
+		switch(@side)
+		{
+			case 0: 
+				callfunc "ONSWING", obj_getxy(@x, @y+1);
+				break;
+			case 1: 
+				callfunc "ONSWING", obj_getxy(@x-1, @y);
+				break;
+			case 2: 
+				callfunc "ONSWING", obj_getxy(@x, @y-1);
+				break;
+			case 3: 
+				callfunc "ONSWING", obj_getxy(@x+1, @y);
+				break;
+		}
+	}
+
+	if(spellaethered(@sd, name2spellid("측면공격")) == 1)
+	{
+		set @side, get_side(@id);
+		switch(@side)
+		{
+			case 0: 
+				callfunc "ONSWING", obj_getxy(@x-1, @y);
+				callfunc "ONSWING", obj_getxy(@x+1, @y);
+				break;
+			case 1: 
+				callfunc "ONSWING", obj_getxy(@x, @y-1);
+				callfunc "ONSWING", obj_getxy(@x, @y+1);
+				break;
+			case 2: 
+				callfunc "ONSWING", obj_getxy(@x-1, @y);
+				callfunc "ONSWING", obj_getxy(@x+1, @y);
+				break;
+			case 3:
+				callfunc "ONSWING", obj_getxy(@x, @y-1);
+				callfunc "ONSWING", obj_getxy(@x, @y+1);
+				break;
+		}
+	}
+}
+
+
+
+FUNC_ONSWING	{
+	set @sd, mysd();
+	set @id, myid();
+	
+	//callfunc "세시마을공격";
+	
+	if(get_s_mindam(@sd) < 0) { set_s_mindam @sd, 3; }
+	if(get_s_maxdam(@sd) < 0) { set_s_maxdam @sd, 7; }
+	if(get_l_mindam(@sd) < 0) { set_l_mindam @sd, 3; }
+	if(get_l_maxdam(@sd) < 0) { set_l_maxdam @sd, 7; }
+	
+	set @target_id, getarg(0);
+
+	set @hit, 60 + get_hit(@sd);
+	// 여기서 get_hit을 attribute 것도 적용하게 수정.
+
+	if(@비영승보 == 1)
+	{
+		set @hit, 70 + get_hit(@sd);
+	}
+
+	if(rand(1, 100) < @hit)
+	{
+		set @iter, 1;
+
+		if(spellaethered(@sd, name2spellid("분신")) == 1) { set @iter, @iter+1; }
+
+		if(spellaethered(@sd, name2spellid("오중공격")) == 1) { set @iter, @iter+4; }
+		else if(spellaethered(@sd, name2spellid("사중공격")) == 1) { set @iter, @iter+3; }
+		else if(spellaethered(@sd, name2spellid("삼중공격")) == 1) { set @iter, @iter+2; }
+		else if(spellaethered(@sd, name2spellid("이중공격")) == 1) { set @iter, @iter+1; }
+	
+		if(istype(@target_id) == 1)
+		{
+			set @average_dam, rand(get_s_mindam(@sd), get_s_maxdam(@sd) );
+			if(@average_dam == 0) { set @average_dam, 5; }
+
+			set @target_sd, id2sd(@target_id);
+			//if(spellaethered(@target_sd, name2spellid("마기지체")) == 1 && @rand < 4 && spellaethered(@sd, name2spellid("마기지체저주")) == 0 )
+			//{
+			//	spellaether @sd, name2spellid("마기지체저주"), 60;
+			//	set_ac @sd, get_ac(@sd)+50;
+			//	effect @id, 108;
+			//}
+			
+
+
+			// 때리기
+			while(@iter > 0)
+			{
+				set @ratio, 1;
+				if(spellaethered(@sd, name2spellid("투명")) == 1) 
+				{
+					spelluncast @sd, name2spellid("투명");
+					set @ratio, @ratio * 8;
+				}
+				
+				//if(@비영승보 == 1) { set @ratio, @ratio * 2; }
+				//비영승보기 때문에 2배가 아니라, 뒷방이라 2배인겁니다.
+				
+				set @last_sum_damage, @average_dam*@ratio;
+				set @dam_critical, rand(0, get_dam(@sd) );
+				if(rand(1, 100) < @dam_critical )
+				{
+					set @last_sum_damage, ( @last_sum_damage * 125 ) / 100;
+					sound @id, 351;
+				}
+
+				// 옆방 뒷방 데미지. 앞은 100%, 옆은 150%, 뒤는 200%
+				if(get_side(obj_getfront()) == 0)
+				{
+					if(get_side(@id) == 0) { set @backattack, 200; }
+					else if(get_side(@id) == 1) { set @backattack, 150;	}
+					else if(get_side(@id) == 2)	{ set @backattack, 100;	}
+					else if(get_side(@id) == 3) { set @backattack, 150;	}
+				}
+				else if(get_side(obj_getfront()) == 1)
+				{
+					if(get_side(@id) == 0) { set @backattack, 150; }
+					else if(get_side(@id) == 1) { set @backattack, 200;	}
+					else if(get_side(@id) == 2) { set @backattack, 150;	}
+					else if(get_side(@id) == 3) { set @backattack, 100;	}
+				}
+				else if(get_side(obj_getfront()) == 2)
+				{
+					if(get_side(@id) == 0) { set @backattack, 100; }
+					else if(get_side(@id) == 1) { set @backattack, 150;	}
+					else if(get_side(@id) == 2)	{ set @backattack, 200;	}
+					else if(get_side(@id) == 3)	{ set @backattack, 150;	}
+				}
+				else if(get_side(obj_getfront()) == 3)
+				{
+					if(get_side(@id) == 0) { set @backattack, 150; }
+					else if(get_side(@id) == 1) { set @backattack, 100;	}
+					else if(get_side(@id) == 2)	{ set @backattack, 150;	}
+					else if(get_side(@id) == 3)	{ set @backattack, 200;	}
+				}
+				set @last_sum_damage, ( @last_sum_damage * @backattack ) / 100;
+	
+				callfunc "DAMAGE", @id, @target_id, @last_sum_damage, 1;
+				
+				// 소리 출력
+				if(get_equip(@sd, 0) >= 0) { sound @id, get_hitsound(@sd); }
+				
+				if(@pk == 1)
+				{
+					callfunc "내구도소모", 0;
+				}
+				set @iter, @iter-1;
+			}
+			
+			if(@pk == 1)
+			{
+				if(get_equip(@sd, 0) > 0)
+				{
+					//타격흡수 어트리뷰트.
+					if(get_equipattribute(@sd, 0, _힘타격체흡수) > 0)
+					{
+						set @heal, ( get_might(@sd) * get_equipattribute(@sd, 0, _힘타격체흡수) );
+						callfunc "MYHEALMAGIC", 0, @heal, 5, 0, "체력흡수(힘)x"+get_equipattribute(@sd, 0, _힘타격체흡수)+"";
+					}
+					else if(get_equipattribute(@sd, 0, _민타격체흡수) > 0)
+					{
+						set @heal, ( get_will(@sd) * get_equipattribute(@sd, 0, _민타격체흡수) );
+						callfunc "MYHEALMAGIC", 0, @heal, 5, 0, "체력흡수(민)x"+get_equipattribute(@sd, 0, _민타격체흡수)+"";
+					}
+					else if(get_equipattribute(@sd, 0, _지타격체흡수) > 0)
+					{
+						set @heal, ( get_grace(@sd) * get_equipattribute(@sd, 0, _지타격체흡수) );
+						callfunc "MYHEALMAGIC", 0, @heal, 5, 0, "체력흡수(지)x"+get_equipattribute(@sd, 0, _지타격체흡수)+"";
+					}
+					if(get_equipattribute(@sd, @slot, _힘타격마흡수) > 0)
+					{
+						set @heal, ( get_might(@sd) * get_equipattribute(@sd, 0, _힘타격마흡수) );
+						callfunc "MYHEALMANA_MAGIC", 0, @heal, 5, 0, "마력흡수(힘)x"+get_equipattribute(@sd, 0, _힘타격마흡수)+"";
+					}
+					else if(get_equipattribute(@sd, @slot, _민타격마흡수) > 0)
+					{
+						set @heal, ( get_will(@sd) * get_equipattribute(@sd, 0, _민타격마흡수) );
+						callfunc "MYHEALMANA_MAGIC", 0, @heal, 5, 0, "마력흡수(민)x"+get_equipattribute(@sd, 0, _민타격마흡수)+"";
+					}
+					else if(get_equipattribute(@sd, @slot, _지타격마흡수) > 0)
+					{
+						set @heal, ( get_grace(@sd) * get_equipattribute(@sd, 0, _지타격마흡수) );
+						callfunc "MYHEALMANA_MAGIC", 0, @heal, 5, 0, "마력흡수(지)x"+get_equipattribute(@sd, 0, _지타격마흡수)+"";
+					}
+				}
+			}
+		}
+		else if(istype(@target_id) == 2)
+		{
+			if(ismobtype(@target_id) == 0)
+			{
+				set @average_dam, rand(get_s_mindam(@sd) + @공격수정, get_s_maxdam(@sd) );
+				if(@average_dam == 0) { set @average_dam, 5; }
+			}
+			else
+			{
+				set @average_dam, rand(get_l_mindam(@sd) + @공격수정, get_l_maxdam(@sd) );
+				if(@average_dam == 0) { set @average_dam, 5; }
+			}
+
+
+
+			// 때리기
+			while(@iter > 0)
+			{
+				set @ratio, 1;
+				if(spellaethered(@sd, name2spellid("투명")) == 1) 
+				{
+					spelluncast @sd, name2spellid("투명");
+					set @ratio, @ratio * 8;
+				}
+				//if(@비영승보 == 1) { set @ratio, @ratio * 2; }
+
+				set @last_sum_damage, @average_dam*@ratio;
+				set @dam_critical, rand(0, get_dam(@sd) );
+				if(rand(1, 100) < @dam_critical )
+				{
+					set @last_sum_damage, ( @last_sum_damage * 125 ) / 100;
+				}
+
+				// 옆방 뒷방 데미지. 앞은 100%, 옆은 150%, 뒤는 200%
+				if(get_side(@target_id) == 0)
+				{
+					if(get_side(@id) == 0) { set @backattack, 200; }
+					else if(get_side(@id) == 1) { set @backattack, 150;	}
+					else if(get_side(@id) == 2)	{ set @backattack, 100;	}
+					else if(get_side(@id) == 3) { set @backattack, 150;	}
+				}
+				else if(get_side(@target_id) == 1)
+				{
+					if(get_side(@id) == 0) { set @backattack, 150; }
+					else if(get_side(@id) == 1) { set @backattack, 200;	}
+					else if(get_side(@id) == 2) { set @backattack, 150;	}
+					else if(get_side(@id) == 3) { set @backattack, 100;	}
+				}
+				else if(get_side(@target_id) == 2)
+				{
+					if(get_side(@id) == 0) { set @backattack, 100; }
+					else if(get_side(@id) == 1) { set @backattack, 150;	}
+					else if(get_side(@id) == 2)	{ set @backattack, 200;	}
+					else if(get_side(@id) == 3)	{ set @backattack, 150;	}
+				}
+				else if(get_side(@target_id) == 3)
+				{
+					if(get_side(@id) == 0) { set @backattack, 150; }
+					else if(get_side(@id) == 1) { set @backattack, 100;	}
+					else if(get_side(@id) == 2)	{ set @backattack, 150;	}
+					else if(get_side(@id) == 3)	{ set @backattack, 200;	}
+				}
+
+				set @last_sum_damage, ( @last_sum_damage * @backattack ) / 100;
+				
+				callfunc "DAMAGE", @id, @target_id, @last_sum_damage, 1;
+				callfunc "내구도소모", 0;
+				
+				// 소리 출력
+				if(get_equip(@sd, 0) >= 0) { sound @id, get_hitsound(@sd); }
+
+				set @iter, @iter-1;
+			}
+			
+			if(get_equip(@sd, 0) > 0)
+			{
+				//타격흡수 어트리뷰트.
+				if(get_equipattribute(@sd, 0, _힘타격체흡수) > 0)
+				{
+					set @heal, ( get_might(@sd) * get_equipattribute(@sd, 0, _힘타격체흡수) );
+					callfunc "MYHEALMAGIC", 0, @heal, 5, 0, "체력흡수(힘)x"+get_equipattribute(@sd, 0, _힘타격체흡수)+"";
+				}
+				else if(get_equipattribute(@sd, 0, _민타격체흡수) > 0)
+				{
+					set @heal, ( get_will(@sd) * get_equipattribute(@sd, 0, _민타격체흡수) );
+					callfunc "MYHEALMAGIC", 0, @heal, 5, 0, "체력흡수(민)x"+get_equipattribute(@sd, 0, _민타격체흡수)+"";
+				}
+				else if(get_equipattribute(@sd, 0, _지타격체흡수) > 0)
+				{
+					set @heal, ( get_grace(@sd) * get_equipattribute(@sd, 0, _지타격체흡수) );
+					callfunc "MYHEALMAGIC", 0, @heal, 5, 0, "체력흡수(지)x"+get_equipattribute(@sd, 0, _지타격체흡수)+"";
+				}
+				if(get_equipattribute(@sd, @slot, _힘타격마흡수) > 0)
+				{
+					set @heal, ( get_might(@sd) * get_equipattribute(@sd, 0, _힘타격마흡수) );
+					callfunc "MYHEALMANA_MAGIC", 0, @heal, 5, 0, "마력흡수(힘)x"+get_equipattribute(@sd, 0, _힘타격마흡수)+"";
+				}
+				else if(get_equipattribute(@sd, @slot, _민타격마흡수) > 0)
+				{
+					set @heal, ( get_will(@sd) * get_equipattribute(@sd, 0, _민타격마흡수) );
+					callfunc "MYHEALMANA_MAGIC", 0, @heal, 5, 0, "마력흡수(민)x"+get_equipattribute(@sd, 0, _민타격마흡수)+"";
+				}
+				else if(get_equipattribute(@sd, @slot, _지타격마흡수) > 0)
+				{
+					set @heal, ( get_grace(@sd) * get_equipattribute(@sd, 0, _지타격마흡수) );
+					callfunc "MYHEALMANA_MAGIC", 0, @heal, 5, 0, "마력흡수(지)x"+get_equipattribute(@sd, 0, _지타격마흡수)+"";
+				}
+			}
+		}
+
+		return;
+	}
+	
+return;
+}
+
+
+FUNC_내구도소모2	{
+	set @sd, mysd();
+	set @id, myid();
+
+	set @type, getarg(0);
+
+	//say @id, 0, "get_l_mindam: "+get_l_mindam(@sd)+" / get_l_maxdam: "+get_l_maxdam(@sd)+"";
+
+	//무기일때
+	if(@type == 0)
+	{
+		if(isequip(@sd, 0) == 1)
+		{
+			if(get_equip_dura(@sd, 0) == 1)
+			{
+				runscript @sd, "@무기해제";
+				del_equip @sd, 0;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 0, get_equip_dura(@sd, 0) - 1;
+			}
+		}
+		//say @id, 0, "get_l_mindam: "+get_l_mindam(@sd)+" / get_l_maxdam: "+get_l_maxdam(@sd)+"";
+	}
+	else
+	{
+		//내가 쳐 맞을때 내구도가 소모 됨.
+		
+		if(isequip(@sd, 0) == 1)
+		{
+			if(get_equip_dura(@sd, 0) == 1)
+			{
+				runscript @sd, "@무기해제";
+				del_equip @sd, 0;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 0, get_equip_dura(@sd, 0) - 1;
+			}
+		}
+		
+		if(isequip(@sd, 1) == 1)
+		{
+			if(get_equip_dura(@sd, 1) == 1)
+			{
+				runscript @sd, "@갑옷해제";
+				del_equip @sd, 1;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 1, get_equip_dura(@sd, 1) - 1;
+			}
+		}
+		
+		if(isequip(@sd, 2) == 1)
+		{
+			if(get_equip_dura(@sd, 2) == 1)
+			{
+				runscript @sd, "@방패해제";
+				del_equip @sd, 2;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 2, get_equip_dura(@sd, 2) - 1;
+			}
+		}
+		
+		if(isequip(@sd, 3) == 1)
+		{
+			if(get_equip_dura(@sd, 3) == 1)
+			{
+				runscript @sd, "@투구해제";
+				del_equip @sd, 3;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 3, get_equip_dura(@sd, 3) - 1;
+			}
+		}
+	
+		if(isequip(@sd, 4) == 1)
+		{
+			if(get_equip_dura(@sd, 4) == 1)
+			{
+				runscript @sd, "@반지해제";
+				del_equip @sd, 4;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 4, get_equip_dura(@sd, 4) - 1;
+			}
+		}
+
+		if(isequip(@sd, 5) == 1)
+		{
+			if(get_equip_dura(@sd, 5) == 1)
+			{
+				runscript @sd, "@반지해제";
+				del_equip @sd, 5;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 5, get_equip_dura(@sd, 5) - 1;
+			}
+		}
+		
+		if(isequip(@sd, 6) == 1)
+		{
+			if(get_equip_dura(@sd, 6) == 1)
+			{
+				runscript @sd, "@보조해제";
+				del_equip @sd, 6;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 6, get_equip_dura(@sd, 6) - 1;
+			}
+		}
+		
+		if(isequip(@sd, 7) == 1)
+		{
+			if(get_equip_dura(@sd, 7) == 1)
+			{
+				runscript @sd, "@보조해제";
+				del_equip @sd, 7;
+				callfunc "BREAKING_ITEM", itemid2name(get_lastslot(@id));
+			}
+			else
+			{
+				set_equip_dura @sd, 7, get_equip_dura(@sd, 7) - 1;
+			}
+		}
+	}
+
+
+return;
+}
+
+
+
+
 ONSUNGHANG	{
+	//callfunc "DEBUGMODE", "ONSUNGHANG";
+
 	set @sd, mysd();
 	set @id, myid();
 
@@ -8,2034 +1820,279 @@ ONSUNGHANG	{
 	set_state @sd, 0;
 	updatelookpc @sd, 1;
 
-	callfunc "BUGCLEAR";
+	if(get_equip(@sd, 6) == name2spellid("보무의목걸이") || get_equip(@sd, 7) == name2itemid("보무의목걸이"))
+	{
+		spellcast @sd, (name2spellid("자동보호"));
+		spellcast @sd, (name2spellid("자동무장"));
+	}
 
 	say objid(), 0, "영은 생을 얻을지어니..";
 }
-ONSWING	{
-	set @sd, mysd();
-}
-ONMOVE	{
-	set @sd, mysd();
-	if(get_gmlevel(@sd) > 0)
-	{
-		if(get_name(@sd) == "환영" || get_name(@sd) == "마스터") { }
-		else
-		{
-			set_gmlevel @sd, 0;
-			getoutofhere @sd;
-		}
-	}
-}
-ONDAMAGED	{
-	set @sd, mysd();
-	set @id, myid();
-	set @last, get_lastattackmobid(@sd);
-	if(spellaethered(@sd, name2spellid("마기지체")))
-	{
-		if(istype(@last) == 1 && ismapoption(@sd, 6))
-		{
-			set @target_sd, id2sd(@last);
-			if(spellaethered(@target_sd, name2spellid("마기지체저주"))) spelluncast @target_sd, name2spellid("마기지체저주");
-			spellaether @target_sd, name2spellid("마기지체저주"), 60;
-			effect @last, 108;
-			set_ac @target_sd, get_ac(@target_sd)+50;
-			if(@last != @id)
-			{
-				message @target_sd, 3, get_name(@sd) + "님이 마기지체를 걸었습니다.";
-			}
-		}
-		else if(istype(@last) == 2)
-		{
-			if(mobspellaethered(@last, name2spellid("마기지체저주"))) { }
-			else
-			{
-				mobspellaether @last, name2spellid("마기지체저주"), 60;
-				effect @last, 108;
-				set_mobac @last, get_mobac(@last)+50;
-			}
-		}
-		set_lastattackmobid @sd, -1;
-	}
-	if(get_ac(@sd) < -500)
-	{
-		broadcast 5, get_name(@sd)+"님 방어버그를 사용하고 계십니다. /버그해결을 하십시요";
-		message @sd, 3, "버그해결을 하십시요. 방치시 제재를 가합니다";
-	}
-}
+
 
 ONLOGIN	{
-	image 0, 4, 4;
+	//callfunc "CHARACTER_START";
+	callfunc "ONLOGIN_MODULE";
+}
+
+FUNC_ONLOGIN_MODULE	{
 	set @sd, mysd();
 	set @id, myid();
-	set @time, callfunc("Server_Nowtime");
-	spelluncast @sd, name2spellid("선필마감");
-	spelluncast @sd, name2spellid("선필요청대기");
-	spelluncast @sd, name2spellid("선필요청");
 
-	set_nation @sd, 2;
-
-	set @ip$, ip(@sd);
-
-	set @fo, fopen("log/ban/ipban.txt","r");
-	while(1)
+	if($account_created == 0)
 	{
-		set @ipcode$, fgets(@fo);
-		if(@ipcode$ == "")
-		{
-			fclose(@fo);
-			break;
-		}
-		else
-		{
-			set @wip$, @wip$+strtok(@ipcode$,".",0)+".";
-			set @wip$, @wip$+strtok(@ipcode$,".",1)+".";
-			set @wip$, @wip$+strtok(@ipcode$,".",2);
+		set $account_created, (gettime(5, 0)*1000000) + (gettime(4, 0)*10000)+(gettime(3, 0)*100)+gettime(2, 0);
+		addlegend @sd, 0, 85, 0, 15, " "+gettime(5, 0)+"."+gettime(4, 0)+"."+gettime(3, 0)+" 시작.";
 
-			set @iip$, @iip$+strtok(@ip$,".",0)+".";
-			set @iip$, @iip$+strtok(@ip$,".",1)+".";
-			set @iip$, @iip$+strtok(@ip$,".",2);
-
-			if(@iip$ == @wip$)
-			{
-				fclose(@fo);
-				getoutofhere @sd;
-			}
-		}
-		set @wip$, "";
-		set @iip$, "";
+		message @sd, 8, ""+$account_created+" 향수의나라를 시작하셨습니다.";
+		write_log "db_customlog/email/"+get_name(@sd)+".txt", "\\n\\n";
 	}
-	if(get_job(@sd) == 4)
+	
+	callfunc "묵언수행체크";
+	set $onclick, 0;
+	
+	/*
+	if(get_equip(@sd, 1) == 931)
 	{
-		if(checkspell(name2spellid("마지막타겟에게기원")) == 52)
-		{
-			addspell name2spellid("마지막타겟에게기원");
-		}
+		set @item$, itemid2name(get_equip(@sd, 1));
+		set @num, strtok(@item$, "옷", 1);
+
+		set @dyeing, @num - 1;
+		set_armorcolor @sd, @dyeing;
 	}
-	if(get_gmlevel(@sd) == 0)
+	else if(get_equip(@sd, 1) >= 670 && get_equip(@sd, 1) <= 679)
 	{
-		set @rank, callfunc("RANKING_REG");
-		message @sd, 3, "마스터온라인 나의 순위: " + @rank + "위";
+		set @item$, itemid2name(get_equip(@sd, 1));
+		set @num, strtok(@item$, "옷", 1);
+
+		set @dyeing, @num - 1;
+		set_armorcolor @sd, @dyeing;
+	}
+	*/
+
+	if($armorcolor != 0)
+	{
+		set_armorcolor @sd, $armorcolor;
 	}
 
-	if(get_joblevel(@sd) >= 5)
-	{
-		if(get_job(@sd) == 1)
-		{
-			set_usercolor @sd, 2;
-		}
-	}
-	if(get_joblevel(@sd) >= 5)
-	{
-		if(get_job(@sd) == 2)
-		{
-			set_usercolor @sd, 7;
-		}
-	}
-	if(get_joblevel(@sd) >= 5)
-	{
-		if(get_job(@sd) == 3)
-		{
-			set_usercolor @sd, 4;
-		}
-	}
-	if(get_joblevel(@sd) >= 5)
-	{
-		if(get_job(@sd) == 4)
-		{
-			set_usercolor @sd, 6;
-		}
 
+	callfunc "ONMOVE_QUEST_FLAG_UPDATE";
+
+	if(#count_timer3 > get_nowtime())
+	{
+		set_flag @sd, "drop", 0;
 	}
 
-	if(#dragon_castle$ == get_clanname(@sd)) { message @sd, 12, #dragon_message$; }
-	else if(#bird_castle$ == get_clanname(@sd)) { message @sd, 12, #bird_message$; }
-	else if(#tiger_castle$ == get_clanname(@sd)) { message @sd, 12, #tiger_message$; }
-	else if(#turtle_castle$ == get_clanname(@sd)) { message @sd, 12, #turtle_message$; }	
+	set_weather(get_weather());
 
-	callfunc "Ban_Check";
-	callfunc "Login_Check";
+	set @now_time, get_nowtime() - $logout_time;
+	set @day, @now_time / 86400;
+	set @hour, (@now_time - (@day * 86400)) / 3600;
+
+	if(@day > 10000)
+	{
+		message @sd, 3, "향수의나라에서 시작하다.";
+	}
+	else
+	{
+		message @sd, 3, @day+"일 "+@hour+"시간만에 향수의나라로...";
+	}
+
+	callfunc "LOGIN_LOG";
+
+	if( @sd != name2sd(get_name(@sd)) ) 
+	{
+		sendmail2name @sd, "향수GM", get_name(@sd), "다중로그인 " + gettime(4, 0) + "월" + gettime(3, 0) + "일 " + gettime(2, 0) + "시" + gettime(1, 0) + "분" + gettime(0, 0) + "초";
+		getoutofhere @sd;
+	}
+
+	callfunc "PERIODBAN_CHECK";
+
+	set @nt, get_nowtime();
+	set @time, $period_ban-@nt;
+	
+	// 04. 클랜원들에게 메시지 뿌려주기.
+	if(get_gmlevel(@sd) == 0 && get_clanname(@sd) != "")
+	{
+		clan_message get_clanname(@sd), 3, "["+get_clanname(@sd)+"] "+get_name(@sd)+"님이 접속하셨습니다.";
+	}
+
+	callfunc "SILENCE_CHECK";
+
+	//callfunc "Login_Quest_Spell";
+	callfunc "CANTWARP";
 	callfunc "Login_Warp";
-	callfunc "Login_Quest_Spell";
-        callfunc "LOGIN_LOG";
-	callfunc "IPLOG";
-	callfunc "Armor_Color";
-	addlegend @sd, 0, 74, 0, 15, "마스터온라인 가족";
 
 	if(get_birth(@sd) < 1) { callfunc "BIRTHDAY"; }
 
-	set @pos, dialog(1, 0, 0, "본 서버는 무료 테스트 서버이며, 유료 사용자에게 제공되는 고객상담 등의 각종 고객지원 서비스를 받으실 수 없습니다.\\n본 서버 내의 게임아이디, 아이템을 비롯한 모든 데이터는 사전 통보 없이 본사의 필요와 판단에 의해 사용되거나 변경, 삭제될 수 잇습니다.\\n그밖의 자세한 사항은 약관을 참조해 주십시오.");
-	message @sd, 4, "현재 경험치 배율은 " + #server_exprate + "배 입니다.";
-	message @sd, 4, "현재 기부금액은총 "+#exp_money+"원 입니다.";
-	message @sd, 4, "현재 캐쉬는총 "+$cash_p+"원 입니다.";
-}
-
-
-FUNC_IPLOG	{
-
-	set @sd, mysd();
-	set @id, myid();
-	
-	//set @nt, callfunc("Server_Nowtime");
-	
-	set @ip$, ip(@sd);
-	set @month, gettime(4, 0);
-	set @day, gettime(3, 0);
-	set @hour, gettime(2, 0);
-	set @minute, gettime(1, 0);
-	set @second, gettime(0, 0);
-	
-	set @timelog$, ""+@ip$+" @ "+@month+"월 "+@day+"일\\n└─ "+@hour+"시 "+@minute+"분 "+@second+"초 ─┘";
-	//set @timelog, @nt;
-
-
-
-
-	set $ipslot_40$, $ipslot_39$;
-	set $ipslot_39$, $ipslot_38$;
-	set $ipslot_38$, $ipslot_37$;
-	set $ipslot_37$, $ipslot_36$;
-	set $ipslot_36$, $ipslot_35$;	
-	set $ipslot_35$, $ipslot_34$;
-	set $ipslot_34$, $ipslot_33$;
-	set $ipslot_33$, $ipslot_32$;
-	set $ipslot_32$, $ipslot_31$;
-	set $ipslot_31$, $ipslot_30$;
-	set $ipslot_30$, $ipslot_29$;
-	set $ipslot_29$, $ipslot_28$;
-	set $ipslot_28$, $ipslot_27$;
-	set $ipslot_27$, $ipslot_26$;
-	set $ipslot_26$, $ipslot_25$;	
-	set $ipslot_25$, $ipslot_24$;
-	set $ipslot_24$, $ipslot_23$;
-	set $ipslot_23$, $ipslot_22$;
-	set $ipslot_22$, $ipslot_21$;
-	set $ipslot_21$, $ipslot_20$;
-	set $ipslot_20$, $ipslot_19$;
-	set $ipslot_19$, $ipslot_18$;
-	set $ipslot_18$, $ipslot_17$;
-	set $ipslot_17$, $ipslot_16$;
-	set $ipslot_16$, $ipslot_15$;	
-	set $ipslot_15$, $ipslot_14$;
-	set $ipslot_14$, $ipslot_13$;
-	set $ipslot_13$, $ipslot_12$;
-	set $ipslot_12$, $ipslot_11$;
-	set $ipslot_11$, $ipslot_10$;
-	set $ipslot_10$, $ipslot_09$;
-	set $ipslot_09$, $ipslot_08$;
-	set $ipslot_08$, $ipslot_07$;
-	set $ipslot_07$, $ipslot_06$;
-	set $ipslot_06$, $ipslot_05$;
-	set $ipslot_05$, $ipslot_04$;
-	set $ipslot_04$, $ipslot_03$;
-	set $ipslot_03$, $ipslot_02$;
-	set $ipslot_02$, $ipslot_01$;
-	set $ipslot_01$, @timelog$;
 	
 	return;
-
-}
-
-FUNC_LOGIN_LOG	{
-
-	set @sd, mysd();
-	set @id, myid();
-
-	set @year$, gettime(5,0);
-	set @month$, gettime(4,0);
-	set @day$, gettime(3,0);
-	set @hour$, gettime(2,0);
-	set @min$, gettime(1,0);
-	set @sec$, gettime(0,0,);
-
-	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
-	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
-	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
-	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
-	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
-	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
-
-	if(mapid() < 10) set @mapid$, "00000"+mapid();
-	else if(mapid() < 100) set @mapid$, "0000"+mapid();
-	else if(mapid() < 1000) set @mapid$, "000"+mapid();
-	else if(mapid() < 10000) set @mapid$, "00"+mapid();
-	else if(mapid() < 100000) set @mapid$, "0"+mapid();
-
-	set @x$, get_x(@id);
-	set @y$, get_y(@id);
-
-	if(get_x(@id) < 10) set @x$, "00"+get_x(@id);
-	else if(get_x(@id) < 100) set @x$, "0"+get_x(@id);
-
-	if(get_y(@id) < 10) set @y$, "00"+get_y(@id);
-	else if(get_y(@id) < 100) set @y$, "0"+get_y(@id);
-	
-	set @mapinfo$, @mapid$+"/"+@x$+"/"+@y$+"";
-
-
-	write_log "log/loginout/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - "+@mapinfo$+"] [LOGIN ] "+get_name(@sd)+" ( "+ip(@sd)+" )\\n";
-
-return;
 }
 
 ONLOGOUT	{
 	set @sd, mysd();
 	set @id, myid();
-	set @mapname$, get_mapname(@sd);
-	set $multi_check, 0;
-	set @nt, callfunc("Server_Nowtime");
+
+	spelluncast mysd(), name2spellid("지옥무영");
+	if(get_mapid(@sd) != 150) { set $protection_char$, ip(@sd); }
+
+
+	set_gmlevel @sd, 0;
+
+	callfunc "LOGOUT_LOG";
+
+	set @nt, get_nowtime();
 	set $logout_time, @nt;
-	callfunc "BOSSLOGOUT";
-	spelluncast @sd, name2spellid("선필마감");
-	spelluncast @sd, name2spellid("선필요청대기");
-	spelluncast @sd, name2spellid("선필요청");
 
-	if(@mapname$ == "OX퀴즈장")
-		set #ox_event_count, #ox_event_count-1;		
+	del $dura_value;
 
-	if(ismapoption(@sd, 5) == 1)
+	if(60002 <= get_mapid(@sd) && get_mapid(@sd) <= 60004)
 	{
-		set $logout_time, callfunc("server_nowtime");
-
-		if(spellaethered(@sd, name2spellid("천명참가")) == 1) { spelluncast @sd, name2spellid("천명참가"); warp @sd, 15, 5, 5; }
-		if(get_mapid(@sd) >= 12153 && get_mapid(@sd) <= 12164) { callfunc "NineDungeonWarp"; }
+		spelluncast @sd, name2spellid("동서점령전");
 	}
-	set $logout_time, callfunc("Server_Nowtime");
-	spelluncast @sd, name2spellid("선필마감");
-
 }
 
-FUNC_LOGOUT_LOG	{
 
-	set @sd, mysd();
-	set @id, myid();
-
-	set @year$, gettime(5,0);
-	set @month$, gettime(4,0);
-	set @day$, gettime(3,0);
-	set @hour$, gettime(2,0);
-	set @min$, gettime(1,0);
-	set @sec$, gettime(0,0,);
-
-	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
-	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
-	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
-	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
-	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
-	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
-
-	if(mapid() < 10) set @mapid$, "00000"+mapid();
-	else if(mapid() < 100) set @mapid$, "0000"+mapid();
-	else if(mapid() < 1000) set @mapid$, "000"+mapid();
-	else if(mapid() < 10000) set @mapid$, "00"+mapid();
-	else if(mapid() < 100000) set @mapid$, "0"+mapid();
-
-	set @x$, get_x(@id);
-	set @y$, get_y(@id);
-
-	if(get_x(@id) < 10) set @x$, "00"+get_x(@id);
-	else if(get_x(@id) < 100) set @x$, "0"+get_x(@id);
-
-	if(get_y(@id) < 10) set @y$, "00"+get_y(@id);
-	else if(get_y(@id) < 100) set @y$, "0"+get_y(@id);
-	
-	set @mapinfo$, @mapid$+"/"+@x$+"/"+@y$+"";
-
-
-	write_log "log/loginout/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - "+@mapinfo$+"] [LOGOUT] "+get_name(@sd)+" ( "+ip(@sd)+" )\\n";
-
-return;
-}
-
-ONKILL	{
-	set @sd, mysd();
-	set @id, myid();
-	set @last, lastkillmobid(@sd);
-	set @mapid, get_parentmap(@sd);
-
-	set_expevent #server_exprate;
-
-	setarray @mob_id[0], 1258, 1260, 1261, 1256, 1257, 1259, 1275, 1276, 1277, 1278, 1279, 1280, 1262, 1263, 1264, 1265, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1432, 1433, 1434, 1250, 1251, 1252, 1253, 1254;
-	setarray @giveexp[0], 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1;
-
-	if(party(@sd) != 0)
-	{
-		switch(@mapid)
-		{
-		case 53408:
-			set @max, 5;
-			break;
-		case 862:
-			set @max, 4;
-			break;
-		case 53408:
-			set @max, 4;
-			break;
-		case 53154:
-			set @max, 4;
-			break;
-		default:
-			set @max, partymax();
-			break;
-		}
-
-		for(set @i, 0; @i < getarraysize(@mob_id); set @i, @i+1)
-		{
-			if(@last == @mob_id[@i])
-			{
-				for(set @j, 0; @j < @max; set @j, @j+1)
-				{
-					set @ts, party_member(@sd,@j);
-					if(@ts > 0)
-					{
-						if(get_mapid(@sd) == get_mapid(@ts))
-						{
-							additem @ts, name2itemid("십억경"), @giveexp[@i];
-
-						}
-					}
-				}
-			}
-		}
-	
-		setarray @party_member_session[0], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
-
-		for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
-		{
-			set @target_sd, party_member(@sd, @loop);
-			if(@target_sd > 0)
-			{
-				if(get_mapid(@sd) == get_mapid(@target_sd))
-				{
-					set @party_member_session[@party_member_count], @target_sd;
-					set @party_member_count, @party_member_count+1;
-
-					set_userexpevent @target_sd, 0;
-				}
-			}
-		}
-
-		//둔갑술
-		if(@last == name2mobid("폭염왕")) { set @monster_transform$, "폭염왕의강림"; }
-		else if(@last == name2mobid("파괴왕")) { set @monster_transform$, "파괴왕의강림"; }
-		else if(@last == name2mobid("청의태자")) { set @monster_transform$, "청의태자의강림"; }
-		else if(@last == name2mobid("해골왕")) { set @monster_transform$, "해골왕의강림"; }
-
-		if(@monster_transform$ != "")
-		{
-			if(get_equipitem_name(@sd, 4) == "보무의목걸이")
-			{
-				callfunc "sorim_wristlet", @monster_transform$;
-			}
-		}
-
-
-		if(@party_member_count > 1)
-		{
-			if(@party_member_count == 2) { set @apply_exp, 14; }
-			else if(@party_member_count == 3) { set @apply_exp, 18; }
-			else if(@party_member_count == 4) { set @apply_exp, 20; }
-			else if(@party_member_count == 5) { set @apply_exp, 22; }
-			else if(@party_member_count == 6) { set @apply_exp, 24; }
-			else if(@party_member_count == 7) { set @apply_exp, 26; }
-			else if(@party_member_count == 8) { set @apply_exp, 28; }
-			else { set @apply_exp, 0; }
-
-			set @apply_exp, @apply_exp+@group_bonus;
-
-			if(spellaethered(@sd, name2spellid("파티성장시약")) == 1)
-			{
-				if(@party_member_count == 2)
-				{
-					set @apply_exp, 16;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("파티성장시약")) == 1)
-					{
-						if(@party_member_count == 2)
-						{
-							set @apply_exp, 16;
-						}
-					}
-				}
-			}
-	
-
-			if(spellaethered(@sd, name2spellid("파티성장시약")) == 1)
-			{
-				if(@party_member_count == 3)
-				{
-					set @apply_exp, 20;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("파티성장시약")) == 1)
-					{
-						if(@party_member_count == 3)
-						{
-							set @apply_exp, 20;
-						}
-					}
-				}
-			}
-
-			if(spellaethered(@sd, name2spellid("파티성장시약")) == 1)
-			{
-				if(@party_member_count == 4)
-				{
-					set @apply_exp, 22;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("파티성장시약")) == 1)
-					{
-						if(@party_member_count == 4)
-						{
-							set @apply_exp, 22;
-						}
-					}
-				}
-			}
-
-
-			if(spellaethered(@sd, name2spellid("파티성장시약")) == 1)
-			{
-				if(@party_member_count == 5)
-				{
-					set @apply_exp, 24;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("파티성장시약")) == 1)
-					{
-						if(@party_member_count == 5)
-						{
-							set @apply_exp, 24;
-						}
-					}
-				}
-			}
-			if(spellaethered(@sd, name2spellid("경험치버프")) == 1)
-			{
-				if(@party_member_count == 2)
-				{
-					set @apply_exp, 18;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("경험치버프")) == 1)
-					{
-						if(@party_member_count == 2)
-						{
-							set @apply_exp, 18;
-						}
-					}
-				}
-			}
-	
-
-			if(spellaethered(@sd, name2spellid("경험치버프")) == 1)
-			{
-				if(@party_member_count == 3)
-				{
-					set @apply_exp, 24;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("경험치버프")) == 1)
-					{
-						if(@party_member_count == 3)
-						{
-							set @apply_exp, 24;
-						}
-					}
-				}
-			}
-
-			if(spellaethered(@sd, name2spellid("경험치버프")) == 1)
-			{
-				if(@party_member_count == 4)
-				{
-					set @apply_exp, 28;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("경험치버프")) == 1)
-					{
-						if(@party_member_count == 4)
-						{
-							set @apply_exp, 28;
-						}
-					}
-				}
-			}
-
-
-			if(spellaethered(@sd, name2spellid("경험치버프")) == 1)
-			{
-				if(@party_member_count == 5)
-				{
-					set @apply_exp, 32;
-				}
-			}
-
-			for(set @i, 0; @i < partymax(); set @i, @i+1)
-			{
-				set @target_sd, party_member(@sd, @i);
-				if(@target_sd > 0)
-				{
-					if(spellaethered(@target_sd, name2spellid("경험치버프")) == 1)
-					{
-						if(@party_member_count == 5)
-						{
-							set @apply_exp, 32;
-						}
-					}
-				}
-			}
-			for(set @loop, 0; @loop < @party_member_count; set @loop, @loop+1)
-			{
-				if(@party_member_session[@loop] == 0)
-				break;
-
-				set_userexpevent @party_member_session[@loop], @apply_exp;
-			}
-		}
-		for(set @i, 0; @i < partymax(); set @i, @i+1)
-		{
-			set @target_sd, party_member(@sd, @i);
-			if(@target_sd > 0)
-			{
-				spellcast @target_sd, 178;
-			}
-		}
-	}
-	else
-	{
-		for(set @i, 0; @i < getarraysize(@mob_id); set @i, @i+1)
-			if(@last == @mob_id[@i])
-				additem @sd, name2itemid("십억경"), @giveexp[@i];
-
-		if(spellaethered(@sd, name2spellid("성장시약")) == 1)
-		{
-			{ set_userexpevent @sd, 3; }
-		}
-		else { set_userexpevent @sd, 0; }
-	}
-
-	if(@mapid >= 12153 && @mapid <= 12164)
-	{
-		//구양성
-		callfunc "NineDungeonKill";
-
-		if(@last == 1436) { set @party_play_zone, 20000000; }
-		else if(@last == 1437) { set @party_play_zone, 17500000; }
-		else if(@last == 1438) { set @party_play_zone, 20000000; }
-		else if(@last == 1439) { set @party_play_zone, 50000000; }
-
-		if(party(@sd) != 0 && @party_play_zone > 0)
-		{
-			for(set @loop, 0; @loop < partymax(); set @loop, @loop+1)
-			{
-				set @target_sd, party_member(@sd, @loop);
-				if(@target_sd > 0 && @mapid == get_mapid(@target_sd) && get_state(@target_sd) != 1)
-				{
-					set_userexpevent @target_sd, 0;
-
-					set @party_exp, 0;
-					if(spellaethered(@target_sd, name2spellid("경험치비술")) == 1) { set @party_exp, @party_play_zone/10; }
-
-					giveexp @target_sd, @party_play_zone+@party_exp;
-
-					//spellcast @target_sd, name2spellid("자동체마사기");
-					//spellcast @target_sd, name2spellid("경험치저장체크");
-				}
-			}
-		}
-	}
-
-	if(@last == 1141)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 해골왕을 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 1105)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 감룡을 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 1106)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 묵룡을 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 1107)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 흑룡을 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 1108)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 진룡을 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2076)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2077)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2078)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2079)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2080)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2081)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2082)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		}
-		message @sd, 5, "[안내] 요일몬스터를 잡아 15초후 마을로 귀환 됩니다.";
-		end;
-	}
-	if(@last == 2068)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2069)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2070)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2071)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2072)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2073)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2074)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	if(@last == 2075)
-	{
-		if(!spellaethered(@sd, name2spellid("자동귀환"))){
-		}
-		message @sd, 5, "사냥이벤트를 시작하여  15초후 마을로 귀환 됩니다.";
-			spellaether @sd, name2spellid("자동귀환"), 15;
-		end;
-	}
-	spellcast @sd, 178;
-	callfunc "ALLQUEST";
-	callfunc "BOSSKILL";
-}
 
 ONDEAD	{
 	set @sd, mysd();
 	set @id, myid();
+	
+	attachtimer mysd(), myid(), mapid(), "죽었을때실행", 0;
 
-	pcdead @sd; // 캐릭사망
-
-	set @x, get_x(@id); //오브젝트 아이디
-	set @y, get_y(@id);
-	getitem @sd, @x, @y; // 아이템 모두 줍기
-
-	callfunc "DEADEXP";
-	callfunc "BOSSDIE";
-	callfunc "BUGCLEAR";
 }
+
+죽었을때실행	{
+	set @sd, mysd();
+	set @id, myid();
+
+	if(get_hp(mysd()) == 0)
+	{
+		callfunc "전혈해제";
+		callfunc "죽었을때실행";
+		callfunc "DEADEXP";
+		
+		set_armor @sd, 0;
+		set_weapon @sd, -1;
+		
+		updatestatus mysd(), 2;
+		showhitgage myid();
+		updatelookpc mysd(), 1;
+	}
+	else
+	{
+		if(rand(1, 2) == 1)
+		{
+			say @id, 0, get_name(@sd) +": 스킬!";
+		}
+		else
+		{
+			callfunc "전혈해제";
+			callfunc "죽었을때실행";
+			callfunc "DEADEXP";
+			//callfunc "BUGCLEAR";
+			
+			updatestatus mysd(), 2;
+			showhitgage myid();
+			updatelookpc mysd(), 1;
+		}
+	}
+}
+
 
 ONSAY	{
 	set @sd, mysd();
 	set @id, myid();
 
+	//if(get_gmlevel(@sd) > 0) { callfunc "GM_CMD"; }
+
+	if(get_mapid(@sd) == 2386 || get_mapid(@sd) == 2387 || get_mapid(@sd) == 2388) {callfunc "CONFERENCE";}
+	else if(get_mapid(@sd) == 101 || get_mapid(@sd) >= 133 && get_mapid(@sd) <= 137) {callfunc "CONFERENCE";}
+
+
 	callfunc "USERSAY";
-	callfunc "CHATLOG";
-	callfunc "ADMINSAY";
 	callfunc "USERSAY2";
-}
-
-FUNC_CHATLOG	{
-
-	set @sd, mysd();
-	set @id, myid();
-
-	set @year$, gettime(5,0);
-	set @month$, gettime(4,0);
-	set @day$, gettime(3,0);
-	set @hour$, gettime(2,0);
-	set @min$, gettime(1,0);
-	set @sec$, gettime(0,0,);
-	set @clan$, get_clanname(@sd);
-
-	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
-	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
-	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
-	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
-	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
-	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
-
-	if(mapid() < 10) set @mapid$, "00000"+mapid();
-	else if(mapid() < 100) set @mapid$, "0000"+mapid();
-	else if(mapid() < 1000) set @mapid$, "000"+mapid();
-	else if(mapid() < 10000) set @mapid$, "00"+mapid();
-	else if(mapid() < 100000) set @mapid$, "0"+mapid();
-
-	set @x$, get_x(@id);
-	set @y$, get_y(@id);
-
-	if(get_x(@id) < 10) set @x$, "00"+get_x(@id);
-	else if(get_x(@id) < 100) set @x$, "0"+get_x(@id);
-
-	if(get_y(@id) < 10) set @y$, "00"+get_y(@id);
-	else if(get_y(@id) < 100) set @y$, "0"+get_y(@id);
+	callfunc "CHATLOG";
 	
-	set @mapinfo$, @mapid$+"/"+@x$+"/"+@y$+"";
 
-	write_log "log/chat/"+@year$+"년_"+@month$+"월_"+@day$+"일_"+@hour$+"시.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - "+@mapinfo$+"] □ "+get_name(@sd)+": "+get_say(@sd)+" \\n";
+	if(gettime(3, 0) == 24)
+	{
+		set $say24, $say24 + 1;
 
-	return;
+		set @log$, get_nowtime() + "	" + get_name(@sd) + "	" + $say24;
+		write_log "log/event/say24.txt", @log$+"\\n";
+	}
+	else if(gettime(3, 0) == 25)
+	{
+		set $say25, $say25 + 1;
+
+		set @log$, get_nowtime() + "	" + get_name(@sd) + "	" + $say25;
+		write_log "log/event/say25.txt", @log$+"\\n";
+	}
+
+
+
+	if(spellaethered(@sd, name2spellid("지옥무영")))
+	{
+		if($@지옥무영mapid != mapid()) spelluncast mysd(), name2spellid("지옥무영");
+		else
+		{
+			if(validid($@지옥무영id0)) { say $@지옥무영id0, get_saytype(@sd), get_name(@sd) + ": " + get_say(@sd); }
+			if(validid($@지옥무영id1)) { say $@지옥무영id1, get_saytype(@sd), get_name(@sd) + ": " + get_say(@sd); }
+			if(validid($@지옥무영id2)) { say $@지옥무영id2, get_saytype(@sd), get_name(@sd) + ": " + get_say(@sd); }
+			if(validid($@지옥무영id3)) { say $@지옥무영id3, get_saytype(@sd), get_name(@sd) + ": " + get_say(@sd); }
+		}
+	}
+
+	callfunc "CHAT_LOG";
 }
+
 
 ONKEYF1	{
 	set @sd, mysd();
 	set @id, myid();
-	if(get_gmlevel(@sd) > 0)
-	say @id, 0, "맵번호: "+get_mapid(@sd)+"";
 
 	image 0, 4, 4;
 
-	callfunc "INFORMATION";
+	message @sd, 8, "추가 예정임";
+	//callfunc "INFORMATION";
 }
+
+
+
+
+
+
+
+
+
 
 ONKEYF2	{
 	set @sd, mysd();
 	set @id, myid();
 
-	set @mapid, get_mapid(@sd);
-	set @mapname$, get_mapname(@sd);
-
-	if(@mapname$ == "부여지하감옥") end;
-
 	image 0, 4, 4;
 
-	if(get_name(@sd) == "환영" || get_name(@sd) == "마스터" || get_name(@sd) == "121")
+	//최고 운영자 관련 모듈
+	if(get_name(@sd) == "향수GM" || get_name(@sd) == "떡게GM" )
 	{
-GM:
-		set @pos, list2(@admin, 0, 0, "안녕하세요. 관리자님?", "유저관리", "유저 메뉴로 이동", "경험치 배율 수정", "강제 문파 생성", "구양성초기화", "공지 추가", "멀티 제한", "성문주정하기", "이미지 검색", "감옥보내기", "이벤트 관리", "쿠폰생성", "공성관리");
-		if(@pos == 0) end;
-		else if(@admin == 1)
-		{
-COS01:
-			set @pos, input2(@txt$, 0, 10, "관리하실 유저분의 아이디를 입력해주세요.", "* 접속한 유저만 가능", "　");
-			if(!@pos) { end; }
-			if(@txt$ == "" || @txt$ == get_name(@sd))
-			{
-				dialog 0, 0, 0, "잘못 입력하셨습니다.";
-				end;
-			}
-			
-			set @target, name2id(@txt$);
-			if(@target < 1)
-			{
-				dialog 0, 0, 0, @txt$+"님은 접속하지 않으셨거나 혹은 존재하지 않은 유저입니다.";
-				end;
-			}
-			
-COS02:
-			set @sd, mysd();
-			set @id, myid();
-			set @target_sd, name2sd(@txt$);
-			set @pos, list2(@user_select, 0, 0, "[ "+@txt$+" ] 님의 무엇을 관리하시겠습니까?", "아이템 주기", "아이템 파괴","마법주기","마법지우기");
-			if(@pos == 0) end;
-			if(@user_select == 0) { end; }
-			if(@user_select == -1) { goto COS01; }
-			if(@user_select == 1)
-			{
-				set @pos, input2(@txt2$, 0, 10, "무슨 아이템을 주시겠습니까?", "　","　");
-				if(!@pos) end;
-				if(!name2itemid(@txt2$))
-				{
-					dialog 0, 0, 0, @txt2$+" (이)란 아이템은 존재하지 않습니다.";
-					end;
-				}
-				additem @target_sd, name2itemid(@txt2$), 1;
-				end;
-			}
-			else if(@user_select == 2)
-			{
-				set @pos, input2(@txt2$, 0, 10, "무슨 아이템을 파괴하시겠습니까?","　","　");
-				if(!@pos) end;
-				if(!name2itemid(@txt2$))
-				{
-					dialog 0, 0, 0, @txt2$+" (이)란 아이템은 존재하지 않습니다.";
-					end;
-				}
-				delitem @target_sd, name2itemid(@txt2$), 1;
-				end;
-			}
-			else if(@user_select == 3)
-			{
-				set @pos, input1($gift_spell$, "무슨 마법을 주시겠습니까?");
-				if(@pos == 0) end;
-				else if($gift_spell$ == "") end;
-				if(!name2spellid($gift_spell$))
-				{
-					dialog 0, 0, 0, $gift_spell$+" (이)란 마법은 존재하지 않습니다.";
-					end;
-				}
-				set #user_spell_check, @sd;
-				set #user_spell_name$, $gift_spell$;
-				runscript @target_sd, "마법주기";
-				
-			}
-			else if(@user_select == 4)
-			{
-				set @pos, input1($del_gift_spell$, "무슨 마법을 지우시겠습니까?");
-				if(@pos == 0) end;
-				else if($del_gift_spell$ == "") end;
-				if(!name2spellid($del_gift_spell$))
-				{
-					dialog 0, 0, 0, $del_gift_spell$+" (이)란 마법은 존재하지 않습니다.";
-					end;
-				}
-				set #user_spell_check, @sd;
-				set #user_spell_name$, $del_gift_spell$;
-				runscript @target_sd, "마법뺏기";
-			}
-		}
-		else if(@admin == 2)
-		{
-			goto USER;
-		}
-		else if(@admin == 3)
-		{
-			callfunc "SERVEREXPRATE";
-		}
-		else if(@admin == 4)
-		{
-			set @pos, input1(@clan$, "문파명 뭘로?");
-			set @err, makeclan(@clan$, 0, get_name(@sd), "0");
-			if(@err == 1) { set @pos, dialog(1, 0, 0, "문파이름이 중복되었습니다."); end; }
-			else if(@err == 2) { set @pos, dialog(1, 0, 0, "문파장이 존재하지 않습니다."); end; }
-			else if(@err == 3) { set @pos, dialog(1, 0, 0, "이미 문파에 가입되어있습니다."); end; }
-			else
-			{
-				announce 5, get_name(@sd) + "님이 " + @clan$ + "문파를 강제로 팠다!";
-			}
-		}
-		else if(@admin == 5)
-		{
-			set #ninedungeon_a_map, 0;
-			set #ninedungeon_a_mobc, 0;
-			set #ninedungeon_a_level, 0;
-			set #ninedungeon_b_map, 0;
-			set #ninedungeon_b_mobc, 0;
-			set #ninedungeon_b_level, 0;
-
-			message @sd, 8, "인던 초기화가 완료되었습니다.";
-			end;
-		}
-		else if(@admin == 6)
-		{
-			set @pos, list2(@list1,1,0,"수정할 문구가 있다면 선택하세요",#BROAD_TEXT_01$,#BROAD_TEXT_02$,#BROAD_TEXT_03$,#BROAD_TEXT_04$,#BROAD_TEXT_05$,#BROAD_TEXT_06$,#BROAD_TEXT_07$,#BROAD_TEXT_08$,#BROAD_TEXT_09$,#BROAD_TEXT_10$);
-			if(@pos == 0) end;
-
-			set @pos, input2(@txt$,0,100,"수정할 문구를 입력하세요","문구는","입니다.");
-			if(@pos == 0) end;
-			if(@txt$ == " ") set @txt$, ""; 
-			
-			if(@list1 == 1) set #BROAD_TEXT_01$, @txt$;
-			else if(@list1 == 2) set #BROAD_TEXT_02$, @txt$;
-			else if(@list1 == 3) set #BROAD_TEXT_03$, @txt$;
-			else if(@list1 == 4) set #BROAD_TEXT_04$, @txt$;
-			else if(@list1 == 5) set #BROAD_TEXT_05$, @txt$;
-			else if(@list1 == 6) set #BROAD_TEXT_06$, @txt$;
-			else if(@list1 == 7) set #BROAD_TEXT_07$, @txt$;
-			else if(@list1 == 8) set #BROAD_TEXT_08$, @txt$;
-			else if(@list1 == 9) set #BROAD_TEXT_09$, @txt$;
-			else if(@list1 == 10) set #BROAD_TEXT_10$, @txt$;
-			dialog 0,0,0,"수정 되었습니다.";
-			end;								
-		}
-		else if(@admin == 7)
-		{
-			set @pos, input2(@txt,0,100,"멀티수를 입력하세요.\\n(현재 "+#multi_limit+"명)","멀티수는","명 입니다.");
-			if(@pos == 0) end;
-
-			set #multi_limit, @txt;
-			dialog 0,0,0,"수정 되었습니다.";
-			end;								
-		}
-		else if(@admin == 8)
-		{
-			set @pos, list2(@list, 0, 0, "선택하세요.", "청룡설정", "주작설정", "백호설정", "현무설정");
-			if(@pos == 0) end;
-			else if(@list == 1)
-			{
-				set @pos, input2(@dragon$, 0, 10, "청룡성을 점령한 문파이름은?", "청룡성을 점령한 문파이름:", " ");
-				if(@pos == 0) end;
-				set #dragon_castle$, @dragon$;
-				set @pos, input2(@dragonmaster$, 0, 6, "청룡성을 점령한 문파의 성주는?", "청룡성을 점령한 문파의 성주이름:", " ");
-				if(@pos == 0) end;
-				set #dragon_castle_master$, @dragonmaster$;
-				end;
-			}
-			else if(@list == 2)
-			{
-				set @pos, input2(@brid$, 0, 10, "주작성을 점령한 문파이름은?", "주작성을 점령한 문파이름:", " ");
-				if(@pos == 0) end;
-				set #bird_castle$, @brid$;
-				set @pos, input2(@birdmaster$, 0, 6, "주작성을 점령한 문파의 성주는?", "주작성을 점령한 문파의 성주이름:", " ");
-				if(@pos == 0) end;
-				set #bird_castle_master$, @birdmaster$;
-				end;
-			}
-			else if(@list == 3)
-			{
-				set @pos, input2(@tiger$, 0, 10, "백호성을 점령한 문파이름은?", "백호성을 점령한 문파이름:", " ");
-				if(@pos == 0) end;
-				set #tiger_castle$, @tiger$;
-				set @pos, input2(@tigermaster$, 0, 6, "백호성을 점령한 문파의 성주는?", "백호성을 점령한 문파의 성주이름:", " ");
-				if(@pos == 0) end;
-				set #tiger_castle_master$, @tigermaster$;
-				end;
-			}
-			else if(@list == 4)
-			{
-				set @pos, input2(@turtle$, 0, 10, "현무성을 점령한 문파이름은?", "현무성을 점령한 문파이름:", " ");
-				if(@pos == 0) end;
-				set #turtle_castle$, @turtle$;
-				set @pos, input2(@turtlemaster$, 0, 6, "현무성을 점령한 문파의 성주는?", "현무성을 점령한 문파의 성주이름:", " ");
-				if(@pos == 0) end;
-				set #turtle_castle_master$, @turtlemaster$;
-				end;
-			}
-		}
-		else if(@admin == 9)
-		{
-			callfunc "IMAGE_SERCH";
-		}
-		else if(@admin == 10)
-		{
-			callfunc "BANUSER";
-		}
-		else if(@admin == 11)
-		{
-event:
-			set @pos, list2(@list,0,0,"설정할 이벤트를 설정하세요","고래이벤트", "레이드 초기화", "기부초기화", "나무퀘스트초기화", "주작", "현무", "청룡", "백호", "공성종료", "감옥보내기");
-			if(@pos == 0) end;
-			if(@list == 1)
-			{
-				set @pos, list2(@list1,0,1,"어떻게 하시겠습니까?","고래이벤트 시작","고래이벤트 종료");
-				if(@pos == 0) end;
-				else if(@pos == -1) goto event;
-				if(@list1 == 1) 
-				{ 
-					set #event_whale, 1; 
-					set #whalemob, 0;
-					set #whalehp, 200000000;
-					timecount_all 2, 600;
-					broadcast 5, "[이벤트] 고래이벤트가 시작되었습니다.";
-					for(set @i, 0; @i <19; set @i, @i+1)
-					{
-						mobspawn name2mapid("고래갑판"), @i, 9, 1, name2mobid("고래"+(@i+1)+"");
-					}
-				}
-				else if(@list1 == 2) 
-				{ 
-					set #event_whale, 2;
-					broadcast 5, "[이벤트] 고래이벤트가 종료되었습니다."; 
-				}
-			}
-			else if(@list == 2)
-			{
-				set @pos, list2(@list1,0,1,"정말 레이드를 초기화 하겠습니까?","초기화 실행","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					callfunc "BOSSRESETGM";
-					callfunc "BOSSRESETGM2";
-				}
-			}
-			else if(@list == 3)
-			{
-				set @pos, list2(@list1,0,1,"정말 기부를 초기화 하겠습니까?","초기화 실행","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					set #server_exp_time, @nt+10;
-				}
-			}
-			else if(@list == 4)
-			{
-				set @pos, list2(@list1,0,1,"정말 나무퀘스트를 초기화 하겠습니까?","초기화 실행","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					set $tree_quest_time, @nt+10;
-				}
-			}
-			else if(@list == 5)
-			{
-				set @pos, list2(@list1,0,1,"주작성공성 시작 겠습니까?","공성시작","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					set #clan_start, 1;
-					set #clan_timer, 0;
-					set #clan_namecheck, 0;
-					set #clan_mapname$, "주작성";
-					set #clan_mapcheck$, #bird_castle$;
-					set #clan_battle$, #bird_castle$;
-					timecount_all 2, 3599;
-					for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-					{
-						mobspawn name2mapid("주작성입구"), (@loop-1108), 104, 2, @loop;
-					}
-					set #clan_add_score_timer, 1;
-					npcspawn 2000, 20, 0, 2, 227, "공성타이머";
-					announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-				}
-			}
-			else if(@list == 6)
-			{
-				set @pos, list2(@list1,0,1,"현무성공성 시작 겠습니까?","공성시작","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					set #clan_start, 1;
-					set #clan_timer, 0;
-					set #clan_namecheck, 0;
-					set #clan_mapname$, "현무성";
-					set #clan_mapcheck$, #turtle_castle$;
-					set #clan_battle$, #tiger_castle$;
-					timecount_all 2, 3599;
-					for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-					{
-						mobspawn name2mapid("현무성입구"), (@loop-1108), 104, 2, @loop;
-					}
-					set #clan_add_score_timer, 1;
-					npcspawn 2003, 20, 0, 2, 227, "공성타이머";
-					announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-				}
-			}
-			else if(@list == 7)
-			{
-				set @pos, list2(@list1,0,1,"청룡성공성 시작 겠습니까?","공성시작","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					set #clan_start, 1;
-					set #clan_timer, 0;
-					set #clan_namecheck, 0;
-					set #clan_mapname$, "청룡성";
-					set #clan_mapcheck$, #dragon_castle$;
-					set #clan_battle$, #dragon_castle$;
-					timecount_all 2, 3599;
-					for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-					{
-						mobspawn name2mapid("청룡성입구"), (@loop-1108), 104, 2, @loop;
-					}
-					set #clan_add_score_timer, 1;
-					npcspawn 1997, 20, 0, 2, 227, "공성타이머";
-					announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-				}
-			}
-			else if(@list == 8)
-			{
-				set @pos, list2(@list1,0,1,"백호성공성 시작 겠습니까?","공성시작","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					set #clan_start, 1;
-					set #clan_timer, 0;
-					set #clan_namecheck, 0;
-					set #clan_mapname$, "백호성";
-					set #clan_mapcheck$, #tiger_castle$;
-					set #clan_battle$, #tiger_castle$;
-					timecount_all 2, 3599;
-					for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-					{
-						mobspawn name2mapid("백호성입구"), (@loop-1108), 104, 2, @loop;
-					}
-					set #clan_add_score_timer, 1;
-					npcspawn 2041, 20, 0, 2, 227, "공성타이머";
-					announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-				}
-			}
-			else if(@list == 9)
-			{
-				set @pos, list2(@list1,0,1,"공성 종료 하시겠습니까?","공성종효","초기화 취소");
-				if(@pos == 0) end;
-				if(@list1 == 1)
-				{
-					timecount_all 2, 1;
-					set #clan_start, 0;
-					announce 5, "[알림] " + #clan_mapname$ + " 공성전이 종료되었습니다.";
-				}
-			}
-		}
-		else if(@admin == 12)
-		{
-			set @pos, list2(@list,1,0,"쿠폰 관련 항목입니다.","쿠폰 생성","쿠폰 확인");
-			if(@pos == 0) end;
-			if(@list == 1)
-			{
-				set @pos, list2(@list1,1,0,"쿠폰을 생성하시겠습니까?","예","아니오");
-				if(@pos == 0 || @list1 == 2) end;
-			
-				set @pos, input2(@value$,0,19,"쿠폰번호를 입력하세요","쿠폰번호는","입니다.");
-				if(@pos == 0) end;
-
-				set @pos, input2(@cash,0,2,"쿠폰의 충전금액을 입력하세요","충전금액은","만원 입니다.");
-				if(@pos == 0) end;
-
-				set @pos, list2(@list1_1,0,0,@value$+"\\n번호가 맞습니까?\\n(충전금액: "+@cash+"만원)","예","아니오");
-				if(@pos == 0 || @list1_1 == 2) end;
-			
-				if(#CASH_CODE_01$ == "") { set #CASH_CODE_01$, @value$; set #CASH_CODE_MONEY01, @cash; }
-				else if(#CASH_CODE_02$ == "") { set #CASH_CODE_02$, @value$; set #CASH_CODE_MONEY02, @cash; }
-				else if(#CASH_CODE_03$ == "") { set #CASH_CODE_03$, @value$; set #CASH_CODE_MONEY03, @cash; }
-				else if(#CASH_CODE_04$ == "") { set #CASH_CODE_04$, @value$; set #CASH_CODE_MONEY04, @cash; }
-				else if(#CASH_CODE_05$ == "") { set #CASH_CODE_05$, @value$; set #CASH_CODE_MONEY05, @cash; }
-				else if(#CASH_CODE_06$ == "") { set #CASH_CODE_06$, @value$; set #CASH_CODE_MONEY06, @cash; }
-				else if(#CASH_CODE_07$ == "") { set #CASH_CODE_07$, @value$; set #CASH_CODE_MONEY07, @cash; }
-				else if(#CASH_CODE_08$ == "") { set #CASH_CODE_08$, @value$; set #CASH_CODE_MONEY08, @cash; }
-				else if(#CASH_CODE_09$ == "") { set #CASH_CODE_09$, @value$; set #CASH_CODE_MONEY09, @cash; }
-				else if(#CASH_CODE_10$ == "") { set #CASH_CODE_10$, @value$; set #CASH_CODE_MONEY10, @cash; }
-				else if(#CASH_CODE_11$ == "") { set #CASH_CODE_11$, @value$; set #CASH_CODE_MONEY11, @cash; }
-				else if(#CASH_CODE_12$ == "") { set #CASH_CODE_12$, @value$; set #CASH_CODE_MONEY12, @cash; }
-				else if(#CASH_CODE_13$ == "") { set #CASH_CODE_13$, @value$; set #CASH_CODE_MONEY13, @cash; }
-				else if(#CASH_CODE_14$ == "") { set #CASH_CODE_14$, @value$; set #CASH_CODE_MONEY14, @cash; }
-				else if(#CASH_CODE_15$ == "") { set #CASH_CODE_15$, @value$; set #CASH_CODE_MONEY15, @cash; }
-				else if(#CASH_CODE_16$ == "") { set #CASH_CODE_16$, @value$; set #CASH_CODE_MONEY16, @cash; }
-				else if(#CASH_CODE_17$ == "") { set #CASH_CODE_17$, @value$; set #CASH_CODE_MONEY17, @cash; }
-				else if(#CASH_CODE_18$ == "") { set #CASH_CODE_18$, @value$; set #CASH_CODE_MONEY18, @cash; }
-				else if(#CASH_CODE_19$ == "") { set #CASH_CODE_19$, @value$; set #CASH_CODE_MONEY19, @cash; }
-				else if(#CASH_CODE_20$ == "") { set #CASH_CODE_20$, @value$; set #CASH_CODE_MONEY20, @cash; }
-				else if(#CASH_CODE_21$ == "") { set #CASH_CODE_21$, @value$; set #CASH_CODE_MONEY21, @cash; }
-				else if(#CASH_CODE_22$ == "") { set #CASH_CODE_22$, @value$; set #CASH_CODE_MONEY22, @cash; }
-				else if(#CASH_CODE_23$ == "") { set #CASH_CODE_23$, @value$; set #CASH_CODE_MONEY23, @cash; }
-				else if(#CASH_CODE_24$ == "") { set #CASH_CODE_24$, @value$; set #CASH_CODE_MONEY24, @cash; }
-				else if(#CASH_CODE_25$ == "") { set #CASH_CODE_25$, @value$; set #CASH_CODE_MONEY25, @cash; }
-				else if(#CASH_CODE_26$ == "") { set #CASH_CODE_26$, @value$; set #CASH_CODE_MONEY26, @cash; }
-				else if(#CASH_CODE_27$ == "") { set #CASH_CODE_27$, @value$; set #CASH_CODE_MONEY27, @cash; }
-				else if(#CASH_CODE_28$ == "") { set #CASH_CODE_28$, @value$; set #CASH_CODE_MONEY28, @cash; }
-				else if(#CASH_CODE_29$ == "") { set #CASH_CODE_29$, @value$; set #CASH_CODE_MONEY29, @cash; }
-				else if(#CASH_CODE_30$ == "") { set #CASH_CODE_30$, @value$; set #CASH_CODE_MONEY30, @cash; }
-				else if(#CASH_CODE_31$ == "") { set #CASH_CODE_31$, @value$; set #CASH_CODE_MONEY31, @cash; }
-				else if(#CASH_CODE_32$ == "") { set #CASH_CODE_32$, @value$; set #CASH_CODE_MONEY32, @cash; }
-				else if(#CASH_CODE_33$ == "") { set #CASH_CODE_33$, @value$; set #CASH_CODE_MONEY33, @cash; }
-				else if(#CASH_CODE_34$ == "") { set #CASH_CODE_34$, @value$; set #CASH_CODE_MONEY34, @cash; }
-				else if(#CASH_CODE_35$ == "") { set #CASH_CODE_35$, @value$; set #CASH_CODE_MONEY35, @cash; }
-				else if(#CASH_CODE_36$ == "") { set #CASH_CODE_36$, @value$; set #CASH_CODE_MONEY36, @cash; }
-				else if(#CASH_CODE_37$ == "") { set #CASH_CODE_37$, @value$; set #CASH_CODE_MONEY37, @cash; }
-				else if(#CASH_CODE_38$ == "") { set #CASH_CODE_38$, @value$; set #CASH_CODE_MONEY38, @cash; }
-				else if(#CASH_CODE_39$ == "") { set #CASH_CODE_39$, @value$; set #CASH_CODE_MONEY39, @cash; }
-				else if(#CASH_CODE_40$ == "") { set #CASH_CODE_40$, @value$; set #CASH_CODE_MONEY40, @cash; }
-				else if(#CASH_CODE_41$ == "") { set #CASH_CODE_41$, @value$; set #CASH_CODE_MONEY41, @cash; }
-				else if(#CASH_CODE_42$ == "") { set #CASH_CODE_42$, @value$; set #CASH_CODE_MONEY42, @cash; }
-				else if(#CASH_CODE_43$ == "") { set #CASH_CODE_43$, @value$; set #CASH_CODE_MONEY43, @cash; }
-				else if(#CASH_CODE_44$ == "") { set #CASH_CODE_44$, @value$; set #CASH_CODE_MONEY44, @cash; }
-				else if(#CASH_CODE_45$ == "") { set #CASH_CODE_45$, @value$; set #CASH_CODE_MONEY45, @cash; }
-				else if(#CASH_CODE_46$ == "") { set #CASH_CODE_46$, @value$; set #CASH_CODE_MONEY46, @cash; }
-				else if(#CASH_CODE_47$ == "") { set #CASH_CODE_47$, @value$; set #CASH_CODE_MONEY47, @cash; }
-				else if(#CASH_CODE_48$ == "") { set #CASH_CODE_48$, @value$; set #CASH_CODE_MONEY48, @cash; }
-				else if(#CASH_CODE_49$ == "") { set #CASH_CODE_49$, @value$; set #CASH_CODE_MONEY49, @cash; }
-				else if(#CASH_CODE_50$ == "") { set #CASH_CODE_50$, @value$; set #CASH_CODE_MONEY50, @cash; }
-				else if(#CASH_CODE_51$ == "") { set #CASH_CODE_51$, @value$; set #CASH_CODE_MONEY51, @cash; }
-				else if(#CASH_CODE_52$ == "") { set #CASH_CODE_52$, @value$; set #CASH_CODE_MONEY52, @cash; }
-				else if(#CASH_CODE_53$ == "") { set #CASH_CODE_53$, @value$; set #CASH_CODE_MONEY53, @cash; }
-				else if(#CASH_CODE_54$ == "") { set #CASH_CODE_54$, @value$; set #CASH_CODE_MONEY54, @cash; }
-				else if(#CASH_CODE_55$ == "") { set #CASH_CODE_55$, @value$; set #CASH_CODE_MONEY55, @cash; }
-				else if(#CASH_CODE_56$ == "") { set #CASH_CODE_56$, @value$; set #CASH_CODE_MONEY56, @cash; }
-				else if(#CASH_CODE_57$ == "") { set #CASH_CODE_57$, @value$; set #CASH_CODE_MONEY57, @cash; }
-				else if(#CASH_CODE_58$ == "") { set #CASH_CODE_58$, @value$; set #CASH_CODE_MONEY58, @cash; }
-				else if(#CASH_CODE_59$ == "") { set #CASH_CODE_59$, @value$; set #CASH_CODE_MONEY59, @cash; }
-				else if(#CASH_CODE_60$ == "") { set #CASH_CODE_60$, @value$; set #CASH_CODE_MONEY60, @cash; }
-				else if(#CASH_CODE_61$ == "") { set #CASH_CODE_61$, @value$; set #CASH_CODE_MONEY61, @cash; }
-				else if(#CASH_CODE_62$ == "") { set #CASH_CODE_62$, @value$; set #CASH_CODE_MONEY62, @cash; }
-				else if(#CASH_CODE_63$ == "") { set #CASH_CODE_63$, @value$; set #CASH_CODE_MONEY63, @cash; }
-				else if(#CASH_CODE_64$ == "") { set #CASH_CODE_64$, @value$; set #CASH_CODE_MONEY64, @cash; }
-				else if(#CASH_CODE_65$ == "") { set #CASH_CODE_65$, @value$; set #CASH_CODE_MONEY65, @cash; }
-				else if(#CASH_CODE_66$ == "") { set #CASH_CODE_66$, @value$; set #CASH_CODE_MONEY66, @cash; }
-				else if(#CASH_CODE_67$ == "") { set #CASH_CODE_67$, @value$; set #CASH_CODE_MONEY67, @cash; }
-				else if(#CASH_CODE_68$ == "") { set #CASH_CODE_68$, @value$; set #CASH_CODE_MONEY68, @cash; }
-				else if(#CASH_CODE_69$ == "") { set #CASH_CODE_69$, @value$; set #CASH_CODE_MONEY69, @cash; }
-				else if(#CASH_CODE_70$ == "") { set #CASH_CODE_70$, @value$; set #CASH_CODE_MONEY70, @cash; }
-				else if(#CASH_CODE_71$ == "") { set #CASH_CODE_71$, @value$; set #CASH_CODE_MONEY71, @cash; }
-				else if(#CASH_CODE_72$ == "") { set #CASH_CODE_72$, @value$; set #CASH_CODE_MONEY72, @cash; }
-				else if(#CASH_CODE_73$ == "") { set #CASH_CODE_73$, @value$; set #CASH_CODE_MONEY73, @cash; }
-				else if(#CASH_CODE_74$ == "") { set #CASH_CODE_74$, @value$; set #CASH_CODE_MONEY74, @cash; }
-				else if(#CASH_CODE_75$ == "") { set #CASH_CODE_75$, @value$; set #CASH_CODE_MONEY75, @cash; }
-				else if(#CASH_CODE_76$ == "") { set #CASH_CODE_76$, @value$; set #CASH_CODE_MONEY76, @cash; }
-				else if(#CASH_CODE_77$ == "") { set #CASH_CODE_77$, @value$; set #CASH_CODE_MONEY77, @cash; }
-				else if(#CASH_CODE_78$ == "") { set #CASH_CODE_78$, @value$; set #CASH_CODE_MONEY78, @cash; }
-				else if(#CASH_CODE_79$ == "") { set #CASH_CODE_79$, @value$; set #CASH_CODE_MONEY79, @cash; }
-				else if(#CASH_CODE_80$ == "") { set #CASH_CODE_80$, @value$; set #CASH_CODE_MONEY80, @cash; }
-				else if(#CASH_CODE_81$ == "") { set #CASH_CODE_81$, @value$; set #CASH_CODE_MONEY81, @cash; }
-				else if(#CASH_CODE_82$ == "") { set #CASH_CODE_82$, @value$; set #CASH_CODE_MONEY82, @cash; }
-				else if(#CASH_CODE_83$ == "") { set #CASH_CODE_83$, @value$; set #CASH_CODE_MONEY83, @cash; }
-				else if(#CASH_CODE_84$ == "") { set #CASH_CODE_84$, @value$; set #CASH_CODE_MONEY84, @cash; }
-				else if(#CASH_CODE_85$ == "") { set #CASH_CODE_85$, @value$; set #CASH_CODE_MONEY85, @cash; }
-				else if(#CASH_CODE_86$ == "") { set #CASH_CODE_86$, @value$; set #CASH_CODE_MONEY86, @cash; }
-				else if(#CASH_CODE_87$ == "") { set #CASH_CODE_87$, @value$; set #CASH_CODE_MONEY87, @cash; }
-				else if(#CASH_CODE_88$ == "") { set #CASH_CODE_88$, @value$; set #CASH_CODE_MONEY88, @cash; }
-				else if(#CASH_CODE_89$ == "") { set #CASH_CODE_89$, @value$; set #CASH_CODE_MONEY89, @cash; }
-				else if(#CASH_CODE_90$ == "") { set #CASH_CODE_90$, @value$; set #CASH_CODE_MONEY90, @cash; }
-				else if(#CASH_CODE_91$ == "") { set #CASH_CODE_91$, @value$; set #CASH_CODE_MONEY91, @cash; }
-				else if(#CASH_CODE_92$ == "") { set #CASH_CODE_92$, @value$; set #CASH_CODE_MONEY92, @cash; }
-				else if(#CASH_CODE_93$ == "") { set #CASH_CODE_93$, @value$; set #CASH_CODE_MONEY93, @cash; }
-				else if(#CASH_CODE_94$ == "") { set #CASH_CODE_94$, @value$; set #CASH_CODE_MONEY94, @cash; }
-				else if(#CASH_CODE_95$ == "") { set #CASH_CODE_95$, @value$; set #CASH_CODE_MONEY95, @cash; }
-				else if(#CASH_CODE_96$ == "") { set #CASH_CODE_96$, @value$; set #CASH_CODE_MONEY96, @cash; }
-				else if(#CASH_CODE_97$ == "") { set #CASH_CODE_97$, @value$; set #CASH_CODE_MONEY97, @cash; }
-				else if(#CASH_CODE_98$ == "") { set #CASH_CODE_98$, @value$; set #CASH_CODE_MONEY98, @cash; }
-				else if(#CASH_CODE_99$ == "") { set #CASH_CODE_99$, @value$; set #CASH_CODE_MONEY99, @cash; }
-				else if(#CASH_CODE_100$ == "") { set #CASH_CODE_100$, @value$; set #CASH_CODE_MONEY100, @cash; }
-				else if(#CASH_CODE_101$ == "") { set #CASH_CODE_101$, @value$; set #CASH_CODE_MONEY101, @cash; }
-				else if(#CASH_CODE_102$ == "") { set #CASH_CODE_102$, @value$; set #CASH_CODE_MONEY102, @cash; }
-				else if(#CASH_CODE_103$ == "") { set #CASH_CODE_103$, @value$; set #CASH_CODE_MONEY103, @cash; }
-				else if(#CASH_CODE_104$ == "") { set #CASH_CODE_104$, @value$; set #CASH_CODE_MONEY104, @cash; }
-				else if(#CASH_CODE_105$ == "") { set #CASH_CODE_105$, @value$; set #CASH_CODE_MONEY105, @cash; }
-				else if(#CASH_CODE_106$ == "") { set #CASH_CODE_106$, @value$; set #CASH_CODE_MONEY106, @cash; }
-				else if(#CASH_CODE_107$ == "") { set #CASH_CODE_107$, @value$; set #CASH_CODE_MONEY107, @cash; }
-				else if(#CASH_CODE_108$ == "") { set #CASH_CODE_108$, @value$; set #CASH_CODE_MONEY108, @cash; }
-				else if(#CASH_CODE_109$ == "") { set #CASH_CODE_109$, @value$; set #CASH_CODE_MONEY109, @cash; }
-				else if(#CASH_CODE_110$ == "") { set #CASH_CODE_110$, @value$; set #CASH_CODE_MONEY110, @cash; }
-				else if(#CASH_CODE_111$ == "") { set #CASH_CODE_111$, @value$; set #CASH_CODE_MONEY111, @cash; }
-				else if(#CASH_CODE_112$ == "") { set #CASH_CODE_112$, @value$; set #CASH_CODE_MONEY112, @cash; }
-				else if(#CASH_CODE_113$ == "") { set #CASH_CODE_113$, @value$; set #CASH_CODE_MONEY113, @cash; }
-				else if(#CASH_CODE_114$ == "") { set #CASH_CODE_114$, @value$; set #CASH_CODE_MONEY114, @cash; }
-				else if(#CASH_CODE_115$ == "") { set #CASH_CODE_115$, @value$; set #CASH_CODE_MONEY115, @cash; }
-				else if(#CASH_CODE_116$ == "") { set #CASH_CODE_116$, @value$; set #CASH_CODE_MONEY116, @cash; }
-				else if(#CASH_CODE_117$ == "") { set #CASH_CODE_117$, @value$; set #CASH_CODE_MONEY117, @cash; }
-				else if(#CASH_CODE_118$ == "") { set #CASH_CODE_118$, @value$; set #CASH_CODE_MONEY118, @cash; }
-				else if(#CASH_CODE_119$ == "") { set #CASH_CODE_119$, @value$; set #CASH_CODE_MONEY119, @cash; }
-				else if(#CASH_CODE_120$ == "") { set #CASH_CODE_120$, @value$; set #CASH_CODE_MONEY120, @cash; }
-				else if(#CASH_CODE_121$ == "") { set #CASH_CODE_121$, @value$; set #CASH_CODE_MONEY121, @cash; }
-				else if(#CASH_CODE_122$ == "") { set #CASH_CODE_122$, @value$; set #CASH_CODE_MONEY122, @cash; }
-				else if(#CASH_CODE_123$ == "") { set #CASH_CODE_123$, @value$; set #CASH_CODE_MONEY123, @cash; }
-				else if(#CASH_CODE_124$ == "") { set #CASH_CODE_124$, @value$; set #CASH_CODE_MONEY124, @cash; }
-				
-				dialog 0,0,0,"생성 되었습니다.";
-				end;
-			}
-			if(@list == 2)
-			{
-				set @pos, list2(@list1,1,0,"수정할 쿠폰이 있다면 선택하세요"
-					,#CASH_CODE_01$+"     ["+#CASH_CODE_MONEY01+"만원]",#CASH_CODE_02$+"     ["+#CASH_CODE_MONEY02+"만원]",#CASH_CODE_03$+"     ["+#CASH_CODE_MONEY03+"만원]",#CASH_CODE_04$+"     ["+#CASH_CODE_MONEY04+"만원]",#CASH_CODE_05$+"     ["+#CASH_CODE_MONEY05+"만원]",#CASH_CODE_06$+"     ["+#CASH_CODE_MONEY06+"만원]",#CASH_CODE_07$+"     ["+#CASH_CODE_MONEY07+"만원]",#CASH_CODE_08$+"     ["+#CASH_CODE_MONEY08+"만원]",#CASH_CODE_09$+"     ["+#CASH_CODE_MONEY09+"만원]",#CASH_CODE_10$+"     ["+#CASH_CODE_MONEY10+"만원]"
-					,#CASH_CODE_11$+"     ["+#CASH_CODE_MONEY11+"만원]",#CASH_CODE_12$+"     ["+#CASH_CODE_MONEY12+"만원]",#CASH_CODE_13$+"     ["+#CASH_CODE_MONEY13+"만원]",#CASH_CODE_14$+"     ["+#CASH_CODE_MONEY14+"만원]",#CASH_CODE_15$+"     ["+#CASH_CODE_MONEY15+"만원]",#CASH_CODE_16$+"     ["+#CASH_CODE_MONEY16+"만원]",#CASH_CODE_17$+"     ["+#CASH_CODE_MONEY17+"만원]",#CASH_CODE_18$+"     ["+#CASH_CODE_MONEY18+"만원]",#CASH_CODE_19$+"     ["+#CASH_CODE_MONEY19+"만원]",#CASH_CODE_20$+"     ["+#CASH_CODE_MONEY20+"만원]"
-					,#CASH_CODE_21$+"     ["+#CASH_CODE_MONEY21+"만원]",#CASH_CODE_22$+"     ["+#CASH_CODE_MONEY22+"만원]",#CASH_CODE_23$+"     ["+#CASH_CODE_MONEY23+"만원]",#CASH_CODE_24$+"     ["+#CASH_CODE_MONEY24+"만원]",#CASH_CODE_25$+"     ["+#CASH_CODE_MONEY25+"만원]",#CASH_CODE_26$+"     ["+#CASH_CODE_MONEY26+"만원]",#CASH_CODE_27$+"     ["+#CASH_CODE_MONEY27+"만원]",#CASH_CODE_28$+"     ["+#CASH_CODE_MONEY28+"만원]",#CASH_CODE_29$+"     ["+#CASH_CODE_MONEY29+"만원]",#CASH_CODE_30$+"     ["+#CASH_CODE_MONEY30+"만원]"
-					,#CASH_CODE_31$+"     ["+#CASH_CODE_MONEY31+"만원]",#CASH_CODE_32$+"     ["+#CASH_CODE_MONEY32+"만원]",#CASH_CODE_33$+"     ["+#CASH_CODE_MONEY33+"만원]",#CASH_CODE_34$+"     ["+#CASH_CODE_MONEY34+"만원]",#CASH_CODE_35$+"     ["+#CASH_CODE_MONEY35+"만원]",#CASH_CODE_36$+"     ["+#CASH_CODE_MONEY36+"만원]",#CASH_CODE_37$+"     ["+#CASH_CODE_MONEY37+"만원]",#CASH_CODE_38$+"     ["+#CASH_CODE_MONEY38+"만원]",#CASH_CODE_39$+"     ["+#CASH_CODE_MONEY39+"만원]",#CASH_CODE_40$+"     ["+#CASH_CODE_MONEY40+"만원]"
-					,#CASH_CODE_41$+"     ["+#CASH_CODE_MONEY41+"만원]",#CASH_CODE_42$+"     ["+#CASH_CODE_MONEY42+"만원]",#CASH_CODE_43$+"     ["+#CASH_CODE_MONEY43+"만원]",#CASH_CODE_44$+"     ["+#CASH_CODE_MONEY44+"만원]",#CASH_CODE_45$+"     ["+#CASH_CODE_MONEY45+"만원]",#CASH_CODE_46$+"     ["+#CASH_CODE_MONEY46+"만원]",#CASH_CODE_47$+"     ["+#CASH_CODE_MONEY47+"만원]",#CASH_CODE_48$+"     ["+#CASH_CODE_MONEY48+"만원]",#CASH_CODE_49$+"     ["+#CASH_CODE_MONEY49+"만원]",#CASH_CODE_50$+"     ["+#CASH_CODE_MONEY50+"만원]"
-					,#CASH_CODE_51$+"     ["+#CASH_CODE_MONEY51+"만원]",#CASH_CODE_52$+"     ["+#CASH_CODE_MONEY52+"만원]",#CASH_CODE_53$+"     ["+#CASH_CODE_MONEY53+"만원]",#CASH_CODE_54$+"     ["+#CASH_CODE_MONEY54+"만원]",#CASH_CODE_55$+"     ["+#CASH_CODE_MONEY55+"만원]",#CASH_CODE_56$+"     ["+#CASH_CODE_MONEY56+"만원]",#CASH_CODE_57$+"     ["+#CASH_CODE_MONEY57+"만원]",#CASH_CODE_58$+"     ["+#CASH_CODE_MONEY58+"만원]",#CASH_CODE_59$+"     ["+#CASH_CODE_MONEY59+"만원]",#CASH_CODE_60$+"     ["+#CASH_CODE_MONEY60+"만원]"
-					,#CASH_CODE_61$+"     ["+#CASH_CODE_MONEY61+"만원]",#CASH_CODE_62$+"     ["+#CASH_CODE_MONEY62+"만원]",#CASH_CODE_63$+"     ["+#CASH_CODE_MONEY63+"만원]",#CASH_CODE_64$+"     ["+#CASH_CODE_MONEY64+"만원]",#CASH_CODE_65$+"     ["+#CASH_CODE_MONEY65+"만원]",#CASH_CODE_66$+"     ["+#CASH_CODE_MONEY66+"만원]",#CASH_CODE_67$+"     ["+#CASH_CODE_MONEY67+"만원]",#CASH_CODE_68$+"     ["+#CASH_CODE_MONEY68+"만원]",#CASH_CODE_69$+"     ["+#CASH_CODE_MONEY69+"만원]",#CASH_CODE_70$+"     ["+#CASH_CODE_MONEY70+"만원]"
-					,#CASH_CODE_71$+"     ["+#CASH_CODE_MONEY71+"만원]",#CASH_CODE_72$+"     ["+#CASH_CODE_MONEY72+"만원]",#CASH_CODE_73$+"     ["+#CASH_CODE_MONEY73+"만원]",#CASH_CODE_74$+"     ["+#CASH_CODE_MONEY74+"만원]",#CASH_CODE_75$+"     ["+#CASH_CODE_MONEY75+"만원]",#CASH_CODE_76$+"     ["+#CASH_CODE_MONEY76+"만원]",#CASH_CODE_77$+"     ["+#CASH_CODE_MONEY77+"만원]",#CASH_CODE_78$+"     ["+#CASH_CODE_MONEY78+"만원]",#CASH_CODE_79$+"     ["+#CASH_CODE_MONEY79+"만원]",#CASH_CODE_80$+"     ["+#CASH_CODE_MONEY80+"만원]"
-					,#CASH_CODE_81$+"     ["+#CASH_CODE_MONEY81+"만원]",#CASH_CODE_82$+"     ["+#CASH_CODE_MONEY82+"만원]",#CASH_CODE_83$+"     ["+#CASH_CODE_MONEY83+"만원]",#CASH_CODE_84$+"     ["+#CASH_CODE_MONEY84+"만원]",#CASH_CODE_85$+"     ["+#CASH_CODE_MONEY85+"만원]",#CASH_CODE_86$+"     ["+#CASH_CODE_MONEY86+"만원]",#CASH_CODE_87$+"     ["+#CASH_CODE_MONEY87+"만원]",#CASH_CODE_88$+"     ["+#CASH_CODE_MONEY88+"만원]",#CASH_CODE_89$+"     ["+#CASH_CODE_MONEY89+"만원]",#CASH_CODE_90$+"     ["+#CASH_CODE_MONEY90+"만원]"
-					,#CASH_CODE_91$+"     ["+#CASH_CODE_MONEY91+"만원]",#CASH_CODE_92$+"     ["+#CASH_CODE_MONEY92+"만원]",#CASH_CODE_93$+"     ["+#CASH_CODE_MONEY93+"만원]",#CASH_CODE_94$+"     ["+#CASH_CODE_MONEY94+"만원]",#CASH_CODE_95$+"     ["+#CASH_CODE_MONEY95+"만원]",#CASH_CODE_96$+"     ["+#CASH_CODE_MONEY96+"만원]",#CASH_CODE_97$+"     ["+#CASH_CODE_MONEY97+"만원]",#CASH_CODE_98$+"     ["+#CASH_CODE_MONEY98+"만원]",#CASH_CODE_99$+"     ["+#CASH_CODE_MONEY99+"만원]",#CASH_CODE_100$+"     ["+#CASH_CODE_MONEY100+"만원]"
-					,#CASH_CODE_101$+"     ["+#CASH_CODE_MONEY101+"만원]",#CASH_CODE_102$+"     ["+#CASH_CODE_MONEY102+"만원]",#CASH_CODE_103$+"     ["+#CASH_CODE_MONEY103+"만원]",#CASH_CODE_104$+"     ["+#CASH_CODE_MONEY104+"만원]",#CASH_CODE_105$+"     ["+#CASH_CODE_MONEY105+"만원]",#CASH_CODE_106$+"     ["+#CASH_CODE_MONEY106+"만원]",#CASH_CODE_107$+"     ["+#CASH_CODE_MONEY107+"만원]",#CASH_CODE_108$+"     ["+#CASH_CODE_MONEY108+"만원]",#CASH_CODE_109$+"     ["+#CASH_CODE_MONEY109+"만원]",#CASH_CODE_110$+"     ["+#CASH_CODE_MONEY110+"만원]"
-					,#CASH_CODE_111$+"     ["+#CASH_CODE_MONEY111+"만원]",#CASH_CODE_112$+"     ["+#CASH_CODE_MONEY112+"만원]",#CASH_CODE_113$+"     ["+#CASH_CODE_MONEY113+"만원]",#CASH_CODE_114$+"     ["+#CASH_CODE_MONEY114+"만원]",#CASH_CODE_115$+"     ["+#CASH_CODE_MONEY115+"만원]",#CASH_CODE_115$+"     ["+#CASH_CODE_MONEY116+"만원]",#CASH_CODE_117$+"     ["+#CASH_CODE_MONEY117+"만원]",#CASH_CODE_118$+"     ["+#CASH_CODE_MONEY118+"만원]",#CASH_CODE_119$+"     ["+#CASH_CODE_MONEY119+"만원]",#CASH_CODE_120$+"     ["+#CASH_CODE_MONEY120+"만원]"
-					,#CASH_CODE_121$+"     ["+#CASH_CODE_MONEY121+"만원]",#CASH_CODE_122$+"     ["+#CASH_CODE_MONEY122+"만원]",#CASH_CODE_123$+"     ["+#CASH_CODE_MONEY123+"만원]",#CASH_CODE_124$+"     ["+#CASH_CODE_MONEY124+"만원]");
-
-
-				if(@pos == 0) end;
-				
-				set @pos, input2(@value$,0,16,"수정할 쿠폰번호를 입력하세요","쿠폰번호는","입니다.");
-				if(@pos == 0) end;
-
-				set @pos, input2(@cash,0,2,"수정할 충전금액을 입력하세요","충전금액은","만원 입니다.");
-				if(@pos == 0) end;
-
-				if(@list1 == 1) { set #CASH_CODE_01$, @value$; set #CASH_CODE_MONEY01, @cash; }
-				else if(@list1 == 2) { set #CASH_CODE_02$, @value$; set #CASH_CODE_MONEY02, @cash; }
-				else if(@list1 == 3) { set #CASH_CODE_03$, @value$; set #CASH_CODE_MONEY03, @cash; }
-				else if(@list1 == 4) { set #CASH_CODE_04$, @value$; set #CASH_CODE_MONEY04, @cash; }
-				else if(@list1 == 5) { set #CASH_CODE_05$, @value$; set #CASH_CODE_MONEY05, @cash; }
-				else if(@list1 == 6) { set #CASH_CODE_06$, @value$; set #CASH_CODE_MONEY06, @cash; }
-				else if(@list1 == 7) { set #CASH_CODE_07$, @value$; set #CASH_CODE_MONEY07, @cash; }
-				else if(@list1 == 8) { set #CASH_CODE_08$, @value$; set #CASH_CODE_MONEY08, @cash; }
-				else if(@list1 == 9) { set #CASH_CODE_09$, @value$; set #CASH_CODE_MONEY09, @cash; }
-				else if(@list1 == 10) { set #CASH_CODE_10$, @value$; set #CASH_CODE_MONEY10, @cash; }
-				else if(@list1 == 11) { set #CASH_CODE_11$, @value$; set #CASH_CODE_MONEY11, @cash; }
-				else if(@list1 == 12) { set #CASH_CODE_12$, @value$; set #CASH_CODE_MONEY12, @cash; }
-				else if(@list1 == 13) { set #CASH_CODE_13$, @value$; set #CASH_CODE_MONEY13, @cash; }
-				else if(@list1 == 14) { set #CASH_CODE_14$, @value$; set #CASH_CODE_MONEY14, @cash; }
-				else if(@list1 == 15) { set #CASH_CODE_15$, @value$; set #CASH_CODE_MONEY15, @cash; }
-				else if(@list1 == 16) { set #CASH_CODE_16$, @value$; set #CASH_CODE_MONEY16, @cash; }
-				else if(@list1 == 17) { set #CASH_CODE_17$, @value$; set #CASH_CODE_MONEY17, @cash; }
-				else if(@list1 == 18) { set #CASH_CODE_18$, @value$; set #CASH_CODE_MONEY18, @cash; }
-				else if(@list1 == 19) { set #CASH_CODE_19$, @value$; set #CASH_CODE_MONEY19, @cash; }
-				else if(@list1 == 20) { set #CASH_CODE_20$, @value$; set #CASH_CODE_MONEY20, @cash; }
-				else if(@list1 == 21) { set #CASH_CODE_21$, @value$; set #CASH_CODE_MONEY21, @cash; }
-				else if(@list1 == 22) { set #CASH_CODE_22$, @value$; set #CASH_CODE_MONEY22, @cash; }
-				else if(@list1 == 23) { set #CASH_CODE_23$, @value$; set #CASH_CODE_MONEY23, @cash; }
-				else if(@list1 == 24) { set #CASH_CODE_24$, @value$; set #CASH_CODE_MONEY24, @cash; }
-				else if(@list1 == 25) { set #CASH_CODE_25$, @value$; set #CASH_CODE_MONEY25, @cash; }
-				else if(@list1 == 26) { set #CASH_CODE_26$, @value$; set #CASH_CODE_MONEY26, @cash; }
-				else if(@list1 == 27) { set #CASH_CODE_27$, @value$; set #CASH_CODE_MONEY27, @cash; }
-				else if(@list1 == 28) { set #CASH_CODE_28$, @value$; set #CASH_CODE_MONEY28, @cash; }
-				else if(@list1 == 29) { set #CASH_CODE_29$, @value$; set #CASH_CODE_MONEY29, @cash; }
-				else if(@list1 == 30) { set #CASH_CODE_30$, @value$; set #CASH_CODE_MONEY30, @cash; }
-				else if(@list1 == 31) { set #CASH_CODE_31$, @value$; set #CASH_CODE_MONEY31, @cash; }
-				else if(@list1 == 32) { set #CASH_CODE_32$, @value$; set #CASH_CODE_MONEY32, @cash; }
-				else if(@list1 == 33) { set #CASH_CODE_33$, @value$; set #CASH_CODE_MONEY33, @cash; }
-				else if(@list1 == 34) { set #CASH_CODE_34$, @value$; set #CASH_CODE_MONEY34, @cash; }
-				else if(@list1 == 35) { set #CASH_CODE_35$, @value$; set #CASH_CODE_MONEY35, @cash; }
-				else if(@list1 == 36) { set #CASH_CODE_36$, @value$; set #CASH_CODE_MONEY36, @cash; }
-				else if(@list1 == 37) { set #CASH_CODE_37$, @value$; set #CASH_CODE_MONEY37, @cash; }
-				else if(@list1 == 38) { set #CASH_CODE_38$, @value$; set #CASH_CODE_MONEY38, @cash; }
-				else if(@list1 == 39) { set #CASH_CODE_39$, @value$; set #CASH_CODE_MONEY39, @cash; }
-				else if(@list1 == 40) { set #CASH_CODE_40$, @value$; set #CASH_CODE_MONEY40, @cash; }
-				else if(@list1 == 41) { set #CASH_CODE_41$, @value$; set #CASH_CODE_MONEY41, @cash; }
-				else if(@list1 == 42) { set #CASH_CODE_42$, @value$; set #CASH_CODE_MONEY42, @cash; }
-				else if(@list1 == 43) { set #CASH_CODE_43$, @value$; set #CASH_CODE_MONEY43, @cash; }
-				else if(@list1 == 44) { set #CASH_CODE_44$, @value$; set #CASH_CODE_MONEY44, @cash; }
-				else if(@list1 == 45) { set #CASH_CODE_45$, @value$; set #CASH_CODE_MONEY45, @cash; }
-				else if(@list1 == 46) { set #CASH_CODE_46$, @value$; set #CASH_CODE_MONEY46, @cash; }
-				else if(@list1 == 47) { set #CASH_CODE_47$, @value$; set #CASH_CODE_MONEY47, @cash; }
-				else if(@list1 == 48) { set #CASH_CODE_48$, @value$; set #CASH_CODE_MONEY48, @cash; }
-				else if(@list1 == 49) { set #CASH_CODE_49$, @value$; set #CASH_CODE_MONEY49, @cash; }
-				else if(@list1 == 50) { set #CASH_CODE_50$, @value$; set #CASH_CODE_MONEY50, @cash; }
-				else if(@list1 == 51) { set #CASH_CODE_51$, @value$; set #CASH_CODE_MONEY51, @cash; }
-				else if(@list1 == 52) { set #CASH_CODE_52$, @value$; set #CASH_CODE_MONEY52, @cash; }
-				else if(@list1 == 53) { set #CASH_CODE_53$, @value$; set #CASH_CODE_MONEY53, @cash; }
-				else if(@list1 == 54) { set #CASH_CODE_54$, @value$; set #CASH_CODE_MONEY54, @cash; }
-				else if(@list1 == 55) { set #CASH_CODE_55$, @value$; set #CASH_CODE_MONEY55, @cash; }
-				else if(@list1 == 56) { set #CASH_CODE_56$, @value$; set #CASH_CODE_MONEY56, @cash; }
-				else if(@list1 == 57) { set #CASH_CODE_57$, @value$; set #CASH_CODE_MONEY57, @cash; }
-				else if(@list1 == 58) { set #CASH_CODE_58$, @value$; set #CASH_CODE_MONEY58, @cash; }
-				else if(@list1 == 59) { set #CASH_CODE_59$, @value$; set #CASH_CODE_MONEY59, @cash; }
-				else if(@list1 == 60) { set #CASH_CODE_60$, @value$; set #CASH_CODE_MONEY60, @cash; }
-				else if(@list1 == 61) { set #CASH_CODE_61$, @value$; set #CASH_CODE_MONEY61, @cash; }
-				else if(@list1 == 62) { set #CASH_CODE_62$, @value$; set #CASH_CODE_MONEY62, @cash; }
-				else if(@list1 == 63) { set #CASH_CODE_63$, @value$; set #CASH_CODE_MONEY63, @cash; }
-				else if(@list1 == 64) { set #CASH_CODE_64$, @value$; set #CASH_CODE_MONEY64, @cash; }
-				else if(@list1 == 65) { set #CASH_CODE_65$, @value$; set #CASH_CODE_MONEY65, @cash; }
-				else if(@list1 == 66) { set #CASH_CODE_66$, @value$; set #CASH_CODE_MONEY66, @cash; }
-				else if(@list1 == 67) { set #CASH_CODE_67$, @value$; set #CASH_CODE_MONEY67, @cash; }
-				else if(@list1 == 68) { set #CASH_CODE_68$, @value$; set #CASH_CODE_MONEY68, @cash; }
-				else if(@list1 == 69) { set #CASH_CODE_69$, @value$; set #CASH_CODE_MONEY69, @cash; }
-				else if(@list1 == 70) { set #CASH_CODE_70$, @value$; set #CASH_CODE_MONEY70, @cash; }
-				else if(@list1 == 71) { set #CASH_CODE_71$, @value$; set #CASH_CODE_MONEY71, @cash; }
-				else if(@list1 == 72) { set #CASH_CODE_72$, @value$; set #CASH_CODE_MONEY72, @cash; }
-				else if(@list1 == 73) { set #CASH_CODE_73$, @value$; set #CASH_CODE_MONEY73, @cash; }
-				else if(@list1 == 74) { set #CASH_CODE_74$, @value$; set #CASH_CODE_MONEY74, @cash; }
-				else if(@list1 == 75) { set #CASH_CODE_75$, @value$; set #CASH_CODE_MONEY75, @cash; }
-				else if(@list1 == 76) { set #CASH_CODE_76$, @value$; set #CASH_CODE_MONEY76, @cash; }
-				else if(@list1 == 77) { set #CASH_CODE_77$, @value$; set #CASH_CODE_MONEY77, @cash; }
-				else if(@list1 == 78) { set #CASH_CODE_78$, @value$; set #CASH_CODE_MONEY78, @cash; }
-				else if(@list1 == 79) { set #CASH_CODE_79$, @value$; set #CASH_CODE_MONEY79, @cash; }
-				else if(@list1 == 80) { set #CASH_CODE_80$, @value$; set #CASH_CODE_MONEY80, @cash; }
-				else if(@list1 == 81) { set #CASH_CODE_81$, @value$; set #CASH_CODE_MONEY81, @cash; }
-				else if(@list1 == 82) { set #CASH_CODE_82$, @value$; set #CASH_CODE_MONEY82, @cash; }
-				else if(@list1 == 83) { set #CASH_CODE_83$, @value$; set #CASH_CODE_MONEY83, @cash; }
-				else if(@list1 == 84) { set #CASH_CODE_84$, @value$; set #CASH_CODE_MONEY84, @cash; }
-				else if(@list1 == 85) { set #CASH_CODE_85$, @value$; set #CASH_CODE_MONEY85, @cash; }
-				else if(@list1 == 86) { set #CASH_CODE_86$, @value$; set #CASH_CODE_MONEY86, @cash; }
-				else if(@list1 == 87) { set #CASH_CODE_87$, @value$; set #CASH_CODE_MONEY87, @cash; }
-				else if(@list1 == 88) { set #CASH_CODE_88$, @value$; set #CASH_CODE_MONEY88, @cash; }
-				else if(@list1 == 89) { set #CASH_CODE_89$, @value$; set #CASH_CODE_MONEY89, @cash; }
-				else if(@list1 == 90) { set #CASH_CODE_90$, @value$; set #CASH_CODE_MONEY90, @cash; }
-				else if(@list1 == 91) { set #CASH_CODE_91$, @value$; set #CASH_CODE_MONEY91, @cash; }
-				else if(@list1 == 92) { set #CASH_CODE_92$, @value$; set #CASH_CODE_MONEY92, @cash; }
-				else if(@list1 == 93) { set #CASH_CODE_93$, @value$; set #CASH_CODE_MONEY93, @cash; }
-				else if(@list1 == 94) { set #CASH_CODE_94$, @value$; set #CASH_CODE_MONEY94, @cash; }
-				else if(@list1 == 95) { set #CASH_CODE_95$, @value$; set #CASH_CODE_MONEY95, @cash; }
-				else if(@list1 == 96) { set #CASH_CODE_96$, @value$; set #CASH_CODE_MONEY96, @cash; }
-				else if(@list1 == 97) { set #CASH_CODE_97$, @value$; set #CASH_CODE_MONEY97, @cash; }
-				else if(@list1 == 98) { set #CASH_CODE_98$, @value$; set #CASH_CODE_MONEY98, @cash; }
-				else if(@list1 == 99) { set #CASH_CODE_99$, @value$; set #CASH_CODE_MONEY99, @cash; }
-				else if(@list1 == 100) { set #CASH_CODE_100$, @value$; set #CASH_CODE_MONEY100, @cash; }
-				else if(@list1 == 101) { set #CASH_CODE_101$, @value$; set #CASH_CODE_MONEY101, @cash; }
-				else if(@list1 == 102) { set #CASH_CODE_102$, @value$; set #CASH_CODE_MONEY102, @cash; }
-				else if(@list1 == 103) { set #CASH_CODE_103$, @value$; set #CASH_CODE_MONEY103, @cash; }
-				else if(@list1 == 104) { set #CASH_CODE_104$, @value$; set #CASH_CODE_MONEY104, @cash; }
-				else if(@list1 == 105) { set #CASH_CODE_105$, @value$; set #CASH_CODE_MONEY105, @cash; }
-				else if(@list1 == 106) { set #CASH_CODE_106$, @value$; set #CASH_CODE_MONEY106, @cash; }
-				else if(@list1 == 107) { set #CASH_CODE_107$, @value$; set #CASH_CODE_MONEY107, @cash; }
-				else if(@list1 == 108) { set #CASH_CODE_108$, @value$; set #CASH_CODE_MONEY108, @cash; }
-				else if(@list1 == 109) { set #CASH_CODE_109$, @value$; set #CASH_CODE_MONEY109, @cash; }
-				else if(@list1 == 110) { set #CASH_CODE_110$, @value$; set #CASH_CODE_MONEY110, @cash; }
-				else if(@list1 == 111) { set #CASH_CODE_111$, @value$; set #CASH_CODE_MONEY111, @cash; }
-				else if(@list1 == 112) { set #CASH_CODE_112$, @value$; set #CASH_CODE_MONEY112, @cash; }
-				else if(@list1 == 113) { set #CASH_CODE_113$, @value$; set #CASH_CODE_MONEY113, @cash; }
-				else if(@list1 == 114) { set #CASH_CODE_114$, @value$; set #CASH_CODE_MONEY114, @cash; }
-				else if(@list1 == 115) { set #CASH_CODE_115$, @value$; set #CASH_CODE_MONEY115, @cash; }
-				else if(@list1 == 116) { set #CASH_CODE_116$, @value$; set #CASH_CODE_MONEY116, @cash; }
-				else if(@list1 == 117) { set #CASH_CODE_117$, @value$; set #CASH_CODE_MONEY117, @cash; }
-				else if(@list1 == 118) { set #CASH_CODE_118$, @value$; set #CASH_CODE_MONEY118, @cash; }
-				else if(@list1 == 119) { set #CASH_CODE_119$, @value$; set #CASH_CODE_MONEY119, @cash; }
-				else if(@list1 == 120) { set #CASH_CODE_120$, @value$; set #CASH_CODE_MONEY120, @cash; }
-				else if(@list1 == 121) { set #CASH_CODE_121$, @value$; set #CASH_CODE_MONEY121, @cash; }
-				else if(@list1 == 122) { set #CASH_CODE_122$, @value$; set #CASH_CODE_MONEY122, @cash; }
-				else if(@list1 == 123) { set #CASH_CODE_123$, @value$; set #CASH_CODE_MONEY123, @cash; }
-				else if(@list1 == 124) { set #CASH_CODE_124$, @value$; set #CASH_CODE_MONEY124, @cash; }
-
-				dialog 0,0,0,"수정 되었습니다.";
-				end;									
-			}
-			end;
-		}
-		else if(@admin == 13)
-		{
-			set @pos, list2(@list, 0, 1, "어떤 기능을 설정하시겠습니까?", "공성 초기화", "임의공성시작(주작)", "점수 확인", "시간 설정");
-			if(@pos == 0) end;
-			if(@list == 1)
-			{
-				callfunc "BATTLE_SCORE_RESET";
-				message @sd, 8, "완료";
-			}
-			else if(@list == 2)
-			{
-				set #clan_start, 1;
-				set #clan_timer, 0;
-				set #clan_namecheck, 0;
-				set #clan_mapname$, "주작성";
-				set #clan_mapcheck$, #bird_castle$;
-				set #clan_battle$, #bird_castle$;
-				timecount_all 2, 3599;
-				for(set @loop, 1178; @loop <= 1185; set @loop, @loop+1)
-				{
-					mobspawn name2mapid("주작성입구"), (@loop-1108), 104, 2, @loop;
-				}
-				set #clan_add_score_timer, 1;
-				npcspawn 2000, 20, 0, 2, 227, "공성타이머";
-				announce 5, "[알림] " + #clan_mapname$ + " 공성전이 시작되었습니다.";
-				message @sd, 3, "완료";
-			}
-			else if(@list == 3)
-			{
-				if(#clan_start != 1)
-				{
-					message @sd, 8, "공성이 진행중이 아니면 확인하실 수 없습니다.";
-				}
-				else
-				{
-					message @sd, 8, "[1] "+#clan_battle_list1$+"▦"+#clan_battle_1sp+"\\n[2] "+#clan_battle_list2$+"▦"+#clan_battle_2sp+"\\n[3] "+#clan_battle_list3$+"▦"+#clan_battle_3sp+"\\n[4] "+#clan_battle_list4$+"▦"+#clan_battle_4sp+"\\n[5] "+#clan_battle_list5$+"▦"+#clan_battle_5sp+"\\n[6] "+#clan_battle_list6$+"▦"+#clan_battle_6sp+"\\n[7] "+#clan_battle_list7$+"▦"+#clan_battle_7sp+"\\n[8] "+#clan_battle_list8$+"▦"+#clan_battle_8sp+"\\n[9] "+#clan_battle_list9$+"▦"+#clan_battle_9sp+"\\n[10] "+#clan_battle_list10$+"▦"+#clan_battle_10sp+"\\n";
-				}
-			}
-			else if(@list == 4)
-			{
-				if(#clan_start != 1)
-				{
-					message @sd, 8, "공성이 진행중이 아니면 확인하실 수 없습니다.";
-				}
-				else
-				{
-					set @pos, list2(@list, 0, 1, "설정할 값을 선택하세요", "10분 설정", "0분 설정");
-					if(@pos == 0) end;
-					if(@list == 1)
-					{
-						set #clan_add_score_timer, 1; 
-					}
-					else if(@list == 2)
-					{
-						set #clan_add_score_timer, 100;
-						message @sd, 3, "완료";
-					}
-				}
-			}
-		}
+		callfunc "ADMIN_GMMODLUE";
 	}
-	else
+	//부운영자 관련 모듈 ( 유저 관리 기능만 존재 )
+	else if(get_name(@sd) == #GUIDE_ADMIN1$ || get_name(@sd) == #GUIDE_ADMIN2$ || get_name(@sd) == #GUIDE_ADMIN3$)
 	{
-USER:
-		set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "이동", "자동십억경변환", "기원량출력", "리붓시간", "버리기", "마스터온라인실시간랭킹", "후원감사쿠폰", "자동체마사기");
-		if(@pos == 0) end;
-		if(@list == 2)
+		set @pos, input1(@pass, "모드 진입 비밀번호를 입력 하십시오.");
+		if(@pass == 25061140)
 		{
-			set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "자동십억경변환", "자동십억경변환해제");
-			if(@pos == 0) end;
-			if(@list == 1)
-			{
-				spellaether @sd, name2spellid("십억경자동변환"), 36000;
-			}
-			else if(@list == 2)
-			{
-				spelluncast @sd, name2spellid("십억경자동변환");
-				message @sd, 3, "해제되었습니다.";
-			}
+			callfunc "GUIDE_GMMODLUE";	
 		}
-		else if(@list == 1)
-		{
-			if(ismapoption(@sd,1))
-			{
-				message @sd, 3, "여기선 사용할 수 없습니다.";
-				end;
-			}
-			set @pos, list2(@list, 0, 0, "안녕하세요. 어떻게 오셨나요?", "부여성이동", "국내성이동", "홀짝공원", "레이드대기실", "고래갑판");
-			if(@pos == 0) end;
-			else if(@list == 1)
-			{
-				warp @sd, 14, 75+rand(1, 1), 144+rand(1, 1);
-			}
-			else if(@list == 2)
-			{
-				warp @sd, 22, 110+rand(1, 1), 209+rand(1, 1);
-			}
-			else if(@list == 3)
-			{
-				warp @sd, 53492, 8+rand(1, 1), 6+rand(1, 1);
-			}
-			else if(@list == 4)
-			{
-				warp @sd, 53509, 13+rand(1, 1), 19+rand(1, 1);
-			}
-			else if(@list == 5)
-			{
-				warp @sd, 2190, 1+rand(1, 18), 17+rand(1, 30);
-			}
-		}
-	else if(@list == 3)
-	{
-		if($healsay == 0) 
-		{
-			set $healsay, 1;
-			message @sd, 3, "기원확인 ON";
-		}
-		else 
-		{
-			set $healsay, 0;
-			message @sd, 3, "기원확인 OFF";
-			}
-		}
-		else if(@list == 4)
-		{
-			set @year, 2017;
-			set @month, 4;
-			set @day, 27;
-			set @hour, 1;
-			set @minute, 11;
-			set @second, 30;
-			message @sd, 4, "리붓시간은 " + @year + "년 " + @month + "월 " + @day + "일 " + @hour + "시 " + @minute + "분 " + @second + "초입니다.";
-		}
-		else if(@list == 5)
-		{
-			if($dropSetting == 0) set $dropset$, "허용";
-			else set $dropset$, "비허용";
-			if($throwSetting == 0) set $throwset$, "허용";
-			else set $throwset$, "비허용";
-
-			set @pos, list2(@list1,0,0,"< F2 > 키를 통해 자신이 필요한 기능을 설정해 게임을 즐기실 수 있습니다.\\n\\n클릭할 경우 허용/거부가 설정됩니다.","현재 아이템 버리기상태　　 : "+$dropset$+"","현재 아이템 던지기상태");
-			if(@pos == 0) end;
-			else if(@list1 == 1)
-			{
-				if($dropSetting == 0) 
-				{
-					set $dropSetting, 1;
-					message @sd, 8, "버리기 가능(비보호) 상태로 전환!";
-				}
-				else 
-				{
-					set $dropSetting, 0;;			
-					message @sd, 8, "버리기 가능(보호) 상태로 전환!";
-				}
-			}
-			else if(@list1 == 2)
-			{
-				if($throwSetting == 0) 
-				{
-					set $throwSetting, 1;
-					message @sd, 8, "버리기 가능(비보호) 상태로 전환!";
-				}
-				else 
-				{
-					set $throwSetting, 0;;			
-					message @sd, 8, "버리기 가능(보호) 상태로 전환!";
-				}
-			}
-		}
-		else if(@list == 6)
-		{
-			set .@pos, list2(.@list, 0, 0, "어느 직업의 랭킹을 보시겠습니까?\\n순위는 50위까지 보여집니다.", "전사 랭킹 보기", "도적 랭킹 보기", "주술사 랭킹 보기", "도사 랭킹 보기");
-			if(.@pos == 0) end;
-			else if(.@list > 0)
-			{
-				callfunc "RANKING_VIEW", .@list;
-			}
-			end;
-		}
-		else if(@list == 7)
-		{
-			set @pos, input2(@value$,0,19,"쿠폰 번호를 입력하세요\\n(- 입력필수)","쿠폰 번호는","입니다.");
-			if(@pos == 0) end;
-			else if(@value$ == "")
-			{
-				dialog 0,0,0, "아무것도 입력하지 않았습니다.";
-				end;
-			}				
-
-			if(strcmp(@value$,#CASH_CODE_01$) == 0) { set @equals, 1; set #CASH_CODE_01$, ""; set @cash, #CASH_CODE_MONEY01; set #CASH_CODE_MONEY01, 0; }
-			else if(strcmp(@value$,#CASH_CODE_02$) == 0) { set @equals, 1; set #CASH_CODE_02$, ""; set @cash, #CASH_CODE_MONEY02; set #CASH_CODE_MONEY02, 0; }
-			else if(strcmp(@value$,#CASH_CODE_03$) == 0) { set @equals, 1; set #CASH_CODE_03$, ""; set @cash, #CASH_CODE_MONEY03; set #CASH_CODE_MONEY03, 0; }
-			else if(strcmp(@value$,#CASH_CODE_04$) == 0) { set @equals, 1; set #CASH_CODE_04$, ""; set @cash, #CASH_CODE_MONEY04; set #CASH_CODE_MONEY04, 0; }
-			else if(strcmp(@value$,#CASH_CODE_05$) == 0) { set @equals, 1; set #CASH_CODE_05$, ""; set @cash, #CASH_CODE_MONEY05; set #CASH_CODE_MONEY05, 0; }
-			else if(strcmp(@value$,#CASH_CODE_06$) == 0) { set @equals, 1; set #CASH_CODE_06$, ""; set @cash, #CASH_CODE_MONEY06; set #CASH_CODE_MONEY06, 0; }
-			else if(strcmp(@value$,#CASH_CODE_07$) == 0) { set @equals, 1; set #CASH_CODE_07$, ""; set @cash, #CASH_CODE_MONEY07; set #CASH_CODE_MONEY07, 0; }
-			else if(strcmp(@value$,#CASH_CODE_08$) == 0) { set @equals, 1; set #CASH_CODE_08$, ""; set @cash, #CASH_CODE_MONEY08; set #CASH_CODE_MONEY08, 0; }
-			else if(strcmp(@value$,#CASH_CODE_09$) == 0) { set @equals, 1; set #CASH_CODE_09$, ""; set @cash, #CASH_CODE_MONEY09; set #CASH_CODE_MONEY09, 0; }
-			else if(strcmp(@value$,#CASH_CODE_10$) == 0) { set @equals, 1; set #CASH_CODE_10$, ""; set @cash, #CASH_CODE_MONEY10; set #CASH_CODE_MONEY10, 0; }
-			else if(strcmp(@value$,#CASH_CODE_11$) == 0) { set @equals, 1; set #CASH_CODE_11$, ""; set @cash, #CASH_CODE_MONEY11; set #CASH_CODE_MONEY11, 0; }
-			else if(strcmp(@value$,#CASH_CODE_12$) == 0) { set @equals, 1; set #CASH_CODE_12$, ""; set @cash, #CASH_CODE_MONEY12; set #CASH_CODE_MONEY12, 0; }
-			else if(strcmp(@value$,#CASH_CODE_13$) == 0) { set @equals, 1; set #CASH_CODE_13$, ""; set @cash, #CASH_CODE_MONEY13; set #CASH_CODE_MONEY13, 0; }
-			else if(strcmp(@value$,#CASH_CODE_14$) == 0) { set @equals, 1; set #CASH_CODE_14$, ""; set @cash, #CASH_CODE_MONEY14; set #CASH_CODE_MONEY14, 0; }
-			else if(strcmp(@value$,#CASH_CODE_15$) == 0) { set @equals, 1; set #CASH_CODE_15$, ""; set @cash, #CASH_CODE_MONEY15; set #CASH_CODE_MONEY15, 0; }
-			else if(strcmp(@value$,#CASH_CODE_16$) == 0) { set @equals, 1; set #CASH_CODE_16$, ""; set @cash, #CASH_CODE_MONEY16; set #CASH_CODE_MONEY16, 0; }
-			else if(strcmp(@value$,#CASH_CODE_17$) == 0) { set @equals, 1; set #CASH_CODE_17$, ""; set @cash, #CASH_CODE_MONEY17; set #CASH_CODE_MONEY17, 0; }
-			else if(strcmp(@value$,#CASH_CODE_18$) == 0) { set @equals, 1; set #CASH_CODE_18$, ""; set @cash, #CASH_CODE_MONEY18; set #CASH_CODE_MONEY18, 0; }
-			else if(strcmp(@value$,#CASH_CODE_19$) == 0) { set @equals, 1; set #CASH_CODE_19$, ""; set @cash, #CASH_CODE_MONEY19; set #CASH_CODE_MONEY19, 0; }
-			else if(strcmp(@value$,#CASH_CODE_20$) == 0) { set @equals, 1; set #CASH_CODE_20$, ""; set @cash, #CASH_CODE_MONEY20; set #CASH_CODE_MONEY20, 0; }
-			else if(strcmp(@value$,#CASH_CODE_21$) == 0) { set @equals, 1; set #CASH_CODE_21$, ""; set @cash, #CASH_CODE_MONEY21; set #CASH_CODE_MONEY21, 0; }
-			else if(strcmp(@value$,#CASH_CODE_22$) == 0) { set @equals, 1; set #CASH_CODE_22$, ""; set @cash, #CASH_CODE_MONEY22; set #CASH_CODE_MONEY22, 0; }
-			else if(strcmp(@value$,#CASH_CODE_23$) == 0) { set @equals, 1; set #CASH_CODE_23$, ""; set @cash, #CASH_CODE_MONEY23; set #CASH_CODE_MONEY23, 0; }
-			else if(strcmp(@value$,#CASH_CODE_24$) == 0) { set @equals, 1; set #CASH_CODE_24$, ""; set @cash, #CASH_CODE_MONEY24; set #CASH_CODE_MONEY24, 0; }
-			else if(strcmp(@value$,#CASH_CODE_25$) == 0) { set @equals, 1; set #CASH_CODE_25$, ""; set @cash, #CASH_CODE_MONEY25; set #CASH_CODE_MONEY25, 0; }
-			else if(strcmp(@value$,#CASH_CODE_26$) == 0) { set @equals, 1; set #CASH_CODE_26$, ""; set @cash, #CASH_CODE_MONEY26; set #CASH_CODE_MONEY26, 0; }
-			else if(strcmp(@value$,#CASH_CODE_27$) == 0) { set @equals, 1; set #CASH_CODE_27$, ""; set @cash, #CASH_CODE_MONEY27; set #CASH_CODE_MONEY27, 0; }
-			else if(strcmp(@value$,#CASH_CODE_28$) == 0) { set @equals, 1; set #CASH_CODE_28$, ""; set @cash, #CASH_CODE_MONEY28; set #CASH_CODE_MONEY28, 0; }
-			else if(strcmp(@value$,#CASH_CODE_29$) == 0) { set @equals, 1; set #CASH_CODE_29$, ""; set @cash, #CASH_CODE_MONEY29; set #CASH_CODE_MONEY29, 0; }
-			else if(strcmp(@value$,#CASH_CODE_30$) == 0) { set @equals, 1; set #CASH_CODE_30$, ""; set @cash, #CASH_CODE_MONEY30; set #CASH_CODE_MONEY30, 0; }
-			else if(strcmp(@value$,#CASH_CODE_31$) == 0) { set @equals, 1; set #CASH_CODE_31$, ""; set @cash, #CASH_CODE_MONEY31; set #CASH_CODE_MONEY31, 0; }
-			else if(strcmp(@value$,#CASH_CODE_32$) == 0) { set @equals, 1; set #CASH_CODE_32$, ""; set @cash, #CASH_CODE_MONEY32; set #CASH_CODE_MONEY32, 0; }
-			else if(strcmp(@value$,#CASH_CODE_33$) == 0) { set @equals, 1; set #CASH_CODE_33$, ""; set @cash, #CASH_CODE_MONEY33; set #CASH_CODE_MONEY33, 0; }
-			else if(strcmp(@value$,#CASH_CODE_34$) == 0) { set @equals, 1; set #CASH_CODE_34$, ""; set @cash, #CASH_CODE_MONEY34; set #CASH_CODE_MONEY34, 0; }
-			else if(strcmp(@value$,#CASH_CODE_35$) == 0) { set @equals, 1; set #CASH_CODE_35$, ""; set @cash, #CASH_CODE_MONEY35; set #CASH_CODE_MONEY35, 0; }
-			else if(strcmp(@value$,#CASH_CODE_36$) == 0) { set @equals, 1; set #CASH_CODE_36$, ""; set @cash, #CASH_CODE_MONEY36; set #CASH_CODE_MONEY36, 0; }
-			else if(strcmp(@value$,#CASH_CODE_37$) == 0) { set @equals, 1; set #CASH_CODE_37$, ""; set @cash, #CASH_CODE_MONEY37; set #CASH_CODE_MONEY37, 0; }
-			else if(strcmp(@value$,#CASH_CODE_38$) == 0) { set @equals, 1; set #CASH_CODE_38$, ""; set @cash, #CASH_CODE_MONEY38; set #CASH_CODE_MONEY38, 0; }
-			else if(strcmp(@value$,#CASH_CODE_39$) == 0) { set @equals, 1; set #CASH_CODE_39$, ""; set @cash, #CASH_CODE_MONEY39; set #CASH_CODE_MONEY39, 0; }
-			else if(strcmp(@value$,#CASH_CODE_40$) == 0) { set @equals, 1; set #CASH_CODE_40$, ""; set @cash, #CASH_CODE_MONEY40; set #CASH_CODE_MONEY40, 0; }
-			else if(strcmp(@value$,#CASH_CODE_41$) == 0) { set @equals, 1; set #CASH_CODE_41$, ""; set @cash, #CASH_CODE_MONEY41; set #CASH_CODE_MONEY41, 0; }
-			else if(strcmp(@value$,#CASH_CODE_42$) == 0) { set @equals, 1; set #CASH_CODE_42$, ""; set @cash, #CASH_CODE_MONEY42; set #CASH_CODE_MONEY42, 0; }
-			else if(strcmp(@value$,#CASH_CODE_43$) == 0) { set @equals, 1; set #CASH_CODE_43$, ""; set @cash, #CASH_CODE_MONEY43; set #CASH_CODE_MONEY43, 0; }
-			else if(strcmp(@value$,#CASH_CODE_44$) == 0) { set @equals, 1; set #CASH_CODE_44$, ""; set @cash, #CASH_CODE_MONEY44; set #CASH_CODE_MONEY44, 0; }
-			else if(strcmp(@value$,#CASH_CODE_45$) == 0) { set @equals, 1; set #CASH_CODE_45$, ""; set @cash, #CASH_CODE_MONEY45; set #CASH_CODE_MONEY45, 0; }
-			else if(strcmp(@value$,#CASH_CODE_46$) == 0) { set @equals, 1; set #CASH_CODE_46$, ""; set @cash, #CASH_CODE_MONEY46; set #CASH_CODE_MONEY46, 0; }
-			else if(strcmp(@value$,#CASH_CODE_47$) == 0) { set @equals, 1; set #CASH_CODE_47$, ""; set @cash, #CASH_CODE_MONEY47; set #CASH_CODE_MONEY47, 0; }
-			else if(strcmp(@value$,#CASH_CODE_48$) == 0) { set @equals, 1; set #CASH_CODE_48$, ""; set @cash, #CASH_CODE_MONEY48; set #CASH_CODE_MONEY48, 0; }
-			else if(strcmp(@value$,#CASH_CODE_49$) == 0) { set @equals, 1; set #CASH_CODE_49$, ""; set @cash, #CASH_CODE_MONEY49; set #CASH_CODE_MONEY49, 0; }
-			else if(strcmp(@value$,#CASH_CODE_50$) == 0) { set @equals, 1; set #CASH_CODE_50$, ""; set @cash, #CASH_CODE_MONEY50; set #CASH_CODE_MONEY50, 0; }
-			else if(strcmp(@value$,#CASH_CODE_51$) == 0) { set @equals, 1; set #CASH_CODE_51$, ""; set @cash, #CASH_CODE_MONEY51; set #CASH_CODE_MONEY51, 0; }
-			else if(strcmp(@value$,#CASH_CODE_52$) == 0) { set @equals, 1; set #CASH_CODE_52$, ""; set @cash, #CASH_CODE_MONEY52; set #CASH_CODE_MONEY52, 0; }
-			else if(strcmp(@value$,#CASH_CODE_53$) == 0) { set @equals, 1; set #CASH_CODE_53$, ""; set @cash, #CASH_CODE_MONEY53; set #CASH_CODE_MONEY53, 0; }
-			else if(strcmp(@value$,#CASH_CODE_54$) == 0) { set @equals, 1; set #CASH_CODE_54$, ""; set @cash, #CASH_CODE_MONEY54; set #CASH_CODE_MONEY54, 0; }
-			else if(strcmp(@value$,#CASH_CODE_55$) == 0) { set @equals, 1; set #CASH_CODE_55$, ""; set @cash, #CASH_CODE_MONEY55; set #CASH_CODE_MONEY55, 0; }
-			else if(strcmp(@value$,#CASH_CODE_56$) == 0) { set @equals, 1; set #CASH_CODE_56$, ""; set @cash, #CASH_CODE_MONEY56; set #CASH_CODE_MONEY56, 0; }
-			else if(strcmp(@value$,#CASH_CODE_57$) == 0) { set @equals, 1; set #CASH_CODE_57$, ""; set @cash, #CASH_CODE_MONEY57; set #CASH_CODE_MONEY57, 0; }
-			else if(strcmp(@value$,#CASH_CODE_58$) == 0) { set @equals, 1; set #CASH_CODE_58$, ""; set @cash, #CASH_CODE_MONEY58; set #CASH_CODE_MONEY58, 0; }
-			else if(strcmp(@value$,#CASH_CODE_59$) == 0) { set @equals, 1; set #CASH_CODE_59$, ""; set @cash, #CASH_CODE_MONEY59; set #CASH_CODE_MONEY59, 0; }
-			else if(strcmp(@value$,#CASH_CODE_60$) == 0) { set @equals, 1; set #CASH_CODE_60$, ""; set @cash, #CASH_CODE_MONEY60; set #CASH_CODE_MONEY60, 0; }
-			else if(strcmp(@value$,#CASH_CODE_61$) == 0) { set @equals, 1; set #CASH_CODE_61$, ""; set @cash, #CASH_CODE_MONEY61; set #CASH_CODE_MONEY61, 0; }
-			else if(strcmp(@value$,#CASH_CODE_62$) == 0) { set @equals, 1; set #CASH_CODE_62$, ""; set @cash, #CASH_CODE_MONEY62; set #CASH_CODE_MONEY62, 0; }
-			else if(strcmp(@value$,#CASH_CODE_63$) == 0) { set @equals, 1; set #CASH_CODE_63$, ""; set @cash, #CASH_CODE_MONEY63; set #CASH_CODE_MONEY63, 0; }
-			else if(strcmp(@value$,#CASH_CODE_64$) == 0) { set @equals, 1; set #CASH_CODE_64$, ""; set @cash, #CASH_CODE_MONEY64; set #CASH_CODE_MONEY64, 0; }
-			else if(strcmp(@value$,#CASH_CODE_65$) == 0) { set @equals, 1; set #CASH_CODE_65$, ""; set @cash, #CASH_CODE_MONEY65; set #CASH_CODE_MONEY65, 0; }
-			else if(strcmp(@value$,#CASH_CODE_66$) == 0) { set @equals, 1; set #CASH_CODE_66$, ""; set @cash, #CASH_CODE_MONEY66; set #CASH_CODE_MONEY66, 0; }
-			else if(strcmp(@value$,#CASH_CODE_67$) == 0) { set @equals, 1; set #CASH_CODE_67$, ""; set @cash, #CASH_CODE_MONEY67; set #CASH_CODE_MONEY67, 0; }
-			else if(strcmp(@value$,#CASH_CODE_68$) == 0) { set @equals, 1; set #CASH_CODE_68$, ""; set @cash, #CASH_CODE_MONEY68; set #CASH_CODE_MONEY68, 0; }
-			else if(strcmp(@value$,#CASH_CODE_69$) == 0) { set @equals, 1; set #CASH_CODE_69$, ""; set @cash, #CASH_CODE_MONEY69; set #CASH_CODE_MONEY69, 0; }
-			else if(strcmp(@value$,#CASH_CODE_70$) == 0) { set @equals, 1; set #CASH_CODE_70$, ""; set @cash, #CASH_CODE_MONEY70; set #CASH_CODE_MONEY70, 0; }
-			else if(strcmp(@value$,#CASH_CODE_71$) == 0) { set @equals, 1; set #CASH_CODE_71$, ""; set @cash, #CASH_CODE_MONEY71; set #CASH_CODE_MONEY71, 0; }
-			else if(strcmp(@value$,#CASH_CODE_72$) == 0) { set @equals, 1; set #CASH_CODE_72$, ""; set @cash, #CASH_CODE_MONEY72; set #CASH_CODE_MONEY72, 0; }
-			else if(strcmp(@value$,#CASH_CODE_73$) == 0) { set @equals, 1; set #CASH_CODE_73$, ""; set @cash, #CASH_CODE_MONEY73; set #CASH_CODE_MONEY73, 0; }
-			else if(strcmp(@value$,#CASH_CODE_74$) == 0) { set @equals, 1; set #CASH_CODE_74$, ""; set @cash, #CASH_CODE_MONEY74; set #CASH_CODE_MONEY74, 0; }
-			else if(strcmp(@value$,#CASH_CODE_75$) == 0) { set @equals, 1; set #CASH_CODE_75$, ""; set @cash, #CASH_CODE_MONEY75; set #CASH_CODE_MONEY75, 0; }
-			else if(strcmp(@value$,#CASH_CODE_76$) == 0) { set @equals, 1; set #CASH_CODE_76$, ""; set @cash, #CASH_CODE_MONEY76; set #CASH_CODE_MONEY76, 0; }
-			else if(strcmp(@value$,#CASH_CODE_77$) == 0) { set @equals, 1; set #CASH_CODE_77$, ""; set @cash, #CASH_CODE_MONEY77; set #CASH_CODE_MONEY77, 0; }
-			else if(strcmp(@value$,#CASH_CODE_78$) == 0) { set @equals, 1; set #CASH_CODE_78$, ""; set @cash, #CASH_CODE_MONEY78; set #CASH_CODE_MONEY78, 0; }
-			else if(strcmp(@value$,#CASH_CODE_79$) == 0) { set @equals, 1; set #CASH_CODE_79$, ""; set @cash, #CASH_CODE_MONEY79; set #CASH_CODE_MONEY79, 0; }
-			else if(strcmp(@value$,#CASH_CODE_80$) == 0) { set @equals, 1; set #CASH_CODE_80$, ""; set @cash, #CASH_CODE_MONEY80; set #CASH_CODE_MONEY80, 0; }
-			else if(strcmp(@value$,#CASH_CODE_81$) == 0) { set @equals, 1; set #CASH_CODE_81$, ""; set @cash, #CASH_CODE_MONEY81; set #CASH_CODE_MONEY81, 0; }
-			else if(strcmp(@value$,#CASH_CODE_82$) == 0) { set @equals, 1; set #CASH_CODE_82$, ""; set @cash, #CASH_CODE_MONEY82; set #CASH_CODE_MONEY82, 0; }
-			else if(strcmp(@value$,#CASH_CODE_83$) == 0) { set @equals, 1; set #CASH_CODE_83$, ""; set @cash, #CASH_CODE_MONEY83; set #CASH_CODE_MONEY83, 0; }
-			else if(strcmp(@value$,#CASH_CODE_84$) == 0) { set @equals, 1; set #CASH_CODE_84$, ""; set @cash, #CASH_CODE_MONEY84; set #CASH_CODE_MONEY84, 0; }
-			else if(strcmp(@value$,#CASH_CODE_85$) == 0) { set @equals, 1; set #CASH_CODE_85$, ""; set @cash, #CASH_CODE_MONEY85; set #CASH_CODE_MONEY85, 0; }
-			else if(strcmp(@value$,#CASH_CODE_86$) == 0) { set @equals, 1; set #CASH_CODE_86$, ""; set @cash, #CASH_CODE_MONEY86; set #CASH_CODE_MONEY86, 0; }
-			else if(strcmp(@value$,#CASH_CODE_87$) == 0) { set @equals, 1; set #CASH_CODE_87$, ""; set @cash, #CASH_CODE_MONEY87; set #CASH_CODE_MONEY87, 0; }
-			else if(strcmp(@value$,#CASH_CODE_88$) == 0) { set @equals, 1; set #CASH_CODE_88$, ""; set @cash, #CASH_CODE_MONEY88; set #CASH_CODE_MONEY88, 0; }
-			else if(strcmp(@value$,#CASH_CODE_89$) == 0) { set @equals, 1; set #CASH_CODE_89$, ""; set @cash, #CASH_CODE_MONEY89; set #CASH_CODE_MONEY89, 0; }
-			else if(strcmp(@value$,#CASH_CODE_90$) == 0) { set @equals, 1; set #CASH_CODE_90$, ""; set @cash, #CASH_CODE_MONEY90; set #CASH_CODE_MONEY90, 0; }
-			else if(strcmp(@value$,#CASH_CODE_91$) == 0) { set @equals, 1; set #CASH_CODE_91$, ""; set @cash, #CASH_CODE_MONEY91; set #CASH_CODE_MONEY91, 0; }
-			else if(strcmp(@value$,#CASH_CODE_92$) == 0) { set @equals, 1; set #CASH_CODE_92$, ""; set @cash, #CASH_CODE_MONEY92; set #CASH_CODE_MONEY92, 0; }
-			else if(strcmp(@value$,#CASH_CODE_93$) == 0) { set @equals, 1; set #CASH_CODE_93$, ""; set @cash, #CASH_CODE_MONEY93; set #CASH_CODE_MONEY93, 0; }
-			else if(strcmp(@value$,#CASH_CODE_94$) == 0) { set @equals, 1; set #CASH_CODE_94$, ""; set @cash, #CASH_CODE_MONEY94; set #CASH_CODE_MONEY94, 0; }
-			else if(strcmp(@value$,#CASH_CODE_95$) == 0) { set @equals, 1; set #CASH_CODE_95$, ""; set @cash, #CASH_CODE_MONEY95; set #CASH_CODE_MONEY95, 0; }
-			else if(strcmp(@value$,#CASH_CODE_96$) == 0) { set @equals, 1; set #CASH_CODE_96$, ""; set @cash, #CASH_CODE_MONEY96; set #CASH_CODE_MONEY96, 0; }
-			else if(strcmp(@value$,#CASH_CODE_97$) == 0) { set @equals, 1; set #CASH_CODE_97$, ""; set @cash, #CASH_CODE_MONEY97; set #CASH_CODE_MONEY97, 0; }
-			else if(strcmp(@value$,#CASH_CODE_98$) == 0) { set @equals, 1; set #CASH_CODE_98$, ""; set @cash, #CASH_CODE_MONEY98; set #CASH_CODE_MONEY98, 0; }
-			else if(strcmp(@value$,#CASH_CODE_99$) == 0) { set @equals, 1; set #CASH_CODE_99$, ""; set @cash, #CASH_CODE_MONEY99; set #CASH_CODE_MONEY99, 0; }
-			else if(strcmp(@value$,#CASH_CODE_100$) == 0) { set @equals, 1; set #CASH_CODE_100$, ""; set @cash, #CASH_CODE_MONEY100; set #CASH_CODE_MONEY100, 0; }
-			else if(strcmp(@value$,#CASH_CODE_101$) == 0) { set @equals, 1; set #CASH_CODE_101$, ""; set @cash, #CASH_CODE_MONEY101; set #CASH_CODE_MONEY101, 0; }
-			else if(strcmp(@value$,#CASH_CODE_102$) == 0) { set @equals, 1; set #CASH_CODE_102$, ""; set @cash, #CASH_CODE_MONEY102; set #CASH_CODE_MONEY102, 0; }
-			else if(strcmp(@value$,#CASH_CODE_103$) == 0) { set @equals, 1; set #CASH_CODE_103$, ""; set @cash, #CASH_CODE_MONEY103; set #CASH_CODE_MONEY103, 0; }
-			else if(strcmp(@value$,#CASH_CODE_104$) == 0) { set @equals, 1; set #CASH_CODE_104$, ""; set @cash, #CASH_CODE_MONEY104; set #CASH_CODE_MONEY104, 0; }
-			else if(strcmp(@value$,#CASH_CODE_105$) == 0) { set @equals, 1; set #CASH_CODE_105$, ""; set @cash, #CASH_CODE_MONEY105; set #CASH_CODE_MONEY105, 0; }
-			else if(strcmp(@value$,#CASH_CODE_106$) == 0) { set @equals, 1; set #CASH_CODE_106$, ""; set @cash, #CASH_CODE_MONEY106; set #CASH_CODE_MONEY106, 0; }
-			else if(strcmp(@value$,#CASH_CODE_107$) == 0) { set @equals, 1; set #CASH_CODE_107$, ""; set @cash, #CASH_CODE_MONEY107; set #CASH_CODE_MONEY107, 0; }
-			else if(strcmp(@value$,#CASH_CODE_108$) == 0) { set @equals, 1; set #CASH_CODE_108$, ""; set @cash, #CASH_CODE_MONEY108; set #CASH_CODE_MONEY108, 0; }
-			else if(strcmp(@value$,#CASH_CODE_109$) == 0) { set @equals, 1; set #CASH_CODE_109$, ""; set @cash, #CASH_CODE_MONEY109; set #CASH_CODE_MONEY109, 0; }
-			else if(strcmp(@value$,#CASH_CODE_110$) == 0) { set @equals, 1; set #CASH_CODE_110$, ""; set @cash, #CASH_CODE_MONEY110; set #CASH_CODE_MONEY110, 0; }
-			else if(strcmp(@value$,#CASH_CODE_111$) == 0) { set @equals, 1; set #CASH_CODE_111$, ""; set @cash, #CASH_CODE_MONEY111; set #CASH_CODE_MONEY111, 0; }
-			else if(strcmp(@value$,#CASH_CODE_112$) == 0) { set @equals, 1; set #CASH_CODE_112$, ""; set @cash, #CASH_CODE_MONEY112; set #CASH_CODE_MONEY112, 0; }
-			else if(strcmp(@value$,#CASH_CODE_113$) == 0) { set @equals, 1; set #CASH_CODE_113$, ""; set @cash, #CASH_CODE_MONEY113; set #CASH_CODE_MONEY113, 0; }
-			else if(strcmp(@value$,#CASH_CODE_114$) == 0) { set @equals, 1; set #CASH_CODE_114$, ""; set @cash, #CASH_CODE_MONEY114; set #CASH_CODE_MONEY114, 0; }
-			else if(strcmp(@value$,#CASH_CODE_115$) == 0) { set @equals, 1; set #CASH_CODE_115$, ""; set @cash, #CASH_CODE_MONEY115; set #CASH_CODE_MONEY115, 0; }
-			else if(strcmp(@value$,#CASH_CODE_116$) == 0) { set @equals, 1; set #CASH_CODE_116$, ""; set @cash, #CASH_CODE_MONEY116; set #CASH_CODE_MONEY116, 0; }
-			else if(strcmp(@value$,#CASH_CODE_117$) == 0) { set @equals, 1; set #CASH_CODE_117$, ""; set @cash, #CASH_CODE_MONEY117; set #CASH_CODE_MONEY117, 0; }
-			else if(strcmp(@value$,#CASH_CODE_118$) == 0) { set @equals, 1; set #CASH_CODE_118$, ""; set @cash, #CASH_CODE_MONEY118; set #CASH_CODE_MONEY118, 0; }
-			else if(strcmp(@value$,#CASH_CODE_119$) == 0) { set @equals, 1; set #CASH_CODE_119$, ""; set @cash, #CASH_CODE_MONEY119; set #CASH_CODE_MONEY119, 0; }
-			else if(strcmp(@value$,#CASH_CODE_120$) == 0) { set @equals, 1; set #CASH_CODE_120$, ""; set @cash, #CASH_CODE_MONEY120; set #CASH_CODE_MONEY120, 0; }
-			else if(strcmp(@value$,#CASH_CODE_121$) == 0) { set @equals, 1; set #CASH_CODE_121$, ""; set @cash, #CASH_CODE_MONEY121; set #CASH_CODE_MONEY121, 0; }
-			else if(strcmp(@value$,#CASH_CODE_122$) == 0) { set @equals, 1; set #CASH_CODE_122$, ""; set @cash, #CASH_CODE_MONEY122; set #CASH_CODE_MONEY122, 0; }
-			else if(strcmp(@value$,#CASH_CODE_123$) == 0) { set @equals, 1; set #CASH_CODE_123$, ""; set @cash, #CASH_CODE_MONEY123; set #CASH_CODE_MONEY123, 0; }
-			else if(strcmp(@value$,#CASH_CODE_124$) == 0) { set @equals, 1; set #CASH_CODE_124$, ""; set @cash, #CASH_CODE_MONEY124; set #CASH_CODE_MONEY124, 0; }
-			
-			if(@equals == 1)
-			{
-				set @cash, @cash*10000;
-				set $cash_p, $cash_p+@cash;
-				dialog 0,0,0, "캐쉬 "+@cash+"원이 충전되었습니다.";
-				write_log "log/cash/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - [CASH ]"+get_name(@sd)+"님 쿠폰사용:\\"+@cash+"원 CASH 남은금액:"+$cash_p+" CASH\\n";
-
-				end;
-			}
-
-			dialog 0,0,0, "잘못된 쿠폰 번호 입니다.";
-			end;
-		}
-			}
-			}			
-	}
-}
-ONGET	{
-	set @sd, mysd();
-	callfunc "ITEMROUTELOG", "얻음";
-}
-ONDROP	{
-	set @sd, mysd();
-	set @id, myid();
-
-	if($dropSetting == 1)
-	{
-		getitem @sd, get_x(@id), get_y(@id);
-		message @sd, 0, "[안전] 버리기 불가능 상태 ( F2 눌러 전환 가능 )";
-	}
-	else
-	{
-		message @sd, 0, "[주의] 버리기 가능 상태 ( F2 눌러 전환 가능 )";
-	}
-	callfunc "ITEMROUTELOG", "떨굼";
-}
-ONTRADE	{
-	set @sd, mysd();
-	set @id, myid();
-	set @year$, gettime(5,0);
-	set @month$, gettime(4,0);
-	set @day$, gettime(3,0);
-	set @hour$, gettime(2,0);
-	set @min$, gettime(1,0);
-	set @sec$, gettime(0,0,);
-	
-	set #SERVER_YEAR, gettime(5,0);
-	set #SERVER_MONTH, gettime(4,0);
-	set #SERVER_DAY, gettime(3,0);
-	set #SERVER_HOUR, gettime(2,0);
-	set #SERVER_MINUTE, gettime(1,0);
-	set #SERVER_SECOND, gettime(0,0);
-
-	if(gettime(5,0) < 10) set @year$, "0"+gettime(5,0);
-	if(gettime(4,0) < 10) set @month$, "0"+gettime(4,0);
-	if(gettime(3,0) < 10) set @day$, "0"+gettime(3,0);
-	if(gettime(2,0) < 10) set @hour$, "0"+gettime(2,0);
-	if(gettime(1,0) < 10) set @min$, "0"+gettime(1,0);
-	if(gettime(0,0) < 10) set @sec$, "0"+gettime(0,0);
-
-	if(mapid() < 10) set @mapid$, "00000"+mapid();
-	else if(mapid() < 100) set @mapid$, "0000"+mapid();
-	else if(mapid() < 1000) set @mapid$, "000"+mapid();
-	else if(mapid() < 10000) set @mapid$, "00"+mapid();
-	else if(mapid() < 100000) set @mapid$, "0"+mapid();
-
-	set @x$, get_x(@id);
-	set @y$, get_y(@id);
-
-	if(get_x(@id) < 10) set @x$, "00"+get_x(@id);
-	else if(get_x(@id) < 100) set @x$, "0"+get_x(@id);
-
-	if(get_y(@id) < 10) set @y$, "00"+get_y(@id);
-	else if(get_y(@id) < 100) set @y$, "0"+get_y(@id);
-	
-	set @mapinfo$, @mapid$+"/"+@x$+"/"+@y$+"";
-
-
-	write_log "log/trade/"+@year$+"년_"+@month$+"월_"+@day$+"일.txt", "["+@hour$+"시 "+@min$+"분 "+@sec$+"초 - "+@mapinfo$+"] [TRADE ] "+get_name(@sd)+"보유금액 "+get_money(@sd)+"원 ( "+get_itemlist(@sd)+" *황금개수: "+countitem(name2itemid("황금"))+"개 )\\n";
-}
-ONMIX	{
-	set .@sd, mysd();
-
-	set .@mix_id, get_lastmixid(.@sd);
-	set .@materialmsg$, "[재료] ";
-
-	for(set .@i, 0; .@i < get_mixrequire_count(.@mix_id); set .@i, .@i + 1)
-	{
-		set .@material$, .@material$ + " " + itemid2name(get_mixrequire_itemid(.@mix_id, .@i)) + "(" + get_mixrequire_amount(.@mix_id, .@i) + "개)";
-	}
-
-	if(get_lastmixsuccess(.@sd) > 0)
-	{
-		set .@log$, "성공";
-		set .@resultmsg$, "[성공] ";
-
-		for(set .@i, 0; .@i < get_mixsuccess_count(.@mix_id); set .@i, .@i+1)
-		{
-			set .@result$, .@result$ + " " + itemid2name(get_mixsuccess_itemid(.@mix_id, .@i)) + "(" + get_mixsuccess_amount(.@mix_id, .@i) + "개)";
-		}
-		if(strpos(.@result$,"황금") > 0 || strpos(.@result$,"천억경") > 0 || strpos(.@result$,"만억경") > 0) 
-			{ }
 		else
-			broadcast 5, "[안내] " + get_name(.@sd) + .@result$ + " 성공!";
+		{		
+			message @sd, 0, "경고 - 잘못된 접근으로 IP주소와 하드웨어 기록이 서버에 보고 됩니다.";
+		}
 	}
 	else
 	{
-		set .@log$, "실패";
-		set .@resultmsg$, "[실패] ";
-
-		for(set .@i, 0; .@i < get_mixfailure_count(.@mix_id); set .@i, .@i+1)
-		{
-			set .@result$, .@result$ + " " + itemid2name(get_mixsuccess_itemid(.@mix_id, .@i)) + "(" + get_mixfailure_amount(.@mix_id, .@i) + "개)";
-		}
-		if(strpos(.@result$,"황금") > 0 || strpos(.@result$,"천억경") > 0 || strpos(.@result$,"만억경") > 0)
-			{ }
-		else
-			broadcast 5, "[안내] " + get_name(.@sd) + .@result$ + " 실패!";
+		callfunc "NORMALUSER_MODULE";
 	}
-
-	callfunc "ITEMMIXLOG", .@log$, .@result$;
 }
