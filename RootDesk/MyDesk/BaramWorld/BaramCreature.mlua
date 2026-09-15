@@ -22,7 +22,9 @@ script BaramCreature extends Component
     -- CustomFontGroupSet 의 Fonts 목록에는 그런 폰트가 없었기 때문이다(그룹 규칙만
     -- 그 이름을 가리키는 끊어진 참조였다). 실제로 등록된 건 Galmuri14 와 Chosun 뿐.
     -- Galmuri9 을 리소스로 올려 등록하면 LabelFont 를 그 이름으로 바꾸면 된다.
-    property boolean ShowLabel = true
+    -- 이름표는 끈다. 원본엔 몹 머리 위에 이름이 안 뜬다. 모션 볼 때 쓰려고 켜놨던 건데
+    -- 이제 볼 거 다 봤고 글씨가 커서 그림을 가린다. 다시 볼 일 있으면 여기만 켜면 된다.
+    property boolean ShowLabel = false
     property string LabelFont = "Galmuri14"
     -- 크기는 BaramInput.CreatureLabelScale 하나로 26마리를 한꺼번에 조절한다(F10).
 
@@ -63,6 +65,17 @@ script BaramCreature extends Component
         end
         local sprite = self._T.sprite
         local label = self._T.label
+        -- 누르면 마법 대상이 되게. 몹 본체엔 그림이 없고 화면에 보이는 건 이 복제본이라
+        -- 누르는 것도 여기 붙여야 받는다.
+        if self._T.touch == nil then
+            self._T.touch = sprite:AddComponent("BaramTargetTouch")
+        end
+        local touch = self._T.touch
+        if isvalid(touch) and (touch.GridX ~= self.GridX or touch.GridY ~= self.GridY or touch.MapId ~= self.MapId) then
+            touch.MapId = self.MapId
+            touch.GridX = self.GridX
+            touch.GridY = self.GridY
+        end
         local imageId = self:ImageId()
         if self._T.imageId ~= imageId then
             self._T.imageId = imageId
@@ -217,16 +230,29 @@ script BaramCreature extends Component
         local player = event.AttackerEntity.PlayerComponent
         if not isvalid(player) then return end
         local r = _BaramWorld:GetRecord(player.UserId)
-        if r == nil or r.state.map ~= 315 then return end
-        self.Hp = math.max(0, self.Hp - event.TotalDamage)
-        _BaramHealthBars:ShowDamage(self.Entity, event.TotalDamage, self.MapId)
+        -- 맵 번호는 이 몹이 들고 있는 걸 본다. 315 를 박아두면 다른 사냥터에선 안 맞는다.
+        if r == nil or r.state.map ~= self.MapId then return end
+        self:TakeDamage(player.UserId, event.TotalDamage)
+    end
+
+    -- 맞는 길이 둘이다. 칼은 물리 충돌(HitEvent)로 오고, 마법은 스크립트가 바로 부른다.
+    -- 죽는 처리가 갈라지면 한쪽만 고치는 일이 생기므로 여기 하나로 모았다.
+    @ExecSpace("ServerOnly")
+    method void TakeDamage(string userId, integer amount)
+        if self.Hp <= 0 or amount <= 0 then return end
+        self.Hp = math.max(0, self.Hp - amount)
+        _BaramHealthBars:ShowDamage(self.Entity, amount, self.MapId)
         local maximum = self.SourceId == 1 and 15 or 10
-        _BaramHealthBars:ShowHit(self.Entity, self.Hp, maximum, self.Entity.CurrentMap.Id)
-        self.AggroUser = player.UserId
+        if isvalid(self.Entity.CurrentMap) then
+            _BaramHealthBars:ShowHit(self.Entity, self.Hp, maximum, self.Entity.CurrentMap.Id)
+        end
+        if userId ~= nil and userId ~= "" then self.AggroUser = userId end
         if self.Hp == 0 then
             self.DeadWait = 30
             self.Entity.HitComponent.Enable = false
-            _BaramWorld:Killed(player.UserId, self.SourceId, self.GridX, self.GridY)
+            if userId ~= nil and userId ~= "" then
+                _BaramWorld:Killed(userId, self.SourceId, self.GridX, self.GridY)
+            end
         end
         log("[BaramCombat] hit mob=" .. tostring(self.SourceId) .. " hp=" .. tostring(self.Hp))
     end

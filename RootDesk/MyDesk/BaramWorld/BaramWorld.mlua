@@ -1046,10 +1046,34 @@ script BaramWorld extends Logic
         log("[BaramCombat] kill kind=" .. tostring(kind) .. " exp=" .. tostring(r.state.exp))
     end
 
+    -- 체력과 마력이 저절로 차오른다. 여태 아이템(2200) 말고는 회복할 길이 아예
+    -- 없어서, 마법을 한 번 쓰면 다시 못 쓰는 상태였다. 3초마다 최대치의 4% 씩.
+    -- 바뀐 사람만 내보내므로 아무도 안 다치고 안 쓰면 아무것도 안 나간다.
+    @ExecSpace("ServerOnly")
+    method void Regenerate(number delta)
+        self._T.regen = (self._T.regen or 0) - delta
+        if self._T.regen > 0 then return end
+        self._T.regen = 3
+        for userId, r in pairs(self._T.users) do
+            if r.active and not r.tradeBusy then
+                local s = r.state
+                local hp = math.min(s.maxHp, s.hp + math.max(1, math.floor(s.maxHp / 25)))
+                local mp = math.min(s.maxMp, s.mp + math.max(1, math.floor(s.maxMp / 25)))
+                if hp ~= s.hp or mp ~= s.mp then
+                    s.hp = hp
+                    s.mp = mp
+                    self:Changed(userId)
+                    self:Snapshot(userId)
+                end
+            end
+        end
+    end
+
     @ExecSpace("ServerOnly")
     method void OnUpdate(number delta)
         self.Clock = self.Clock + delta
         self:DrainMoves()
+        self:Regenerate(delta)
         self._T.flush = self._T.flush - delta
         if self._T.flush <= 0 then
             self._T.flush = 60

@@ -1,0 +1,21 @@
+-- 몹을 눌러서 마법 대상을 정한다.
+--
+-- 몹 본체(baramcreature 모델)엔 그림 컴포넌트가 없다. 화면에 보이는 건
+-- BaramCreature 가 맵 아래에 따로 띄우는 복제본이라, 누르는 것도 그쪽이 받는다.
+-- 그래서 이 컴포넌트는 복제본에 붙고, 좌표는 BaramCreature 가 옮길 때마다 넣어준다.
+@Component
+script BaramTargetTouch extends Component
+    property integer MapId = 0
+    property integer GridX = 0
+    property integer GridY = 0
+
+    @ExecSpace("ClientOnly")
+    @EventSender("Self")
+    handler HandleTouch(TouchEvent event)
+        if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
+        if _InputService:IsPointerOverUI() then return end
+        if _BaramInput:Blocked() then return end
+        if self.MapId == 0 then return end
+        _BaramScriptRuntime:SelectTarget(self.MapId, self.GridX, self.GridY)
+    end
+end
