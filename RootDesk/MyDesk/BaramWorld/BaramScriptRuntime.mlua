@@ -797,7 +797,7 @@ script BaramScriptRuntime extends Logic
             local s = state(sd)
             if s == nil then return 0 end
             if slot ~= 0 then return 0 end
-            local equipped = s.items[tostring(s.equip)]
+            local equipped = _BaramItemRules:Equipped(s)
             if equipped == nil then return 0 end
             return 1
         end
@@ -805,7 +805,7 @@ script BaramScriptRuntime extends Logic
             local s = state(sd)
             if s == nil then return "" end
             if slot ~= 0 then return "" end
-            local equipped = s.items[tostring(s.equip)]
+            local equipped = _BaramItemRules:Equipped(s)
             if equipped == nil then return "" end
             local data = _BaramWorldData:Item(equipped.id)
             if data == nil then return "" end

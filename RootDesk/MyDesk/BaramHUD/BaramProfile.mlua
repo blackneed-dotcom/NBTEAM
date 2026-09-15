@@ -344,7 +344,7 @@ script BaramProfile extends Logic
         ---@type BaramPlayerVisual
         local visual = target:GetComponent("script.BaramPlayerVisual")
         if visual == nil then self:Receive(userId, serial, "", caller) return end
-        local equipped = b.state.items[tostring(b.state.equip)]
+        local equipped = _BaramItemRules:Equipped(b.state)
         local weaponData = equipped ~= nil and _BaramWorldData:Item(equipped.id) or nil
         -- Only fields drawn by winbaram 0x4D72A0. No private HP/currency/inventory.
         -- Clan/title/history remain empty; class uses the shared saved job metadata.

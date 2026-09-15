@@ -109,6 +109,7 @@ script BaramWorld extends Logic
             record = {state = state, storage = storage, slot = slot, key = key, savedRaw = raw or "", dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
             self._T.users[userId] = record
         end
+        if _BaramItemRules:MigrateEquipment(record.state) then self:Changed(userId) end
         _BaramJobs:InitializeState(record.state)
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
         if selected.nickname == "" then return false end
@@ -144,6 +145,7 @@ script BaramWorld extends Logic
     end
 
     method boolean ValidState(table s)
+        -- Validate both legacy bag equipment and separately saved weapon instances.
         if s == nil or s.version ~= 1 or type(s.items) ~= "table" then return false end
         if not _BaramNpcServices:ValidBank(s) then return false end
         if not _BaramJobs:ValidState(s) then return false end
@@ -160,6 +162,16 @@ script BaramWorld extends Logic
             local data = _BaramWorldData:Item(item.id or -1)
             if data == nil or type(item.count) ~= "number" or item.count ~= math.floor(item.count) or item.count < 1 or item.count > math.max(1, data.maxCount) then return false end
             end
+        end
+        if s.equipment ~= nil then
+            if type(s.equipment) ~= "table" or s.equip ~= 0 then return false end
+            local item = s.equipment.weapon
+            if item ~= nil then
+                if type(item) ~= "table" then return false end
+                local data = _BaramWorldData:Item(item.id or -1)
+                if data == nil or data.type ~= 0 or item.count ~= 1 or type(item.durability) ~= "number" or item.durability < 0 then return false end
+            end
+            return true
         end
         return s.equip == 0 or s.items[tostring(s.equip)] ~= nil
     end
@@ -345,18 +357,19 @@ script BaramWorld extends Logic
         -- Publish only display values through the existing player replication path.
         local r = self._T.users[userId]
         if r ~= nil then
-            local current = r.state.items[tostring(r.state.equip)]
+            local current = _BaramItemRules:Equipped(r.state)
             if current ~= nil and _BaramItemRules:EquipError(r.state, current) ~= "" then
-                _BaramItemRules:Hook(userId, current, "unequipScript")
-                r.state.equip = 0
-                self:Changed(userId)
+                if _BaramItemRules:UnequipToBag(r.state) == "" then
+                    _BaramItemRules:Hook(userId, current, "unequipScript")
+                    self:Changed(userId)
+                end
             end
             local player = _UserService:GetUserEntityByUserId(userId)
             if isvalid(player) then
                 local visual = player:GetComponent("script.BaramPlayerVisual")
                 if isvalid(visual) then
                     visual.DisplayHp = r.state.hp
-                    local equipped = r.state.items[tostring(r.state.equip)]
+                    local equipped = _BaramItemRules:Equipped(r.state)
                     visual.WeaponItemId = equipped ~= nil and equipped.id or 0
                     visual.DisplayMaxHp = r.state.maxHp
                     visual.DisplayLevel = r.state.level
@@ -527,10 +540,20 @@ script BaramWorld extends Logic
         -- Resolve item2 conditions, transfer permissions and script hooks on the server.
         local userId = senderUserId
         local r = self._T.users[userId]
-        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or slot < 1 or slot > _BaramWorldData.InventoryCapacity then return end
+        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or (action ~= "unequip" and (slot < 1 or slot > _BaramWorldData.InventoryCapacity)) then return end
         if r.trade ~= nil or r.tradeBusy then self:Notice(userId, "교환 중에는 소지품을 변경할 수 없습니다.") return end
         r.nextAction = self.Clock + 0.15
         local s = r.state
+        if action == "unequip" then
+            local previous = _BaramItemRules:Equipped(s)
+            local reason = _BaramItemRules:UnequipToBag(s)
+            if reason ~= "" then self:Notice(userId, reason) return end
+            _BaramItemRules:Hook(userId, previous, "unequipScript")
+            self:Changed(userId)
+            self:Snapshot(userId)
+            self:Notice(userId, "장비를 벗었습니다.")
+            return
+        end
         local item = s.items[tostring(slot)]
         if item == nil then self:Notice(userId, "그 칸은 비어 있습니다.") return end
         local data = _BaramWorldData:Item(item.id)
@@ -557,16 +580,12 @@ script BaramWorld extends Logic
         elseif action == "equip" or action == "armor" then
             local reason = _BaramItemRules:EquipError(s, item)
             if reason ~= "" then self:Notice(userId, reason) return end
-            if s.equip == slot then return end
-            _BaramItemRules:Hook(userId, s.items[tostring(s.equip)], "unequipScript")
-            s.equip = slot
+            local previous = _BaramItemRules:Equipped(s)
+            reason = _BaramItemRules:EquipFromBag(s, slot)
+            if reason ~= "" then self:Notice(userId, reason) return end
+            _BaramItemRules:Hook(userId, previous, "unequipScript")
             _BaramItemRules:Hook(userId, item, "equipScript")
             self:Notice(userId, data.name .. " 장착")
-        elseif action == "unequip" then
-            if s.equip == slot then
-                _BaramItemRules:Hook(userId, item, "unequipScript")
-                s.equip = 0 self:Notice(userId, "장비를 벗었습니다.")
-            end
         elseif action == "use" or action == "eat" then
             if s.hp <= 0 then return end
             if item.id == 3014 then s.hp = math.min(s.maxHp, s.hp + 8)
@@ -961,16 +980,17 @@ script BaramWorld extends Logic
         local dx = {0, 1, 0, -1}
         local dy = {-1, 0, 1, 0}
         local damage = _UtilLogic:RandomIntegerRange(1, 2)
-        local equipped = r.state.items[tostring(r.state.equip)]
+        local equipped = _BaramItemRules:Equipped(r.state)
         if equipped ~= nil and _BaramItemRules:EquipError(r.state, equipped) == "" then
             damage = damage + _BaramItemRules:WeaponAttack(r.state)
             _BaramItemRules:Hook(userId, equipped, "useScript")
             if self.DurabilityLossEnabled then
                 equipped.durability = math.max(0, equipped.durability - 1)
                 if equipped.durability == 0 then
-                    _BaramItemRules:Hook(userId, equipped, "unequipScript")
-                    r.state.equip = 0
-                    self:Notice(userId, "무기의 내구도가 다 닳아 장착이 해제되었습니다.")
+                    if _BaramItemRules:UnequipToBag(r.state) == "" then
+                        _BaramItemRules:Hook(userId, equipped, "unequipScript")
+                        self:Notice(userId, "무기의 내구도가 다 닳아 장착이 해제되었습니다.")
+                    end
                 end
                 self:Changed(userId)
             end

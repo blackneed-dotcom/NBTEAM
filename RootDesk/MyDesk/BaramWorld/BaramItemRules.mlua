@@ -1,5 +1,51 @@
 @Logic
 script BaramItemRules extends Logic
+    method table Equipped(table state)
+        -- Equipment owns its item independently of the bag; old saves remain readable.
+        if state.equipment ~= nil then return state.equipment.weapon end
+        return state.items[tostring(state.equip or 0)]
+    end
+
+    method boolean MigrateEquipment(table state)
+        -- Move a legacy equipped item exactly once, retaining all instance fields.
+        if state.equipment ~= nil then return false end
+        local item = self:Equipped(state)
+        state.equipment = {kind = "equipment"}
+        if item ~= nil then
+            state.equipment.weapon = item
+            state.items[tostring(state.equip)] = nil
+        end
+        state.equip = 0
+        return true
+    end
+
+    method string EquipFromBag(table state, integer slot)
+        -- Exchange the selected bag item with the weapon without consuming a bag slot.
+        self:MigrateEquipment(state)
+        local item = state.items[tostring(slot)]
+        local reason = self:EquipError(state, item)
+        if reason ~= "" then return reason end
+        if item.count ~= 1 then return "장비는 한 개씩 장착해 주세요." end
+        state.items[tostring(slot)] = state.equipment.weapon
+        state.equipment.weapon = item
+        return ""
+    end
+
+    method string UnequipToBag(table state)
+        -- Return the entire item to a free slot; a full bag leaves equipment intact.
+        self:MigrateEquipment(state)
+        local item = state.equipment.weapon
+        if item == nil then return "벗을 장비가 없습니다." end
+        for slot = 1, _BaramWorldData.InventoryCapacity do
+            if state.items[tostring(slot)] == nil then
+                state.items[tostring(slot)] = item
+                state.equipment.weapon = nil
+                return ""
+            end
+        end
+        return "소지품이 가득 찼습니다. 빈 칸을 만든 뒤 벗어 주세요."
+    end
+
     method string EquipError(table state, table item)
         -- Validate every item2 equipment restriction on the authoritative character state.
         if item == nil then return "그 칸은 비어 있습니다." end
@@ -18,7 +64,7 @@ script BaramItemRules extends Logic
 
     method integer WeaponAttack(table state)
         -- A usable weapon contributes its DB attack value; missing values add no invented bonus.
-        local item = state.items[tostring(state.equip)]
+        local item = self:Equipped(state)
         if item == nil or self:EquipError(state, item) ~= "" then return 0 end
         local data = _BaramWorldData:Item(item.id)
         return math.max(0, math.floor(data.attack or 0))
