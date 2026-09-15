@@ -18,10 +18,13 @@ script BaramCreature extends Component
     property string AggroUser = ""
     property number Wait = 1
     property number DeadWait = 0
-    -- 이름표가 글자 대신 검은 네모로 그려진다(폰트 Galmuri9 미적용 추정).
-    -- 26마리가 각각 1.0 x 0.2 짜리 검은 상자를 깔아서 화면을 다 가렸다.
-    -- 원인 잡을 때까지 꺼둔다. true 로 바꾸면 다시 나온다.
-    property boolean ShowLabel = false
+    -- 이름표가 글자 대신 검은 네모로 나왔던 건 모델에 박힌 Font 가 "Galmuri9" 인데
+    -- CustomFontGroupSet 의 Fonts 목록에는 그런 폰트가 없었기 때문이다(그룹 규칙만
+    -- 그 이름을 가리키는 끊어진 참조였다). 실제로 등록된 건 Galmuri14 와 Chosun 뿐.
+    -- Galmuri9 을 리소스로 올려 등록하면 LabelFont 를 그 이름으로 바꾸면 된다.
+    property boolean ShowLabel = true
+    property string LabelFont = "Galmuri14"
+    -- 크기는 BaramInput.CreatureLabelScale 하나로 26마리를 한꺼번에 조절한다(F10).
 
     -- monster.dna 이미지 번호. 1=다람쥐(26) 2=토끼(22).
     method integer ImageId()
@@ -73,6 +76,16 @@ script BaramCreature extends Component
             if sprite.Visible then sprite.Visible = false end
             if isvalid(label) and label.Visible then label.Visible = false end
             return
+        end
+        local scale = _BaramInput.CreatureLabelScale
+        if isvalid(label) and (self._T.labelFont ~= self.LabelFont or self._T.labelScale ~= scale) then
+            self._T.labelFont = self.LabelFont
+            self._T.labelScale = scale
+            local renderer = label.TextRendererComponent
+            renderer.Font = self.LabelFont
+            -- FontColor 기본값이 검정이라 어두운 바닥에서 안 보인다.
+            renderer.FontColor = Color(1, 1, 1, 1)
+            label.TransformComponent.Scale = Vector3(scale, scale, 1)
         end
         if isvalid(label) and label.Visible ~= self.ShowLabel then label.Visible = self.ShowLabel end
         local direction = math.max(1, math.min(4, math.floor(self.Facing / 3) + 1))
