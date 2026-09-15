@@ -154,11 +154,11 @@ script BaramCreature extends Component
             if self.ShowLabel then label.TextRendererComponent.Text = "" end
             local age = self._T.motionAge or 0
             local hold = motion.deadHold or 1
-            -- 원작은 사망 그림을 1초 보여주고 깜빡이다 사라진다. 그냥 없애면 뭘 잡았는지 안 보인다.
+            -- 사망 그림은 기존 시간 동안 깜빡임 없이 유지한 뒤 숨긴다.
             if self._T.motion == "dead" and age < hold + 0.6 then
                 local dead = motion.dead ~= nil and motion.dead[1] or nil
                 if dead ~= nil and self._T.frame ~= dead then sprite.SpriteRendererComponent.SpriteRUID = dead self._T.frame = dead end
-                sprite.Visible = age < hold or math.floor((age - hold) / 0.1) % 2 == 0
+                sprite.Visible = true
                 self._T.motionAge = age + delta
             else
                 sprite.Visible = false
