@@ -58,9 +58,21 @@ script BaramMapView extends Logic
         if not isvalid(canvas) then return false end
         local list = self.Chunks[mapId]
         if list == nil then return false end
+        -- 청크 엔티티는 캔버스에 한 번 박히면 끝까지 그대로다. 그런데 예전에는 그릴 때마다
+        -- 32번을 이름으로 다시 찾았다. 캔버스 자식이 몹·NPC·분신까지 70개가 넘어서
+        -- 이 찾기만으로 워프 한 번에 150ms 가 넘게 들었다(청크가 2장이든 32장이든 똑같이).
+        -- 한 번 찾아서 들고 있는다.
+        if self._T.chunks == nil or self._T.chunkCanvas ~= canvas then
+            self._T.chunkCanvas = canvas
+            self._T.chunks = {}
+            for i = 0, 31 do
+                local c = canvas:GetChildByName(string.format("Chunk%02d", i))
+                if isvalid(c) then self._T.chunks[i] = c end
+            end
+        end
         local found = 0
         for i = 0, 31 do
-            local chunk = canvas:GetChildByName(string.format("Chunk%02d", i))
+            local chunk = self._T.chunks[i]
             if isvalid(chunk) then
                 found = found + 1
                 local row = list[i + 1]
@@ -76,9 +88,7 @@ script BaramMapView extends Logic
             end
         end
         self:DrawNpcs(canvas, mapId)
-        local text = "맵" .. tostring(mapId) .. " 청크" .. tostring(#list) .. "장"
-        log("[BaramMapView] " .. text)
-        _BaramInput:Notice(text)
+        log("[BaramMapView] 맵" .. tostring(mapId) .. " 청크" .. tostring(#list) .. "장 엔티티" .. tostring(found) .. "개")
         return true
     end
 end

@@ -34,6 +34,13 @@ script BaramChatRelay extends Logic
         -- Resolve identity on the server and deliver to the same map instance only.
         if self:TryCreateItem(senderUserId, message) then return end
         if message == "/진단" then self:SendDiagnostics(senderUserId) return end
+        -- 마법창이 아직 없어서 이름으로 외운다: /마법 백호참
+        -- string.sub 는 글자가 아니라 바이트를 센다. "/마법 " 은 UTF-8 로 8바이트다.
+        local head = "/마법 "
+        if string.sub(message, 1, #head) == head then
+            _BaramScriptRuntime:Cast(senderUserId, string.sub(message, #head + 1))
+            return
+        end
         _BaramChatChannels:Send(senderUserId, message)
     end
 

@@ -217,16 +217,29 @@ script BaramCreature extends Component
         local player = event.AttackerEntity.PlayerComponent
         if not isvalid(player) then return end
         local r = _BaramWorld:GetRecord(player.UserId)
-        if r == nil or r.state.map ~= 315 then return end
-        self.Hp = math.max(0, self.Hp - event.TotalDamage)
-        _BaramHealthBars:ShowDamage(self.Entity, event.TotalDamage, self.MapId)
+        -- 맵 번호는 이 몹이 들고 있는 걸 본다. 315 를 박아두면 다른 사냥터에선 안 맞는다.
+        if r == nil or r.state.map ~= self.MapId then return end
+        self:TakeDamage(player.UserId, event.TotalDamage)
+    end
+
+    -- 맞는 길이 둘이다. 칼은 물리 충돌(HitEvent)로 오고, 마법은 스크립트가 바로 부른다.
+    -- 죽는 처리가 갈라지면 한쪽만 고치는 일이 생기므로 여기 하나로 모았다.
+    @ExecSpace("ServerOnly")
+    method void TakeDamage(string userId, integer amount)
+        if self.Hp <= 0 or amount <= 0 then return end
+        self.Hp = math.max(0, self.Hp - amount)
+        _BaramHealthBars:ShowDamage(self.Entity, amount, self.MapId)
         local maximum = self.SourceId == 1 and 15 or 10
-        _BaramHealthBars:ShowHit(self.Entity, self.Hp, maximum, self.Entity.CurrentMap.Id)
-        self.AggroUser = player.UserId
+        if isvalid(self.Entity.CurrentMap) then
+            _BaramHealthBars:ShowHit(self.Entity, self.Hp, maximum, self.Entity.CurrentMap.Id)
+        end
+        if userId ~= nil and userId ~= "" then self.AggroUser = userId end
         if self.Hp == 0 then
             self.DeadWait = 30
             self.Entity.HitComponent.Enable = false
-            _BaramWorld:Killed(player.UserId, self.SourceId, self.GridX, self.GridY)
+            if userId ~= nil and userId ~= "" then
+                _BaramWorld:Killed(userId, self.SourceId, self.GridX, self.GridY)
+            end
         end
         log("[BaramCombat] hit mob=" .. tostring(self.SourceId) .. " hp=" .. tostring(self.Hp))
     end

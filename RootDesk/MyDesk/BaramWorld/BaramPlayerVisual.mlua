@@ -91,6 +91,28 @@ script BaramPlayerVisual extends Component
             self._T.warpStart = _UtilLogic.ElapsedSeconds
             -- 도착할 칸은 포탈 표에 이미 적혀 있다. 서버 대답을 기다릴 이유가 없다.
             self._T.warpTo = crossing
+            -- [측정] 포탈을 밟은 순간부터 1.5초간 프레임을 지켜본다.
+            -- 진짜로 프레임이 멈추는지, 아니면 프레임은 멀쩡한데 순서가 어긋나 보이는지
+            -- 이 한 줄로 갈린다. 지금까지 이걸 안 재고 고쳤다.
+            self._T.mStart = _UtilLogic.ElapsedSeconds
+            self._T.mDraw = nil
+            self._T.mArrive = nil
+            self._T.mWorst = 0
+            self._T.mFrames = 0
+            self._T.mUntil = _UtilLogic.ElapsedSeconds + 1.5
+            -- 목적지 맵을 미리 그려둔다. 서버 좌표가 도착한 뒤에 32장을 그리기 시작하면
+            -- 그림이 올라오는 동안 카메라만 새 자리를 비춰서 엉뚱한 구역이 잠깐 보인다.
+            -- 포탈 표에 목적지가 이미 적혀 있으므로 기다릴 이유가 없다.
+            local canvas = self.Entity.CurrentMap
+            if isvalid(canvas) and canvas.Name == "baramcanvas" and self._T.drawnMap ~= crossing.to then
+                local t = _UtilLogic.ElapsedSeconds
+                if _BaramMapView:Draw(canvas, crossing.to) then
+                    self._T.mDraw = _UtilLogic.ElapsedSeconds - t
+                    self._T.drawnMap = crossing.to
+                    -- 그림만 미리 올린 것이다. 카메라와 분신은 서버 좌표가 와야 옮긴다.
+                    self._T.pendingSnap = true
+                end
+            end
             self:AimCamera(crossing)
         end
         self._T.predictionOrigin = self:MovementTarget()
@@ -279,6 +301,24 @@ script BaramPlayerVisual extends Component
 
     -- [단일 맵 구조] 캔버스 위에서는 서버가 알려준 바람 맵 번호가 바뀔 때마다
     -- 청크 그림만 갈아끼운다. 씬 전환이 없으므로 이 교체에 드는 비용이 없다.
+    -- [측정] 워프 직후 프레임을 지켜보고 한 줄로 요약한다.
+    @ExecSpace("ClientOnly")
+    method void WarpWatch(number delta)
+        if self._T.mUntil == nil then return end
+        self._T.mFrames = (self._T.mFrames or 0) + 1
+        if delta > (self._T.mWorst or 0) then self._T.mWorst = delta end
+        if _UtilLogic.ElapsedSeconds < self._T.mUntil then return end
+        self._T.mUntil = nil
+        local function ms(v) return v == nil and "?" or tostring(math.floor(v * 1000)) end
+        _BaramInput:Notice("워프측정 그리기 " .. ms(self._T.mDraw)
+            .. "ms / 좌표도착 " .. ms(self._T.mArrive)
+            .. "ms / 최악프레임 " .. ms(self._T.mWorst)
+            .. "ms / " .. tostring(self._T.mFrames) .. "프레임")
+        log("[WarpMeasure] draw=" .. ms(self._T.mDraw) .. " arrive=" .. ms(self._T.mArrive)
+            .. " worstFrame=" .. ms(self._T.mWorst) .. " frames=" .. tostring(self._T.mFrames))
+        self._T.mStart = nil
+    end
+
     @ExecSpace("ClientOnly")
     method void DrawCanvas(Entity map)
         if self.Entity ~= _UserService.LocalPlayer or map.Name ~= "baramcanvas" then return end
@@ -290,7 +330,19 @@ script BaramPlayerVisual extends Component
             end
             return
         end
-        if self._T.drawnMap == s.map then return end
+        if self._T.drawnMap == s.map then
+            -- 미리 그려둔 맵에 좌표가 막 도착했다. 그리기는 건너뛰고 자리만 맞춘다.
+            if self._T.pendingSnap then
+                self._T.pendingSnap = nil
+                if self._T.mStart ~= nil and self._T.mArrive == nil then
+                    self._T.mArrive = _UtilLogic.ElapsedSeconds - self._T.mStart
+                end
+                self:SnapToCell(map)
+                local data = _BaramWorldData:Map(s.map)
+                if data ~= nil and data.label ~= nil and data.label ~= "" then _BaramInput:Notice(data.label) end
+            end
+            return
+        end
         if not _BaramMapView:Draw(map, s.map) then
             _BaramInput:Notice("맵" .. tostring(s.map) .. " 청크 자료가 없다")
             return
@@ -299,9 +351,21 @@ script BaramPlayerVisual extends Component
         -- 원작처럼 들어간 맵 이름을 알려준다. 이름은 BaramWorldData 의 label 에 있다.
         local data = _BaramWorldData:Map(s.map)
         if data ~= nil and data.label ~= nil and data.label ~= "" then _BaramInput:Notice(data.label) end
-        -- 캔버스에서는 MSW 맵이 끝까지 그대로라, OnUpdate 앞부분의 "맵이 바뀌었나" 블록이
-        -- 다시는 돌지 않는다. 거기서 하던 일 가운데 새 칸으로 옮기는 것들을 여기서 해준다.
-        -- 이걸 빼먹으면 그림은 새 맵인데 카메라와 분신은 이전 맵 좌표에 남아 검은 화면이 된다.
+        self._T.pendingSnap = nil
+        self:SnapToCell(map)
+    end
+
+    -- 캔버스에서는 MSW 맵이 끝까지 그대로라, OnUpdate 앞부분의 "맵이 바뀌었나" 블록이
+    -- 다시는 돌지 않는다. 거기서 하던 일 가운데 새 칸으로 옮기는 것들을 여기서 해준다.
+    -- 이걸 빼먹으면 그림은 새 맵인데 카메라와 분신은 이전 맵 좌표에 남아 검은 화면이 된다.
+    @ExecSpace("ClientOnly")
+    method void SnapToCell(Entity map)
+        -- 맵이 바뀐 직후 잠깐은 그림 자리를 서버 칸에 못박는다.
+        -- 예측 취소, 남은 웨이포인트, 늦게 도착한 좌표 같은 여러 경로가 이 순간에
+        -- 분신을 끌고 갈 수 있고, 캔버스는 항상 뭔가 그려져 있어서 그게 그대로
+        -- "엉뚱한 구역이 잠깐 보이는" 것이 된다. 옛 구조에선 씬이 내려가 검게 보였을 뿐
+        -- 어긋나는 것 자체는 같았다.
+        self._T.lockUntil = _UtilLogic.ElapsedSeconds + 0.3
         local spot = self:GroundSpot(map, self.Entity.TransformComponent.WorldPosition.z)
         if isvalid(self._T.visual) then self._T.visual.TransformComponent.WorldPosition = spot end
         self._T.target = spot
@@ -376,6 +440,7 @@ script BaramPlayerVisual extends Component
             end
             log("[BaramPlayer] visual created on " .. map.Name)
         end
+        self:WarpWatch(delta)
         self:DrawCanvas(map)
         self:WarmNeighbors(map, delta)
         local visual = self._T.visual
@@ -410,6 +475,17 @@ script BaramPlayerVisual extends Component
             self._T.target = target
             self._T.path = {}
             self._T.walkTime = 0
+        end
+        -- 잠금 중에는 예측도 경로도 무시하고 서버 칸에 붙어 있는다.
+        if self._T.lockUntil ~= nil then
+            if _UtilLogic.ElapsedSeconds < self._T.lockUntil then
+                self._T.predicted = nil
+                self._T.path = {}
+                self._T.target = target
+                if isvalid(visual) then visual.TransformComponent.WorldPosition = target end
+            else
+                self._T.lockUntil = nil
+            end
         end
         local predicted = self._T.predicted
         if predicted ~= nil then

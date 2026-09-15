@@ -1,0 +1,286 @@
+-- 이 파일은 손으로 고치지 마라. tools/bscript 가 원본 스크립트에서 뽑는다.
+--   python3 tools/bscript/mlua.py @백호참 @건곤대나이 @동귀어진 @백열장
+-- 원본: magic/*, function/*, script_essential.txt
+@Logic
+script BaramSpellScripts extends Logic
+    @ExecSpace("ServerOnly")
+    method void Part1(table S, table R, table B)
+        -- @백호참  (magic/일반마법/전사/전투.txt:45)
+        S["@백호참"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@id", B["myid"](C))
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@hp", R.sub(B["get_hp"](C, R.get(V, "@sd")), R.div(B["get_hp"](C, R.get(V, "@sd")), 2)))
+            B["spelldelay"](C, R.get(V, "@sd"), B["name2spellid"](C, "백호참"), 0)
+            if R.t(R.le(R.get(V, "@hp"), 0)) then
+                R.set(V, "@hp", 1)
+            end
+            R.set(V, "@target_id", B["obj_getfront"](C))
+            if R.t(R.gt(R.get(V, "@target_id"), 0)) then
+                B["message"](C, R.get(V, "@sd"), 3, "백호참을 외웠습니다.")
+            end
+            R.set(V, "@name$", "백호참")
+            R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), B["get_hp"](C, R.get(V, "@sd")), R.get(V, "@hp"), 60, "백호참~!!~!", 67, 87, 1})
+            R.set(V, "@rand", B["rand"](C, 1, 100))
+            if R.t(R.n(R.t(R.ne(B["isequip"](C, R.get(V, "@sd"), 0), 0)) and R.t(R.eq(B["get_equipitem_name"](C, R.get(V, "@sd"), 0), "귀문진산검")))) then
+                if R.t(R.le(R.get(V, "@rand"), 10)) then
+                    R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.get(V, "@damage"), R.div(B["get_hp"](C, R.get(V, "@sd")), 2), 60, "진'백호참~~!!", 67, 87, 1})
+                end
+            end
+            if R.t(R.n(R.t(R.ne(B["isequip"](C, R.get(V, "@sd"), 0), 0)) and R.t(R.eq(B["get_equipitem_name"](C, R.get(V, "@sd"), 0), "귀문진산검'진")))) then
+                if R.t(R.le(R.get(V, "@rand"), 20)) then
+                    R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.get(V, "@damage"), R.div(B["get_hp"](C, R.get(V, "@sd")), 2), 60, "진'백호참~~!!", 67, 87, 1})
+                end
+            end
+        end
+        -- @건곤대나이  (magic/일반마법/전사/전투.txt:1)
+        S["@건곤대나이"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@id", B["myid"](C))
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@weapon$", B["get_equipitem_name"](C, R.get(V, "@sd"), 0))
+            R.set(V, "@hp", 0)
+            R.set(V, "@hp", R.sub(B["get_hp"](C, R.get(V, "@sd")), R.div(R.mul(B["get_hp"](C, R.get(V, "@sd")), 2), 3)))
+            if R.t(R.le(R.get(V, "@hp"), 0)) then
+                R.set(V, "@hp", 1)
+            end
+            R.set(V, "@name$", "건곤대나이")
+            R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), B["get_hp"](C, R.get(V, "@sd")), R.get(V, "@hp"), 60, "건곤대나이~~!~!", 6, 14, 1})
+            R.set(V, "@rand", B["rand"](C, 1, 100))
+            if R.t(R.n(R.t(R.ne(B["isequip"](C, R.get(V, "@sd"), 0), 0)) and R.t(R.eq(B["get_equipitem_name"](C, R.get(V, "@sd"), 0), "귀문진산검")))) then
+                if R.t(R.le(R.get(V, "@rand"), 10)) then
+                    R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.get(V, "@damage"), R.div(B["get_hp"](C, R.get(V, "@sd")), 2), 60, "진'건곤대나이~~!!", 6, 14, 1})
+                end
+            end
+            if R.t(R.n(R.t(R.ne(B["isequip"](C, R.get(V, "@sd"), 0), 0)) and R.t(R.eq(B["get_equipitem_name"](C, R.get(V, "@sd"), 0), "귀문진산검'진")))) then
+                if R.t(R.le(R.get(V, "@rand"), 20)) then
+                    R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.get(V, "@damage"), R.div(B["get_hp"](C, R.get(V, "@sd")), 2), 60, "진'건곤대나이~~!!", 6, 14, 1})
+                end
+            end
+        end
+        -- @동귀어진  (magic/일반마법/전사/전투.txt:26)
+        S["@동귀어진"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@id", B["myid"](C))
+            R.set(V, "@weapon$", B["get_equipitem_name"](C, R.get(V, "@sd"), 0))
+            R.set(V, "@name$", "동귀어진")
+            R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.mul(B["get_hp"](C, R.get(V, "@sd")), 2), 10, 350, "동귀어진~!!~!", 9, 18, 1})
+            R.set(V, "@rand", B["rand"](C, 1, 100))
+            if R.t(R.n(R.t(R.ne(B["isequip"](C, R.get(V, "@sd"), 0), 0)) and R.t(R.eq(B["get_equipitem_name"](C, R.get(V, "@sd"), 0), "귀문진산검")))) then
+                if R.t(R.le(R.get(V, "@rand"), 10)) then
+                    R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.get(V, "@damage"), R.div(B["get_hp"](C, R.get(V, "@sd")), 2), 60, "진'동귀어진~~!!", 9, 18, 1})
+                end
+            end
+            if R.t(R.n(R.t(R.ne(B["isequip"](C, R.get(V, "@sd"), 0), 0)) and R.t(R.eq(B["get_equipitem_name"](C, R.get(V, "@sd"), 0), "귀문진산검'진")))) then
+                if R.t(R.le(R.get(V, "@rand"), 20)) then
+                    R.callfunc(C, "MAGICATTACK", {R.get(V, "@id"), R.get(V, "@sd"), R.get(V, "@damage"), R.div(B["get_hp"](C, R.get(V, "@sd")), 2), 60, "진'동귀어진~~!!", 9, 18, 1})
+                end
+            end
+        end
+        -- @백열장  (magic/일반마법/공통/전투.txt:18)
+        S["@백열장"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@id", B["myid"](C))
+            R.set(V, "@user_x", B["get_x"](C, R.get(V, "@id")))
+            R.set(V, "@user_y", B["get_y"](C, R.get(V, "@id")))
+            R.set(V, "@target_id", B["script_target"](C, R.get(V, "@sd")))
+            R.set(V, "@target_x", B["get_x"](C, R.get(V, "@target_id")))
+            R.set(V, "@target_y", B["get_y"](C, R.get(V, "@target_id")))
+            R.set(V, "@gap_x", R.sub(R.get(V, "@user_x"), R.get(V, "@target_x")))
+            R.set(V, "@gap_y", R.sub(R.get(V, "@user_y"), R.get(V, "@target_y")))
+            if R.t(R.lt(R.get(V, "@gap_x"), 0)) then
+                R.set(V, "@gap_x", R.mul(R.get(V, "@gap_x"), R.neg(1)))
+            end
+            if R.t(R.lt(R.get(V, "@gap_y"), 0)) then
+                R.set(V, "@gap_y", R.mul(R.get(V, "@gap_y"), R.neg(1)))
+            end
+            if R.t(R.n(R.t(R.gt(R.get(V, "@gap_x"), 7)) or R.t(R.gt(R.get(V, "@gap_y"), 7)))) then
+                B["message"](C, R.get(V, "@sd"), 3, R.add(R.add(R.add("마력이 미치지 않습니다.", R.get(V, "@gap_x")), ","), R.get(V, "@gap_y")))
+                R.stop()
+            end
+            R.callfunc(C, "MAGICIANSPELL", {B["myid"](C), B["mysd"](C), 8, 280, 86, "백열장", 80})
+        end
+        -- FUNC_MAGICATTACK  (function/Attack_Functions.txt:1026)
+        S["FUNC_MAGICATTACK"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@id", R.getarg(C, 0))
+            R.set(V, "@sd", R.getarg(C, 1))
+            R.set(V, "@damage", R.getarg(C, 2))
+            R.set(V, "@hp", R.getarg(C, 3))
+            R.set(V, "@mp", R.getarg(C, 4))
+            R.set(V, "@say$", R.getarg(C, 5))
+            if R.t(R.ne(R.get(V, "@mp"), 0)) then
+                R.callfunc(C, "MANA_DELAY", {R.get(V, "@mp"), 0, R.get(V, "@sd")})
+            end
+            if R.t(R.get(G, "$finalattack")) then
+                R.set(V, "@damage", R.add(R.get(V, "@damage"), R.div(R.get(V, "@damage"), 2)))
+            end
+            if R.t(R.get(G, "$damageup")) then
+                R.set(V, "@damage", R.mul(R.get(V, "@damage"), 2))
+            end
+            if R.t(R.n(R.t(R.n(R.t(R.n(R.t(R.n(R.t(R.n(R.t(R.eq(R.get(V, "@name$"), "건곤대나이")) or R.t(R.eq(R.get(V, "@name$"), "동귀어진")))) or R.t(R.eq(R.get(V, "@name$"), "백호참")))) or R.t(R.eq(R.get(V, "@name$"), "초혼비무")))) or R.t(R.eq(R.get(V, "@name$"), "쇄혼비무")))) or R.t(R.eq(R.get(V, "@name$"), "어검술")))) then
+                if R.t(R.eq(B["spellaethered"](C, R.get(V, "@sd"), B["name2spellid"](C, "연쇄기")), 1)) then
+                    R.set(V, "@damage", R.mul(R.get(V, "@damage"), 3))
+                end
+            end
+            R.set(V, "@target_id", B["obj_getfront"](C))
+            if R.t(R.gt(R.get(V, "@target_id"), 0)) then
+                if R.t(R.ne(R.get(V, "@say$"), "-1")) then
+                    B["say"](C, R.get(V, "@id"), 2, R.get(V, "@say$"))
+                end
+                R.callfunc(C, "BEGINFUNC", {R.getarg(C, 6), 0, 0, 0, 0, R.get(V, "@target_id")})
+                if R.t(R.eq(B["get_side"](C, R.get(V, "@id")), 0)) then
+                    if R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 0)) then
+                        R.set(V, "@damage", R.mul(R.get(V, "@damage"), 2))
+                    elseif R.t(R.n(R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 1)) or R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 3)))) then
+                        R.set(V, "@damage", R.div(R.mul(R.get(V, "@damage"), 3), 2))
+                    end
+                elseif R.t(R.eq(B["get_side"](C, R.get(V, "@id")), 1)) then
+                    if R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 1)) then
+                        R.set(V, "@damage", R.mul(R.get(V, "@damage"), 2))
+                    elseif R.t(R.n(R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 0)) or R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 2)))) then
+                        R.set(V, "@damage", R.div(R.mul(R.get(V, "@damage"), 3), 2))
+                    end
+                elseif R.t(R.eq(B["get_side"](C, R.get(V, "@id")), 2)) then
+                    if R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 2)) then
+                        R.set(V, "@damage", R.mul(R.get(V, "@damage"), 2))
+                    elseif R.t(R.n(R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 1)) or R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 3)))) then
+                        R.set(V, "@damage", R.div(R.mul(R.get(V, "@damage"), 3), 2))
+                    end
+                elseif R.t(R.eq(B["get_side"](C, R.get(V, "@id")), 3)) then
+                    if R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 3)) then
+                        R.set(V, "@damage", R.mul(R.get(V, "@damage"), 2))
+                    elseif R.t(R.n(R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 0)) or R.t(R.eq(B["get_side"](C, R.get(V, "@target_id")), 2)))) then
+                        R.set(V, "@damage", R.div(R.mul(R.get(V, "@damage"), 3), 2))
+                    end
+                end
+                if R.t(R.eq(B["istype"](C, R.get(V, "@target_id")), 2)) then
+                    B["damage"](C, R.get(V, "@id"), R.get(V, "@target_id"), R.get(V, "@damage"), 3)
+                    B["set_hp"](C, R.get(V, "@sd"), R.get(V, "@hp"))
+                elseif R.t(R.n(R.t(R.eq(B["istype"](C, R.get(V, "@target_id")), 1)) and R.t(R.eq(B["ismapoption"](C, R.get(V, "@sd"), 6), 1)))) then
+                    R.set(V, "@r", B["rand"](C, 1, 10))
+                    R.set(V, "@target_sd", B["id2sd"](C, R.get(V, "@target_id")))
+                    if R.t(R.n(R.t(R.le(R.get(V, "@r"), 5)) and R.t(B["spellaethered"](C, R.get(V, "@target_sd"), B["name2spellid"](C, "반탄공"))))) then
+                        B["damage"](C, R.get(V, "@target_id"), R.get(V, "@id"), R.get(V, "@damage"), 3)
+                        B["message"](C, R.get(V, "@sd"), 3, "마법 보호!!")
+                        R.stop()
+                    end
+                    B["damage"](C, R.get(V, "@id"), R.get(V, "@target_id"), R.get(V, "@damage"), 3)
+                    B["set_hp"](C, R.get(V, "@sd"), R.get(V, "@hp"))
+                end
+                B["action"](C, R.get(V, "@id"), R.getarg(C, 8), 30, 0)
+                B["set_mp"](C, R.get(V, "@sd"), R.sub(B["get_mp"](C, R.get(V, "@sd")), R.get(V, "@mp")))
+                B["sound"](C, R.get(V, "@id"), R.getarg(C, 7))
+            end
+            do return end
+        end
+        -- FUNC_MAGICIANSPELL  (function/Attack_Functions.txt:1244)
+        S["FUNC_MAGICIANSPELL"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@id", R.getarg(C, 0))
+            R.set(V, "@sd", R.getarg(C, 1))
+            R.set(V, "@sound", R.getarg(C, 2))
+            R.set(V, "@damage", R.getarg(C, 3))
+            R.set(V, "@effect", R.getarg(C, 4))
+            if R.t(R.ne(R.getarg(C, 6), 0)) then
+                R.callfunc(C, "MANA_DELAY", {R.getarg(C, 6), 0, R.get(V, "@sd")})
+            end
+            if R.t(R.get(G, "$damageup")) then
+                R.set(V, "@damage", R.mul(R.get(V, "@damage"), 2))
+            end
+            R.set(V, "@target_id", B["script_target"](C, R.get(V, "@sd")))
+            if R.t(R.gt(R.get(V, "@target_id"), 0)) then
+                repeat
+                    if R.t(R.eq(B["istype"](C, R.get(V, "@target_id")), 1)) then
+                        R.set(V, "@target_sd", B["id2sd"](C, R.get(V, "@target_id")))
+                        if R.t(R.n(R.t(B["ismapoption"](C, R.get(V, "@sd"), 6)) and R.t(R.ne(R.get(V, "@target_id"), R.get(V, "@id"))))) then
+                            R.set(V, "@r", B["rand"](C, 1, 10))
+                            if R.t(R.n(R.t(R.le(R.get(V, "@r"), 5)) and R.t(B["spellaethered"](C, R.get(V, "@target_sd"), B["name2spellid"](C, "반탄공"))))) then
+                                R.callfunc(C, "BEGINFUNC", {R.get(V, "@effect"), R.get(V, "@sound"), 0, 0, 6, R.get(V, "@id")})
+                                B["damage"](C, R.get(V, "@target_id"), R.get(V, "@id"), R.get(V, "@damage"), 0)
+                                B["message"](C, R.get(V, "@sd"), 3, "마법 보호!!")
+                                break  -- goto NEXT
+                            end
+                            if R.t(R.ne(R.get(V, "@target_id"), R.get(V, "@id"))) then
+                                R.callfunc(C, "BEGINFUNC", {R.get(V, "@effect"), R.get(V, "@sound"), 0, 0, 6, R.get(V, "@target_id")})
+                            end
+                            B["damage"](C, R.get(V, "@id"), R.get(V, "@target_id"), R.get(V, "@damage"), 0)
+                            if R.t(R.ne(R.get(V, "@target_sd"), R.get(V, "@sd"))) then
+                                B["message"](C, R.get(V, "@target_sd"), 3, R.add(R.add(R.add(B["get_name"](C, R.get(V, "@sd")), "님이 "), R.getarg(C, 5)), "을(를) 가합니다."))
+                            end
+                        else
+                            B["message"](C, R.get(V, "@sd"), 3, "걸리지 않습니다.")
+                            R.stop()
+                        end
+                    elseif R.t(R.eq(B["istype"](C, R.get(V, "@target_id")), 2)) then
+                        if R.t(R.ne(R.get(V, "@target_id"), R.get(V, "@id"))) then
+                            R.callfunc(C, "BEGINFUNC", {R.get(V, "@effect"), R.get(V, "@sound"), 0, 0, 6, R.get(V, "@target_id")})
+                        end
+                        B["damage"](C, R.get(V, "@id"), R.get(V, "@target_id"), R.get(V, "@damage"), 0)
+                    else
+                        B["message"](C, R.get(V, "@sd"), 3, "걸리지 않습니다.")
+                        R.stop()
+                    end
+                until true
+                B["set_mp"](C, R.get(V, "@sd"), R.sub(B["get_mp"](C, R.get(V, "@sd")), R.getarg(C, 6)))
+                B["message"](C, R.get(V, "@sd"), 3, R.add(R.getarg(C, 5), "을(를) 외웠습니다."))
+            end
+            do return end
+        end
+        -- FUNC_MANA_DELAY  (function/Remainder_Functions.txt:77)
+        S["FUNC_MANA_DELAY"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@id", B["myid"](C))
+            if R.t(R.ne(R.getarg(C, 0), 0)) then
+                if R.t(R.lt(B["get_mp"](C, R.get(V, "@sd")), R.getarg(C, 0))) then
+                    B["message"](C, R.get(V, "@sd"), 3, "마력이 부족합니다.")
+                    R.stop()
+                end
+            end
+            if R.t(R.ne(R.getarg(C, 1), 0)) then
+                if R.t(R.eq(B["spellaethered"](C, R.getarg(C, 2), R.getarg(C, 1)), 1)) then
+                    B["message"](C, R.get(V, "@sd"), 3, "이미 걸려있습니다.")
+                    R.stop()
+                end
+            end
+            do return end
+        end
+        -- FUNC_BEGINFUNC  (function/Remainder_Functions.txt:102)
+        S["FUNC_BEGINFUNC"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@id", B["myid"](C))
+            if R.t(R.ne(R.getarg(C, 4), 0)) then
+                R.set(V, "@four", R.getarg(C, 4))
+            else
+                R.set(V, "@four", 6)
+            end
+            if R.t(R.ne(R.getarg(C, 0), 0)) then
+                if R.t(R.ne(R.getarg(C, 5), 0)) then
+                    R.set(V, "@smyid", R.getarg(C, 5))
+                else
+                    R.set(V, "@smyid", R.get(V, "@id"))
+                end
+                B["effect"](C, R.get(V, "@smyid"), R.getarg(C, 0))
+            end
+            if R.t(R.ne(R.getarg(C, 1), 0)) then
+                B["action"](C, R.get(V, "@id"), R.get(V, "@four"), 30, 0)
+                B["sound"](C, R.get(V, "@id"), R.getarg(C, 1))
+            end
+            if R.t(R.ne(R.getarg(C, 2), 0)) then
+                B["spellaether"](C, R.get(V, "@sd"), R.getarg(C, 2), R.getarg(C, 3))
+            end
+            do return end
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    method table Build(table R, table B)
+        local S = {}
+        self:Part1(S, R, B)
+        return S
+    end
+end
