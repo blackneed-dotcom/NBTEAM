@@ -1,0 +1,351 @@
+@Logic
+script BaramItemCodex extends Logic
+    property table Entries = {
+        {id=3014, name="도토리", monster="다람쥐", region="초보사냥터", reward="공격력 +1", stats={attack=1}},
+        {id=3018, name="토끼고기", monster="토끼", region="초보사냥터", reward="보상 추후 추가"},
+        {id=3019, name="쥐고기", monster="쥐 · 큰쥐 · 시궁쥐", region="쥐굴", reward="보상 추후 추가"},
+        {id=9028, name="박쥐고기", monster="박쥐 · 빨간박쥐", region="쥐굴", reward="보상 추후 추가"},
+        {id=3020, name="뱀고기", monster="독사 · 백사", region="뱀굴", reward="보상 추후 추가"},
+        {id=3032, name="웅담", monster="곰", region="곰굴", reward="보상 추후 추가"}
+    }
+
+    method boolean Valid(table s)
+        -- Old saves without codex progress remain valid; only known bounded counters are accepted.
+        if s.codex == nil then return true end
+        if type(s.codex) ~= "table" then return false end
+        for key, value in pairs(s.codex) do
+            local known = false
+            for _, entry in ipairs(self.Entries) do if key == tostring(entry.id) then known = true break end end
+            if not known or type(value) ~= "number" or value ~= math.floor(value) or value < 0 or value > 100 then return false end
+        end
+        return true
+    end
+
+    method integer Progress(table s, integer itemId)
+        -- Progress is stored per character alongside inventory in the existing save record.
+        if s == nil or s.codex == nil then return 0 end
+        return s.codex[tostring(itemId)] or 0
+    end
+
+    method integer AttackBonus(table s)
+        -- Derive the reward from completion, so relogging or repeated requests cannot stack it.
+        return self:TotalStats(s).attack or 0
+    end
+
+    method table TotalStats(table s)
+        -- One shared sum for combat, profiles, and the codex reward summary.
+        local totals={}
+        for _,entry in ipairs(self.Entries) do
+            if self:Progress(s,entry.id)>=100 then
+                for key,value in pairs(entry.stats or {}) do totals[key]=(totals[key] or 0)+value end
+            end
+        end
+        return totals
+    end
+
+    method integer Owned(table s, integer itemId)
+        -- Count only carried items, excluding equipped slots and bank storage.
+        if s == nil or s.items == nil then return 0 end
+        local count = 0
+        for i=1,_BaramWorldData.InventoryCapacity do
+            local item = s.items[tostring(i)]
+            if i ~= s.equip and i ~= s.aux1 and i ~= s.aux2 and item ~= nil and item.id == itemId then count = count + item.count end
+        end
+        return count
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Apply(table s, integer index, integer amount)
+        -- Validate first, then consume items and advance progress without yielding between them.
+        local entry = self.Entries[index]
+        if entry == nil or not self:Valid(s) or amount < 1 or amount ~= math.floor(amount) then return false end
+        local progress = self:Progress(s, entry.id)
+        if amount > 100-progress or amount > self:Owned(s, entry.id) then return false end
+        local remaining = amount
+        for i=1,_BaramWorldData.InventoryCapacity do
+            local item = s.items[tostring(i)]
+            if i ~= s.equip and i ~= s.aux1 and i ~= s.aux2 and item ~= nil and item.id == entry.id then
+                local used = math.min(remaining, item.count)
+                _BaramWorld:RemoveItem(s, i, used)
+                remaining = remaining-used
+                if remaining == 0 then break end
+            end
+        end
+        if s.codex == nil then s.codex = {} end
+        s.codex[tostring(entry.id)] = progress+amount
+        return true
+    end
+
+    @ExecSpace("Server")
+    method void Prepare(integer index)
+        -- Issue a one-use registration token after checking the authoritative inventory.
+        local r = _BaramWorld:GetRecord(senderUserId)
+        local entry = self.Entries[index]
+        if r == nil or entry == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then return end
+        local maximum = math.min(100-self:Progress(r.state,entry.id),self:Owned(r.state,entry.id))
+        if maximum <= 0 then _BaramWorld:Notice(senderUserId,"등록할 아이템이 없습니다.") return end
+        r.codexSerial = (r.codexSerial or 0)+1
+        r.codexPrompt = {token=r.codexSerial,index=index,expires=_BaramWorld.Clock+60}
+        self:Prompt(index,r.codexSerial,maximum,senderUserId)
+    end
+
+    @ExecSpace("Server")
+    method void Register(integer token, integer amount)
+        -- Reject replay, stale dialogs, concurrent trades, and inventory changes since the prompt.
+        local r = _BaramWorld:GetRecord(senderUserId)
+        if r == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then return end
+        local prompt = r.codexPrompt
+        if prompt == nil or prompt.token ~= token or prompt.expires < _BaramWorld.Clock then return end
+        r.codexPrompt = nil
+        if not self:Apply(r.state,prompt.index,amount) then
+            _BaramWorld:Notice(senderUserId,"보유 수량과 남은 등록 수량을 확인해 주세요.")
+            self:Result(false,senderUserId)
+            return
+        end
+        _BaramWorld:Changed(senderUserId)
+        _BaramWorld:Snapshot(senderUserId)
+        self:Result(true,senderUserId)
+        local entry = self.Entries[prompt.index]
+        local progress = self:Progress(r.state,entry.id)
+        _BaramWorld:Notice(senderUserId,entry.name .. " " .. tostring(amount) .. "개 등록 (" .. tostring(progress) .. "/100)")
+        if entry.id == 3014 and progress == 100 then _BaramWorld:Notice(senderUserId,"도토리 도감 완성! 공격력 +1") end
+        log("[ItemCodex] registered index=" .. tostring(prompt.index) .. " amount=" .. tostring(amount) .. " progress=" .. tostring(progress))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Bind once; the hidden UI is controlled by this world-session logic.
+        self._T.root = _EntityService:GetEntityByPath("/ui/BaramItemCodex/Overlay")
+        self._T.links = {}
+        if not isvalid(self._T.root) then return end
+        self._T.root.Enable = false
+        self._T.window = self._T.root:GetChildByName("Window")
+        self._T.prompt = self._T.root:GetChildByName("Prompt")
+        self._T.input = self._T.prompt:GetChildByName("Amount")
+        self._T.stats = self._T.root:GetChildByName("StatsOverlay")
+        self._T.stats.Enable=false
+        self._T.window:GetChildByName("TotalStats").SpriteGUIRendererComponent.Color=Color.white
+        self._T.window:GetChildByName("TotalStats").SpriteGUIRendererComponent.ImageRUID=DataRef("42f935a1778245afb0d9636bc0d7b8fe")
+        self:Bind(self._T.window:GetChildByName("TotalStats"),function() self:ShowStats() end)
+        self:Bind(self._T.stats:GetChildByName("Panel"):GetChildByName("Close"),function() self._T.stats.Enable=false end)
+        self:Bind(self._T.window:GetChildByName("Close"),function() self:Close() end)
+        self._T.category=0
+        self._T.page=1
+        self._T.visible={}
+        self:Bind(self._T.window:GetChildByName("Unregistered"),function() self:SelectCategory(0) end)
+        self:Bind(self._T.window:GetChildByName("Registered"),function() self:SelectCategory(1) end)
+        self:Bind(self._T.window:GetChildByName("Previous"),function() self:TurnPage(-1) end)
+        self:Bind(self._T.window:GetChildByName("Next"),function() self:TurnPage(1) end)
+        for i=1,6 do
+            local index = i
+            self:Bind(self._T.window:GetChildByName("Row" .. tostring(i)):GetChildByName("Register"),function()
+                if self._T.prompt.Enable or self._T.stats.Enable then return end
+                local s = _BaramWorld.LocalState
+                local entryIndex = self._T.visible[index]
+                local entry = self.Entries[entryIndex or 0]
+                if entry ~= nil and self:Owned(s,entry.id)>0 and self:Progress(s,entry.id)<100 then self:Prepare(entryIndex) end
+            end)
+        end
+        self:Bind(self._T.prompt:GetChildByName("Confirm"),function() self:Submit() end)
+        self:Bind(self._T.prompt:GetChildByName("Cancel"),function() self._T.prompt.Enable=false self._T.token=nil end)
+        self._T.key = _InputService:ConnectEvent(KeyDownEvent,function(event)
+            if event.key ~= KeyboardKey.Escape or not self._T.root.Enable then return end
+            if self._T.stats.Enable then self._T.stats.Enable=false
+            elseif self._T.prompt.Enable then self._T.prompt.Enable=false self._T.token=nil else self:Close() end
+        end)
+        log("[ItemCodex] UI ready")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Bind(Entity button, any callback)
+        -- Store every event link for session cleanup.
+        local link=button:ConnectEvent(UITouchDownEvent,function(event)
+            if event.TouchId == -1 or event.TouchId >= 1 then callback() end
+        end)
+        table.insert(self._T.links,{entity=button,link=link})
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Open()
+        -- The menu entry opens the codex locally; registration remains server authoritative.
+        if not isvalid(self._T.root) or not _BaramEntryFlow.InWorld then return end
+        _BaramInput:Close()
+        _BaramInput.Mode="codex"
+        self._T.root.Enable=true
+        self._T.prompt.Enable=false
+        self._T.stats.Enable=false
+        self._T.window.UITransformComponent.anchoredPosition=Vector2(0,0)
+        self._T.window.UITransformComponent.UIScale=Vector3(2.4,2.4,1)
+        self._T.prompt.UITransformComponent.UIScale=Vector3(2.4,2.4,1)
+        -- Original USERLOOK.EPF stat arrow, cropped and rotated for horizontal paging.
+        self._T.window:GetChildByName("Previous").SpriteGUIRendererComponent.ImageRUID=DataRef("fa5fbfe5693545da86661f7309ef3989")
+        self._T.window:GetChildByName("Next").SpriteGUIRendererComponent.ImageRUID=DataRef("a5bd821ca3cd47b1970588a8fdd0e30e")
+        for i=1,6 do self._T.window:GetChildByName("Row" .. tostring(i)).UITransformComponent.UIScale=Vector3(0.82,0.82,1) end
+        self:Refresh()
+        log("[ItemCodex] opened")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ShowStats()
+        if self._T.prompt.Enable then return end
+        local panel=self._T.stats:GetChildByName("Panel")
+        panel.SpriteGUIRendererComponent.Color=Color.white
+        panel.SpriteGUIRendererComponent.ImageRUID=DataRef("4924358c7b674d64a7166b5f224b0e31")
+        panel:GetChildByName("Close").SpriteGUIRendererComponent.Color=Color.white
+        panel:GetChildByName("Close").SpriteGUIRendererComponent.ImageRUID=DataRef("42f935a1778245afb0d9636bc0d7b8fe")
+        panel.UITransformComponent.anchoredPosition=Vector2(0,0)
+        panel.UITransformComponent.UIScale=Vector3(2.4,2.4,1)
+        self._T.stats.Enable=true
+        self:RefreshStats()
+        log("[CodexTotals] opened attack=" .. tostring(self:AttackBonus(_BaramWorld.LocalState)))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshStats()
+        if not isvalid(self._T.stats) or not self._T.stats.Enable then return end
+        local totals=self:TotalStats(_BaramWorld.LocalState)
+        local lines={}
+        local names={attack="공격력",defense="방어력",hp="체력",mp="마력",accuracy="명중",evasion="회피",critical="치명타"}
+        for _,key in ipairs({"attack","defense","hp","mp","accuracy","evasion","critical"}) do
+            if (totals[key] or 0)~=0 then table.insert(lines,names[key] .. " +" .. tostring(totals[key])) end
+        end
+        self._T.stats:GetChildByName("Panel"):GetChildByName("Values").TextGUIRendererComponent.Text=#lines>0 and table.concat(lines,"\n") or "획득한 능력치가 없습니다."
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Close()
+        -- Ignore late prompt replies after the player closes the window.
+        if isvalid(self._T.root) then self._T.root.Enable=false end
+        self._T.token=nil
+        if _BaramInput.Mode=="codex" then _BaramInput.Mode="" end
+    end
+
+    @ExecSpace("Client")
+    method void Prompt(integer index, integer token, integer maximum)
+        -- Display only a live server-approved quantity prompt.
+        if not isvalid(self._T.root) or not self._T.root.Enable or _BaramInput.Mode~="codex" then return end
+        self._T.token=token
+        self._T.maximum=maximum
+        self._T.prompt.Enable=true
+        self._T.prompt:GetChildByName("Question").TextGUIRendererComponent.Text=self.Entries[index].name .. " 몇 개를 등록할까요?\n등록 가능: 1~" .. tostring(maximum) .. "개\n등록한 아이템은 소모됩니다."
+        self._T.input.TextGUIRendererInputComponent.Text=tostring(maximum)
+        self._T.input.TextGUIRendererInputComponent:ActivateInputField()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Submit()
+        -- Never send zero, negative, fractional, or excessive quantities.
+        if self._T.token==nil then return end
+        local amount=tonumber(self._T.input.TextGUIRendererInputComponent.Text)
+        if amount==nil or amount~=math.floor(amount) or amount<1 or amount>self._T.maximum then
+            _BaramInput:Notice("1~" .. tostring(self._T.maximum) .. "개를 입력해 주세요.") return
+        end
+        local token=self._T.token
+        self._T.token=nil
+        self._T.prompt.Enable=false
+        self:Register(token,amount)
+    end
+
+    @ExecSpace("Client")
+    method void Result(boolean success)
+        -- Fresh inventory snapshots drive visible progress; closing needs no server request.
+        if isvalid(self._T.root) and self._T.root.Enable then self:Refresh() end
+    end
+
+    @ExecSpace("ClientOnly")
+    method table FilterEntries(table s, integer category)
+        local indices={}
+        for index,entry in ipairs(self.Entries) do
+            if (self:Progress(s,entry.id)>=100) == (category==1) then table.insert(indices,index) end
+        end
+        return indices
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SelectCategory(integer category)
+        if self._T.prompt.Enable or self._T.stats.Enable then return end
+        self._T.category=category
+        self._T.page=1
+        self:Refresh()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void TurnPage(integer direction)
+        if self._T.prompt.Enable or self._T.stats.Enable then return end
+        self._T.page=math.max(1,math.min(self._T.pages or 1,(self._T.page or 1)+direction))
+        self:Refresh()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Refresh()
+        -- Update the six rows only when the authoritative state changes or the window opens.
+        local s=_BaramWorld.LocalState
+        if s==nil or not isvalid(self._T.window) then return end
+        self._T.state=s
+        local total=0
+        for _,entry in ipairs(self.Entries) do if self:Progress(s,entry.id)>=100 then total=total+1 end end
+        local indices=self:FilterEntries(s,self._T.category or 0)
+        self._T.pages=math.max(1,math.ceil(#indices/6))
+        self._T.page=math.max(1,math.min(self._T.page or 1,self._T.pages))
+        self._T.visible={}
+        for i=1,6 do
+            local row=self._T.window:GetChildByName("Row" .. tostring(i))
+            local index=indices[(self._T.page-1)*6+i]
+            self._T.visible[i]=index
+            row.Enable=index~=nil
+            if index~=nil then
+            local entry=self.Entries[index]
+            row:GetChildByName("Name").TextGUIRendererComponent.Text=entry.name
+            row:GetChildByName("Reward").TextGUIRendererComponent.Text=entry.reward
+            row:GetChildByName("Source").TextGUIRendererComponent.Text=entry.monster .. "\n" .. entry.region
+            local progress=self:Progress(s,entry.id)
+            local owned=self:Owned(s,entry.id)
+            row:GetChildByName("Count").TextGUIRendererComponent.Text=tostring(progress) .. "/100  보유 " .. tostring(owned)
+            local button=row:GetChildByName("Register")
+            local enabled=owned>0 and progress<100
+            button.UITouchReceiveComponent.Enable=enabled
+            button.SpriteGUIRendererComponent.Color=enabled and Color.white or Color(0.55,0.55,0.55,1)
+            button:GetChildByName("Label").TextGUIRendererComponent.Text=progress==100 and "완료" or "등록"
+            local art=_BaramInput.InventoryImages[tostring(entry.id)]
+            row:GetChildByName("Icon").Enable=art~=nil
+            if art~=nil then
+                local icon=row:GetChildByName("Icon")
+                icon.SpriteGUIRendererComponent.ImageRUID=DataRef(art.ruid)
+                local scale=math.min(3,42/math.max(art.width,art.height))
+                icon.UITransformComponent.RectSize=Vector2(art.width*scale,art.height*scale)
+            end
+            end
+        end
+        self._T.window:GetChildByName("Progress").TextGUIRendererComponent.Text="등록 " .. tostring(total) .. "/" .. tostring(#self.Entries)
+        self:RefreshStats()
+        self._T.window:GetChildByName("Page").TextGUIRendererComponent.Text=tostring(self._T.page) .. " / " .. tostring(self._T.pages)
+        local empty=self._T.window:GetChildByName("Empty")
+        empty.Enable=#indices==0
+        empty.TextGUIRendererComponent.Text=self._T.category==1 and "등록을 완료한 도감이 없습니다." or "모든 도감을 등록했습니다."
+        for i,name in ipairs({"Unregistered","Registered"}) do
+            self._T.window:GetChildByName(name).SpriteGUIRendererComponent.Color=self._T.category==i-1 and Color.white or Color(0.65,0.65,0.65,1)
+        end
+        for _,name in ipairs({"Previous","Next"}) do
+            local button=self._T.window:GetChildByName(name)
+            local enabled=name=="Previous" and self._T.page>1 or name=="Next" and self._T.page<self._T.pages
+            button.UITouchReceiveComponent.Enable=enabled
+            button.SpriteGUIRendererComponent.Color=enabled and Color.white or Color(0.45,0.45,0.45,1)
+        end
+        log("[CodexPages] category=" .. tostring(self._T.category) .. " page=" .. tostring(self._T.page) .. "/" .. tostring(self._T.pages) .. " entries=" .. tostring(#indices))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Hidden codex performs no polling or server requests.
+        if not isvalid(self._T.root) or not self._T.root.Enable then return end
+        if not _BaramEntryFlow.InWorld or _BaramInput.Mode~="codex" then self:Close() return end
+        if self._T.state~=_BaramWorld.LocalState then self:Refresh() end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release UI and service events when the session ends.
+        for _,link in ipairs(self._T.links or {}) do if isvalid(link.entity) then link.entity:DisconnectEvent(UITouchDownEvent,link.link) end end
+        if self._T.key~=nil then _InputService:DisconnectEvent(KeyDownEvent,self._T.key) end
+    end
+end

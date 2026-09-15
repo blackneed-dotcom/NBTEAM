@@ -145,6 +145,7 @@ script BaramWorld extends Logic
         if s == nil or s.version ~= 1 or type(s.items) ~= "table" then return false end
         if not _BaramNpcServices:ValidBank(s) then return false end
         if not _BaramJobs:ValidState(s) then return false end
+        if not _BaramItemCodex:Valid(s) then return false end
         for _, name in ipairs({"map", "x", "y", "hp", "mp", "maxHp", "maxMp", "level", "exp", "gold", "equip", "guide"}) do
             if type(s[name]) ~= "number" or s[name] ~= math.floor(s[name]) or s[name] < 0 then return false end
         end
@@ -892,6 +893,7 @@ script BaramWorld extends Logic
             self:Changed(userId)
         end
         visual:PlayAction(1, 0.15)
+        damage = damage + _BaramItemCodex:AttackBonus(r.state)
         attack:Swing(r.state.x + dx[index], r.state.y + dy[index], damage)
         self:Snapshot(userId)
         log("[BaramCombat] swing damage=" .. tostring(damage))

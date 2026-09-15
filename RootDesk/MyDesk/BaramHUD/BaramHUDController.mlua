@@ -32,6 +32,36 @@ script BaramHUDController extends Component
         self._T.infoSignature = nil
         self._T.infoPanel = self.Entity:GetChildByName("CharacterInfo", true)
         self._T.infoButton = self.Entity:GetChildByName("InfoButton", true)
+        self._T.menu = _EntityService:GetEntityByPath("/ui/BaramMenu/MenuOverlay")
+        self._T.menuButton = self.Entity:GetChildByName("MenuButton", true)
+        self._T.menuLinks = {}
+        if isvalid(self._T.menu) and isvalid(self._T.menuButton) then
+            _BaramProfile:Draw(self._T.menuButton, "메뉴", true)
+            self._T.menuButton.TextGUIRendererComponent.FontColor = Color(0.19, 0.10, 0.035, 1)
+            self._T.menuButton.TextGUIRendererComponent.HorizontalAlignment = TextHorizontalAlignmentOption.Center
+            self._T.menuButton.TextGUIRendererComponent.VerticalAlignment = TextVerticalAlignmentOption.Middle
+            self._T.menu.Enable = false
+            for _, name in ipairs({"Codex", "CodexLabel"}) do
+                local entry = self._T.menu:GetChildByName(name, true)
+                if isvalid(entry) then
+                    local link = entry:ConnectEvent(UITouchDownEvent, function(evt)
+                        if evt.TouchId ~= -1 and evt.TouchId < 1 then return end
+                        self:SetMenu(false)
+                        _BaramItemCodex:Open()
+                    end)
+                    table.insert(self._T.menuLinks, {entity=entry, link=link})
+                end
+            end
+            local close = self._T.menu:GetChildByName("Close", true)
+            for _, button in ipairs({self._T.menuButton, close}) do
+                local closing = button == close
+                local link = button:ConnectEvent(UITouchDownEvent, function(evt)
+                    if evt.TouchId ~= -1 and evt.TouchId < 1 then return end
+                    self:SetMenu(not closing and not self._T.menu.Enable)
+                end)
+                table.insert(self._T.menuLinks, {entity=button, link=link})
+            end
+        end
         self._T.infoClick = self._T.infoButton:ConnectEvent(UITouchDownEvent, function(evt) self:ToggleInfo() end)
         self._T.userListButton = self.Entity:GetChildByName("UserListButton", true)
         if isvalid(self._T.userListButton) then
@@ -43,6 +73,7 @@ script BaramHUDController extends Component
             end)
         end
         self._T.infoKey = _InputService:ConnectEvent(KeyDownEvent, function(evt)
+            if evt.key == KeyboardKey.Escape and isvalid(self._T.menu) and self._T.menu.Enable then self:SetMenu(false) return end
             if _BaramChatRelay:IsInputBlocked() then return end
             if evt.key == KeyboardKey.Escape and isvalid(self._T.infoPanel) then self._T.infoPanel.Enable = false end
         end)
@@ -234,6 +265,7 @@ script BaramHUDController extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        if isvalid(self._T.menu) and self._T.menu.Enable and (not _BaramEntryFlow.InWorld or _BaramInput.Mode ~= "menu") then self:SetMenu(false) end
         self:RefreshNickname()
         self:RefreshMapName()
         self:ApplyWorldPresentation()
@@ -319,7 +351,27 @@ script BaramHUDController extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void SetMenu(boolean opened)
+        -- Client-only design menu; feature actions will be connected separately.
+        if not isvalid(self._T.menu) then return end
+        if opened then
+            if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
+            _BaramInput:Close()
+            _BaramInput.Mode = "menu"
+            self._T.menu:GetChildByName("Window").UITransformComponent.anchoredPosition = Vector2(0, 0)
+            self._T.menu:GetChildByName("Window").UITransformComponent.UIScale = Vector3(3, 2.25, 1)
+        elseif _BaramInput.Mode == "menu" then
+            _BaramInput.Mode = ""
+        end
+        self._T.menu.Enable = opened
+        log("[BaramMenu] opened=" .. tostring(opened))
+    end
+
+    @ExecSpace("ClientOnly")
     method void OnEndPlay()
+        for _, link in ipairs(self._T.menuLinks or {}) do
+            if isvalid(link.entity) then link.entity:DisconnectEvent(UITouchDownEvent, link.link) end
+        end
         if isvalid(self._T.userListButton) and self._T.userListClick ~= nil then self._T.userListButton:DisconnectEvent(UITouchDownEvent, self._T.userListClick) end
         if self._T.infoKey ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self._T.infoKey) end
         if isvalid(self._T.infoButton) and self._T.infoClick ~= nil then self._T.infoButton:DisconnectEvent(UITouchDownEvent, self._T.infoClick) end

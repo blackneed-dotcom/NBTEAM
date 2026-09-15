@@ -221,6 +221,9 @@ script BaramNpcServices extends Logic
         self._T.dragMove=self._T.dragArea:ConnectEvent(UITouchDragEvent,self.Drag)
         self._T.dragUp=self._T.dragArea:ConnectEvent(UITouchUpEvent,function(e) self:EndDrag(e.TouchId) end)
         self._T.dragEnd=self._T.dragArea:ConnectEvent(UITouchEndDragEvent,function(e) self:EndDrag(e.TouchId) end)
+        -- Prepare text once while hidden, before the first NPC interaction.
+        for i=1,3 do _BaramProfile:Draw(self._T.window:GetChildByName("Heading"..tostring(i)),"",true) end
+        _BaramProfile:Draw(self._T.window:GetChildByName("Amount"),"",true)
         for _, name in ipairs({"Ok","Top","Quit","Up","Down"}) do
             local key=name
             local e=self._T.window:GetChildByName(key)
@@ -230,6 +233,8 @@ script BaramNpcServices extends Logic
         for i=1,8 do
             local index=i
             local e=self._T.window:GetChildByName("Row"..tostring(i))
+            _BaramProfile:Draw(e:GetChildByName("Label"),"",true)
+            _BaramProfile:Draw(e:GetChildByName("Detail"),"",false)
             local link=e:ConnectEvent(ButtonClickEvent,function() self:Select(index) end)
             table.insert(self._T.links,{entity=e,link=link})
         end
@@ -430,12 +435,10 @@ script BaramNpcServices extends Logic
             local chosen=listing and actual==self.Selected
             row:GetChildByName("Selection").Enable=chosen
             local color=listing and (chosen and Color(169/255,105/255,40/255,1) or Color(234/255,200/255,142/255,1)) or Color(1,1,1,1)
-            for g=1,24 do
-                label:GetChildByName("Glyph"..tostring(g)):GetChildByName("Atlas").SpriteGUIRendererComponent.Color=color
-                details:GetChildByName("Glyph"..tostring(g)):GetChildByName("Atlas").SpriteGUIRendererComponent.Color=color
-            end
             _BaramProfile:Draw(label,text,true)
             _BaramProfile:Draw(details,detail,false)
+            label.TextGUIRendererComponent.FontColor=color
+            details.TextGUIRendererComponent.FontColor=color
             local icon=row:GetChildByName("Icon")
             local item=listing and self.Rows[actual] or nil
             local art=item~=nil and _BaramInput.InventoryImages[tostring(item.id)] or nil

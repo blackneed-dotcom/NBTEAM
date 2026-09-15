@@ -1,0 +1,32 @@
+const {UIBuilder}=require('../../.agents/skills/msw-ui-system/scripts/msw_ui_builder.cjs');
+let b=UIBuilder.read('ui/BaramHUD.ui');
+const root='/ui/BaramHUD/Frame';
+const border='549a77decfa34134ad00907ab23eaa48',button='a32a5a1c1227408abf62963f1a08cce5';
+function spr(p,ruid,pos,size,extra={}){b.sprite(p,{anchor:'top-left',pivot:[0,1],pos,rect_size:size,image_ruid:ruid,color:'#FFFFFF',sprite_type:0,...extra});}
+function txt(p,t,pos,size,fontSize=11){b.text(p,t,{anchor:'top-left',pivot:[0,1],pos,rect_size:size,size:fontSize,color:'#F6E6BD',alignment:4});b.patchComponent(p,'MOD.Core.TextGUIRendererComponent',{Font:'Galmuri11',Overflow:1});}
+if(b.listEntities().some(e=>e.path===root+'/MenuButton')) b.remove(root+'/MenuButton');
+if(b.listEntities().some(e=>e.path===root+'/MenuOverlay')) b.remove(root+'/MenuOverlay');
+spr(root+'/MenuButton',border,[365,-454],[56,22],{raycast:true});
+b.addComponent(root+'/MenuButton','MOD.Core.UITouchReceiveComponent');
+b.patch(root+'/ChatEntry',{rect_size:[348,18]});
+b.patch(root+'/ChatEntry/Input',{rect_size:[301,12]});
+b.patch(root+'/ChatHint',{rect_size:[345,12]});
+b.write('ui/BaramHUD.ui');
+b=new UIBuilder('BaramMenu');
+b.group('/ui/BaramMenu',{group_order:100});
+const layer='/ui/BaramMenu/MenuOverlay',win=layer+'/Window';
+spr(layer,border,[0,0],[1920,1080],{anchor:'stretch',pivot:[0.5,0.5],alpha:0,raycast:true});
+b.patch(layer,{enable:false,display_order:1000});
+spr(win,border,[0,0],[300,180],{anchor:'center',pivot:[0.5,0.5],raycast:true});
+b.patchComponent(win,'MOD.Core.UITransformComponent',{UIScale:{x:3,y:2.25,z:1}});
+txt(win+'/Title','메뉴',[20,-16],[260,22],13);
+spr(win+'/DragArea',border,[8,0],[284,36],{alpha:0,raycast:true});
+b.addComponent(win+'/DragArea','MOD.Core.UITouchReceiveComponent');
+b.addComponent(win,'script.BaramDialogDrag');
+const entries=[['MyInfo','내정보','69f75049df5c4ed9bbf97e9e2f2a5fef',26,26],['Warp','워프','046575096555496487df4560c1044ead',38,28],['Codex','도감','2b1a48befd7f4ceb967132a9508cad84',38,28],['Settings','설정','fd6663ce5da040e3b60faf1483e4da70',26,26]];
+entries.forEach(([key,label,ruid,w,h],i)=>{let x=24+i*66;spr(win+'/'+key,ruid,[x+(54-w)/2,-62],[w,h]);txt(win+'/'+key+'Label',label,[x,-100],[54,20]);});
+spr(win+'/Close',border,[108,-136],[84,26],{raycast:true});
+b.addComponent(win+'/Close','MOD.Core.UITouchReceiveComponent');
+txt(win+'/Close/Label','닫기',[0,0],[84,26]);
+b.write('ui/BaramMenu.ui');
+require('./apply-redesign.cjs');

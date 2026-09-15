@@ -354,6 +354,8 @@ script BaramProfile extends Logic
             data["aux" .. tostring(i)] = accessory ~= nil and accessory.id or 0
         end
         data.jobRank = b.state.jobRank or 0
+        -- The same permanent attack bonus is added by BaramWorld.Attack.
+        data.attack = _BaramItemCodex:AttackBonus(b.state)
         self:Receive(userId, serial, _HttpService:JSONEncode(data), caller)
     end
 
@@ -374,6 +376,7 @@ script BaramProfile extends Logic
             local data = _HttpService:JSONDecode(raw)
             self:Text("Name", data.name)
             self._T.profileData = data
+            self:UpdateCombatStats(0, data.attack or 0, 0, 0, 0, 0)
             self.ExchangeAllowed = data.exchange ~= false
             self.GroupAllowed = data.group ~= false
             self:RefreshList()
@@ -422,7 +425,7 @@ script BaramProfile extends Logic
 
     @ExecSpace("ClientOnly")
     method void UpdateCombatStats(number combatPower, number attack, number defense, number accuracy, number evasion, number critical)
-        -- Accept calculated values later; the profile currently supplies zero for each stat.
+        -- Attack is supplied by the server; unimplemented stats remain zero.
         self._T.combatValues = {combatPower, attack, defense, accuracy, evasion, critical}
         if not self.ShowCombatStats then return end
         self:Text("WeaponText", "전투력 : " .. tostring(combatPower))
@@ -575,9 +578,13 @@ script BaramProfile extends Logic
             local first = field:GetChildByName("Glyph1")
             if isvalid(first) then renderer.FontColor = first:GetChildByName("Atlas").SpriteGUIRendererComponent.Color end
         end
-        for i = 1, 32 do
-            local glyph = field:GetChildByName("Glyph" .. tostring(i))
-            if isvalid(glyph) then glyph.Enable = false end
+        if self._T.textFields == nil then self._T.textFields = {} end
+        if self._T.textFields[field.Id] ~= field then
+            for i = 1, 32 do
+                local glyph = field:GetChildByName("Glyph" .. tostring(i))
+                if isvalid(glyph) then glyph.Enable = false end
+            end
+            self._T.textFields[field.Id] = field
         end
         renderer.Font = "Galmuri11"
         renderer.FontSize = 11

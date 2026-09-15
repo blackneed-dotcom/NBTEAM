@@ -1,0 +1,10 @@
+{
+  "archive": "bint.dat",
+  "palette": "NPAL6.PAL",
+  "window": {"source": "DLGMSG1.EPF", "palette": "NPAL8.PAL", "ruid": "4924358c7b674d64a7166b5f224b0e31"},
+  "button": {"source": "DLGMSG1.EPF", "palette": "NPAL8.PAL", "crop": [44,196,72,16], "ruid": "42f935a1778245afb0d9636bc0d7b8fe"},
+  "myInfo": {"source": "LOOKBTN.EPF", "frame": 0, "ruid": "69f75049df5c4ed9bbf97e9e2f2a5fef"},
+  "warp": {"source": "MISC.DAT/Item.epf", "frame": 246, "itemId": 10000, "ruid": "f5b7220db9444579803606b1e9c1d84f"},
+  "codex": {"source": "MISC.DAT/Item.epf", "frame": 2080, "itemId": 10526, "dye": 5, "ruid": "934837314e7b4505a6c2ba9a817edc9f"},
+  "settings": {"source": "LOOKBTN.EPF", "frame": 3, "ruid": "fd6663ce5da040e3b60faf1483e4da70"}
+}
