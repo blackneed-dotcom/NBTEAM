@@ -551,8 +551,8 @@ script BaramInput extends Logic
             return
         end
         if key == KeyboardKey.F4 then self.MapScroll = not self.MapScroll self:Notice(self.MapScroll and "화면 따라가기 켬" or "화면 따라가기 끔") return end
-        if key == KeyboardKey.F5 then self.HearWhispers = not self.HearWhispers self:Notice(self.HearWhispers and "귓속말 듣기 켬" or "귓속말 듣기 끔") return end
-        if key == KeyboardKey.F6 then self.HearShouts = not self.HearShouts self:Notice(self.HearShouts and "외치기 듣기 켬" or "외치기 듣기 끔") return end
+        if key == KeyboardKey.F5 then self.HearWhispers = not self.HearWhispers _BaramChatChannels:SetListening(self.HearWhispers, self.HearShouts) self:Notice(self.HearWhispers and "귓속말듣기  : ON" or "귓속말듣기  : OFF") return end
+        if key == KeyboardKey.F6 then self.HearShouts = not self.HearShouts _BaramChatChannels:SetListening(self.HearWhispers, self.HearShouts) self:Notice(self.HearShouts and "외치기듣기  : ON" or "외치기듣기  : OFF") return end
         if key == KeyboardKey.F12 then self.FastWalk = not self.FastWalk self:Notice(self.FastWalk and "빠른 이동 켬" or "빠른 이동 끔") return end
         if self.Mode ~= "" then
             if key == KeyboardKey.I then self:Close() end
@@ -601,11 +601,13 @@ script BaramInput extends Logic
         elseif key == KeyboardKey.Equals or key == KeyboardKey.Plus or (key == KeyboardKey.Z and shift) or (key == KeyboardKey.C and shift) then
             self:OpenSkills()
         elseif key == KeyboardKey.Q then self:BeginConfirmation("quit")
-        elseif key == KeyboardKey.Quote then
+        elseif key == KeyboardKey.Quote or key == KeyboardKey.DoubleQuote or key == KeyboardKey.Exclaim or (key == KeyboardKey.Alpha1 and shift) then
             local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
             ---@type BaramChatHistory
             local chat = root:GetComponent("script.BaramChatHistory")
-            chat:OpenInput()
+            if key == KeyboardKey.Exclaim or key == KeyboardKey.Alpha1 then chat:OpenChannel("shout")
+            elseif key == KeyboardKey.DoubleQuote or shift then chat:OpenChannel("whisper")
+            else chat:OpenInput() end
         end
         local direction = -1
         if key == KeyboardKey.UpArrow then direction = 0 elseif key == KeyboardKey.RightArrow then direction = 1 elseif key == KeyboardKey.DownArrow then direction = 2 elseif key == KeyboardKey.LeftArrow then direction = 3 end

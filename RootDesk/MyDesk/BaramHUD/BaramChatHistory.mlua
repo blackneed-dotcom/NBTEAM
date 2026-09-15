@@ -96,6 +96,17 @@ script BaramChatHistory extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void OpenChannel(string channel)
+        -- Original STR.RES: quote=ordinary, double quote=whisper, exclamation=shout.
+        self:OpenInput()
+        if not _BaramChatRelay.IsEditing then return end
+        self.InputPurpose = channel
+        if channel == "whisper" then self.InputField.PlaceHolder = "귓속말할 사람이름 > 내용"
+        elseif channel == "shout" then self.InputField.PlaceHolder = "외치기"
+        elseif channel == "clan" then self.InputField.PlaceHolder = "문파말" end
+    end
+
+    @ExecSpace("ClientOnly")
     method void CloseInput()
         -- Disabling the input releases focus; suppress the closing key briefly.
         self.InputPurpose = ""
@@ -127,11 +138,15 @@ script BaramChatHistory extends Component
             return
         end
         log("[BaramChat] submit bytes=" .. tostring(#text))
+        if purpose == "whisper" then text = "/귓속말 " .. text
+        elseif purpose == "shout" then text = "/외치기 " .. text
+        elseif purpose == "clan" then text = "/문파말 " .. text end
         _BaramChatRelay:RequestMessage(text)
     end
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        if self._T.dirty then self._T.dirty = false self:RefreshLines() end
         -- Resolve delayed input focus and clear local history when changing maps.
         local player = _UserService.LocalPlayer
         if isvalid(player) and isvalid(player.CurrentMap) then
@@ -147,6 +162,7 @@ script BaramChatHistory extends Component
         if self._T.closePending then self:CloseInput() end
         if self._T.focusPending and isvalid(self.InputField) then
             if _InputService:IsKeyPressed(KeyboardKey.Return) or _InputService:IsKeyPressed(KeyboardKey.KeypadEnter) then return end
+            if _InputService:IsKeyPressed(KeyboardKey.Quote) or _InputService:IsKeyPressed(KeyboardKey.DoubleQuote) or _InputService:IsKeyPressed(KeyboardKey.Exclaim) or _InputService:IsKeyPressed(KeyboardKey.Alpha1) then return end
             if not self._T.focusRequested then
                 self.InputField:ActivateInputField()
                 self._T.focusRequested = true
@@ -159,6 +175,11 @@ script BaramChatHistory extends Component
 
     @ExecSpace("ClientOnly")
     method void AppendMessage(string senderName, string message)
+        self:AppendColored(senderName, message, false)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void AppendColored(string senderName, string message, boolean shout)
         -- Wrap Unicode text to fit the original fixed-width rows.
         if message == nil or message == "" then return end
         if self._T.messages == nil then return end
@@ -167,21 +188,26 @@ script BaramChatHistory extends Component
         if sender ~= "" then text = sender .. ": " .. message end
         local first = self._T.rows[1]
         if not isvalid(first) then return end
-        local line = ""
-        for _, code in utf8.codes(text) do
-            local character = utf8.char(code)
-            local candidate = line .. character
-            if line ~= "" and first.TextGUIRendererComponent:GetPreferredWidth(candidate) > 404 then
-                table.insert(self._T.messages, line)
-                line = character
-            else
-                line = candidate
+        -- Binary-search full lines: preserve font kerning without measuring every growing prefix.
+        local chars = {}
+        for _, code in utf8.codes(text) do table.insert(chars, utf8.char(code)) end
+        local start = 1
+        while start <= #chars do
+            local low = start
+            local high = #chars
+            local finish = start
+            while low <= high do
+                local mid = math.floor((low + high) / 2)
+                local candidate = table.concat(chars, "", start, mid)
+                if first.TextGUIRendererComponent:GetPreferredWidth(candidate) <= 404 then
+                    finish = mid low = mid + 1
+                else high = mid - 1 end
             end
+            table.insert(self._T.messages, {text = table.concat(chars, "", start, finish), shout = shout})
+            start = finish + 1
         end
-        if line ~= "" then table.insert(self._T.messages, line) end
         while #self._T.messages > 5 do table.remove(self._T.messages, 1) end
-        self:RefreshLines()
-        log("[BaramChat] displayed rows=" .. tostring(#self._T.messages))
+        self._T.dirty = true
     end
 
     @ExecSpace("ClientOnly")
@@ -197,7 +223,14 @@ script BaramChatHistory extends Component
         if self._T.rows == nil then return end
         for i = 1, 5 do
             local row = self._T.rows[i]
-            if isvalid(row) then row.TextGUIRendererComponent.Text = self._T.messages[i] or "" end
+            if isvalid(row) then
+                local entry = self._T.messages[i]
+                local text = entry ~= nil and entry.text or ""
+                local color = entry ~= nil and entry.shout and Color(1,1,0,1) or Color.black
+                local renderer = row.TextGUIRendererComponent
+                if renderer.Text ~= text then renderer.Text = text end
+                if renderer.FontColor ~= color then renderer.FontColor = color end
+            end
         end
     end
 

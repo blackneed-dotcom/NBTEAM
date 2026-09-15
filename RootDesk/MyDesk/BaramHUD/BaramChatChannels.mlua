@@ -1,0 +1,122 @@
+@Logic
+script BaramChatChannels extends Logic
+    @ExecSpace("ServerOnly")
+    method void OnBeginPlay()
+        -- Membership is supplied only by a future authoritative clan manager.
+        self._T.clans = {}
+        self._T.listening = {}
+        self._T.sent = {}
+    end
+
+    method table Parse(string text)
+        -- Explicit channel commands share the existing chat input; unknown commands are rejected.
+        local channel = "say"
+        local target = ""
+        if string.sub(text, 1, 1) == "!" then channel = "shout" text = string.sub(text, 2)
+        elseif string.sub(text, 1, 1) == "/" then
+            local command, rest = string.match(text, "^(/%S+)%s*(.*)$")
+            if command == "/외치기" then channel = "shout" text = rest
+            elseif command == "/문파말" then channel = "clan" text = rest
+            elseif command == "/귓속말" then
+                channel = "whisper"
+                target, text = string.match(rest, "^(%S+)%s+(.+)$")
+                if target == nil then return {error = "사용법: /귓속말 이름 내용"} end
+            else return {error = "채팅: /외치기 /귓속말 /문파말"} end
+        end
+        text = string.match(text, "^%s*(.-)%s*$") or ""
+        return {channel = channel, target = target, text = text}
+    end
+
+    @ExecSpace("Server")
+    method void SetListening(boolean whispers, boolean shouts)
+        -- A caller can change only their own receiving preferences.
+        self._T.listening[senderUserId] = {whispers = whispers, shouts = shouts}
+    end
+
+    @ExecSpace("ServerOnly")
+    method void SetClanMembership(string userId, string clanId)
+        -- Integration hook, never a client-callable method; no membership is invented here.
+        self._T.clans[userId] = clanId ~= "" and clanId or nil
+    end
+
+    method boolean Eligible(string channel, string sender, string recipient, boolean sameMap, string target, string senderClan, string recipientClan, boolean whispers, boolean shouts)
+        -- Pure routing predicate used both by delivery and isolated regression tests.
+        if channel == "whisper" then return recipient == sender or (recipient == target and whispers) end
+        if channel == "clan" then return senderClan ~= "" and senderClan == recipientClan end
+        if channel == "shout" then return sameMap and (recipient == sender or shouts) end
+        return channel == "say" and sameMap
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Send(string userId, string raw)
+        -- Never trust a supplied nickname, clan, target ID, or player record from the client.
+        local player = _UserService:GetUserEntityByUserId(userId)
+        local record = _BaramWorld:GetRecord(userId)
+        if not isvalid(player) or not isvalid(player.CurrentMap) or record == nil or not record.active then return end
+        if raw == nil or #raw > 768 or utf8.len(raw) == nil then return end
+        local parsed = self:Parse(raw)
+        if parsed.error ~= nil then _BaramChatRelay:ReceiveNotice(parsed.error, userId) return end
+        local text, replacements = string.gsub(parsed.text, "%c", " ")
+        if text == "" or utf8.len(text) > 120 then return end
+        local now = _BaramWorld.Clock
+        if now - (self._T.sent[userId] or -10) < 0.5 then return end
+        self._T.sent[userId] = now
+        local channel = parsed.channel
+        local clan = self._T.clans[userId] or ""
+        if channel == "clan" and clan == "" then _BaramChatRelay:ReceiveNotice("문파에 가입되어 있지 않습니다.", userId) return end
+        local targetId = ""
+        if channel == "whisper" then
+            if record.state.level < 2 then _BaramChatRelay:ReceiveNotice("귓속말은 레벨 2 부터", userId) return end
+            local own = self._T.listening[userId]
+            if own ~= nil and not own.whispers then _BaramChatRelay:ReceiveNotice("귓속말 거부 상태입니다.", userId) return end
+            for id, candidate in pairs(_UserService.UserEntities) do
+                local other = _BaramWorld:GetRecord(id)
+                if isvalid(candidate) and candidate.PlayerComponent.Nickname == parsed.target and other ~= nil and other.active then targetId = id break end
+            end
+            if targetId == "" then _BaramChatRelay:ReceiveNotice("현재 서버에서 상대를 찾을 수 없습니다.", userId) return end
+            local preference = self._T.listening[targetId]
+            if preference ~= nil and not preference.whispers then _BaramChatRelay:ReceiveNotice(parsed.target .. "님은 귓속말 거부 중입니다.", userId) return end
+        end
+        local delivered = 0
+        for id, recipient in pairs(_UserService.UserEntities) do
+            local other = _BaramWorld:GetRecord(id)
+            if isvalid(recipient) and isvalid(recipient.CurrentMap) and other ~= nil and other.active then
+                local prefs = self._T.listening[id] or {whispers = true, shouts = true}
+                if self:Eligible(channel, userId, id, recipient.CurrentMap == player.CurrentMap, targetId, clan, self._T.clans[id] or "", prefs.whispers, prefs.shouts) then
+                    self:Receive(channel, recipient.CurrentMap.Id, userId, player.PlayerComponent.Nickname, parsed.target, text, id)
+                    delivered = delivered + 1
+                end
+            end
+        end
+        -- Do not log message bodies, particularly private whispers.
+        log("[BaramChannels] channel=" .. channel .. " recipients=" .. tostring(delivered))
+    end
+
+    @ExecSpace("Client")
+    method void Receive(string channel, string mapId, string speakerId, string nickname, string targetName, string text)
+        -- Only the addressed recipient gets whispers/clan chat; ignore stale map deliveries.
+        local player = _UserService.LocalPlayer
+        if not _BaramEntryFlow.InWorld or not isvalid(player) or not isvalid(player.CurrentMap) or player.CurrentMap.Id ~= mapId then return end
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+        if not isvalid(root) then return end
+        ---@type BaramChatHistory
+        local history = root:GetComponent("script.BaramChatHistory")
+        if not isvalid(history) then return end
+        local label = nickname
+        if channel == "shout" then label = "[외치기] " .. nickname
+        elseif channel == "whisper" then
+            label = "[귓속말] " .. nickname
+            if speakerId == player.PlayerComponent.UserId then label = "[귓속말→" .. targetName .. "]" end
+        elseif channel == "clan" then label = "[문파말] " .. nickname end
+        history:AppendColored(label, text, channel == "shout")
+        if channel == "say" or channel == "shout" then _BaramBubbles:Show(speakerId, text, channel == "shout") end
+    end
+
+    @ExecSpace("ServerOnly")
+    @EventSender("Service", "UserService")
+    handler HandleLeave(UserLeaveEvent event)
+        self._T.clans[event.UserId] = nil
+        self._T.listening[event.UserId] = nil
+        self._T.sent[event.UserId] = nil
+    end
+end
