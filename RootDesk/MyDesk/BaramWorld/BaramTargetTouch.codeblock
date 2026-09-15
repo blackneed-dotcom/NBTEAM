@@ -1,7 +1,7 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://a521f1df-5700-442b-8b96-56fc2cace2de",
+  "EntryKey": "codeblock://3272fa19-3073-42e7-9838-6fd02075b58d",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
@@ -22,10 +22,10 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "a521f1df-5700-442b-8b96-56fc2cace2de",
+      "Id": "3272fa19-3073-42e7-9838-6fd02075b58d",
       "Language": 1,
-      "Name": "BaramSpellData",
-      "Type": 5,
+      "Name": "BaramTargetTouch",
+      "Type": 1,
       "Source": 0,
       "Target": null
     }

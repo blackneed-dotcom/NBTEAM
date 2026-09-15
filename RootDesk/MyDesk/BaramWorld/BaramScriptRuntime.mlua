@@ -10,6 +10,16 @@
 script BaramScriptRuntime extends Logic
     @ExecSpace("ServerOnly")
     method void OnBeginPlay()
+        self:Ensure()
+    end
+
+    -- OnBeginPlay 에서만 차리면 로직끼리 차려지는 순서에 걸릴 수 있고, 그때 난 오류는
+    -- 아무데도 안 보여서 "눌러도 아무 반응 없음"이 된다. 쓸 때 다시 확인하고,
+    -- 실패하면 왜 실패했는지 남긴다.
+    @ExecSpace("ServerOnly")
+    method boolean Ensure()
+        if self._T.S ~= nil then return true end
+        if self._T.failed ~= nil then return false end
         self._T.globals = {}        -- $변수 (서버 전역)
         self._T.accounts = {}       -- userId -> #변수 (계정)
         self._T.objects = {}        -- 정수 아디 -> 대상
@@ -17,12 +27,38 @@ script BaramScriptRuntime extends Logic
         self._T.creatureIds = {}    -- 엔티티 Id -> 아디
         self._T.nextId = 0
         self._T.unknown = {}
-        self._T.R = self:MakeR()
-        self._T.B = self:MakeB()
-        self._T.S = _BaramSpellScripts:Build(self._T.R, self._T.B)
-        local count = 0
-        for _ in pairs(self._T.S) do count = count + 1 end
-        log("[BaramScript] 스크립트 " .. tostring(count) .. "개 준비됨")
+        local ok, err = pcall(function()
+            self._T.R = self:MakeR()
+            self._T.B = self:MakeB()
+            self._T.S = _BaramSpellScripts:Build(self._T.R, self._T.B)
+        end)
+        if not ok or self._T.S == nil then
+            self._T.failed = tostring(err)
+            self._T.S = nil
+            log_error("[BaramScript] 차리기 실패: " .. self._T.failed)
+            return false
+        end
+        self._T.count = 0
+        for _ in pairs(self._T.S) do self._T.count = self._T.count + 1 end
+        log("[BaramScript] 스크립트 " .. tostring(self._T.count) .. "개 준비됨")
+        return true
+    end
+
+    -- 게임 안에서 상태를 볼 수 있어야 한다. 서버를 열어놓으면 log 는 안 보인다.
+    @ExecSpace("ServerOnly")
+    method void Status(string userId)
+        if not self:Ensure() then
+            _BaramWorld:Notice(userId, "마법 엔진 차리기 실패: " .. tostring(self._T.failed))
+            return
+        end
+        local r = _BaramWorld:GetRecord(userId)
+        local target = "없음"
+        if r ~= nil and r.target ~= nil then
+            local o = self:Object(r.target)
+            if o ~= nil then target = self._T.B["get_name"]({}, r.target) end
+        end
+        _BaramWorld:Notice(userId, "마법 엔진 정상. 스크립트 " .. tostring(self._T.count)
+            .. "개, 주문표 " .. tostring(#_BaramSpellData.Spells) .. "개. 지금 대상: " .. target)
     end
 
     -- ------------------------------------------------------------------
@@ -126,13 +162,26 @@ script BaramScriptRuntime extends Logic
     method void Cast(string userId, string spellName)
         local r = _BaramWorld:GetRecord(userId)
         if r == nil or not r.active or r.state.hp <= 0 then return end
+        if not self:Ensure() then
+            _BaramWorld:Notice(userId, "마법 엔진이 안 올라왔습니다: " .. tostring(self._T.failed))
+            return
+        end
         local spell = _BaramSpellData:ByName(spellName)
         if spell == nil then
             _BaramWorld:Notice(userId, "그런 주문이 없습니다: " .. spellName)
             return
         end
         if spell.cast == nil or spell.cast == "-" then
-            _BaramWorld:Notice(userId, spellName .. " 은(는) 아직 스크립트가 없습니다.")
+            _BaramWorld:Notice(userId, spellName .. " 은(는) 주문서에 스크립트가 없습니다.")
+            return
+        end
+        if self._T.S[spell.cast] == nil then
+            _BaramWorld:Notice(userId, spellName .. " 은(는) 아직 안 옮겼습니다. (" .. spell.cast .. ")")
+            return
+        end
+        -- type 2 는 대상을 골라서 쓰는 주문이다. 대상 없이 쏘면 원본에서도 안 나간다.
+        if spell.kind == 2 and self:LiveTarget(userId) == 0 then
+            _BaramWorld:Notice(userId, spellName .. " 은(는) 대상을 골라야 합니다.")
             return
         end
         local until_ = (r.cooldown ~= nil) and r.cooldown[spell.id] or nil
@@ -143,6 +192,68 @@ script BaramScriptRuntime extends Logic
         self:Run(spell.cast, userId)
         _BaramWorld:Changed(userId)
         _BaramWorld:Snapshot(userId)
+    end
+
+    -- 아직 살아있고 같은 맵에 있는 대상만 대상이다. 죽거나 멀어지면 저절로 풀린다.
+    @ExecSpace("ServerOnly")
+    method integer LiveTarget(string userId)
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or r.target == nil then return 0 end
+        local o = self:Object(r.target)
+        if o == nil then r.target = nil return 0 end
+        if o.kind == 2 then
+            if o.creature.Hp <= 0 or o.creature.MapId ~= r.state.map then r.target = nil return 0 end
+        else
+            local other = _BaramWorld:GetRecord(o.userId)
+            if other == nil or not other.active or other.state.hp <= 0
+                or other.state.map ~= r.state.map then r.target = nil return 0 end
+        end
+        return r.target
+    end
+
+    -- 클라이언트가 몹을 눌러서 대상을 정한다.
+    @ExecSpace("Server")
+    method void SelectTarget(integer mapId, integer x, integer y)
+        local userId = senderUserId
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or not r.active or r.state.map ~= mapId then return end
+        if not self:Ensure() then return end
+        local id = self:ObjectAt(mapId, x, y, userId)
+        if id == 0 then
+            r.target = nil
+            _BaramWorld:Notice(userId, "대상을 풀었습니다.")
+            return
+        end
+        r.target = id
+        _BaramWorld:Notice(userId, "대상: " .. self._T.B["get_name"]({}, id))
+    end
+
+    -- 눌러서 고르는 게 안 될 때를 위한 길. 가장 가까운 산 몹을 잡는다.
+    @ExecSpace("ServerOnly")
+    method void TargetNearest(string userId)
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or not r.active then return end
+        if not self:Ensure() then return end
+        local canvas = _BaramWorld:Stage(r.state.map)
+        if not isvalid(canvas) then return end
+        local best = nil
+        local bestRange = 99
+        for _, child in pairs(canvas.Children) do
+            ---@type BaramCreature
+            local creature = child:GetComponent("script.BaramCreature")
+            if isvalid(creature) and creature.Hp > 0 and creature.MapId == r.state.map then
+                local range = math.max(math.abs(creature.GridX - r.state.x),
+                                       math.abs(creature.GridY - r.state.y))
+                if range < bestRange then bestRange = range best = creature end
+            end
+        end
+        if best == nil then
+            _BaramWorld:Notice(userId, "근처에 대상이 없습니다.")
+            return
+        end
+        r.target = self:CreatureObjId(best)
+        _BaramWorld:Notice(userId, "대상: " .. self._T.B["get_name"]({}, r.target)
+            .. " (" .. tostring(bestRange) .. "칸)")
     end
 
     @ExecSpace("ServerOnly")
@@ -327,15 +438,6 @@ script BaramScriptRuntime extends Logic
         local B = {}
         local this = self
 
-        -- 여기 없는 이름을 불러도 터지지 않고 0 을 돌려준다. 어떤 게 모자란지는
-        -- 기록에 한 번씩만 남으니까, 주문을 늘리면서 그때그때 채우면 된다.
-        setmetatable(B, {__index = function(_, name)
-            return function()
-                this:Missing(name)
-                return 0
-            end
-        end})
-
         local function state(id)
             local r = this:RecordOf(id)
             if r == nil then return nil end
@@ -416,8 +518,9 @@ script BaramScriptRuntime extends Logic
             if s == nil then return 0 end
             return this:ObjectAt(s.map, x, y, nil)
         end
-        -- 대상을 고르는 주문은 아직 고르는 창이 없어서 앞칸으로 대신한다.
-        B["script_target"] = function(C, sd) return B["obj_getfront"](C) end
+        -- 눌러서 고른 대상. 앞칸으로 대신하면 안 된다 — 백열장처럼 7칸까지 닿는
+        -- 주문이 항상 1칸짜리가 돼서 원본과 다른 주문이 된다.
+        B["script_target"] = function(C, sd) return this:LiveTarget(this:UserOf(sd)) end
 
         -- --- 몸 ---
         B["get_hp"] = function(C, id)
@@ -580,6 +683,45 @@ script BaramScriptRuntime extends Logic
             return 0
         end
         B["gettime"] = function(C, part, extra) return 0 end
+
+        -- 원본 주문 전체가 부르는 이름 목록이다. 아직 안 만든 건 0 을 돌려주는
+        -- 빈 함수로 채운다. 안 채우면 "nil 을 부르려 했다"로 스크립트가 통째로
+        -- 죽어서 아무 반응이 없는데, 이렇게 두면 주문은 나가고 뭐가 모자란지만
+        -- 기록에 한 번씩 남는다.
+        local names = {
+            "action", "additem", "broadcast", "canmove", "checkspell", "clan_exist",
+            "damage", "deletearray", "dropitem", "effect", "get_ac", "get_clanname",
+            "get_clantitle", "get_dam", "get_damrate", "get_depositmoney", "get_downrate", "get_equipitem",
+            "get_equipitem_name", "get_exp", "get_gender", "get_gmlevel", "get_grace", "get_hit",
+            "get_horse", "get_hp", "get_itemlist", "get_job", "get_joblevel", "get_jobname",
+            "get_l_maxdam", "get_l_mindam", "get_level", "get_mapheight", "get_mapid", "get_mapname",
+            "get_mapwidth", "get_maxhp", "get_maxmp", "get_might", "get_mobac", "get_mobac1",
+            "get_mobhp", "get_mobid", "get_mobmaxhp", "get_mobname", "get_mobx", "get_moby",
+            "get_money", "get_mp", "get_name", "get_nation", "get_parentmap", "get_pass",
+            "get_purehp", "get_puremp", "get_s_maxdam", "get_s_mindam", "get_side", "get_spellinterval",
+            "get_state", "get_title", "get_will", "get_x", "get_y", "getarraysize",
+            "gettime", "id2sd", "isequip", "ismapoption", "istype", "mapheight",
+            "mapid", "mapwidth", "message", "mobspellaether", "mobspellaethered", "move",
+            "myid", "mysd", "name2id", "name2itemid", "name2mapid", "name2mobid",
+            "name2sd", "name2spellid", "obj_getfront", "obj_getxy", "objid", "party",
+            "party_member", "partymax", "rand", "runscript", "say", "script_input",
+            "script_target", "sd2id", "set_ac", "set_cover", "set_dam", "set_damagedrate",
+            "set_damrate", "set_damstate", "set_detect", "set_disguiselook", "set_downrate", "set_hit",
+            "set_horse", "set_hp", "set_maxhp", "set_might", "set_mobac", "set_mp",
+            "set_side", "set_siya", "set_spellinterval", "set_state", "set_will", "set_x",
+            "set_xy", "set_y", "setarray", "showgage", "sound", "spellaether",
+            "spellaethered", "spellcast", "spelldelay", "spelluncast", "strcmp", "updateallpc",
+            "updatelook", "updatelookpc", "updatestatus", "updatexy", "validid", "warp",
+        }
+        for _, name in ipairs(names) do
+            if B[name] == nil then
+                local missing = name
+                B[name] = function()
+                    this:Missing(missing)
+                    return 0
+                end
+            end
+        end
 
         return B
     end

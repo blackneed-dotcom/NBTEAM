@@ -2,6 +2,7 @@
 """고른 주문을 메이플월드 mlua 파일로 뽑는다."""
 import json
 import os
+import uuid
 import sys
 import build
 import emit
@@ -23,6 +24,25 @@ FOOTER = '''    @ExecSpace("ServerOnly")
     end
 end
 '''
+
+
+def write_codeblock(path, name, kind):
+    guid = str(uuid.uuid4())
+    data = {
+        "Id": "", "GameId": "", "EntryKey": "codeblock://" + guid,
+        "ContentType": "x-mod/codeblock", "Content": "",
+        "Usage": 0, "UsePublish": 1, "UseService": 0,
+        "CoreVersion": "26.7.0.0", "StudioVersion": "", "DynamicLoading": 0,
+        "ContentProto": {"Use": "Json", "Json": {
+            "CoreVersion": {"Major": 0, "Minor": 2},
+            "ScriptVersion": {"Major": 1, "Minor": 1},
+            "Description": "", "Id": guid, "Language": 1,
+            "Name": name, "Type": kind, "Source": 0, "Target": None,
+        }},
+    }
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write("\n")
 
 
 def main(entries, out_path):
@@ -61,9 +81,11 @@ def main(entries, out_path):
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(text)
 
+    # .codeblock 은 이름만 적어선 안 된다. 메이커가 못 읽으면 스크립트가 아예
+    # 등록이 안 돼서 _BaramSpellScripts 가 nil 이 된다. Type 5 가 Logic, 1 이 Component.
     code = os.path.splitext(out_path)[0] + ".codeblock"
-    with open(code, "w", encoding="utf-8") as f:
-        json.dump({"Name": "BaramSpellScripts"}, f, ensure_ascii=False, indent=4)
+    if not os.path.exists(code) or os.path.getsize(code) < 200:
+        write_codeblock(code, "BaramSpellScripts", 5)
 
     print("블록 %d개 -> %s (%d줄)" % (len(order) - len(skipped), out_path, len(text.split("\n"))))
     if skipped:
