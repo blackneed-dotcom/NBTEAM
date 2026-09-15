@@ -221,10 +221,50 @@ script BaramWorld extends Logic
 
     @ExecSpace("Server")
     method void Move(integer direction, boolean turnOnly)
-        local userId = senderUserId
+        self:QueueMove(senderUserId,direction,turnOnly)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void QueueMove(string userId, integer direction, boolean turnOnly)
+        local r = self._T.users[userId]
+        if r ~= nil and r.active and direction>=0 and direction<=3 then
+            -- One outstanding step only. Absorb short arrival jitter without bypassing cooldown.
+            if r.queuedMove~=nil then return end
+            local remaining=(r.nextMove or 0)-self.Clock
+            if remaining>0 and remaining<=0.12 then
+                r.queuedMove={direction=direction,turnOnly=turnOnly,map=r.state.map,x=r.state.x,y=r.state.y}
+                if self._T.moveQueue==nil then self._T.moveQueue={} end
+                self._T.moveQueue[userId]=r
+                return
+            end
+        end
+        self:CompleteMove(userId,direction,turnOnly)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void CompleteMove(string userId, integer direction, boolean turnOnly)
         local result = self:MoveChecked(userId, direction, turnOnly)
         local r = self._T.users[userId]
         if r ~= nil then self:MoveReply(result, r.state.map, r.state.x, r.state.y, userId) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void DrainMoves()
+        -- Revalidate after the wait: no queued steps may cross teleports or character changes.
+        for userId,r in pairs(self._T.moveQueue or {}) do
+            local step=r.queuedMove
+            if self._T.users[userId]~=r or step==nil then
+                self._T.moveQueue[userId]=nil
+            elseif not r.active or r.leaving or r.state.map~=step.map or r.state.x~=step.x or r.state.y~=step.y then
+                r.queuedMove=nil
+                self._T.moveQueue[userId]=nil
+                self:MoveReply(0,r.state.map,r.state.x,r.state.y,userId)
+            elseif self.Clock>=r.nextMove then
+                r.queuedMove=nil
+                self._T.moveQueue[userId]=nil
+                self:CompleteMove(userId,step.direction,step.turnOnly)
+            end
+        end
     end
 
     @ExecSpace("Client")
@@ -253,10 +293,10 @@ script BaramWorld extends Logic
         if not isvalid(player) then return 0 end
         ---@type BaramPlayerVisual
         local visual = player:GetComponent("script.BaramPlayerVisual")
-        -- Original 0x4D89C0: an idle direction change turns before walking.
-        local changedDirection = visual.Facing ~= direction * 3
+        -- A movement request turns and walks in one authoritative step.
+        -- Explicit Shift+direction still turns in place.
         visual.Facing = direction * 3
-        if turnOnly or changedDirection then visual.Step = 0 return 2 end
+        if turnOnly then visual.Step = 0 return 2 end
         local dx = {0, 1, 0, -1}
         local dy = {-1, 0, 1, 0}
         local s = r.state
@@ -507,7 +547,8 @@ script BaramWorld extends Logic
             if data.type == 6 and item.durability > 1 then item.durability = item.durability - 1 else self:RemoveItem(s, slot, 1) end
             self:Notice(userId, data.name .. " 사용")
         elseif action == "drop" or action == "dropall" or action == "throw" then
-            if data.dropAllowed ~= 1 or s.equip == slot then self:Notice(userId, "장비를 벗은 뒤 버려 주세요.") return end
+            if data.dropAllowed ~= 1 then self:Notice(userId, "버릴 수 없는 아이템입니다.") return end
+            if s.equip == slot then self:Notice(userId, "장비를 벗은 뒤 버려 주세요.") return end
             local count = action == "dropall" and item.count or 1
             local x = s.x
             local y = s.y
@@ -1008,6 +1049,7 @@ script BaramWorld extends Logic
     @ExecSpace("ServerOnly")
     method void OnUpdate(number delta)
         self.Clock = self.Clock + delta
+        self:DrainMoves()
         self._T.flush = self._T.flush - delta
         if self._T.flush <= 0 then
             self._T.flush = 60

@@ -34,7 +34,7 @@ script BaramInput extends Logic
     property table SkillSlots = {}
     property boolean InventoryIcons = false
     property number InventoryTipSeconds = 0
-    property table InventoryImages = { ["9028"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["17"] = {ruid = "2fce5dbc5fd44099bc1b8e91cf9913eb", width = 24, height = 24}, ["2200"] = {ruid = "53773753a7b44c27a08b3c63f83a8aca", width = 17, height = 23}, ["3014"] = {ruid = "a292a51da7404fe68a4c8b220df9cd3c", width = 6, height = 5}, ["3018"] = {ruid = "9f7b6aae847146c3b95068e10c18ff75", width = 18, height = 11}, ["1737"] = {ruid = "81bd7875268f47f285259c6455e82d26", width = 19, height = 23}, ["1738"] = {ruid = "335fd49f0b3347c795ca92bded8b3f03", width = 19, height = 23}, ["1740"] = {ruid = "e6ba1a22c76d434a91a4366adceb1652", width = 19, height = 23}, ["1741"] = {ruid = "d8da5489ffa0405c84bd22b3f7fe0532", width = 19, height = 23}, ["1742"] = {ruid = "c6a4af3a323e43afa04f6b943d8cd7e4", width = 19, height = 23}, ["2201"] = {ruid = "e873aa855681427d98f44fcf3d2fdd44", width = 16, height = 22}, ["2202"] = {ruid = "42873cabc35846beb27a92b78c53f80c", width = 12, height = 21}, ["2203"] = {ruid = "fe9f8ce9524f46efab5873334e455322", width = 12, height = 21}, ["2204"] = {ruid = "a7377e3fac9d42989434cfd7cfc4eaa0", width = 12, height = 21}, ["2205"] = {ruid = "07f3309323b644aba898f9ab22212784", width = 16, height = 18}, ["2211"] = {ruid = "b30a46ba33c442a0b104143d794b2656", width = 12, height = 21}, ["3016"] = {ruid = "8b1b41f5a3c7468f9de12d1ad67c62bd", width = 20, height = 8}, ["3017"] = {ruid = "44205877f4b24c3080ff5e18d8e121aa", width = 24, height = 14}, ["3019"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["3020"] = {ruid = "262ec34c79314e5bb6cece0ccb806d4d", width = 7, height = 7}, ["3021"] = {ruid = "f6e37407f0374e4c9d8556a89f48b24a", width = 20, height = 19}, ["3022"] = {ruid = "0e3db91193bc4c5f9367db0f83a5b7a8", width = 20, height = 19}, ["3023"] = {ruid = "01a5fdd0271a4cf6a9be3bf34059e7c9", width = 24, height = 24}, ["3024"] = {ruid = "ce2d22c0becd41f98410b0902aab2ae9", width = 23, height = 24}, ["3025"] = {ruid = "977a3aed4a0447ccad5494396851cb81", width = 24, height = 24}, ["3026"] = {ruid = "452eae2093984cae9735ba18741f313d", width = 23, height = 24}, ["3028"] = {ruid = "08e5d4d12d9c45a390eefa648a3f6cf9", width = 23, height = 24}, ["3029"] = {ruid = "7a5942ed1c0344f3ad8d6ed815d351bb", width = 24, height = 24}, ["3030"] = {ruid = "de48b3c18ff7405597ff42147f609f07", width = 24, height = 24}, ["3031"] = {ruid = "f35cecaa829f4f9e863c2926448216e2", width = 24, height = 20}, ["3032"] = {ruid = "9391b8eafb1a415093c7e02fbf907000", width = 7, height = 8}, ["3033"] = {ruid = "37287a9c4161402193d48e81ea215d3a", width = 23, height = 23}, ["3037"] = {ruid = "377ea41d6f4045bb92eac9d64ffb8b51", width = 24, height = 24}, ["3038"] = {ruid = "f18092c0d8d4481fba44bdb01d2baa6e", width = 20, height = 8}, ["3039"] = {ruid = "f8d776de1dc94c71bddb284b147e3773", width = 20, height = 8}, ["3040"] = {ruid = "93eef87ce22d4783a70f50d9005d47e2", width = 7, height = 7}, ["4000"] = {ruid = "3cc092228ead4ae19ba8b5db7889df28", width = 14, height = 20}, ["4001"] = {ruid = "d7894c1c5b8b460badb22fff196e4362", width = 14, height = 20}, ["4003"] = {ruid = "3e0e7ab9fec047aba51e426731e6f1de", width = 14, height = 20}, ["10043"] = {ruid = "e4e849f86de54b0da37d522ad62da5a2", width = 19, height = 19}, ["10044"] = {ruid = "7f520ae9c1f241ccb4c96e137987aab1", width = 19, height = 19}, ["10045"] = {ruid = "0f7f1bb91c47422ca992c4d2a0d84dba", width = 19, height = 19}, ["10046"] = {ruid = "42c0edd9cb594131ac00de2af909e8d8", width = 19, height = 19}, ["10047"] = {ruid = "7c90f4bc15f64e00ab6c34cc4ee15d53", width = 19, height = 19}, ["10048"] = {ruid = "5784cccbc9e24ae48e3d9ca1eced569f", width = 19, height = 19}, ["10049"] = {ruid = "d8eacc4f7b344e249f6f9bc852a3f8cf", width = 19, height = 19}, ["10050"] = {ruid = "dafc286101874b2aad5605116f85bfa9", width = 19, height = 19}, ["10051"] = {ruid = "a76f1de8ed5d40aebdb87e543f42583a", width = 19, height = 19}, ["10052"] = {ruid = "0913f5f1be8242eb84959e4b6ed51595", width = 19, height = 19}, ["10053"] = {ruid = "75a369a397864eb1bc91231fa305e95d", width = 19, height = 19}, ["10054"] = {ruid = "1da2f852a2884c3aa2d5dc51b7598272", width = 19, height = 19}, ["10055"] = {ruid = "b7a4c979d21943e29e254def1bc223de", width = 19, height = 19}, ["10056"] = {ruid = "c81e89aa9c7240d8a34e200bf23f7edd", width = 19, height = 19}, ["10117"] = {ruid = "55e24113c0d54b5284ae063e1eb41c34", width = 11, height = 12}, ["10156"] = {ruid = "ebf909ecbb6043b481c8cb801ac30cdd", width = 29, height = 27}, ["20211"] = {ruid = "27ad0362fb9e4e478a55b4ba612491e3", width = 22, height = 7}, ["50200"] = {ruid = "e6c4ea94530545d58f8374edc1887657", width = 20, height = 22} }
+    property table InventoryImages = { ["10500"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10501"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10502"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10503"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10504"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10505"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10506"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["10507"] = {ruid = "54df9dc97b38405180369ab05d6a8553", width = 20, height = 20}, ["9014"] = {ruid = "12016e7299484f1db2576879786148c4", width = 16, height = 14}, ["9023"] = {ruid = "c3197a4530f844649f84f61ca699fe8d", width = 23, height = 24}, ["9028"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["17"] = {ruid = "2fce5dbc5fd44099bc1b8e91cf9913eb", width = 24, height = 24}, ["2200"] = {ruid = "53773753a7b44c27a08b3c63f83a8aca", width = 17, height = 23}, ["3014"] = {ruid = "a292a51da7404fe68a4c8b220df9cd3c", width = 6, height = 5}, ["3018"] = {ruid = "9f7b6aae847146c3b95068e10c18ff75", width = 18, height = 11}, ["1737"] = {ruid = "81bd7875268f47f285259c6455e82d26", width = 19, height = 23}, ["1738"] = {ruid = "335fd49f0b3347c795ca92bded8b3f03", width = 19, height = 23}, ["1740"] = {ruid = "e6ba1a22c76d434a91a4366adceb1652", width = 19, height = 23}, ["1741"] = {ruid = "d8da5489ffa0405c84bd22b3f7fe0532", width = 19, height = 23}, ["1742"] = {ruid = "c6a4af3a323e43afa04f6b943d8cd7e4", width = 19, height = 23}, ["2201"] = {ruid = "e873aa855681427d98f44fcf3d2fdd44", width = 16, height = 22}, ["2202"] = {ruid = "42873cabc35846beb27a92b78c53f80c", width = 12, height = 21}, ["2203"] = {ruid = "fe9f8ce9524f46efab5873334e455322", width = 12, height = 21}, ["2204"] = {ruid = "a7377e3fac9d42989434cfd7cfc4eaa0", width = 12, height = 21}, ["2205"] = {ruid = "07f3309323b644aba898f9ab22212784", width = 16, height = 18}, ["2211"] = {ruid = "b30a46ba33c442a0b104143d794b2656", width = 12, height = 21}, ["3016"] = {ruid = "8b1b41f5a3c7468f9de12d1ad67c62bd", width = 20, height = 8}, ["3017"] = {ruid = "44205877f4b24c3080ff5e18d8e121aa", width = 24, height = 14}, ["3019"] = {ruid = "2471c966d9034747b3b05fe217cca8f0", width = 20, height = 9}, ["3020"] = {ruid = "262ec34c79314e5bb6cece0ccb806d4d", width = 7, height = 7}, ["3021"] = {ruid = "f6e37407f0374e4c9d8556a89f48b24a", width = 20, height = 19}, ["3022"] = {ruid = "0e3db91193bc4c5f9367db0f83a5b7a8", width = 20, height = 19}, ["3023"] = {ruid = "01a5fdd0271a4cf6a9be3bf34059e7c9", width = 24, height = 24}, ["3024"] = {ruid = "ce2d22c0becd41f98410b0902aab2ae9", width = 23, height = 24}, ["3025"] = {ruid = "977a3aed4a0447ccad5494396851cb81", width = 24, height = 24}, ["3026"] = {ruid = "452eae2093984cae9735ba18741f313d", width = 23, height = 24}, ["3028"] = {ruid = "08e5d4d12d9c45a390eefa648a3f6cf9", width = 23, height = 24}, ["3029"] = {ruid = "7a5942ed1c0344f3ad8d6ed815d351bb", width = 24, height = 24}, ["3030"] = {ruid = "de48b3c18ff7405597ff42147f609f07", width = 24, height = 24}, ["3031"] = {ruid = "f35cecaa829f4f9e863c2926448216e2", width = 24, height = 20}, ["3032"] = {ruid = "9391b8eafb1a415093c7e02fbf907000", width = 7, height = 8}, ["3033"] = {ruid = "37287a9c4161402193d48e81ea215d3a", width = 23, height = 23}, ["3037"] = {ruid = "377ea41d6f4045bb92eac9d64ffb8b51", width = 24, height = 24}, ["3038"] = {ruid = "f18092c0d8d4481fba44bdb01d2baa6e", width = 20, height = 8}, ["3039"] = {ruid = "f8d776de1dc94c71bddb284b147e3773", width = 20, height = 8}, ["3040"] = {ruid = "93eef87ce22d4783a70f50d9005d47e2", width = 7, height = 7}, ["4000"] = {ruid = "3cc092228ead4ae19ba8b5db7889df28", width = 14, height = 20}, ["4001"] = {ruid = "d7894c1c5b8b460badb22fff196e4362", width = 14, height = 20}, ["4003"] = {ruid = "3e0e7ab9fec047aba51e426731e6f1de", width = 14, height = 20}, ["10043"] = {ruid = "e4e849f86de54b0da37d522ad62da5a2", width = 19, height = 19}, ["10044"] = {ruid = "7f520ae9c1f241ccb4c96e137987aab1", width = 19, height = 19}, ["10045"] = {ruid = "0f7f1bb91c47422ca992c4d2a0d84dba", width = 19, height = 19}, ["10046"] = {ruid = "42c0edd9cb594131ac00de2af909e8d8", width = 19, height = 19}, ["10047"] = {ruid = "7c90f4bc15f64e00ab6c34cc4ee15d53", width = 19, height = 19}, ["10048"] = {ruid = "5784cccbc9e24ae48e3d9ca1eced569f", width = 19, height = 19}, ["10049"] = {ruid = "d8eacc4f7b344e249f6f9bc852a3f8cf", width = 19, height = 19}, ["10050"] = {ruid = "dafc286101874b2aad5605116f85bfa9", width = 19, height = 19}, ["10051"] = {ruid = "a76f1de8ed5d40aebdb87e543f42583a", width = 19, height = 19}, ["10052"] = {ruid = "0913f5f1be8242eb84959e4b6ed51595", width = 19, height = 19}, ["10053"] = {ruid = "75a369a397864eb1bc91231fa305e95d", width = 19, height = 19}, ["10054"] = {ruid = "1da2f852a2884c3aa2d5dc51b7598272", width = 19, height = 19}, ["10055"] = {ruid = "b7a4c979d21943e29e254def1bc223de", width = 19, height = 19}, ["10056"] = {ruid = "c81e89aa9c7240d8a34e200bf23f7edd", width = 19, height = 19}, ["10117"] = {ruid = "55e24113c0d54b5284ae063e1eb41c34", width = 11, height = 12}, ["10156"] = {ruid = "ebf909ecbb6043b481c8cb801ac30cdd", width = 29, height = 27}, ["20211"] = {ruid = "27ad0362fb9e4e478a55b4ba612491e3", width = 22, height = 7}, ["50200"] = {ruid = "e6c4ea94530545d58f8374edc1887657", width = 20, height = 22} }
 
     @ExecSpace("ClientOnly")
     method void OnBeginPlay()
@@ -44,6 +44,7 @@ script BaramInput extends Logic
         self.MovePending = false
         self.ReplyWait = 0
         self.MoveWait = 0
+        self._T.nextMoveAt = 0
         self._T.inventory = _EntityService:GetEntityByPath("/ui/BaramInventory")
         self._T.inventoryLinks = {}
         self._T.quitDialog = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ExitConfirm")
@@ -796,6 +797,7 @@ script BaramInput extends Logic
     @ExecSpace("ClientOnly")
     method void RequestMove(integer direction, boolean turnOnly)
         if self.MovePending or self.MoveWait > 0 or _BaramChatRelay:IsInputBlocked() then return end
+        if _UtilLogic.ElapsedSeconds < (self._T.nextMoveAt or 0) then return end
         local player = _UserService.LocalPlayer
         if not isvalid(player) then return end
         ---@type BaramPlayerVisual
@@ -804,21 +806,14 @@ script BaramInput extends Logic
         self.MovePending = true
         self.ReplyWait = 0
         self.PendingDirection = direction
-        self._T.turnRequest = not turnOnly and visual.Facing ~= direction * 3 and self.TurnedTo ~= direction
-        self._T.earlyPrediction = false
         self._T.moveSentAt = _UtilLogic.ElapsedSeconds
+        self._T.nextMoveAt = self._T.moveSentAt + _BaramWorldData.WalkFrameSeconds * 4
         if self.TraceMovement then
             visual._T.measureStart = self._T.moveSentAt
-            log("[MoveTrace] request direction=" .. tostring(direction) .. " turn=" .. tostring(self._T.turnRequest))
+            log("[MoveTrace] request direction=" .. tostring(direction) .. " turn=" .. tostring(turnOnly))
         end
-        -- 방향을 꺾으면 서버가 '돌기만' 하고 결과 2 를 준다(원작 0x4D89C0).
-        -- 그때 바뀐 Facing 은 @Sync 라 한 박자 뒤에야 도착한다. 그동안 예측이
-        -- 안 걸려서 꺾은 뒤 첫 걸음이 왕복 두 번을 서서 기다렸다.
-        -- 서버가 이미 돌려놨다고 알려준 방향이면 Sync 를 기다리지 않고 예측한다.
-        if self.FastWalk and not turnOnly
-            and (visual.Facing == direction * 3 or self.TurnedTo == direction) then
-            visual:PredictMove(direction)
-        end
+        -- Predict direction changes immediately; the server now turns and moves together.
+        if self.FastWalk and not turnOnly then visual:PredictMove(direction) end
         _BaramWorld:Move(direction, turnOnly)
     end
 
@@ -841,19 +836,18 @@ script BaramInput extends Logic
         end
         if result == 1 then
             self.TurnedTo = self.PendingDirection
-            self.MoveWait = math.max(0, _BaramWorldData.WalkFrameSeconds * 4 - self.ReplyWait)
+            -- The reply frame must not subtract delta twice and send the next step early.
+            self.MoveWait = 0
         else
             -- 2 = 방향만 바꿨다. 0 = 막혔다.
-            -- 2 면 서버가 그 방향으로 돌려놓은 게 확실하니 다음 걸음은 바로 예측한다.
             self.TurnedTo = (result == 2) and self.PendingDirection or -1
             self.MoveWait = result == 2 and 0 or _BaramWorldData.InputPollSeconds
+            self._T.nextMoveAt = 0
             local player = _UserService.LocalPlayer
             if isvalid(player) then
                 ---@type BaramPlayerVisual
                 local visual = player:GetComponent("script.BaramPlayerVisual")
-                local keys = {KeyboardKey.UpArrow, KeyboardKey.RightArrow, KeyboardKey.DownArrow, KeyboardKey.LeftArrow}
-                local continuing = result == 2 and self._T.earlyPrediction and _InputService:IsKeyPressed(keys[self.PendingDirection + 1])
-                if isvalid(visual) and not continuing then visual:CancelPrediction() end
+                if isvalid(visual) then visual:CancelPrediction() end
             end
         end
     end
@@ -881,20 +875,6 @@ script BaramInput extends Logic
         self.MoveWait = math.max(0, self.MoveWait - delta)
         if self.MovePending then
             self.ReplyWait = self.ReplyWait + delta
-            -- Original 20ms held-key polling remains; only local presentation is speculative.
-            -- The turn RPC and all server collision/cooldown checks remain authoritative.
-            if self.FastWalk and self._T.turnRequest and not self._T.earlyPrediction
-                and self.ReplyWait >= _BaramWorldData.InputPollSeconds and not _BaramChatRelay:IsInputBlocked()
-                and not _InputService:IsKeyPressed(KeyboardKey.LeftShift) and not _InputService:IsKeyPressed(KeyboardKey.RightShift) then
-                local keys = {KeyboardKey.UpArrow, KeyboardKey.RightArrow, KeyboardKey.DownArrow, KeyboardKey.LeftArrow}
-                if _InputService:IsKeyPressed(keys[self.PendingDirection + 1]) then
-                    local player = _UserService.LocalPlayer
-                    if isvalid(player) then
-                        local visual = player:GetComponent("script.BaramPlayerVisual")
-                        if isvalid(visual) then visual:PredictMove(self.PendingDirection) self._T.earlyPrediction = true end
-                    end
-                end
-            end
             if self.ReplyWait > 2 then self:MoveResult(0) end
             return
         end
