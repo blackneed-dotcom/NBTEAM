@@ -547,7 +547,8 @@ script BaramWorld extends Logic
             if data.type == 6 and item.durability > 1 then item.durability = item.durability - 1 else self:RemoveItem(s, slot, 1) end
             self:Notice(userId, data.name .. " 사용")
         elseif action == "drop" or action == "dropall" or action == "throw" then
-            if data.dropAllowed ~= 1 or s.equip == slot then self:Notice(userId, "장비를 벗은 뒤 버려 주세요.") return end
+            if data.dropAllowed ~= 1 then self:Notice(userId, "버릴 수 없는 아이템입니다.") return end
+            if s.equip == slot then self:Notice(userId, "장비를 벗은 뒤 버려 주세요.") return end
             local count = action == "dropall" and item.count or 1
             local x = s.x
             local y = s.y
