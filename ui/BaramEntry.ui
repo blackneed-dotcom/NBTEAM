@@ -1124,7 +1124,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Default",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.0,
                 "g": 0.0,
@@ -1192,7 +1192,7 @@
       {
         "id": "39c31952-35eb-4a71-8deb-0d13e72092ce",
         "path": "/ui/BaramEntry/Frame/Create/NameInput/Bitmap",
-        "componentNames": "MOD.Core.UITransformComponent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
         "jsonString": {
           "name": "Bitmap",
           "path": "/ui/BaramEntry/Frame/Create/NameInput/Bitmap",
@@ -1274,6 +1274,50 @@
                 "z": 1.0
               },
               "ZRotation": 0.0,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "BestFit": false,
+              "ConstraintX": 100.0,
+              "ConstraintY": 100.0,
+              "Font": "Galmuri11",
+              "FontColor": {
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0
+              },
+              "FontSize": 11.0,
+              "FontStyle": 0,
+              "HorizontalAlignment": 1,
+              "IgnoreMapLayerCheck": false,
+              "IsRichText": false,
+              "MaxSize": 40.0,
+              "MinSize": 10.0,
+              "OrderInLayer": 0,
+              "OutlineColor": {
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0
+              },
+              "OutlineWidth": 0.0,
+              "Overflow": 2,
+              "OverrideSorting": false,
+              "Padding": {
+                "left": 0,
+                "right": 0,
+                "top": 0,
+                "bottom": 0
+              },
+              "SizeFit": false,
+              "SortingLayer": "UI",
+              "Text": "",
+              "Underlay": false,
+              "UseConstraintX": false,
+              "UseConstraintY": false,
+              "VerticalAlignment": 256,
               "Enable": true
             }
           ],
@@ -8980,7 +9024,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.3137255,
                 "g": 0.1882353,
@@ -9175,7 +9219,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.3137255,
                 "g": 0.1882353,
@@ -10402,7 +10446,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Default",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 1.0,
                 "g": 0.9411765,
@@ -10540,7 +10584,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -11665,7 +11709,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -11860,7 +11904,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -12055,7 +12099,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -12250,7 +12294,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -12906,7 +12950,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -13101,7 +13145,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -13757,7 +13801,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -14062,7 +14106,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Default",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 1.0,
                 "g": 0.9411765,
@@ -14351,7 +14395,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -14546,7 +14590,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.992156863,
                 "g": 0.894117653,
@@ -15209,7 +15253,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -15404,7 +15448,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -15754,7 +15798,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 1.0,
                 "g": 0.96,
@@ -16191,7 +16235,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -16386,7 +16430,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -16736,7 +16780,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 1.0,
                 "g": 0.96,
@@ -17173,7 +17217,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -17368,7 +17412,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -17718,7 +17762,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -18068,7 +18112,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -18418,7 +18462,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -18768,7 +18812,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 1.0,
                 "g": 0.96,
@@ -19205,7 +19249,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,
@@ -19400,7 +19444,7 @@
               "BestFit": false,
               "ConstraintX": 100.0,
               "ConstraintY": 100.0,
-              "Font": "Galmuri9",
+              "Font": "Galmuri11",
               "FontColor": {
                 "r": 0.2509804,
                 "g": 0.156862751,

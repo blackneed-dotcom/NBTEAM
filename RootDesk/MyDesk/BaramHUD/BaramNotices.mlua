@@ -34,7 +34,17 @@ script BaramNotices extends Logic
 
     @ExecSpace("ClientOnly")
     method integer Width(integer cp)
-        -- Use the original BARAM00.EFT advances, shared with the profile font atlas.
+        -- Measure the selected font so speech and notice wrapping match the rendered text.
+        local panel = self:Panel()
+        if isvalid(panel) then
+            local line = panel:GetChildByName("Line1")
+            if isvalid(line) and isvalid(line.TextGUIRendererComponent) then
+                local renderer = line.TextGUIRendererComponent
+                renderer.Font = "Galmuri11"
+                renderer.FontSize = 11
+                return math.max(1, math.ceil(renderer:GetPreferredWidth(utf8.char(cp))))
+            end
+        end
         if cp < 0 or cp > 65535 then cp = 63 end
         local row = _BaramProfile.FontWidths[math.floor(cp / 256) + 1]
         return string.sub(row, cp % 256 + 1, cp % 256 + 1) == "C" and 12 or 6
@@ -96,47 +106,11 @@ script BaramNotices extends Logic
 
     @ExecSpace("ClientOnly")
     method void Draw(Entity field, string text)
+        -- Use the same Galmuri11 renderer as speech and information fields.
         if not isvalid(field) then return end
         if self._T.rendered[field.Id] == text then return end
         self._T.rendered[field.Id] = text
-        local cached = self._T.glyphs[field.Id]
-        if cached == nil then
-            cached = {}
-            for i = 1,32 do
-                local glyph = field:GetChildByName("Glyph" .. tostring(i))
-                cached[i] = {entity = glyph, atlas = glyph:GetChildByName("Atlas"), key = ""}
-            end
-            self._T.glyphs[field.Id] = cached
-        end
-        -- Thirty-two atlas cells accommodate narrow ASCII as well as full-width Korean.
-        local points = {}
-        for _, cp in utf8.codes(text) do
-            if cp > 65535 then cp = 63 end
-            local widths = _BaramProfile.FontWidths[math.floor(cp / 256) + 1]
-            if string.sub(widths, cp % 256 + 1, cp % 256 + 1) == "0" then cp = 63 end
-            table.insert(points, cp)
-        end
-        local x = 0
-        for i = 1, 32 do
-            local saved = cached[i]
-            local glyph = saved.entity
-            local cp = points[i]
-            if glyph.Enable ~= (cp ~= nil) then glyph.Enable = cp ~= nil end
-            if cp ~= nil then
-                local width = self:Width(cp)
-                local key = tostring(cp) .. ":" .. tostring(x)
-                if saved.key ~= key then
-                saved.key = key
-                glyph.UITransformComponent.anchoredPosition = Vector2(x, 0)
-                glyph.UITransformComponent.RectSize = Vector2(width, 12)
-                local atlas = saved.atlas
-                local cell = cp % 16384
-                atlas.SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramProfile.FontPages[math.floor(cp / 16384) + 1])
-                atlas.UITransformComponent.anchoredPosition = Vector2(-(cell % 128) * 16, math.floor(cell / 128) * 16)
-                end
-                x = x + width
-            end
-        end
+        _BaramProfile:Draw(field, text, true)
     end
 
     @ExecSpace("ClientOnly")

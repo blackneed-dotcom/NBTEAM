@@ -34,9 +34,19 @@ script BaramChatChannels extends Logic
     end
 
     @ExecSpace("ServerOnly")
+    method string GetClanMembership(string userId)
+        return self._T.clans ~= nil and self._T.clans[userId] or ""
+    end
+
+    @ExecSpace("ServerOnly")
     method void SetClanMembership(string userId, string clanId)
         -- Integration hook, never a client-callable method; no membership is invented here.
         self._T.clans[userId] = clanId ~= "" and clanId or nil
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if isvalid(player) then
+            local visual = player:GetComponent("script.BaramPlayerVisual")
+            if isvalid(visual) then visual.ClanId = clanId end
+        end
     end
 
     method boolean Eligible(string channel, string sender, string recipient, boolean sameMap, string target, string senderClan, string recipientClan, boolean whispers, boolean shouts)

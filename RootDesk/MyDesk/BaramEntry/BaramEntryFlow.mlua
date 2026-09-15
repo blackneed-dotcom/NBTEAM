@@ -111,7 +111,7 @@ script BaramEntryFlow extends Logic
             -- Native rendering owns IME composition and caret placement while editing.
             -- Only committed, unfocused text is drawn with the original bitmap font.
             if self._T.nameFocused ~= focused then
-                inputEntity.TextGUIRendererComponent.Font = "Default"
+                inputEntity.TextGUIRendererComponent.Font = "Galmuri11"
                 inputEntity.TextGUIRendererComponent.FontColor = Color(0, 0, 0, focused and 1 or 0)
                 bitmap.Enable = not focused
                 self._T.nameFocused = focused

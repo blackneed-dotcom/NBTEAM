@@ -12,7 +12,7 @@ script BaramBubbles extends Logic
 
     @ExecSpace("ClientOnly")
     method void Show(string userId, string message, boolean shout)
-        -- No native MSW balloon skin or external font assets are used.
+        -- Keep the original client balloon artwork and render text with Galmuri11.
         local player = _UserService:GetUserEntityByUserId(userId)
         local localPlayer = _UserService.LocalPlayer
         if not isvalid(player) or not isvalid(localPlayer) or not isvalid(player.CurrentMap) or player.CurrentMap ~= localPlayer.CurrentMap then return end
@@ -102,6 +102,7 @@ script BaramBubbles extends Logic
             if fresh or bubble.shout ~= shout or saved.colorSet == false then
                 local color = shout and Color(1,1,0,1) or Color.white
                 for _, atlas in ipairs(saved.glyphs) do atlas.SpriteGUIRendererComponent.Color = color end
+                if isvalid(row.TextGUIRendererComponent) then row.TextGUIRendererComponent.FontColor = color end
                 saved.colorSet = true
             end
         end

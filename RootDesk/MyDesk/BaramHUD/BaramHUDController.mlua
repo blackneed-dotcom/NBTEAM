@@ -127,6 +127,33 @@ script BaramHUDController extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void SetIdentity(integer nation, integer totem)
+        -- Original bint.dat NATION.EPF/TOTEM.EPF with NPAL7.PAL, no substitute art.
+        local nationBadge = self.Entity:GetChildByName("NationBadge", true)
+        local totemBadge = self.Entity:GetChildByName("TotemBadge", true)
+        if not isvalid(nationBadge) or not isvalid(totemBadge) then return end
+        -- Show the untouched client pixels, fully opaque over the baked HUD badges.
+        nationBadge.SpriteGUIRendererComponent.Color = Color.white
+        totemBadge.SpriteGUIRendererComponent.Color = Color.white
+        nationBadge.SpriteGUIRendererComponent.Type = ImageType.Simple
+        totemBadge.SpriteGUIRendererComponent.Type = ImageType.Simple
+        if nation == nil or totem == nil or nation < 0 or nation > 1 or totem < 0 or totem > 3 then
+            nationBadge.Enable = false totemBadge.Enable = false return
+        end
+        local signature = tostring(nation) .. ":" .. tostring(totem)
+        if self._T.identity == signature and nationBadge.Enable and totemBadge.Enable then return end
+        -- Saved creation order: JuJak, BaekHo, HyunMu, CheongRyong.
+        -- Original TOTEM frame order: JuJak, HyunMu, BaekHo, CheongRyong.
+        local nations = {"e6d7ca80a20a41ab84e3f0e7b802756a", "6de2c06c46704e8f8182e92152fb1a05"}
+        local totems = {"93570af020d8445dba314c1ed2b31d8d", "5364a251df5a4feeae267c917c9b6f7d", "180f6ddee1be4590864b61466dc347c5", "49cd63ada7d54a68bdb154288ebb2887"}
+        nationBadge.SpriteGUIRendererComponent.ImageRUID = DataRef(nations[nation + 1])
+        totemBadge.SpriteGUIRendererComponent.ImageRUID = DataRef(totems[totem + 1])
+        nationBadge.Enable = true totemBadge.Enable = true
+        self._T.identity = signature
+        log("[BaramIdentity] nation=" .. ({"고구려", "부여"})[nation + 1] .. " totem=" .. ({"주작", "백호", "현무", "청룡"})[totem + 1])
+    end
+
+    @ExecSpace("ClientOnly")
     method void SetAttributes(integer strength, integer dexterity, integer intelligence)
         self.Strength = strength
         self.Dexterity = dexterity
@@ -192,12 +219,33 @@ script BaramHUDController extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        self:RefreshNickname()
         self:RefreshMapName()
         self:ApplyWorldPresentation()
         if isvalid(self._T.infoPanel) and self._T.infoPanel.Enable then self:RefreshInfo() end
         -- Update only when local values change.
         local state = tostring(self.Hp) .. ":" .. tostring(self.MaxHp) .. ":" .. tostring(self.Mp) .. ":" .. tostring(self.MaxMp) .. ":" .. tostring(self.Level) .. ":" .. tostring(self.Experience) .. ":" .. tostring(self.Gold) .. ":" .. tostring(self.Strength) .. ":" .. tostring(self.Dexterity) .. ":" .. tostring(self.Intelligence)
         if state ~= self._T.last then self:RefreshDisplay() end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshNickname()
+        -- Left-align the selected character name in the empty field before the job/level.
+        if not isvalid(self._T.nicknameField) then
+            self._T.nicknameField = self.Entity:GetChildByName("Nickname", true)
+            self._T.nicknameText = nil
+        end
+        local field = self._T.nicknameField
+        if not isvalid(field) then return end
+        local player = _UserService.LocalPlayer
+        local available = _BaramEntryFlow.InWorld and isvalid(player) and isvalid(player.PlayerComponent)
+        field.Enable = available
+        if not available then self._T.nicknameText = nil return end
+        local nickname = player.PlayerComponent.Nickname
+        if nickname == self._T.nicknameText then return end
+        _BaramProfile:Draw(field, nickname, true)
+        self._T.nicknameText = nickname
+        log("[BaramHUDName] updated=" .. nickname)
     end
     @ExecSpace("ClientOnly")
     method void ApplyWorldPresentation()

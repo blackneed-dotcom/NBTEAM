@@ -21,6 +21,8 @@ script BaramPlayerVisual extends Component
     property integer DisplayLevel = 0
     @Sync
     property string DisplayName = ""
+    @Sync
+    property string ClanId = ""
 
     @ExecSpace("ServerOnly")
     method void PlayAction(integer action, number frameSeconds)
@@ -520,7 +522,7 @@ script BaramPlayerVisual extends Component
 
     @ExecSpace("ClientOnly")
     method void UpdateOverhead(Vector3 position)
-        -- Name only, rendered with the original BARAM00.EFT glyphs.
+        -- Character-underfoot name uses Galmuri11.
         local localPlayer = _UserService.LocalPlayer
         -- [단일 맵 구조] 이제 모두 같은 씬이라 CurrentMap 비교로는 못 가른다. 바람 맵 번호로 본다.
         local mine = _BaramWorld.LocalState
@@ -537,29 +539,37 @@ script BaramPlayerVisual extends Component
             self._T.overhead = _SpawnService:SpawnByEntity(template, "Actor_" .. self.Entity.Id, Vector3.zero, canvas, true)
             if not isvalid(self._T.overhead) then return end
             self._T.overheadName = self._T.overhead:GetChildByName("Name")
-            self._T.overheadName.UITransformComponent.UIScale = Vector3(0.75, 0.75, 1)
+            self._T.overheadName.UITransformComponent.UIScale = Vector3.one
+            self._T.overheadName.TextGUIRendererComponent.FontSize = 9
+            self._T.overheadRelation = nil
             self._T.overheadText = nil
             self._T.overheadX = nil
             log("[BaramActorLabel] created")
         end
         local label = self._T.overhead
+        local relation = "normal"
+        local ownVisual = localPlayer:GetComponent("script.BaramPlayerVisual")
+        if isvalid(ownVisual) and ownVisual.ClanId ~= "" and ownVisual.ClanId == self.ClanId then
+            relation = "clan"
+        end
+        for _, partyMember in ipairs(_BaramParty.Members) do
+            if partyMember.userId == self.Entity.PlayerComponent.UserId then relation = "party" break end
+        end
+        if self._T.overheadRelation ~= relation then
+            local color = Color.white
+            if relation == "party" then color = Color(0.25, 0.55, 1, 1)
+            elseif relation == "clan" then color = Color(0.2, 1, 0.3, 1) end
+            self._T.overheadName.TextGUIRendererComponent.FontColor = color
+            self._T.overheadRelation = relation
+            log("[BaramActorLabel] relation=" .. relation .. " size=9")
+        end
         local text = self.DisplayName
         if text ~= self._T.overheadText then
-            local width = 0
-            local available = self.DisplayName ~= ""
-            for _, cp in utf8.codes(text) do
-                local widths = _BaramProfile.FontWidths[math.floor(cp / 256) + 1]
-                local code = widths ~= nil and string.sub(widths, cp % 256 + 1, cp % 256 + 1) or "0"
-                if code == "0" or code == "" then available = false end
-                width = width + (code == "C" and 12 or 6)
-            end
-            self._T.overheadName.Enable = available
-            if available then
-                _BaramProfile:Draw(self._T.overheadName, text, true)
-                self._T.overheadName.UITransformComponent.anchoredPosition = Vector2(-width * self._T.overheadName.UITransformComponent.UIScale.x / 2, -6)
-            elseif self.DisplayName ~= "" then
-                log_warning("[BaramActorLabel] original name glyph unavailable")
-            end
+            self._T.overheadName.Enable = text ~= ""
+            local renderer = self._T.overheadName.TextGUIRendererComponent
+            renderer.Font = "Galmuri11"
+            renderer.IsRichText = false
+            renderer.Text = text
             self._T.overheadText = text
         end
         local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y))

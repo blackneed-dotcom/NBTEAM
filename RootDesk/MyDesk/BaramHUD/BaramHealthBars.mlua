@@ -17,19 +17,25 @@ script BaramHealthBars extends Logic
         if not isvalid(template) then return end
         local entity = _SpawnService:SpawnByEntity(template, "Health_" .. actor.Id, Vector3.zero, canvas, true)
         if not isvalid(entity) then return end
-        entity.UITransformComponent.UIScale = Vector3(self.DisplayScale, self.DisplayScale, 1)
+        local scale = self.DisplayScale
+        local barWidth = 24
+        local barHeight = 6
+        entity.UITransformComponent.UIScale = Vector3(scale, scale, 1)
+        entity.UITransformComponent.RectSize = Vector2(barWidth, barHeight)
+        entity:GetChildByName("Background").UITransformComponent.UIScale = Vector3(barWidth, barHeight, 1)
         local percent = math.floor(math.max(0, math.min(100, hp * 100 / maximum)))
-        local width = math.floor(22 * percent / 100)
+        local width = math.floor((barWidth - 2) * percent / 100)
         local fill = entity:GetChildByName("Fill")
         fill.Enable = width > 0
-        fill.UITransformComponent.UIScale = Vector3(math.max(1, width), 4, 1)
+        fill.UITransformComponent.UIScale = Vector3(math.max(1, width), barHeight - 2, 1)
         -- BARAM.PAL indices 12,14,2; background index 128. Original EFT pixel only.
         local color = Color(0, 171/255, 0, 1)
-        if width < 7 then color = Color(1, 87/255, 87/255, 1)
-        elseif width < 12 then color = Color(1, 1, 87/255, 1) end
+        local originalWidth = math.floor(22 * percent / 100)
+        if originalWidth < 7 then color = Color(1, 87/255, 87/255, 1)
+        elseif originalWidth < 12 then color = Color(1, 1, 87/255, 1) end
         fill:GetChildByName("Atlas").SpriteGUIRendererComponent.Color = color
         if self._T.bars == nil then self._T.bars = {} end
-        self._T.bars[actor.Id] = {actor = actor, entity = entity, map = actor.CurrentMap, remaining = 0.5}
+        self._T.bars[actor.Id] = {actor = actor, entity = entity, map = actor.CurrentMap, remaining = 0.5, width = barWidth * scale, height = barHeight * scale}
         entity.Enable = false
         self:Position(self._T.bars[actor.Id])
         log("[BaramHealth] hit actor=" .. actor.Name .. " width=" .. tostring(width) .. " duration=0.5")
@@ -57,8 +63,8 @@ script BaramHealthBars extends Logic
         local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y + self.HeadHeight))
         local x = screen.x * 640 / _UILogic.ScreenWidth
         local y = (screen.y / _UILogic.ScreenHeight - 1) * 480
-        local width = 24 * self.DisplayScale
-        local height = 6 * self.DisplayScale
+        local width = bar.width
+        local height = bar.height
         bar.top = math.floor(y + self.HeadGap + height)
         local left = math.floor(x - width / 2)
         bar.entity.UITransformComponent.anchoredPosition = Vector2(left, bar.top)
