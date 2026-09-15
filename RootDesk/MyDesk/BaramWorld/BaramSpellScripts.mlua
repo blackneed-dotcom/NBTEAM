@@ -1,5 +1,5 @@
 -- 이 파일은 손으로 고치지 마라. tools/bscript 가 원본 스크립트에서 뽑는다.
---   python3 tools/bscript/mlua.py @백호참 @건곤대나이 @동귀어진 @백열장
+--   python3 tools/bscript/mlua.py @백호참 @건곤대나이 @동귀어진 @백열장 @공력증강
 -- 원본: magic/*, function/*, script_essential.txt
 @Logic
 script BaramSpellScripts extends Logic
@@ -101,6 +101,79 @@ script BaramSpellScripts extends Logic
                 R.stop()
             end
             R.callfunc(C, "MAGICIANSPELL", {B["myid"](C), B["mysd"](C), 8, 280, 86, "백열장", 80})
+        end
+        -- @공력증강  (magic/일반마법/도사/보조.txt:61)
+        S["@공력증강"] = function(C)
+            local V, G, A = C.v, C.g, C.a
+            R.set(V, "@sd", B["mysd"](C))
+            R.set(V, "@id", B["myid"](C))
+            R.callfunc(C, "MANA_DELAY", {30, 0, R.get(V, "@sd")})
+            R.set(V, "@grace", B["get_grace"](C, R.get(V, "@sd")))
+            if R.t(R.n(R.t(R.ge(B["get_level"](C, R.get(V, "@sd")), 99)) and R.t(R.lt(R.get(V, "@grace"), 90)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 1)) and R.t(R.lt(R.get(V, "@grace"), 30)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 30)) and R.t(R.lt(R.get(V, "@grace"), 50)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 50)) and R.t(R.lt(R.get(V, "@grace"), 80)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 80)) and R.t(R.lt(R.get(V, "@grace"), 100)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 100)) and R.t(R.lt(R.get(V, "@grace"), 125)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 125)) and R.t(R.lt(R.get(V, "@grace"), 150)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 150)) and R.t(R.lt(R.get(V, "@grace"), 170)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 170)) and R.t(R.le(R.get(V, "@grace"), 200)))) then
+                R.set(V, "@bonus_rate", 50)
+            elseif R.t(R.n(R.t(R.ge(R.get(V, "@grace"), 200)) and R.t(R.le(R.get(V, "@grace"), 220)))) then
+                R.set(V, "@bonus_rate", 50)
+            else
+                R.set(V, "@bonus_rate", 50)
+            end
+            R.set(V, "@rate", B["rand"](C, 1, 17))
+            R.set(V, "@success", R.add(5, R.get(V, "@bonus_rate")))
+            if R.t(R.le(R.get(V, "@rate"), R.get(V, "@success"))) then
+                R.set(V, "@hp", B["get_hp"](C, R.get(V, "@sd")))
+                R.set(V, "@joblv", B["get_joblevel"](C, R.get(V, "@sd")))
+                R.set(V, "@maxhp", B["get_maxhp"](C, R.get(V, "@sd")))
+                if R.t(R.eq(R.get(V, "@joblv"), 0)) then
+                    R.set(V, "@success_hp", 100)
+                elseif R.t(R.eq(R.get(V, "@joblv"), 1)) then
+                    R.set(V, "@success_hp", R.div(R.get(V, "@maxhp"), 100))
+                elseif R.t(R.eq(R.get(V, "@joblv"), 2)) then
+                    R.set(V, "@success_hp", R.mul(R.div(R.get(V, "@maxhp"), 100), 2))
+                elseif R.t(R.eq(R.get(V, "@joblv"), 3)) then
+                    R.set(V, "@success_hp", R.mul(R.div(R.get(V, "@maxhp"), 100), 3))
+                elseif R.t(R.eq(R.get(V, "@joblv"), 4)) then
+                    R.set(V, "@success_hp", R.mul(R.div(R.get(V, "@maxhp"), 100), 4))
+                elseif R.t(R.eq(R.get(V, "@joblv"), 5)) then
+                    R.set(V, "@success_hp", R.mul(R.div(R.get(V, "@maxhp"), 100), 5))
+                else
+                    R.set(V, "@success_hp", R.mul(R.div(R.get(V, "@maxhp"), 100), 5))
+                end
+                B["effect"](C, R.get(V, "@id"), 11)
+                B["sound"](C, R.get(V, "@id"), 65)
+                B["set_mp"](C, R.get(V, "@sd"), B["get_maxmp"](C, R.get(V, "@sd")))
+                if R.t(R.eq(B["spellaethered"](C, R.get(V, "@sd"), B["name2spellid"](C, "마력의장벽")), 1)) then
+                    B["set_hp"](C, R.get(V, "@sd"), R.mul(R.div(R.get(V, "@hp"), 100), 75))
+                    B["spelldelay"](C, R.get(V, "@sd"), B["name2spellid"](C, "공력증강"), 0)
+                else
+                    if R.t(R.lt(R.get(V, "@hp"), R.mul(R.div(B["get_mp"](C, R.get(V, "@sd")), 100), 30))) then
+                        B["set_hp"](C, R.get(V, "@sd"), R.get(V, "@success_hp"))
+                    else
+                        B["set_hp"](C, R.get(V, "@sd"), R.sub(R.get(V, "@hp"), R.mul(R.div(B["get_mp"](C, R.get(V, "@sd")), 100), 30)))
+                    end
+                end
+                if R.t(R.eq(B["get_job"](C, R.get(V, "@sd")), 3)) then
+                    R.set(G, "$protect_hp", B["get_hp"](C, R.get(V, "@sd")))
+                end
+                B["message"](C, R.get(V, "@sd"), 3, "공력증강을 외웠습니다.")
+            else
+                B["message"](C, R.get(V, "@sd"), 3, "정신집중에 실패하였습니다.")
+                B["set_mp"](C, R.get(V, "@sd"), R.sub(B["get_mp"](C, R.get(V, "@sd")), 30))
+            end
         end
         -- FUNC_MAGICATTACK  (function/Attack_Functions.txt:1026)
         S["FUNC_MAGICATTACK"] = function(C)
