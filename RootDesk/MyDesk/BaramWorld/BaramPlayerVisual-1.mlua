@@ -272,9 +272,6 @@ script BaramPlayerVisual extends Component
             return
         end
         self._T.drawnMap = s.map
-        -- 원작처럼 들어간 맵 이름을 알려준다. 이름은 BaramWorldData 의 label 에 있다.
-        local data = _BaramWorldData:Map(s.map)
-        if data ~= nil and data.label ~= nil and data.label ~= "" then _BaramInput:Notice(data.label) end
         -- 캔버스에서는 MSW 맵이 끝까지 그대로라, OnUpdate 앞부분의 "맵이 바뀌었나" 블록이
         -- 다시는 돌지 않는다. 거기서 하던 일 가운데 새 칸으로 옮기는 것들을 여기서 해준다.
         -- 이걸 빼먹으면 그림은 새 맵인데 카메라와 분신은 이전 맵 좌표에 남아 검은 화면이 된다.

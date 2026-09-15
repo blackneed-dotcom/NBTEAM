@@ -85,10 +85,16 @@ script BaramHUDController extends Component
         local currentMap = nil
         if isvalid(player) then currentMap = player.CurrentMap end
         local mapKey = ""
-        if isvalid(currentMap) then mapKey = string.lower(currentMap.Name) end
+        -- [단일 맵 구조] MSW 씬은 이제 늘 baramcanvas 라 씬 이름으로는 못 가른다.
+        -- 서버가 알려준 바람 맵 번호로 이름을 뽑는다. MapTitles 는 바람 맵의 name 을
+        -- 그대로 열쇠로 쓰므로(barambuyeo, barambeginner …) 표는 손댈 것이 없다.
+        local state = _BaramWorld.LocalState
+        local data = (state ~= nil and state.map ~= nil) and _BaramWorldData:Map(state.map) or nil
+        if data ~= nil then mapKey = string.lower(data.name)
+        elseif isvalid(currentMap) then mapKey = string.lower(currentMap.Name) end
         if mapKey == self._T.mapTitleKey then return end
         local label = self.MapTitles[mapKey] or ""
-        if label == "" and isvalid(currentMap) then label = currentMap.Name end
+        if label == "" and data ~= nil then label = data.label or "" end
         title.TextGUIRendererComponent.Text = label
         self._T.mapTitleKey = mapKey
         log("[BaramMapName] map=" .. mapKey .. " title=" .. label)

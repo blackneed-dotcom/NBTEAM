@@ -5,6 +5,9 @@ script BaramInput extends Logic
     property integer FirstSlot = 0
     property number MoveWait = 0
     property number AttackWait = 0
+    -- F10. 몹 이름표 크기. 몹 한 마리가 한 칸(0.24 월드유닛)이라 글자는 그보다 작아야 한다.
+    property number CreatureLabelScale = 0.06
+
     -- F9. 켜면 걸음 왕복과 워프 시간을 화면에 띄운다.
     -- log() 는 메이커 콘솔에만 나와서 실제 서버에 접속하면 볼 수가 없다.
     property boolean ShowTiming = false
@@ -141,26 +144,62 @@ script BaramInput extends Logic
     -- 플레이어도 서버도 안 건드린다. F7 로 들어가고 나오고, F8 로 그려진 맵을 바꾼다.
     @ExecSpace("ClientOnly")
     method void CanvasTest()
-        -- 캔버스는 내가 그 맵에 있을 때만 클라이언트에 올라온다. 그래서 직접 들어간다.
-        _BaramWorld:DebugCanvas(not self:OnCanvas())
-    end
-
-    @ExecSpace("ClientOnly")
-    method boolean OnCanvas()
-        local player = _UserService.LocalPlayer
-        return isvalid(player) and isvalid(player.CurrentMap) and player.CurrentMap.Name == "baramcanvas"
+        local canvas = _EntityService:GetEntityByPath("/maps/baramcanvas")
+        if not isvalid(canvas) then
+            -- 캔버스가 안 잡히는 게 파일 문제인지, MSW 가 내가 없는 맵은 클라이언트에
+            -- 아예 안 올리는 건지 가른다. 다른 맵도 똑같이 X 면 후자다.
+            local found = ""
+            for _, name in ipairs({"barambuyeo", "barambeginner", "baraminn", "barambutcher", "baramcanvas"}) do
+                local m = _EntityService:GetEntityByPath("/maps/" .. name)
+                found = found .. name .. "=" .. (isvalid(m) and "O" or "X") .. " "
+            end
+            local here = "?"
+            local player = _UserService.LocalPlayer
+            if isvalid(player) and isvalid(player.CurrentMap) then here = player.CurrentMap.Name end
+            self:Notice("지금맵 " .. here)
+            self:Notice(found)
+            log("[BaramCanvas] here=" .. here .. " " .. found)
+            return
+        end
+        local camera = canvas:GetChildByName("TestCamera")
+        if not isvalid(camera) then self:Notice("캔버스에 TestCamera 가 없다") return end
+        if self._T.canvasOn then
+            self._T.canvasOn = false
+            self._T.canvasBack = nil
+            local player = _UserService.LocalPlayer
+            if isvalid(player) and isvalid(player.CurrentMap) then
+                local back = player.CurrentMap:GetChildByName("TestCamera")
+                if isvalid(back) then _CameraService:SwitchCameraTo(back.CameraComponent) end
+            end
+            self:Notice("캔버스 보기 끔")
+            return
+        end
+        self._T.canvasMap = 14
+        if not _BaramMapView:Draw(canvas, self._T.canvasMap) then self:Notice("그릴 자료가 없다") return end
+        self:AimCanvas(camera, 34, 122)
+        _CameraService:SwitchCameraTo(camera.CameraComponent)
+        self._T.canvasOn = true
+        self:Notice("캔버스 보기 켬 (F8 로 맵 전환, F7 로 복귀) : 부여")
     end
 
     @ExecSpace("ClientOnly")
     method void CanvasSwap()
-        if not self:OnCanvas() then self:Notice("F7 로 캔버스에 먼저 들어가라") return end
-        local canvas = _UserService.LocalPlayer.CurrentMap
+        if not self._T.canvasOn then self:Notice("F7 로 캔버스 보기를 먼저 켜라") return end
+        local canvas = _EntityService:GetEntityByPath("/maps/baramcanvas")
+        if not isvalid(canvas) then return end
+        local camera = canvas:GetChildByName("TestCamera")
         -- 씬 전환도 텔레포트도 없이 그림만 갈아끼운다. 이게 이 공사의 핵심이다.
-        local next = (self._T.canvasMap == 14) and 315 or 14
-        if not _BaramMapView:Draw(canvas, next) then self:Notice("그릴 자료가 없다") return end
-        self._T.canvasMap = next
-        self:AimCanvas(canvas:GetChildByName("TestCamera"), next == 14 and 34 or 9, next == 14 and 122 or 9)
-        self:Notice("캔버스 : " .. (next == 14 and "부여" or "사냥터"))
+        if self._T.canvasMap == 14 then
+            self._T.canvasMap = 315
+            _BaramMapView:Draw(canvas, 315)
+            self:AimCanvas(camera, 9, 9)
+            self:Notice("캔버스 : 사냥터")
+        else
+            self._T.canvasMap = 14
+            _BaramMapView:Draw(canvas, 14)
+            self:AimCanvas(camera, 34, 122)
+            self:Notice("캔버스 : 부여")
+        end
     end
 
     @ExecSpace("ClientOnly")
@@ -608,6 +647,15 @@ script BaramInput extends Logic
         if key == KeyboardKey.F6 then self.HearShouts = not self.HearShouts _BaramChatChannels:SetListening(self.HearWhispers, self.HearShouts) self:Notice(self.HearShouts and "외치기듣기  : ON" or "외치기듣기  : OFF") return end
         if key == KeyboardKey.F7 then self:CanvasTest() return end
         if key == KeyboardKey.F8 then self:CanvasSwap() return end
+        if key == KeyboardKey.F10 then
+            -- 눈으로 보면서 맞추는 게 빠르다. 마음에 드는 값이 나오면 그 숫자를 기본값으로 박으면 된다.
+            local steps = {0.02, 0.03, 0.04, 0.06, 0.09, 0.12, 0.18}
+            local index = 1
+            for i, v in ipairs(steps) do if math.abs(v - self.CreatureLabelScale) < 0.001 then index = i % #steps + 1 break end end
+            self.CreatureLabelScale = steps[index]
+            self:Notice("이름표 크기 " .. tostring(self.CreatureLabelScale))
+            return
+        end
         if key == KeyboardKey.F9 then self.ShowTiming = not self.ShowTiming self:Notice(self.ShowTiming and "응답시간 보기  : ON" or "응답시간 보기  : OFF") return end
         if key == KeyboardKey.F12 then self.FastWalk = not self.FastWalk self:Notice(self.FastWalk and "빠른 이동 켬" or "빠른 이동 끔") return end
         if self.Mode ~= "" then

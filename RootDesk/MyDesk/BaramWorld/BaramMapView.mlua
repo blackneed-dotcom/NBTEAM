@@ -14,6 +14,39 @@ script BaramMapView extends Logic
     [315] = {{2.4,-2.4,0,"cacf01a3046f49018a6cd781886fb4a6"},{2.4,-2.4,10,"7f81f6d4dbe54f859a30514af72fc505"}},
     }
 
+    -- NPC 그림. 원래는 옛 맵 씬에 Npc8 / Npc11 로 박혀 있었는데, 이제 아무도 그 씬에
+    -- 안 가므로 캔버스에 직접 띄운다. RUID 는 map/*.map 의 해당 엔티티에서 뽑았다.
+    property table NpcArt = {[8] = "e840fd779b334fd4b7740aed087964a5", [11] = "d92eb362714247cea4e5e53cddef2ab8"}
+
+    -- 엔티티는 논리 칸보다 한 칸 위에 놓인다(발밑 기준으로 그리기 때문). 원본 맵과 같은 값.
+    @ExecSpace("ClientOnly")
+    method void DrawNpcs(Entity canvas, integer mapId)
+        if self._T.npcs == nil then self._T.npcs = {} end
+        for _, npc in ipairs(_BaramWorld.Npcs) do
+            local entity = self._T.npcs[npc.id]
+            if not isvalid(entity) then
+                local ruid = self.NpcArt[npc.id]
+                if ruid ~= nil then
+                    local p = _BaramWorldData:Position(npc.x, npc.y)
+                    entity = _SpawnService:SpawnByModelId("baramnpc", "Npc" .. tostring(npc.id), Vector3(p.x, p.y + 0.24, 0), canvas)
+                    if isvalid(entity) then
+                        local renderer = entity.SpriteRendererComponent
+                        renderer.SpriteRUID = ruid
+                        renderer.SortingLayer = "MapLayer0"
+                        renderer.OrderInLayer = 100
+                        -- 이름으로 Npc 번호를 읽어 대화를 연다(BaramNpcTouch).
+                        if not isvalid(entity:GetComponent("script.BaramNpcTouch")) then entity:AddComponent("BaramNpcTouch") end
+                        self._T.npcs[npc.id] = entity
+                    end
+                end
+            end
+            if isvalid(entity) then
+                local show = npc.map == mapId
+                if entity.Visible ~= show then entity.Visible = show end
+            end
+        end
+    end
+
     method table Get(integer mapId)
         return self.Chunks[mapId]
     end
@@ -42,6 +75,7 @@ script BaramMapView extends Logic
                 end
             end
         end
+        self:DrawNpcs(canvas, mapId)
         local text = "맵" .. tostring(mapId) .. " 청크" .. tostring(#list) .. "장"
         log("[BaramMapView] " .. text)
         _BaramInput:Notice(text)
