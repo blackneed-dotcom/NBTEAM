@@ -12,6 +12,8 @@ script BaramHUDController extends Component
     property integer Mp = 80
     property integer MaxMp = 80
     property integer Level = 1
+    property integer JobId = 0
+    property integer JobRank = 0
     property integer Experience = 0
     property integer Gold = 0
     property integer Strength = 1
@@ -44,8 +46,29 @@ script BaramHUDController extends Component
         end
         self._T.hpFill = self.Entity:GetChildByName("HpFill", true)
         self._T.mpFill = self.Entity:GetChildByName("MpFill", true)
+        self._T.jobBadge = self.Entity:GetChildByName("JobBadge", true)
+        self._T.jobSignature = nil
+        self:SetJob(_BaramWorld.LocalState.jobId or 0, _BaramWorld.LocalState.jobRank or 0)
         self:RefreshDisplay()
+        self:SetCoordinates(_BaramWorld.LocalState.x or 0, _BaramWorld.LocalState.y or 0)
         log("[BaramHUD] ready: source frame, bitmap digits, HP/MP/level/experience/gold")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetCoordinates(integer x, integer y)
+        -- winbaram 4E6CBF: %04u/%04u, 9x11 bank 2; slash is baked into USERSTAT.
+        local text = string.format("%04d/%04d", x, y)
+        if self._T.coordinates == text then return end
+        local row = self._T.coordinateRow
+        if not isvalid(row) then row = self.Entity:GetChildByName("RowCoordinates", true) self._T.coordinateRow = row end
+        if not isvalid(row) then return end
+        for i = 1, 9 do
+            local glyph = row:GetChildByName("Digit" .. tostring(i))
+            local digit = tonumber(string.sub(text, i, i))
+            glyph.Enable = digit ~= nil
+            if digit ~= nil then glyph.SpriteGUIRendererComponent.ImageRUID = DataRef(self.DigitRuids[digit + 1]) end
+        end
+        self._T.coordinates = text
     end
 
     @ExecSpace("ClientOnly")
@@ -75,6 +98,19 @@ script BaramHUDController extends Component
         self.Mp = math.max(0, math.min(mp, self.MaxMp))
         self.Level = math.max(1, math.min(99, level))
         self:RefreshDisplay()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetJob(integer jobId, integer jobRank)
+        -- Reuse the original CLASS.EPF badge; update only when job metadata changes.
+        if not _BaramJobs:ValidState({jobId = jobId, jobRank = jobRank}) then return end
+        self.JobId = jobId
+        self.JobRank = jobRank
+        local signature = tostring(jobId) .. ":" .. tostring(jobRank)
+        if not isvalid(self._T.jobBadge) or self._T.jobSignature == signature then return end
+        self._T.jobBadge.SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramJobs.BadgeRuids[jobId])
+        self._T.jobSignature = signature
+        log("[BaramJob] HUD=" .. _BaramJobs:GetName(jobId, jobRank))
     end
 
     @ExecSpace("ClientOnly")

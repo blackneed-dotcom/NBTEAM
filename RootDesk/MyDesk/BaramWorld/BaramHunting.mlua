@@ -1,5 +1,7 @@
 @Component
 script BaramHunting extends Component
+    -- 어느 바람 맵을 맡는지. 캔버스 한 장 위에 모두 올라가므로 씬이 아니라 이 번호로 가른다.
+    property integer MapId = 315
     @ExecSpace("ServerOnly")
     method void OnBeginPlay()
         self:Prepare()
@@ -18,6 +20,7 @@ script BaramHunting extends Component
                     ---@type BaramCreature
                     local creature = entity:AddComponent("BaramCreature")
                     creature.SourceId = kind
+                    creature.MapId = self.MapId
                     self:Respawn(creature)
                     table.insert(self._T.creatures, creature)
                 end
@@ -30,9 +33,10 @@ script BaramHunting extends Component
     method boolean Occupied(integer x, integer y)
         for _, c in ipairs(self._T.creatures) do if isvalid(c) and c.Hp > 0 and c.GridX == x and c.GridY == y then return true end end
         for _, player in ipairs(_UserService.UserEntities.Values) do
-            if isvalid(player) and player.CurrentMap == self.Entity then
+            if isvalid(player) then
                 local r = _BaramWorld:GetRecord(player.PlayerComponent.UserId)
-                if r ~= nil and r.active and r.state.x == x and r.state.y == y then return true end
+                -- 씬이 아니라 바람 맵 번호로 본다. 이제 다른 맵 사람도 같은 씬에 있다.
+                if r ~= nil and r.active and r.state.map == self.MapId and r.state.x == x and r.state.y == y then return true end
             end
         end
         return false
@@ -43,7 +47,7 @@ script BaramHunting extends Component
         for attempt = 1, 100 do
             local x = _UtilLogic:RandomIntegerRange(1, 18)
             local y = _UtilLogic:RandomIntegerRange(1, 17)
-            if _BaramWorldData:Walkable(315, x, y) and not self:Occupied(x, y) then
+            if _BaramWorldData:Walkable(self.MapId, x, y) and not self:Occupied(x, y) then
                 c.GridX = x
                 c.GridY = y
                 c.Hp = c.SourceId == 1 and 15 or 10
@@ -59,9 +63,28 @@ script BaramHunting extends Component
         c.DeadWait = 1
     end
 
+    -- 이 맵에 사람이 하나라도 있나. 아무도 없으면 몹을 움직이지 않는다.
+    -- 안 움직이면 동기화도 안 나가므로, 맵이 늘어나도 부하가 "사람이 있는 맵"만큼만 든다.
+    @ExecSpace("ServerOnly")
+    method boolean Occupied2()
+        for _, player in ipairs(_UserService.UserEntities.Values) do
+            if isvalid(player) then
+                local r = _BaramWorld:GetRecord(player.PlayerComponent.UserId)
+                if r ~= nil and r.active and r.state.map == self.MapId then return true end
+            end
+        end
+        return false
+    end
+
     @ExecSpace("ServerOnly")
     method void OnUpdate(number delta)
         if self._T.creatures == nil then return end
+        self._T.idleCheck = (self._T.idleCheck or 0) - delta
+        if self._T.idleCheck <= 0 then
+            self._T.idleCheck = 1
+            self._T.awake = self:Occupied2()
+        end
+        if not self._T.awake then return end
         for _, c in ipairs(self._T.creatures) do
             if isvalid(c) then
                 if c.Hp <= 0 then
@@ -74,7 +97,7 @@ script BaramHunting extends Component
                         local direction = _UtilLogic:RandomIntegerRange(0, 3)
                         local target = _BaramWorld:GetRecord(c.AggroUser)
                         local counter = false
-                        if c.SourceId == 1 and target ~= nil and target.active and target.state.map == 315 and target.state.hp > 0 then
+                        if c.SourceId == 1 and target ~= nil and target.active and target.state.map == self.MapId and target.state.hp > 0 then
                             local dx = target.state.x - c.GridX
                             local dy = target.state.y - c.GridY
                             if math.abs(dx) + math.abs(dy) == 1 then
@@ -92,7 +115,7 @@ script BaramHunting extends Component
                             local x = c.GridX + dx[direction + 1]
                             local y = c.GridY + dy[direction + 1]
                             c.Facing = direction * 3
-                            if x >= 1 and x <= 18 and y >= 1 and y <= 17 and _BaramWorldData:Walkable(315, x, y) and not self:Occupied(x, y) then
+                            if x >= 1 and x <= 18 and y >= 1 and y <= 17 and _BaramWorldData:Walkable(self.MapId, x, y) and not self:Occupied(x, y) then
                                 c.GridX = x c.GridY = y c.Step = c.Step % 2 + 1
                                 local p = _BaramWorldData:Position(x, y)
                                 c.Entity.KinematicbodyComponent:SetPosition(Vector2(p.x, p.y))

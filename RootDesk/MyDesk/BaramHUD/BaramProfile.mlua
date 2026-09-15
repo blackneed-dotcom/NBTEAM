@@ -280,9 +280,7 @@ script BaramProfile extends Logic
             local handle = button:ConnectEvent(UITouchDownEvent, function(event) self:SetPage(page) end)
             table.insert(self._T.links, {entity = button, handle = handle})
         end
-        self._T.key = _InputService:ConnectEvent(KeyDownEvent, function(event)
-            if event.key == KeyboardKey.Escape and not _BaramChatRelay:IsInputBlocked() then self:Close() end
-        end)
+        -- ESC is owned by BaramInput, alongside S; do not close the pane in a second listener.
         for _, name in ipairs({"StatsUp", "StatsDown"}) do
             local button = self.Window:GetChildByName("Information"):GetChildByName(name)
             local direction = name == "StatsUp" and -1 or 1
@@ -346,8 +344,10 @@ script BaramProfile extends Logic
         local equipped = b.state.items[tostring(b.state.equip)]
         local weaponData = equipped ~= nil and _BaramWorldData:Item(equipped.id) or nil
         -- Only fields drawn by winbaram 0x4D72A0. No private HP/currency/inventory.
-        -- The current world has no clan/title/class/history data; keep those areas empty.
+        -- Clan/title/history remain empty; class uses the shared saved job metadata.
         local data = {name = target.PlayerComponent.Nickname, gender = visual.Gender, hair = visual.Hair, item = equipped ~= nil and equipped.id or 0, weaponName = weaponData ~= nil and weaponData.name or "", exchange = b.allowExchange ~= false, group = b.allowGroup ~= false}
+        data.jobId = b.state.jobId or 0
+        data.jobRank = b.state.jobRank or 0
         self:Receive(userId, serial, _HttpService:JSONEncode(data), caller)
     end
 
@@ -364,7 +364,7 @@ script BaramProfile extends Logic
             self.GroupAllowed = data.group ~= false
             self:RefreshList()
             self:RefreshButtons()
-            self:Text("Class", "")
+            self:Text("Class", _BaramJobs:GetName(data.jobId or 0, data.jobRank or 0))
             self:Text("Title", "")
             self:Text("Clan", "")
             self:Text("ClanTitle", "")
@@ -379,6 +379,18 @@ script BaramProfile extends Logic
         end
         self:SetPage(self.Page)
         self.Window.Enable = true
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ApplyJob(string userId, integer jobId, integer jobRank)
+        -- Update only the selected public profile; its other fields stay untouched.
+        if self.SelectedUser ~= userId or not self:TargetPresent() then return end
+        self:Text("Class", _BaramJobs:GetName(jobId, jobRank))
+        if self._T.profileData ~= nil then
+            self._T.profileData.jobId = jobId
+            self._T.profileData.jobRank = jobRank
+        end
+        self._T.signature = nil
     end
 
     @ExecSpace("ClientOnly")

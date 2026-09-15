@@ -6,6 +6,9 @@ script BaramPlayerVisual extends Component
     property integer Gender = 0
     @Sync
     property integer Hair = 0
+    -- [단일 맵 구조] 모두 캔버스 한 장에 있으므로 어느 바람 맵에 선 사람인지 같이 보낸다.
+    @Sync
+    property integer MapId = 14
     @Sync
     property integer Facing = 6
     @Sync
@@ -42,15 +45,24 @@ script BaramPlayerVisual extends Component
         for _, npc in ipairs(_BaramWorld.Npcs) do
             if npc.map == s.map and npc.x == x and npc.y == y then return end
         end
-        -- Portals wait for the authoritative destination; never slide between maps.
+        -- 포탈 칸도 예측한다. 서버(MoveChecked)는 그 칸으로 먼저 옮긴 다음에야
+        -- 목적지 맵으로 보내므로 이 한 걸음은 막힐 일이 없다. 레벨 제한은 맵 이동만
+        -- 막지 걸음 자체는 막지 않는다.
+        -- 예전엔 여기서 빠져나가 워프할 때 제자리에 굳은 채로 왕복을 통째로 기다렸다.
+        -- 맵이 바뀌면 OnUpdate 앞부분에서 예측과 경로가 모두 초기화되므로
+        -- 예측이 새 맵으로 이어져 미끄러질 염려는 없다.
+        local crossing = nil
         for _, portal in ipairs(_BaramWorldData.Portals) do
-            if portal.from == s.map and portal.x == x and portal.y == y then return end
+            if portal.from == s.map and portal.x == x and portal.y == y
+                and s.level >= portal.minLevel and s.level <= portal.maxLevel then crossing = portal break end
         end
         local map = self.Entity.CurrentMap
         for _, creature in ipairs(map:GetChildComponentsByTypeName("script.BaramCreature", false)) do
             if creature.Hp > 0 and creature.GridX == x and creature.GridY == y then return end
         end
         local target = _BaramWorldData:Position(x, y)
+        -- Do not restart a held-turn prediction when the turn acknowledgement arrives.
+        if self._T.predicted ~= nil and self._T.predicted.x == target.x and self._T.predicted.y == target.y then return end
         local users = _UserService:GetUsersByMapComponent(map.MapComponent)
         if users ~= nil then
             for _, user in ipairs(users) do
@@ -60,13 +72,22 @@ script BaramPlayerVisual extends Component
                 end
             end
         end
+        if crossing ~= nil then
+            self._T.warpStart = _UtilLogic.ElapsedSeconds
+            -- 도착할 칸은 포탈 표에 이미 적혀 있다. 서버 대답을 기다릴 이유가 없다.
+            self._T.warpTo = crossing
+            self:AimCamera(crossing)
+        end
         self._T.predictionOrigin = self.Entity.TransformComponent.WorldPosition
+        self._T.localFacing = direction * 3
+        self._T.localFacingUntil = _UtilLogic.ElapsedSeconds + 0.75
         self._T.predicted = target
         self._T.predictionAge = 0
     end
 
     @ExecSpace("ClientOnly")
     method void CancelPrediction()
+        self._T.localFacing = nil
         if self._T.predicted ~= nil then
             self._T.predicted = nil
             self._T.path = {}
@@ -88,6 +109,171 @@ script BaramPlayerVisual extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void OnMapEnter(Entity map)
+        -- Select the destination camera before display spawning or texture preparation.
+        self:PrepareCamera(map)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void PrepareCamera(Entity map)
+        -- Camera setup is map-scoped; following the bodyless visual stays per-frame.
+        if self.Entity ~= _UserService.LocalPlayer or not isvalid(map) then return end
+        if self._T.cameraMap ~= map or not isvalid(self._T.camera) then
+            self._T.camera = map:GetChildByName("TestCamera")
+            self._T.cameraMap = map
+        end
+        local camera = self._T.camera
+        if not isvalid(camera) then return end
+        local current = _CameraService:GetCurrentCameraComponent()
+        if current == camera.CameraComponent then return end
+        camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera)
+        camera.CameraComponent.Damping = Vector2(0, 0)
+        camera.CameraComponent.DeadZone = Vector2(0, 0)
+        camera.CameraComponent.SoftZone = Vector2(0, 0)
+        local blend = _CameraService.TransitionBlendTime
+        _CameraService.TransitionBlendTime = 0
+        _CameraService:SwitchCameraTo(camera.CameraComponent)
+        _CameraService.TransitionBlendTime = blend
+        log("[BaramMap] camera ready map=" .. map.Name)
+    end
+
+    -- 포탈을 밟는 순간 목적지 맵의 카메라를 도착 칸으로 미리 돌려놓는다.
+    -- 전환 자체는 엔진이 맵을 바꾼 뒤에 일어나지만, 그때 카메라가 이미 제자리라
+    -- 엉뚱한 구역이 한 박자 비치는 일이 없어진다.
+    @ExecSpace("ClientOnly")
+    method void AimCamera(table portal)
+        local data = _BaramWorldData:Map(portal.to)
+        if data == nil then return end
+        local map = _EntityService:GetEntityByPath("/maps/" .. data.name)
+        if not isvalid(map) then return end
+        local camera = map:GetChildByName("TestCamera")
+        if not isvalid(camera) then return end
+        local p = _BaramWorldData:Position(portal.toX, portal.toY)
+        camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
+    end
+
+    -- 이 맵에서 내가 서 있을 자리. 카메라와 분신이 같은 값을 쓰게 한 군데로 모았다.
+    -- 텔레포트와 좌표 스냅샷이 서로 다른 메시지라 도착 순서가 매번 다르다. 엔티티
+    -- 트랜스폼을 그대로 믿으면 아직 이전 맵 좌표일 때가 있고, 그 자리에 분신을 만들면
+    -- 캐릭터가 화면 밖에 생겨서 한 박자 안 보인다. 도착 칸은 포탈 표에 이미 있으므로
+    -- 그걸 가장 먼저 쓴다.
+    @ExecSpace("ClientOnly")
+    method Vector3 GroundSpot(Entity map, number z)
+        if map.Name == "baramcanvas" then
+            local c = _BaramWorld.LocalState
+            if c ~= nil and c.x ~= nil then
+                local p = _BaramWorldData:Position(c.x, c.y)
+                return Vector3(p.x, p.y, z)
+            end
+        end
+        local warp = self._T.warpTo
+        if warp ~= nil then
+            local data = _BaramWorldData:Map(warp.to)
+            if data ~= nil and data.name == map.Name then
+                local p = _BaramWorldData:Position(warp.toX, warp.toY)
+                return Vector3(p.x, p.y, z)
+            end
+        end
+        local s = _BaramWorld.LocalState
+        if s ~= nil and s.map ~= nil and s.x ~= nil then
+            local data = _BaramWorldData:Map(s.map)
+            if data ~= nil and data.name == map.Name then
+                local p = _BaramWorldData:Position(s.x, s.y)
+                return Vector3(p.x, p.y, z)
+            end
+        end
+        local p = self.Entity.TransformComponent.WorldPosition
+        return Vector3(p.x, p.y, z)
+    end
+
+    -- 이웃 맵 청크 미리 받기.
+    -- 목적지 맵은 청크가 다 뜰 때까지 준비가 안 되고, 그 사이엔 TestCamera 도 못 잡아서
+    -- MSW 기본 카메라가 전체를 줌아웃으로 비춘다. 부여성이 32장이라 1초 가까이 걸린다.
+    -- 포탈 근처에 오면 목적지 청크를 지금 맵의 안 보이는 자리에서 한 틱에 두 장씩
+    -- 훑어 캐시에 올려둔다. 몸/머리 스프라이트 미리 받는 것과 같은 수법이다.
+    @ExecSpace("ClientOnly")
+    method void WarmNeighbors(Entity map, number delta)
+        if self.Entity ~= _UserService.LocalPlayer then return end
+        if self._T.warmed == nil then self._T.warmed = {} end
+        -- 받는 중이면 계속 훑는다.
+        if isvalid(self._T.chunkWarm) then
+            local list = self._T.chunkList
+            local i = self._T.chunkIndex or 1
+            for _ = 1, 2 do
+                if i > #list then
+                    self._T.chunkWarm:Destroy()
+                    self._T.chunkWarm = nil
+                    self._T.warmed[self._T.chunkMap] = true
+                    log("[BaramMapWarm] " .. tostring(self._T.chunkMap) .. " 청크 " .. tostring(#list) .. "장 준비됨")
+                    return
+                end
+                self._T.chunkWarm.SpriteRendererComponent.SpriteRUID = list[i]
+                i = i + 1
+            end
+            self._T.chunkIndex = i
+            return
+        end
+        -- 0.4 초에 한 번만 포탈 거리를 본다.
+        self._T.warmPoll = (self._T.warmPoll or 0) - delta
+        if self._T.warmPoll > 0 then return end
+        self._T.warmPoll = 0.4
+        local s = _BaramWorld.LocalState
+        if s == nil or s.x == nil or s.map == nil then return end
+        for _, portal in ipairs(_BaramWorldData.Portals) do
+            if portal.from == s.map and not self._T.warmed[portal.to]
+                and math.abs(portal.x - s.x) + math.abs(portal.y - s.y) <= 10 then
+                local list = _BaramMapWarm:Get(portal.to)
+                if list ~= nil and #list > 0 then
+                    self._T.chunkWarm = _SpawnService:SpawnByModelId("barammapchunk", "BaramChunkWarm_" .. self.Entity.Id, Vector3(0, 1000, 0), map)
+                    if not isvalid(self._T.chunkWarm) then return end
+                    self._T.chunkList = list
+                    self._T.chunkIndex = 1
+                    self._T.chunkMap = portal.to
+                    return
+                end
+                self._T.warmed[portal.to] = true
+            end
+        end
+    end
+
+    -- [단일 맵 구조] 캔버스 위에서는 서버가 알려준 바람 맵 번호가 바뀔 때마다
+    -- 청크 그림만 갈아끼운다. 씬 전환이 없으므로 이 교체에 드는 비용이 없다.
+    @ExecSpace("ClientOnly")
+    method void DrawCanvas(Entity map)
+        if self.Entity ~= _UserService.LocalPlayer or map.Name ~= "baramcanvas" then return end
+        local s = _BaramWorld.LocalState
+        if s == nil or s.map == nil then
+            if self._T.drawWarned ~= true then
+                self._T.drawWarned = true
+                _BaramInput:Notice("캔버스인데 LocalState 가 비었다")
+            end
+            return
+        end
+        if self._T.drawnMap == s.map then return end
+        if not _BaramMapView:Draw(map, s.map) then
+            _BaramInput:Notice("맵" .. tostring(s.map) .. " 청크 자료가 없다")
+            return
+        end
+        self._T.drawnMap = s.map
+        -- 캔버스에서는 MSW 맵이 끝까지 그대로라, OnUpdate 앞부분의 "맵이 바뀌었나" 블록이
+        -- 다시는 돌지 않는다. 거기서 하던 일 가운데 새 칸으로 옮기는 것들을 여기서 해준다.
+        -- 이걸 빼먹으면 그림은 새 맵인데 카메라와 분신은 이전 맵 좌표에 남아 검은 화면이 된다.
+        local spot = self:GroundSpot(map, self.Entity.TransformComponent.WorldPosition.z)
+        if isvalid(self._T.visual) then self._T.visual.TransformComponent.WorldPosition = spot end
+        self._T.target = spot
+        self._T.path = {}
+        self._T.predicted = nil
+        self._T.walkTime = 0
+        local camera = self._T.camera
+        if isvalid(camera) then camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method Vector3 CameraSpot(Entity map, Entity camera)
+        return self:GroundSpot(map, camera.TransformComponent.WorldPosition.z)
+    end
+
+    @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
         -- All observers release the display when this player returns to the title.
         if not self.Active then
@@ -97,18 +283,22 @@ script BaramPlayerVisual extends Component
         end
         local map = self.Entity.CurrentMap
         if not isvalid(map) then return end
-        self.Entity.Visible = true
-        self.Entity.AvatarRendererComponent.Enable = false
-        if self.Entity == _UserService.LocalPlayer then self.Entity.PlayerControllerComponent.Enable = false end
+        self:PrepareCamera(map)
+        if not self.Entity.Visible then self.Entity.Visible = true end
+        if self.Entity.AvatarRendererComponent.Enable then self.Entity.AvatarRendererComponent.Enable = false end
+        if self.Entity == _UserService.LocalPlayer and self.Entity.PlayerControllerComponent.Enable then self.Entity.PlayerControllerComponent.Enable = false end
         if self._T.map ~= map then
             self:ReleaseProfileTouch()
             if isvalid(self._T.visual) then self._T.visual:Destroy() end
             if isvalid(self._T.warm) then self._T.warm:Destroy() self._T.warm = nil end
+            -- 청크 미리 받기는 맵마다 새로 띄운다(엔티티가 맵에 매여 있다).
+            if isvalid(self._T.chunkWarm) then self._T.chunkWarm:Destroy() self._T.chunkWarm = nil end
             self._T.map = map
-            self._T.visual = _SpawnService:SpawnByModelId("baramworldvisual", "BaramVisual_" .. self.Entity.Id, self.Entity.TransformComponent.WorldPosition, map)
+            local spot = self:GroundSpot(map, self.Entity.TransformComponent.WorldPosition.z)
+            self._T.visual = _SpawnService:SpawnByModelId("baramworldvisual", "BaramVisual_" .. self.Entity.Id, spot, map)
             self:BindProfileTouch()
             self._T.signature = ""
-            self._T.target = self.Entity.TransformComponent.WorldPosition
+            self._T.target = spot
             self._T.path = {}
             self._T.walkTime = 0
             self._T.restTime = 0
@@ -118,14 +308,39 @@ script BaramPlayerVisual extends Component
             -- 몸/머리가 Facing + step 으로 4방향 x 3스텝 = 12장이라, 각 방향 첫 걸음마다
             -- 3장을 새로 받느라 그림이 안 바뀌고 선 자세로 미끄러졌다.
             -- 안 보이는 자리에 같은 모델을 하나 띄워 한 틱에 한 장씩 훑어 캐시에 올린다.
-            if self.Entity == _UserService.LocalPlayer then
+            local warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
+            if self.Entity == _UserService.LocalPlayer and self._T.warmKey ~= warmKey then
                 self._T.warm = _SpawnService:SpawnByModelId("baramworldvisual", "BaramWarm_" .. self.Entity.Id, Vector3(0, 1000, 0), map)
                 self._T.warmFrame = 0
             end
+            if self.Entity == _UserService.LocalPlayer then
+                _BaramInput:ClearMoveWait()
+                -- 그림이 생기는 이 프레임에 카메라를 한 번 더 제자리로 박는다.
+                -- OnMapEnter 때 잘못 놓였더라도 여기서 같은 프레임에 바로잡힌다.
+                local camera = self._T.camera
+                if isvalid(camera) then camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera) end
+            end
+            self._T.warpTo = nil
+            if self._T.warpStart ~= nil then
+                -- 포탈을 밟은 순간부터 새 맵 그림이 생길 때까지. 지연인지 맵 로딩인지 가른다.
+                local text = "워프 " .. tostring(math.floor((_UtilLogic.ElapsedSeconds - self._T.warpStart) * 1000)) .. "ms -> " .. map.Name
+                log("[BaramWarp] " .. text)
+                if self.Entity == _UserService.LocalPlayer and _BaramInput.ShowTiming then _BaramInput:Notice(text) end
+                self._T.warpStart = nil
+            end
             log("[BaramPlayer] visual created on " .. map.Name)
         end
+        self:DrawCanvas(map)
+        self:WarmNeighbors(map, delta)
         local visual = self._T.visual
         if not isvalid(visual) then return end
+        -- 다른 바람 맵에 있는 사람은 같은 씬에 있어도 보이면 안 된다.
+        local mine = _BaramWorld.LocalState
+        if self.Entity ~= _UserService.LocalPlayer and mine ~= nil and mine.map ~= nil and mine.map ~= self.MapId then
+            if visual.Visible then visual.Visible = false end
+            return
+        end
+        if not visual.Visible then visual.Visible = true end
         -- 스프라이트 미리 받아두기. 12장을 다 훑으면 지운다.
         if isvalid(self._T.warm) then
             local f = self._T.warmFrame or 0
@@ -136,9 +351,22 @@ script BaramPlayerVisual extends Component
             else
                 self._T.warm:Destroy()
                 self._T.warm = nil
+                self._T.warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
             end
         end
         local target = self.Entity.TransformComponent.WorldPosition
+        -- [단일 맵 구조] 캔버스에는 발판이 없어 플레이어 엔티티가 물리로 조금씩 밀린다.
+        -- 그 미세한 이동이 매 프레임 걸음 웨이포인트로 쌓여서, 키를 안 눌러도 한 방향으로
+        -- 계속 걸어가고 워프할 때도 도착 칸까지 걸어서 간다. 한 프레임에 조금씩이라
+        -- "멀리 뛰면 순간이동" 판정에도 안 걸린다.
+        -- 그래서 내 그림 자리는 엔티티가 아니라 서버가 준 칸에서 직접 뽑는다.
+        if map.Name == "baramcanvas" and self.Entity == _UserService.LocalPlayer then
+            local c = _BaramWorld.LocalState
+            if c ~= nil and c.x ~= nil then
+                local p = _BaramWorldData:Position(c.x, c.y)
+                target = Vector3(p.x, p.y, target.z)
+            end
+        end
         local predicted = self._T.predicted
         if predicted ~= nil then
             self._T.predictionAge = self._T.predictionAge + delta
@@ -181,7 +409,14 @@ script BaramPlayerVisual extends Component
                 budget = 0
             end
         end
-        visual.TransformComponent.WorldPosition = position
+        local oldPosition = visual.TransformComponent.WorldPosition
+        if oldPosition.x ~= position.x or oldPosition.y ~= position.y or oldPosition.z ~= position.z then
+            visual.TransformComponent.WorldPosition = position
+            if self._T.measureStart ~= nil then
+                log("[MoveTrace] firstVisualMs=" .. tostring(math.floor((_UtilLogic.ElapsedSeconds - self._T.measureStart) * 1000)))
+                self._T.measureStart = nil
+            end
+        end
         -- 칸과 칸 사이에 한두 프레임 비는 건 걸음이 끊긴 게 아니다.
         -- 여기서 walkTime 을 0 으로 되돌리면 다음 칸이 phase 0 부터 다시 시작하는데,
         -- WalkFrames 의 0번이 서 있는 자세라서 걷는 자세가 씹히고 제자리걸음처럼 보인다.
@@ -198,7 +433,12 @@ script BaramPlayerVisual extends Component
         local walking = moving or resting < frameSeconds
         local phase = math.floor(self._T.walkTime / frameSeconds) % 4
         local step = walking and _BaramWorldData.WalkFrames[phase + 1] or 0
-        local bodyFrame = self.Facing + step
+        local facing = self.Facing
+        if self._T.localFacing ~= nil then
+            if self.Facing == self._T.localFacing or _UtilLogic.ElapsedSeconds >= self._T.localFacingUntil then self._T.localFacing = nil
+            else facing = self._T.localFacing end
+        end
+        local bodyFrame = facing + step
         local headFrame = bodyFrame
         local emotion = false
         local action = self._T.action or 0
@@ -249,14 +489,10 @@ script BaramPlayerVisual extends Component
             if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " emotion=" .. tostring(emotion)) end
         end
         if self.Entity == _UserService.LocalPlayer and _BaramEntryFlow.InWorld and _BaramInput.MapScroll then
-            local camera = map:GetChildByName("TestCamera")
+            local camera = self._T.camera
             if isvalid(camera) then
                 local p = position
                 camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
-                camera.CameraComponent.Damping = Vector2(0, 0)
-                camera.CameraComponent.DeadZone = Vector2(0, 0)
-                camera.CameraComponent.SoftZone = Vector2(0, 0)
-                if _CameraService:GetCurrentCameraComponent() ~= camera.CameraComponent then _CameraService:SwitchCameraTo(camera.CameraComponent) end
             end
         end
     end
@@ -295,9 +531,13 @@ script BaramPlayerVisual extends Component
         self:ReleaseProfileTouch()
         if isvalid(self._T.visual) then self._T.visual:Destroy() end
         if isvalid(self._T.warm) then self._T.warm:Destroy() end
+        if isvalid(self._T.chunkWarm) then self._T.chunkWarm:Destroy() end
         self._T.visual = nil
         self._T.warm = nil
+        self._T.chunkWarm = nil
         self._T.map = nil
+        self._T.camera = nil
+        self._T.cameraMap = nil
         self._T.path = {}
         self._T.predicted = nil
         self._T.action = 0

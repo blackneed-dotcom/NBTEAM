@@ -82,7 +82,7 @@ script BaramChatChannels extends Logic
             local other = _BaramWorld:GetRecord(id)
             if isvalid(recipient) and isvalid(recipient.CurrentMap) and other ~= nil and other.active then
                 local prefs = self._T.listening[id] or {whispers = true, shouts = true}
-                if self:Eligible(channel, userId, id, recipient.CurrentMap == player.CurrentMap, targetId, clan, self._T.clans[id] or "", prefs.whispers, prefs.shouts) then
+                if self:Eligible(channel, userId, id, other.state.map == record.state.map, targetId, clan, self._T.clans[id] or "", prefs.whispers, prefs.shouts) then
                     self:Receive(channel, recipient.CurrentMap.Id, userId, player.PlayerComponent.Nickname, parsed.target, text, id)
                     delivered = delivered + 1
                 end

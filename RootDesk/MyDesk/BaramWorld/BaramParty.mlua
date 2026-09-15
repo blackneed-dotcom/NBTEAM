@@ -54,8 +54,12 @@ script BaramParty extends Logic
         local player = _UserService:GetUserEntityByUserId(senderUserId)
         if not isvalid(player) or not isvalid(player.CurrentMap) then return end
         local found = ""
+        -- 이제 모두 캔버스 한 장에 있으므로 씬으로는 못 가른다. 바람 맵 번호로 본다.
+        local mine = _BaramWorld:GetRecord(senderUserId)
         for _, other in ipairs(_UserService:GetUsersByMapComponent(player.CurrentMap.MapComponent) or {}) do
-            if isvalid(other) and other.PlayerComponent.Nickname == nickname then
+            local his = isvalid(other) and _BaramWorld:GetRecord(other.PlayerComponent.UserId) or nil
+            if isvalid(other) and other.PlayerComponent.Nickname == nickname
+                and mine ~= nil and his ~= nil and his.state.map == mine.state.map then
                 if found ~= "" then _BaramWorld:Notice(senderUserId, "같은 이름의 사용자를 구분할 수 없습니다.") return end
                 found = other.PlayerComponent.UserId
             end
@@ -92,6 +96,7 @@ script BaramParty extends Logic
         local player = _UserService:GetUserEntityByUserId(userId)
         local target = _UserService:GetUserEntityByUserId(otherId)
         if not isvalid(player) or not isvalid(target) or not isvalid(player.CurrentMap) or player.CurrentMap ~= target.CurrentMap then return end
+        if a == nil or b == nil or a.state.map ~= b.state.map then return end
         local rule = self:Rule(userId, otherId, a, b)
         if rule == "leave" or rule == "remove" then self:LeaveFor(otherId) return end
         if rule == "create" then

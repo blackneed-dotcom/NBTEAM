@@ -1,0 +1,50 @@
+@Logic
+script BaramMapView extends Logic
+    -- 캔버스 한 장에 바람 맵을 그려 넣는다.
+    -- MSW 는 맵마다 별개의 씬이라 맵을 넘어갈 때 씬 전환 비용이 붙는다. 그 대신
+    -- 빈 맵(baramcanvas) 하나에 청크 엔티티 32개를 박아두고, 바람 맵이 바뀌면
+    -- 그 32개의 그림과 자리만 갈아끼운다. 에뮬레이터가 타일 배열만 바꿔 그리는 것과 같다.
+    --
+    -- 한 줄이 청크 하나: {x, y, OrderInLayer, 스프라이트RUID}
+    -- OrderInLayer 0 = 바닥, 10 = 오브젝트. map/*.map 에서 그대로 뽑았다.
+    property table Chunks = {
+    [14] = {{4.8,-4.8,0,"e2fd4bef5bb3461ca74f8240255bfa86"},{4.8,-24,0,"2ddc9b3a809349288624d345355dbb5c"},{4.8,-33.12,0,"2d18d3906eac42408171b072378bd990"},{4.8,-14.4,0,"33b96ed87af541e89799dcf5e584dd59"},{24,-4.8,0,"f4b793913b834c45bace4e607205931c"},{24,-24,0,"23498e0354824d4084c582c9cd7f1e41"},{24,-33.12,0,"135e992e2194486ea9088e8fe9bc1353"},{24,-14.4,0,"b2dd60592fe646f58d54e5529b3ce29d"},{31.92,-4.8,0,"0f7eadc922264c9a8d90c3fbd851d0fd"},{31.92,-24,0,"709f7cb703af40c8937043360dd4612a"},{31.92,-33.12,0,"d2da3ff07802469a87e0033c401a698c"},{31.92,-14.4,0,"330b9928c973477ca9db54e0cb0acf54"},{14.4,-4.8,0,"d6ccbb9bf7684e23a71e633ba2d83ef7"},{14.4,-24,0,"ba664f90e6f54d43a02b323e856ffd07"},{14.4,-33.12,0,"ecb722c0808e4c44ba9838c93981c6b6"},{14.4,-14.4,0,"d5ac699975c54a148ffd82bcfd10fdd0"},{4.8,-4.8,10,"8db66fe2109046dab0d2ca0fa4310713"},{4.8,-24,10,"20efa81945c64059a83ac1da41dd409a"},{4.8,-33.12,10,"aaac69bc4cf04be7b0b36a383599049e"},{4.8,-14.4,10,"cc94543d4e5b438382fe95411f8f4e04"},{24,-4.8,10,"ce26b4366f1b46139d06d217e572e3cb"},{24,-24,10,"3ce667606bc7478088e3d4e48c65fd6a"},{24,-33.12,10,"da56bc2d825c47d68d87b0f75a84129e"},{24,-14.4,10,"386c4f85165545318d337b4d6a82187a"},{31.92,-4.8,10,"38861d011de0428ba1624c4843a4dd92"},{31.92,-24,10,"e50d509ee8e443a78f7e86350a72b860"},{31.92,-33.12,10,"36f5a8f3f2394b2ba35c11e016140bc2"},{31.92,-14.4,10,"d71b0a44c8ae455c80d69e49a00d58c2"},{14.4,-4.8,10,"b42a4287988e4c30b4b972487d114644"},{14.4,-24,10,"01bb6acf8c33472c895cd6e18bc42337"},{14.4,-33.12,10,"7cc5713f6af84b8fb6e7e2ab4f1d6a3c"},{14.4,-14.4,10,"3be14b5fa504472fb06d26e03989d2e4"}},
+    [15] = {{3.6,-1.68,0,"c612297f202f4650b9d4b7ab67c302e9"},{3.6,-1.68,10,"6c2f27392ebb412bb73b63f5dca9033a"}},
+    [7] = {{1.44,-1.44,0,"822d173a0364438982994a320e59f40a"},{1.44,-1.44,10,"759dba980d554458ac0c1e77c52722e6"}},
+    [315] = {{2.4,-2.4,0,"cacf01a3046f49018a6cd781886fb4a6"},{2.4,-2.4,10,"7f81f6d4dbe54f859a30514af72fc505"}},
+    }
+
+    method table Get(integer mapId)
+        return self.Chunks[mapId]
+    end
+
+    -- 캔버스의 Chunk00~Chunk31 을 mapId 의 그림으로 맞춘다.
+    -- 남는 청크는 숨긴다. 새로 만들거나 지우는 것 없이 값만 바꾸므로 전환이 즉시다.
+    @ExecSpace("ClientOnly")
+    method boolean Draw(Entity canvas, integer mapId)
+        if not isvalid(canvas) then return false end
+        local list = self.Chunks[mapId]
+        if list == nil then return false end
+        local found = 0
+        for i = 0, 31 do
+            local chunk = canvas:GetChildByName(string.format("Chunk%02d", i))
+            if isvalid(chunk) then
+                found = found + 1
+                local row = list[i + 1]
+                if row == nil then
+                    if chunk.Visible then chunk.Visible = false end
+                else
+                    local renderer = chunk.SpriteRendererComponent
+                    if renderer.SpriteRUID ~= row[4] then renderer.SpriteRUID = row[4] end
+                    renderer.OrderInLayer = row[3]
+                    chunk.TransformComponent.Position = Vector3(row[1], row[2], 0)
+                    if not chunk.Visible then chunk.Visible = true end
+                end
+            end
+        end
+        local text = "맵" .. tostring(mapId) .. " 청크" .. tostring(#list) .. "장"
+        log("[BaramMapView] " .. text)
+        _BaramInput:Notice(text)
+        return true
+    end
+end
