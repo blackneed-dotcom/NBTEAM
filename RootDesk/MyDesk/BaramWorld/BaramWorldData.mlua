@@ -25,7 +25,16 @@ script BaramWorldData extends Logic
         return self.Maps[tostring(id)]
     end
     method table Item(integer id)
-        return self.Items[tostring(id)]
+        -- Use the same merged definitions for ID lookup and name lookup.
+        return self:AllItems()[tostring(id)]
+    end
+    method table AllItems()
+        -- Merge imported IDs before any caller enumerates the item catalog.
+        if self._T.item2Merged ~= true then
+            for id, data in pairs(_BaramItem2Data.Items) do self.Items[id] = data end
+            self._T.item2Merged = true
+        end
+        return self.Items
     end
     method Vector3 Position(integer x, integer y)
         return Vector3((x + 0.5) * 0.24, -(y + 1) * 0.24, 0)

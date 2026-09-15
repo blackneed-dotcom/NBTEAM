@@ -383,6 +383,7 @@ script BaramPlayerVisual extends Component
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        -- Keep the original weapon-family body, head and held-layer frames synchronized.
         -- All observers release the display when this player returns to the title.
         if not self.Active then
             if self._T.map ~= nil then self:ClearDisplay() end
@@ -558,8 +559,10 @@ script BaramPlayerVisual extends Component
             if self.Facing == self._T.localFacing or _UtilLogic.ElapsedSeconds >= self._T.localFacingUntil then self._T.localFacing = nil
             else facing = self._T.localFacing end
         end
-        local bodyFrame = facing + step
-        local headFrame = bodyFrame
+        local pose = _BaramAppearance:WeaponMotion(self.WeaponItemId, false, facing + step)
+        local bodyFrame = pose.body
+        local headFrame = pose.head
+        local weaponFrame = pose.weapon
         local emotion = false
         local action = self._T.action or 0
         if action > 0 then
@@ -571,7 +574,12 @@ script BaramPlayerVisual extends Component
                 local frame = math.min(count - 1, math.floor(self._T.actionAge / self._T.actionInterval))
                 local direction = self._T.actionDirection
                 -- winbaram 0x4474CC action switch; 0x4843A0 frame counts.
-                if action == 1 or action == 2 then bodyFrame = 24 + direction * 2 + frame
+                weaponFrame = -1
+                if action == 1 then
+                    local attackPose = _BaramAppearance:WeaponMotion(self.WeaponItemId, true, direction * 2 + frame)
+                    bodyFrame = attackPose.body
+                    weaponFrame = attackPose.weapon
+                elseif action == 2 then bodyFrame = 24 + direction * 2 + frame
                 elseif action == 3 then bodyFrame = 64 + direction * 2
                 elseif action == 4 or action == 5 then bodyFrame = 76 + direction
                 elseif action == 6 then bodyFrame = 72 + direction
@@ -593,14 +601,8 @@ script BaramPlayerVisual extends Component
                 self._T.actionAge = self._T.actionAge + delta
             end
         end
-        local weaponFrame = -1
-        if self.WeaponItemId ~= 0 then
-            if bodyFrame < 12 then
-                weaponFrame = bodyFrame
-                bodyFrame = bodyFrame + 12
-            elseif bodyFrame >= 24 and bodyFrame < 32 then weaponFrame = bodyFrame - 12 end
-        end
-        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(bodyFrame) .. ":" .. tostring(headFrame) .. ":" .. tostring(emotion) .. ":" .. tostring(self.WeaponItemId)
+        -- Only idle/walk and weapon attacks carry the held layer in the original client.
+        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(bodyFrame) .. ":" .. tostring(headFrame) .. ":" .. tostring(emotion) .. ":" .. tostring(self.WeaponItemId) .. ":" .. tostring(weaponFrame)
         if signature ~= self._T.signature then
             local body = visual:GetChildByName("Body").SpriteRendererComponent
             local head = visual:GetChildByName("Head").SpriteRendererComponent
@@ -630,7 +632,7 @@ script BaramPlayerVisual extends Component
                 end
             end
             self._T.signature = signature
-            if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " emotion=" .. tostring(emotion)) end
+            if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " weapon=" .. tostring(weaponFrame) .. " emotion=" .. tostring(emotion)) end
         end
         if self.Entity == _UserService.LocalPlayer and _BaramEntryFlow.InWorld and _BaramInput.MapScroll then
             local camera = self._T.camera

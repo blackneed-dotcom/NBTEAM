@@ -1,0 +1,1162 @@
+@Logic
+script BaramWorld extends Logic
+    property string StorageKey = "BaramWorldV1"
+    property table LocalState = {}
+    property number Clock = 0
+    property table Npcs = {{id = 8, map = 15, x = 6, y = 8, name = "연실네"}, {id = 11, map = 7, x = 5, y = 4, name = "옥이"}}
+
+    @ExecSpace("ServerOnly")
+    method void OnBeginPlay()
+        self._T.users = {}
+        self._T.loading = {}
+        self._T.drops = {}
+        self._T.nextDrop = 0
+        self._T.flush = 60
+        self.Clock = 0
+        -- 사냥터 몹은 BaramHunting 이 젠한다. 그동안은 에디터에서 맵 엔티티에 손으로
+        -- 올려놨어야만 돌았고(코드 어디에도 AddComponent 가 없었다), 안 올라가 있으면
+        -- 315 에 몹이 한 마리도 안 나온다. 여기서 직접 붙인다.
+        self:EnsureHunting(315)
+        log("[BaramWorld] server ready: original grids, inventory and persistence")
+    end
+
+    -- [단일 맵 구조] 살아있는 것들은 전부 캔버스 위에 올린다.
+    -- 옛 맵 씬은 이제 아무도 들어가지 않으므로 거기 띄우면 아무한테도 안 보인다.
+    method Entity Stage(integer mapId)
+        local canvas = _EntityService:GetEntityByPath("/maps/baramcanvas")
+        if isvalid(canvas) then return canvas end
+        local mapData = _BaramWorldData:Map(mapId)
+        if mapData == nil then return nil end
+        return _EntityService:GetEntityByPath("/maps/" .. mapData.name)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void EnsureHunting(integer mapId)
+        local map = self:Stage(mapId)
+        if not isvalid(map) then return end
+        ---@type BaramHunting
+        local hunting = map:GetComponent("script.BaramHunting")
+        if not isvalid(hunting) then hunting = map:AddComponent("BaramHunting") end
+        if not isvalid(hunting) then log_error("[BaramWorld] hunting attach failed on " .. map.Name) return end
+        hunting.MapId = mapId
+        -- 런타임에 붙인 컴포넌트는 OnBeginPlay 가 이미 지나갔을 수 있어서 직접 부른다.
+        -- Prepare 는 두 번 불러도 한 번만 젠한다.
+        hunting:Prepare()
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Enter(string userId, string appearance, integer slot)
+        -- A load ticket ties every yielding operation to the same live connection.
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) or self._T.loading[userId] ~= nil then return false end
+        local record = self._T.users[userId]
+        if record ~= nil and (record.active or record.leaving or record.saving) then return false end
+        local ticket = {player = player}
+        self._T.loading[userId] = ticket
+        local ok, entered = pcall(function() return self:EnterSession(userId, appearance, slot, ticket) end)
+        if self._T.loading[userId] == ticket then self._T.loading[userId] = nil end
+        if not ok then
+            local failed = self._T.users[userId]
+            if failed ~= nil and failed.player == player then failed.active = false self:SetPublicActive(userId, false) end
+            log_error("[BaramMultiplayer] entry failed: " .. tostring(entered))
+            return false
+        end
+        return entered
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean CurrentEntry(string userId, table ticket)
+        -- A disconnected or superseded load must not publish state to a new player.
+        return self._T.loading[userId] == ticket and isvalid(ticket.player) and _UserService:GetUserEntityByUserId(userId) == ticket.player
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean EnterSession(string userId, string appearance, integer slot, table ticket)
+        -- Each slot owns a separate save key; slot one keeps the original key.
+        if slot < 1 or slot > 3 then return false end
+        local player = ticket.player
+        if not isvalid(player) or not _BaramEntryFlow:IsValidRecord(appearance) then return false end
+        local record = self._T.users[userId]
+        if record ~= nil and record.tradeBusy then
+            if record.trade ~= nil and record.trade.recovery then _BaramTrade:Recover(record.trade) end
+            if not self:CurrentEntry(userId, ticket) then return false end
+            if record.tradeBusy then self:Notice(userId, "교환 저장 결과를 확인 중입니다.") return false end
+        end
+        if record ~= nil and (record.slot or 1) ~= slot then
+            if record.active or not self:Flush(userId) then return false end
+            if not self:CurrentEntry(userId, ticket) then return false end
+            record = nil
+        end
+        if record == nil then
+            local storage = _DataStorageService:GetUserDataStorage(player.PlayerComponent.ProfileCode)
+            local key = _BaramEntryFlow:SlotKey(self.StorageKey, slot)
+            local recovered = _BaramTradeStore:Resolve(storage, key, _DataStorageService:GetGlobalDataStorage(_BaramTradeStore.LedgerName))
+            local raw = recovered.raw
+            if not self:CurrentEntry(userId, ticket) then
+                log("[BaramMultiplayer] discarded stale load")
+                return false
+            end
+            if not recovered.ok then self:Notice(userId, "진행 정보 또는 교환 저장 결과를 확인하지 못했습니다. 기존 데이터는 보존했습니다.") return false end
+            local state = nil
+            if raw ~= nil and raw ~= "" then
+                local ok, parsed = pcall(function() return _HttpService:JSONDecode(raw) end)
+                if not ok or not self:ValidState(parsed) then self:Notice(userId, "저장 형식을 확인할 수 없습니다. 기존 데이터는 보존했습니다.") return false end
+                state = parsed
+            else
+                state = {version = 1, map = 14, x = 34, y = 122, hp = 100, mp = 80, maxHp = 100, maxMp = 80, level = 1, exp = 0, gold = 0, items = {kind = "inventory"}, equip = 0, guide = 0}
+            end
+            record = {state = state, storage = storage, slot = slot, key = key, savedRaw = raw or "", dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
+            self._T.users[userId] = record
+        end
+        _BaramJobs:InitializeState(record.state)
+        local selected = _BaramEntryFlow:DecodeRecord(appearance)
+        if selected.nickname == "" then return false end
+        -- Character creation owns these choices, including existing saved slots.
+        record.state.nation = selected.nation
+        record.state.totem = selected.totem
+        record.state.gender = selected.gender
+        player.PlayerComponent.Nickname = selected.nickname
+        record.player = player
+        record.active = false
+        if record.allowExchange == nil then record.allowExchange = true end
+        self:ExchangeSetting(record.allowExchange, userId)
+        if record.allowGroup == nil then record.allowGroup = true end
+        _BaramParty:ReceiveAllowed(record.allowGroup, userId)
+        if record.party == nil then _BaramParty:ReceiveMembers({}, userId) end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if not isvalid(visual) then visual = player:AddComponent("BaramPlayerVisual") end
+        if not isvalid(visual) then record.active = false return false end
+        visual.Active = false
+        visual.Gender = selected.gender
+        visual.Hair = selected.hair
+        player.PlayerControllerComponent.Enable = false
+        player.PlayerComponent.PVPMode = false
+        self:Place(userId, record.state.map, record.state.x, record.state.y)
+        if not self:CurrentEntry(userId, ticket) then record.active = false return false end
+        record.active = true
+        visual.Active = true
+        self:Snapshot(userId)
+        log("[BaramJob] loaded slot=" .. tostring(slot) .. " job=" .. tostring(record.state.jobId) .. " rank=" .. tostring(record.state.jobRank))
+        log("[BaramWorld] entered slot=" .. tostring(slot) .. " level=" .. tostring(record.state.level) .. " map=" .. tostring(record.state.map))
+        return true
+    end
+
+    method boolean ValidState(table s)
+        if s == nil or s.version ~= 1 or type(s.items) ~= "table" then return false end
+        if not _BaramNpcServices:ValidBank(s) then return false end
+        if not _BaramJobs:ValidState(s) then return false end
+        if not _BaramItemCodex:Valid(s) then return false end
+        for _, name in ipairs({"map", "x", "y", "hp", "mp", "maxHp", "maxMp", "level", "exp", "gold", "equip", "guide"}) do
+            if type(s[name]) ~= "number" or s[name] ~= math.floor(s[name]) or s[name] < 0 then return false end
+        end
+        if _BaramWorldData:Map(s.map) == nil or not _BaramWorldData:Walkable(s.map, s.x, s.y) or s.level < 1 or s.level > 99 then return false end
+        if s.hp > s.maxHp or s.mp > s.maxMp or s.gold > 4294967295 then return false end
+        for key, item in pairs(s.items) do
+            if key ~= "kind" then
+            local slot = tonumber(key)
+            if slot == nil or slot < 1 or slot > _BaramWorldData.InventoryCapacity or slot ~= math.floor(slot) or type(item) ~= "table" then return false end
+            local data = _BaramWorldData:Item(item.id or -1)
+            if data == nil or type(item.count) ~= "number" or item.count ~= math.floor(item.count) or item.count < 1 or item.count > math.max(1, data.maxCount) then return false end
+            end
+        end
+        return s.equip == 0 or s.items[tostring(s.equip)] ~= nil
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Place(string userId, integer mapId, integer x, integer y)
+        -- Resolve the shared canvas before updating the logical map and position.
+        local r = self._T.users[userId]
+        local mapData = _BaramWorldData:Map(mapId)
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or mapData == nil or not isvalid(player) then return end
+        if r.tradeBusy then return end
+        if r.trade ~= nil then _BaramTrade:CancelFor(userId, "이동하여 교환이 취소되었습니다.") end
+        local map = self:Stage(mapId)
+        if not isvalid(map) then log_error("[BaramWorld] missing map " .. mapData.name) return end
+        local p = _BaramWorldData:Position(x, y)
+        r.state.map = mapId
+        r.state.x = x
+        r.state.y = y
+        ---@type BaramPlayerVisual
+        local pv = player:GetComponent("script.BaramPlayerVisual")
+        if isvalid(pv) then
+            pv.GridPosition = Vector3(x, y, mapId)
+            pv.MapId = mapId
+        end
+        -- [단일 맵 구조] 바람 맵마다 MSW 씬을 따로 두지 않는다. 모두 캔버스 한 장 위에 있고,
+        -- 바람 맵이 바뀌면 클라이언트가 그림만 갈아끼운다(BaramMapView). 씬 전환도 텔레포트도
+        -- 없으므로 워프에 드는 비용이 사라진다. 텔레포트는 로그인 때 캔버스로 한 번뿐이다.
+        local crossed = player.CurrentMap ~= map
+        r.nextMove = crossed and self.Clock or math.max(self.Clock, r.nextMove or 0)
+        r.dialog = nil
+        -- 서버가 뜰 때 맵 엔티티가 아직 없었을 수도 있으니, 사냥터에 들어올 때 한 번 더 본다.
+        if mapId == 315 then self:EnsureHunting(mapId) end
+        if crossed then _TeleportService:TeleportToMapPosition(player, p, map.Name)
+        else player.PlayerComponent:SetPosition(p) end
+        self:Changed(userId)
+        log("[BaramWorld] scene=" .. map.Name .. " map=" .. tostring(mapId) .. " cell=" .. tostring(x) .. "," .. tostring(y))
+    end
+
+    -- [단일 맵 구조 확인용] 캔버스 맵으로 들어갔다 나온다.
+    -- MSW 는 내가 있는 맵만 클라이언트에 올리기 때문에, 캔버스를 보려면 실제로 들어가야 한다.
+    -- 저장 좌표는 건드리지 않으므로 나오면 원래 자리로 돌아온다. 확인이 끝나면 지울 코드.
+    @ExecSpace("Server")
+    method void DebugCanvas(boolean enter)
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or not isvalid(player) then return end
+        if enter then
+            local map = _EntityService:GetEntityByPath("/maps/baramcanvas")
+            if not isvalid(map) then self:Notice(userId, "캔버스 맵이 서버에도 없다") return end
+            _TeleportService:TeleportToMapPosition(player, _BaramWorldData:Position(34, 122), "baramcanvas")
+            self:Notice(userId, "캔버스 입장. F8 로 맵 전환, F7 로 복귀")
+        else
+            r.nextMove = self.Clock
+            self:Place(userId, r.state.map, r.state.x, r.state.y)
+            self:Notice(userId, "복귀")
+        end
+    end
+
+    @ExecSpace("Server")
+    method void Move(integer direction, boolean turnOnly)
+        self:QueueMove(senderUserId,direction,turnOnly)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void QueueMove(string userId, integer direction, boolean turnOnly)
+        local r = self._T.users[userId]
+        if r ~= nil and r.active and direction>=0 and direction<=3 then
+            -- One outstanding step only. Absorb short arrival jitter without bypassing cooldown.
+            if r.queuedMove~=nil then return end
+            local remaining=(r.nextMove or 0)-self.Clock
+            if remaining>0 and remaining<=0.12 then
+                r.queuedMove={direction=direction,turnOnly=turnOnly,map=r.state.map,x=r.state.x,y=r.state.y}
+                if self._T.moveQueue==nil then self._T.moveQueue={} end
+                self._T.moveQueue[userId]=r
+                return
+            end
+        end
+        self:CompleteMove(userId,direction,turnOnly)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void CompleteMove(string userId, integer direction, boolean turnOnly)
+        local result = self:MoveChecked(userId, direction, turnOnly)
+        local r = self._T.users[userId]
+        if r ~= nil then self:MoveReply(result, r.state.map, r.state.x, r.state.y, userId) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void DrainMoves()
+        -- Revalidate after the wait: no queued steps may cross teleports or character changes.
+        for userId,r in pairs(self._T.moveQueue or {}) do
+            local step=r.queuedMove
+            if self._T.users[userId]~=r or step==nil then
+                self._T.moveQueue[userId]=nil
+            elseif not r.active or r.leaving or r.state.map~=step.map or r.state.x~=step.x or r.state.y~=step.y then
+                r.queuedMove=nil
+                self._T.moveQueue[userId]=nil
+                self:MoveReply(0,r.state.map,r.state.x,r.state.y,userId)
+            elseif self.Clock>=r.nextMove then
+                r.queuedMove=nil
+                self._T.moveQueue[userId]=nil
+                self:CompleteMove(userId,step.direction,step.turnOnly)
+            end
+        end
+    end
+
+    @ExecSpace("Client")
+    method void MoveReply(integer result, integer mapId, integer x, integer y)
+        -- Apply the authoritative cell before completing prediction; keep inventory state intact.
+        local s = self.LocalState
+        if s ~= nil and s.map == mapId then
+            s.x = x
+            s.y = y
+            local root = _EntityService:GetEntityByPath("/ui/BaramHUD")
+            if isvalid(root) then
+                local hud = root:GetComponent("script.BaramHUDController")
+                if isvalid(hud) then hud:SetCoordinates(x, y) end
+            end
+        end
+        _BaramInput:MoveResult(result)
+    end
+
+    @ExecSpace("ServerOnly")
+    method integer MoveChecked(string userId, integer direction, boolean turnOnly)
+        local r = self._T.users[userId]
+        if r == nil or not r.active or direction < 0 or direction > 3 or self.Clock < r.nextMove or r.state.hp <= 0 then return 0 end
+        if r.tradeBusy then return 0 end
+        if r.trade ~= nil then _BaramTrade:CancelFor(userId, "이동하여 교환이 취소되었습니다.") end
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return 0 end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        -- A movement request turns and walks in one authoritative step.
+        -- Explicit Shift+direction still turns in place.
+        visual.Facing = direction * 3
+        if turnOnly then visual.Step = 0 return 2 end
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        local s = r.state
+        local x = s.x + dx[direction + 1]
+        local y = s.y + dy[direction + 1]
+        if not _BaramWorldData:Walkable(s.map, x, y) then return 0 end
+        for _, npc in ipairs(self.Npcs) do if npc.map == s.map and npc.x == x and npc.y == y then return 0 end end
+        if s.map == 315 then
+            ---@type BaramHunting
+            local hunting = player.CurrentMap:GetComponent("script.BaramHunting")
+            if isvalid(hunting) and hunting:Occupied(x, y) then return 0 end
+        end
+        for _, other in pairs(self._T.users) do
+            if other ~= r and other.active and other.state.map == s.map and other.state.x == x and other.state.y == y then return 0 end
+        end
+        s.x = x
+        s.y = y
+        r.nextMove = self.Clock + _BaramWorldData.WalkFrameSeconds * 4
+        r.dialog = nil
+        visual.Step = visual.Step % 2 + 1
+        for _, p in ipairs(_BaramWorldData.Portals) do
+            if p.from == s.map and p.x == x and p.y == y and s.level >= p.minLevel and s.level <= p.maxLevel then
+                self:Place(userId, p.to, p.toX, p.toY)
+                self:Snapshot(userId)
+                return 1
+            end
+        end
+        -- A portal sends only the destination teleport, never an old-map position first.
+        player.PlayerComponent:SetPosition(_BaramWorldData:Position(x, y))
+        visual.GridPosition = Vector3(x, y, s.map)
+        self:Changed(userId)
+        return 1
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Changed(string userId)
+        local r = self._T.users[userId]
+        if r == nil then return end
+        r.dirty = true
+        r.revision = r.revision + 1
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Snapshot(string userId)
+        -- Publish only display values through the existing player replication path.
+        local r = self._T.users[userId]
+        if r ~= nil then
+            local current = r.state.items[tostring(r.state.equip)]
+            if current ~= nil and _BaramItemRules:EquipError(r.state, current) ~= "" then
+                _BaramItemRules:Hook(userId, current, "unequipScript")
+                r.state.equip = 0
+                self:Changed(userId)
+            end
+            local player = _UserService:GetUserEntityByUserId(userId)
+            if isvalid(player) then
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                if isvalid(visual) then
+                    visual.DisplayHp = r.state.hp
+                    local equipped = r.state.items[tostring(r.state.equip)]
+                    visual.WeaponItemId = equipped ~= nil and equipped.id or 0
+                    visual.DisplayMaxHp = r.state.maxHp
+                    visual.DisplayLevel = r.state.level
+                    visual.DisplayName = player.PlayerComponent.Nickname
+                    visual.ClanId = _BaramChatChannels:GetClanMembership(userId)
+                end
+            end
+            self:ReceiveState(_HttpService:JSONEncode(r.state), userId)
+        end
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveState(string raw)
+        self.LocalState = _HttpService:JSONDecode(raw)
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD")
+        if not isvalid(root) then return end
+        ---@type BaramHUDController
+        local hud = root:GetComponent("script.BaramHUDController")
+        local s = self.LocalState
+        hud:SetIdentity(s.nation, s.totem)
+        hud:SetJob(s.jobId or 0, s.jobRank or 0)
+        hud.Gold = s.gold
+        hud.Experience = s.exp
+        hud:SetVitals(s.hp, s.maxHp, s.mp, s.maxMp, s.level)
+        hud:SetCoordinates(s.x, s.y)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean SetJob(string userId, integer jobId, integer jobRank)
+        -- Server integration point only: no client can grant itself a job or advancement.
+        -- Uses the existing slot save/dirty pipeline; never changes level, stats or items.
+        local r = self:GetRecord(userId)
+        if r == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil then return false end
+        if not _BaramJobs:ValidState({jobId = jobId, jobRank = jobRank}) then return false end
+        if r.state.jobId == jobId and r.state.jobRank == jobRank then return true end
+        r.state.jobId = jobId
+        r.state.jobRank = jobRank
+        self:Changed(userId)
+        self:Snapshot(userId)
+        self:PublishJob(userId, jobId, jobRank)
+        log("[BaramJob] changed slot=" .. tostring(r.slot) .. " job=" .. tostring(jobId) .. " rank=" .. tostring(jobRank))
+        return true
+    end
+
+    @ExecSpace("Multicast")
+    method void PublishJob(string userId, integer jobId, integer jobRank)
+        -- Refresh an already-open profile immediately without another request round trip.
+        _BaramProfile:ApplyJob(userId, jobId, jobRank)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Notice(string userId, string message)
+        _BaramChatRelay:ReceiveNotice(message, userId)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean AddItem(table s, integer id, integer count, integer durability)
+        local data = _BaramWorldData:Item(id)
+        if data == nil or count < 1 then return false end
+        local limit = math.max(1, data.maxCount)
+        local capacity = 0
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            local item = s.items[tostring(i)]
+            if item == nil then capacity = capacity + limit elseif item.id == id then capacity = capacity + limit - item.count end
+        end
+        if capacity < count then return false end
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            local item = s.items[tostring(i)]
+            if item ~= nil and item.id == id then
+                local amount = math.min(count, limit - item.count)
+                item.count = item.count + amount
+                count = count - amount
+            end
+        end
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            if count <= 0 then break end
+            local key = tostring(i)
+            if s.items[key] == nil then
+                local amount = math.min(count, limit)
+                s.items[key] = {id = id, count = amount, durability = durability >= 0 and durability or data.durability}
+                count = count - amount
+            end
+        end
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean AddItemCopy(table state, table source, integer count)
+        -- Named equipment keeps its identity through giving, dropping and picking up.
+        if source.name == nil then return self:AddItem(state, source.id, count, source.durability) end
+        if count ~= 1 then return false end
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            if state.items[tostring(i)] == nil then
+                state.items[tostring(i)] = {id = source.id, count = 1, durability = source.durability, name = source.name}
+                return true
+            end
+        end
+        return false
+    end
+
+    @ExecSpace("ServerOnly")
+    method void RemoveItem(table s, integer slot, integer count)
+        local key = tostring(slot)
+        local item = s.items[key]
+        item.count = item.count - count
+        if item.count <= 0 then s.items[key] = nil if s.equip == slot then s.equip = 0 end end
+    end
+
+    @ExecSpace("Server")
+    method void SetExchangeAllowed(boolean allowed)
+        -- Keep item-receiving permission authoritative on the server.
+        self:ApplyExchangeAllowed(senderUserId, allowed)
+    end
+
+    @ExecSpace("Server")
+    method void ToggleExchangeAllowed()
+        -- Flip server state so rapid clicks do not reuse a stale client value.
+        local r = self._T.users[senderUserId]
+        if r ~= nil and r.active then self:ApplyExchangeAllowed(senderUserId, r.allowExchange == false) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ApplyExchangeAllowed(string userId, boolean allowed)
+        -- Share the setting between keyboard and original profile buttons.
+        local r = self._T.users[userId]
+        if r == nil or not r.active then return end
+        r.allowExchange = allowed
+        self:ExchangeSetting(allowed, userId)
+        self:Notice(userId, allowed and "교환가능    : ON" or "교환가능    : OFF")
+        log("[BaramExchange] allowed=" .. tostring(allowed))
+    end
+
+    @ExecSpace("Client")
+    method void ExchangeSetting(boolean allowed)
+        -- Reflect the server-confirmed setting in the keyboard controller.
+        _BaramInput.AllowExchange = allowed
+        local player = _UserService.LocalPlayer
+        if isvalid(player) and _BaramProfile.SelectedUser == player.PlayerComponent.UserId then
+            _BaramProfile.ExchangeAllowed = allowed
+            _BaramProfile:RefreshButtons()
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    method string FrontUser(string userId)
+        -- Resolve an active player on the single cell directly ahead.
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or r.state.hp <= 0 or not isvalid(player) then return "" end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if not isvalid(visual) then return "" end
+        local index = math.floor(visual.Facing / 3) + 1
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        if dx[index] == nil then return "" end
+        for otherId, other in pairs(self._T.users) do
+            if otherId ~= userId and other.active and other.state.hp > 0 and other.state.map == r.state.map and other.state.x == r.state.x + dx[index] and other.state.y == r.state.y + dy[index] then
+                local target = _UserService:GetUserEntityByUserId(otherId)
+                if isvalid(target) and target.CurrentMap == player.CurrentMap then return otherId end
+            end
+        end
+        return ""
+    end
+
+    @ExecSpace("Server")
+    method void ItemAction(string action, integer slot, integer other)
+        -- Resolve item2 conditions, transfer permissions and script hooks on the server.
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or slot < 1 or slot > _BaramWorldData.InventoryCapacity then return end
+        if r.trade ~= nil or r.tradeBusy then self:Notice(userId, "교환 중에는 소지품을 변경할 수 없습니다.") return end
+        r.nextAction = self.Clock + 0.15
+        local s = r.state
+        local item = s.items[tostring(slot)]
+        if item == nil then self:Notice(userId, "그 칸은 비어 있습니다.") return end
+        local data = _BaramWorldData:Item(item.id)
+        if action == "give" or action == "giveall" then
+            if data.dropAllowed ~= 1 then self:Notice(userId, "교환할 수 없는 아이템입니다.") return end
+            local targetId = self:FrontUser(userId)
+            local target = self._T.users[targetId]
+            if target == nil or target.allowExchange == false or r.allowExchange == false then self:Notice(userId, "앞에 물건을 받을 사람이 없습니다.") return end
+            if target.trade ~= nil or target.tradeBusy then self:Notice(userId, "상대방이 교환 중입니다.") return end
+            if s.equip == slot then self:Notice(userId, "장비를 먼저 벗어 주세요.") return end
+            local count = action == "giveall" and item.count or 1
+            if not self:AddItemCopy(target.state, item, count) then self:Notice(userId, "상대방의 소지품이 가득 찼습니다.") return end
+            self:RemoveItem(s, slot, count)
+            self:Changed(userId)
+            self:Changed(targetId)
+            self:Snapshot(targetId)
+            self:Notice(targetId, data.name .. " " .. tostring(count) .. "개를 받았습니다.")
+            self:Notice(userId, data.name .. " 전달")
+        elseif action == "swap" then
+            if other < 1 or other > _BaramWorldData.InventoryCapacity then return end
+            s.items[tostring(slot)] = s.items[tostring(other)]
+            s.items[tostring(other)] = item
+            if s.equip == slot then s.equip = other elseif s.equip == other then s.equip = slot end
+        elseif action == "equip" or action == "armor" then
+            local reason = _BaramItemRules:EquipError(s, item)
+            if reason ~= "" then self:Notice(userId, reason) return end
+            if s.equip == slot then return end
+            _BaramItemRules:Hook(userId, s.items[tostring(s.equip)], "unequipScript")
+            s.equip = slot
+            _BaramItemRules:Hook(userId, item, "equipScript")
+            self:Notice(userId, data.name .. " 장착")
+        elseif action == "unequip" then
+            if s.equip == slot then
+                _BaramItemRules:Hook(userId, item, "unequipScript")
+                s.equip = 0 self:Notice(userId, "장비를 벗었습니다.")
+            end
+        elseif action == "use" or action == "eat" then
+            if s.hp <= 0 then return end
+            if item.id == 3014 then s.hp = math.min(s.maxHp, s.hp + 8)
+            elseif item.id == 3018 then s.hp = math.min(s.maxHp, s.hp + 48)
+            elseif item.id == 2200 then s.hp = math.max(1, s.hp - 1) s.mp = math.min(s.maxMp, s.mp + 30)
+            else self:Notice(userId, "사용할 수 없는 물건입니다.") return end
+            if data.type == 6 and item.durability > 1 then item.durability = item.durability - 1 else self:RemoveItem(s, slot, 1) end
+            self:Notice(userId, data.name .. " 사용")
+        elseif action == "drop" or action == "dropall" or action == "throw" then
+            if data.dropAllowed ~= 1 then self:Notice(userId, "버릴 수 없는 아이템입니다.") return end
+            if s.equip == slot then self:Notice(userId, "장비를 벗은 뒤 버려 주세요.") return end
+            local count = action == "dropall" and item.count or 1
+            local x = s.x
+            local y = s.y
+            if action == "throw" then
+                local player = _UserService:GetUserEntityByUserId(userId)
+                ---@type BaramPlayerVisual
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                local dx = {0, 1, 0, -1}
+                local dy = {-1, 0, 1, 0}
+                local index = math.floor(visual.Facing / 3) + 1
+                for i = 1, 3 do
+                    if not _BaramWorldData:Walkable(s.map, x + dx[index], y + dy[index]) then break end
+                    x = x + dx[index] y = y + dy[index]
+                end
+            end
+            self._T.nextDrop = self._T.nextDrop + 1
+            self._T.drops[self._T.nextDrop] = {map = s.map, x = x, y = y, id = item.id, count = count, durability = item.durability, name = item.name, expires = self.Clock + 300}
+            local dropped = self._T.drops[self._T.nextDrop]
+            self:RemoveItem(s, slot, count)
+            self:Changed(userId)
+            self:ShowDrop(dropped)
+            self:Notice(userId, data.name .. " " .. tostring(count) .. "개를 내려놓았습니다.")
+            if action == "throw" then self:PlayUserAction(userId, 2, 0.15)
+            else self:PlayUserAction(userId, 4, 0.3) end
+        else return end
+        self:Changed(userId)
+        self:Snapshot(userId)
+        log("[BaramInventory] " .. action .. " slot=" .. tostring(slot))
+    end
+
+    @ExecSpace("Server")
+    method void DropGold(string amountText)
+        -- The caller cannot select an owner, position, balance or floor identifier.
+        self:DropGoldChecked(senderUserId, amountText)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean ChangeGold(string userId, integer delta)
+        -- Server integration point; shares the existing character save and snapshot.
+        local r = self:GetRecord(userId)
+        if r == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil then return false end
+        if not self:ApplyGold(r.state, delta) then return false end
+        if delta ~= 0 then self:Changed(userId) self:Snapshot(userId) end
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean ApplyGold(table state, number delta)
+        -- Original uint32 money field; reject rather than wrap or silently clamp.
+        if type(state.gold) ~= "number" or state.gold < 0 or state.gold > 4294967295 or state.gold ~= math.floor(state.gold) then return false end
+        if delta ~= delta or delta < -4294967295 or delta > 4294967295 or delta ~= math.floor(delta) then return false end
+        local value = state.gold + delta
+        if value < 0 or value > 4294967295 then return false end
+        state.gold = value
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean DropGoldChecked(string userId, string amountText)
+        -- winbaram 4E0BD0 / map 408E38: decimal input, funds check, 100 million/drop.
+        local r = self:GetRecord(userId)
+        if r == nil or not r.active or r.leaving or r.state.hp <= 0 or r.tradeBusy or r.trade ~= nil or r.saving or self.Clock < r.nextAction then return false end
+        r.nextAction = self.Clock + 0.15
+        local amount = _BaramMoney:ParseAmount(amountText)
+        if amount <= 0 then log("[BaramMoney] rejected invalid amount") return false end
+        if amount > r.state.gold then self:Notice(userId, "돈이 부족합니다.") return false end
+        if amount > 100000000 then self:Notice(userId, "한번에 1억까지만 버릴 수 있습니다.") return false end
+        local mapData = _BaramWorldData:Map(r.state.map)
+        local map = mapData ~= nil and _EntityService:GetEntityByPath("/maps/" .. mapData.name) or nil
+        if not isvalid(map) then return false end
+        local drop = {map = r.state.map, x = r.state.x, y = r.state.y, gold = amount, expires = self.Clock + 1850}
+        -- Freeze all existing inventory/trade mutators while persisting the debit.
+        -- A floor claim is never published before the sender's debit is durable.
+        r.tradeBusy = true
+        if not self:ApplyGold(r.state, -amount) then r.tradeBusy = false return false end
+        self:Changed(userId)
+        local ok, saved = pcall(function() return self:SaveRecord(r) end)
+        if not ok then r.saving = false log_error("[BaramMoney] debit save exception: " .. tostring(saved)) end
+        if not ok or not saved then
+            self:ApplyGold(r.state, amount)
+            self:Changed(userId)
+            r.tradeBusy = false
+            self:Snapshot(userId)
+            _BaramTrade:DrainDeferred(userId)
+            log_warning("[BaramMoney] no floor published: debit save not confirmed")
+            return false
+        end
+        self._T.nextDrop = self._T.nextDrop + 1
+        local key = self._T.nextDrop
+        local spawned, failure = pcall(function() self:ShowDrop(drop) end)
+        if not spawned or not isvalid(drop.entity) then
+            if isvalid(drop.entity) then drop.entity:Destroy() end
+            self:ApplyGold(r.state, amount)
+            self:Changed(userId)
+            r.tradeBusy = false
+            self:Flush(userId)
+            self:Snapshot(userId)
+            _BaramTrade:DrainDeferred(userId)
+            log_error("[BaramMoney] floor spawn failed; refund retained: " .. tostring(failure))
+            return false
+        end
+        -- map.exe 41C0C1 merges identical money images on the same cell without resetting age.
+        local merged = false
+        for _, existing in pairs(self._T.drops) do
+            if existing.gold ~= nil and existing.art == drop.art and existing.map == drop.map and existing.x == drop.x and existing.y == drop.y and existing.expires > self.Clock and existing.gold + amount <= 4294967295 then
+                existing.gold = existing.gold + amount
+                merged = true
+                break
+            end
+        end
+        if merged then drop.entity:Destroy() else self._T.drops[key] = drop end
+        r.tradeBusy = false
+        self:Snapshot(userId)
+        self:Notice(userId, "돈을 버렸습니다.")
+        _BaramTrade:DrainDeferred(userId)
+        log("[BaramMoney] dropped key=" .. tostring(key) .. " amount=" .. tostring(amount) .. " balance=" .. tostring(r.state.gold))
+        return true
+    end
+
+    @ExecSpace("Server")
+    method void Pickup(boolean all)
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction then return end
+        if r.trade ~= nil or r.tradeBusy then return end
+        r.nextAction = self.Clock + 0.15
+        local s = r.state
+        local count = 0
+        local blocked = false
+        for key, drop in pairs(self._T.drops) do
+            if drop.map == s.map and drop.x == s.x and drop.y == s.y and drop.expires > self.Clock then
+                local result = self:ClaimDrop(s, self._T.drops, key)
+                if result < 0 then self:Notice(userId, result == -2 and "더 이상 돈을 가질 수 없습니다." or "소지품이 가득 찼습니다.") blocked = true break end
+                if result > 0 then
+                    self:Changed(userId)
+                    if self._T.drops[key] == nil and isvalid(drop.entity) then drop.entity:Destroy() end
+                    count = count + 1
+                    if not all then break end
+                end
+            end
+        end
+        if count > 0 then self:Changed(userId) self:Snapshot(userId) self:PlayUserAction(userId, 4, 0.3) end
+        if not blocked then self:Notice(userId, count > 0 and "물건을 주웠습니다." or "발밑에 주울 물건이 없습니다.") end
+        log("[BaramInventory] pickup=" .. tostring(count))
+    end
+
+    @ExecSpace("ServerOnly")
+    method integer ClaimDrop(table state, table drops, integer key)
+        -- Claim before renderer/RPC work; failure restores the exact unmodified drop.
+        local drop = drops[key]
+        if drop == nil or drop.map ~= state.map or drop.x ~= state.x or drop.y ~= state.y or drop.expires <= self.Clock then return 0 end
+        drops[key] = nil
+        if drop.gold ~= nil then
+            -- No yield between claim and credit; a second request cannot see this claim.
+            local amount = math.min(drop.gold, 4294967295 - state.gold)
+            if amount <= 0 or not self:ApplyGold(state, amount) then drops[key] = drop return -2 end
+            drop.gold = drop.gold - amount
+            if drop.gold > 0 then drops[key] = drop end
+            log("[BaramMoney] picked key=" .. tostring(key) .. " amount=" .. tostring(amount) .. " remaining=" .. tostring(drop.gold) .. " balance=" .. tostring(state.gold))
+            return 1
+        end
+        if not self:AddItemCopy(state, drop, drop.count) then
+            drops[key] = drop
+            return -1
+        end
+        return 1
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Flush(string userId)
+        -- Ordinary saves must never overwrite a pending trade envelope.
+        local r = self._T.users[userId]
+        if r == nil or r.tradeBusy then return false end
+        return self:SaveRecord(r)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean FlushForTrade(string userId)
+        -- The trade coordinator alone may establish its frozen baseline.
+        local r = self._T.users[userId]
+        if r == nil or not r.tradeBusy or r.trade == nil or not r.trade.persisting then return false end
+        return self:SaveRecord(r)
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean SaveRecord(table r)
+        -- CAS blocks an old server/save from overwriting a newer durable state.
+        if r.saving then return false end
+        if not r.dirty then return true end
+        r.saving = true
+        local revision = r.revision
+        local raw = _HttpService:JSONEncode(r.state)
+        local code = 0
+        if r.savedRaw == nil or r.savedRaw == "" then code = r.storage:SetAndWait(r.key or self.StorageKey, raw)
+        else code = r.storage:UpdateAndWait(r.key or self.StorageKey, r.savedRaw, raw) end
+        if code ~= 0 then
+            local readCode, current = r.storage:GetAndWait(r.key or self.StorageKey)
+            if readCode == 0 and current == raw then code = 0 end
+        end
+        r.saving = false
+        if code == 0 then
+            r.savedRaw = raw
+            if r.revision == revision then r.dirty = false end
+            log("[BaramSave] saved revision=" .. tostring(revision))
+            return true
+        end
+        log_warning("[BaramSave] retry required code=" .. tostring(code))
+        return false
+    end
+
+    @ExecSpace("Server")
+    method void Save()
+        -- Saving also offers an explicit recovery retry without a polling loop.
+        local r = self._T.users[senderUserId]
+        if r ~= nil and r.trade ~= nil and r.trade.recovery then _BaramTrade:Recover(r.trade) return end
+        local ok = self:Flush(senderUserId)
+        self:Notice(senderUserId, ok and "진행 정보를 저장했습니다." or "저장하지 못했습니다. 잠시 후 다시 시도해 주세요.")
+    end
+
+    @ExecSpace("Server")
+    method void Interact()
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 then return end
+        for _, npc in ipairs(self.Npcs) do
+            if npc.map == r.state.map and math.abs(npc.x - r.state.x) + math.abs(npc.y - r.state.y) <= 2 then
+                _BaramNpcServices:OpenFor(userId, npc.id)
+                log("[BaramNPC] conversation=" .. tostring(npc.id))
+                return
+            end
+        end
+        self:Notice(userId, "바로 앞에 대화할 사람이 없습니다.")
+    end
+
+    @ExecSpace("Client")
+    method void Dialog(string title, string text)
+        _BaramInput.Mode = "shop"
+        _BaramInput.Pending = ""
+        _BaramInput:Show(title, text, "B: 사기   S: 팔기   Esc: 닫기")
+    end
+
+    @ExecSpace("Server")
+    method void Shop(string action, integer choice)
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or r.dialog == nil or self.Clock < r.nextAction then return end
+        if r.trade ~= nil or r.tradeBusy then return end
+        local npc = nil
+        for _, n in ipairs(self.Npcs) do if n.id == r.dialog then npc = n end end
+        if npc == nil or npc.map ~= r.state.map or math.abs(npc.x - r.state.x) + math.abs(npc.y - r.state.y) > 2 then return end
+        r.nextAction = self.Clock + 0.2
+        local stock = npc.id == 8 and {2200} or {3014, 3018}
+        local s = r.state
+        if action == "list" then
+            local lines = {}
+            for i, id in ipairs(stock) do
+                local item = _BaramWorldData:Item(id)
+                table.insert(lines, tostring(i) .. ": " .. item.name .. "   " .. tostring(item.price) .. "전")
+            end
+            self:Dialog(npc.name .. " · 물건 사기", table.concat(lines, "\n") .. "\n\n숫자를 누르면 1개 구입합니다.", userId)
+            return
+        elseif action == "buy" then
+            local id = stock[choice]
+            if id == nil then return end
+            local data = _BaramWorldData:Item(id)
+            if s.gold < data.price then self:Notice(userId, "금전이 부족합니다.") return end
+            if not self:AddItem(s, id, 1, -1) then self:Notice(userId, "소지품이 가득 찼습니다.") return end
+            self:ApplyGold(s, -data.price)
+            self:Notice(userId, data.name .. " 구입")
+        elseif action == "sell" then
+            local item = s.items[tostring(choice)]
+            if item == nil or choice == s.equip then self:Notice(userId, "판매할 물건을 확인해 주세요.") return end
+            local allowed = false
+            for _, id in ipairs(stock) do if item.id == id then allowed = true end end
+            if not allowed then self:Notice(userId, "이 상점에서는 사지 않는 물건입니다.") return end
+            local data = _BaramWorldData:Item(item.id)
+            if not self:ApplyGold(s, math.floor(data.price / 2)) then self:Notice(userId, "더 이상 돈을 가질 수 없습니다.") return end
+            self:RemoveItem(s, choice, 1)
+            self:Notice(userId, data.name .. " 판매")
+        else return end
+        self:Changed(userId)
+        self:Snapshot(userId)
+        log("[BaramShop] " .. action .. " gold=" .. tostring(s.gold))
+    end
+
+    @ExecSpace("Server")
+    method void OpenDoor()
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or r.state.hp <= 0 or not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        local index = math.floor(visual.Facing / 3) + 1
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        for _, p in ipairs(_BaramWorldData.Portals) do
+            if p.from == r.state.map and p.x == r.state.x + dx[index] and p.y == r.state.y + dy[index] and r.state.level >= p.minLevel and r.state.level <= p.maxLevel then
+                self:Place(userId, p.to, p.toX, p.toY)
+                self:Snapshot(userId)
+                return
+            end
+        end
+        self:Notice(userId, "앞에 열 수 있는 출입구가 없습니다.")
+    end
+
+    @ExecSpace("Server")
+    method void Users()
+        -- Do not advertise title/loading characters as active world participants.
+        local caller = self:GetRecord(senderUserId)
+        if caller == nil or not caller.active then return end
+        local names = {}
+        for _, player in ipairs(_UserService.UserEntities.Values) do
+            if isvalid(player) then
+                local record = self:GetRecord(player.PlayerComponent.UserId)
+                if record ~= nil and record.active then
+                    table.insert(names, {id=player.PlayerComponent.UserId, name=player.PlayerComponent.Nickname, level=record.state.level or 1, job=record.state.jobId or 0})
+                end
+            end
+        end
+        self:ShowUsers(_HttpService:JSONEncode(names), senderUserId)
+    end
+
+    @ExecSpace("Client")
+    method void ShowUsers(string names)
+        if not _BaramEntryFlow.InWorld then return end
+        _BaramUserList:Show(_HttpService:JSONDecode(names))
+    end
+
+    @ExecSpace("Server")
+    method void LeaveToTitle()
+        -- Cancel reservations before leaving, but never interrupt an uncertain commit.
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.leaving or r.tradeBusy then return end
+        _BaramTrade:CancelFor(senderUserId, "교환이 취소되었습니다.")
+        r.leaving = true
+        r.active = false
+        local saved = self:Flush(userId)
+        if self._T.users[userId] ~= r then return end
+        r.leaving = false
+        if not saved then
+            r.active = isvalid(r.player) and _UserService:GetUserEntityByUserId(userId) == r.player
+            self:Notice(userId, "저장 중입니다. 잠시 후 다시 시도해 주세요.")
+            return
+        end
+        _BaramParty:LeaveFor(senderUserId)
+        self:SetPublicActive(userId, false)
+        _BaramEntryFlow:SendSlots(senderUserId)
+        self:ReturnToTitle(senderUserId)
+    end
+
+    @ExecSpace("Client")
+    method void ReturnToTitle()
+        _BaramInput:Close()
+        _BaramEntryFlow.InWorld = false
+        _EntityService:GetEntityByPath("/ui/BaramEntry").Enable = true
+        _BaramProfile:Close()
+        _BaramEntryFlow:Show("select")
+    end
+
+    @ExecSpace("Server")
+    method void Attack()
+        -- All usable weapons contribute DB attack and consume one durability per swing.
+        local userId = senderUserId
+        local r = self._T.users[userId]
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if r == nil or not r.active or not isvalid(player) or r.state.hp <= 0 or self.Clock < (r.nextAttack or 0) then return end
+        if r.trade ~= nil or r.tradeBusy then return end
+        r.nextAttack = self.Clock + 0.5
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        ---@type BaramGridAttack
+        local attack = player:GetComponent("script.BaramGridAttack")
+        if not isvalid(attack) then attack = player:AddComponent("BaramGridAttack") end
+        local index = math.floor(visual.Facing / 3) + 1
+        local dx = {0, 1, 0, -1}
+        local dy = {-1, 0, 1, 0}
+        local damage = _UtilLogic:RandomIntegerRange(1, 2)
+        local equipped = r.state.items[tostring(r.state.equip)]
+        if equipped ~= nil and _BaramItemRules:EquipError(r.state, equipped) == "" then
+            damage = damage + _BaramItemRules:WeaponAttack(r.state)
+            _BaramItemRules:Hook(userId, equipped, "useScript")
+            equipped.durability = math.max(0, equipped.durability - 1)
+            if equipped.durability == 0 then
+                _BaramItemRules:Hook(userId, equipped, "unequipScript")
+                r.state.equip = 0
+                self:Notice(userId, "무기의 내구도가 다 닳아 장착이 해제되었습니다.")
+            end
+            self:Changed(userId)
+        end
+        visual:PlayAction(1, 0.15)
+        damage = damage + _BaramItemCodex:AttackBonus(r.state)
+        attack:Swing(r.state.x + dx[index], r.state.y + dy[index], damage)
+        self:Snapshot(userId)
+        log("[BaramCombat] swing damage=" .. tostring(damage))
+    end
+
+    @ExecSpace("ServerOnly")
+    method table GetRecord(string userId)
+        return self._T.users ~= nil and self._T.users[userId] or nil
+    end
+
+    @ExecSpace("ServerOnly")
+    method void PlayUserAction(string userId, integer action, number frameSeconds)
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if isvalid(visual) then visual:PlayAction(action, frameSeconds) end
+    end
+
+    @ExecSpace("Server")
+    method void ExpressEmotion(integer choice)
+        local r = self._T.users[senderUserId]
+        if r == nil or not r.active or r.state.hp <= 0 or choice < 1 or choice > 16 or self.Clock < r.nextAction then return end
+        r.nextAction = self.Clock + 0.5
+        -- STR.RES a-p; client 0x4DF130 sends ordinary and special expression codes.
+        local actions = {11,12,13,14,15,16,17,18,19,20,21,22,7,10,23,24}
+        self:PlayUserAction(senderUserId, actions[choice], choice == 12 and 0.15 or 0.6)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Damage(string userId, integer amount)
+        -- Characters at the title/loading screen cannot receive gameplay damage.
+        local r = self._T.users[userId]
+        if r == nil or not r.active or r.state.hp <= 0 or amount <= 0 then return end
+        if r.tradeBusy then r.deferredDamage = (r.deferredDamage or 0) + amount return end
+        if r.trade ~= nil then _BaramTrade:CancelFor(userId, "공격받아 교환이 취소되었습니다.") end
+        r.state.hp = math.max(0, r.state.hp - amount)
+        local actor = _UserService:GetUserEntityByUserId(userId)
+        if isvalid(actor) and isvalid(actor.CurrentMap) then _BaramHealthBars:ShowHit(actor, r.state.hp, r.state.maxHp, actor.CurrentMap.Id) end
+        self:PlayUserAction(userId, 9, 0.15)
+        if r.state.hp == 0 then
+            r.state.hp = 1
+            self:Place(userId, 14, 34, 122)
+            self:Notice(userId, "쓰러져 부여성으로 돌아왔습니다. 체력을 회복해 주세요.")
+        end
+        self:Changed(userId)
+        self:Snapshot(userId)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void DropLoot(integer mapId, integer x, integer y, integer itemId, integer count)
+        self._T.nextDrop = self._T.nextDrop + 1
+        local drop = {map = mapId, x = x, y = y, id = itemId, count = count, durability = 0, expires = self.Clock + 300}
+        self._T.drops[self._T.nextDrop] = drop
+        self:ShowDrop(drop)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ShowDrop(table drop)
+        -- Money uses losslessly extracted MISC.DAT/item.epf, never a text label.
+        local map = self:Stage(drop.map)
+        if not isvalid(map) then return end
+        local p = _BaramWorldData:Position(drop.x, drop.y)
+        if drop.gold ~= nil then
+            local art = _BaramMoney:FloorArt(drop.gold)
+            drop.art = art.ruid
+            p = Vector3(p.x + art.dx, p.y + art.dy, p.z)
+            drop.entity = _SpawnService:SpawnByModelId("baramgroundmoney", "Money_" .. tostring(self._T.nextDrop), p, map)
+            if isvalid(drop.entity) then drop.entity.SpriteRendererComponent.SpriteRUID = art.ruid end
+            return
+        end
+        local art = _BaramInput.InventoryImages[tostring(drop.id)]
+        if art == nil or art.ruid == nil or art.ruid == "" then
+            log_warning("[BaramDrop] original image missing item=" .. tostring(drop.id))
+            return
+        end
+        -- Reuse the bodyless floor renderer; item ownership and pickup stay server-side.
+        drop.art = art.ruid
+        drop.entity = _SpawnService:SpawnByModelId("baramgroundmoney", "Drop_" .. tostring(self._T.nextDrop), p, map)
+        if isvalid(drop.entity) then drop.entity.SpriteRendererComponent.SpriteRUID = art.ruid end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Killed(string userId, integer kind, integer x, integer y)
+        local r = self._T.users[userId]
+        if r == nil then return end
+        if r.tradeBusy then
+            r.deferredKills = r.deferredKills or {}
+            table.insert(r.deferredKills, {kind = kind, x = x, y = y})
+            return
+        end
+        local gained = kind == 1 and 10 or 5
+        local oldLevel = r.state.level
+        local experienceMessage = _BaramLevelData:GainMessage(r.state.jobId or 0, oldLevel, gained)
+        r.state.exp = r.state.exp + gained
+        r.state.level = _BaramLevelData:ResolveLevel(r.state.jobId or 0, oldLevel, r.state.exp)
+        if r.state.level > oldLevel then self:Notice(userId, "레벨 " .. tostring(r.state.level) .. "이 되었습니다.") end
+        if kind == 1 then
+            -- Literal original branch: 300/10000 for 100; three extra DROPITEM2 rolls.
+            if _UtilLogic:RandomIntegerRange(1, 10000) <= 300 then self:DropLoot(315, x, y, 3014, 100)
+            else
+                for _, chance in ipairs({50, 50, 40}) do if _UtilLogic:RandomIntegerRange(1, 100) <= chance then self:DropLoot(315, x, y, 3014, 1) end end
+            end
+        elseif _UtilLogic:RandomIntegerRange(1, 100) <= 90 then self:DropLoot(315, x, y, 3018, 1) end
+        r.state.guide = math.max(1, r.state.guide)
+        self:Changed(userId)
+        self:Snapshot(userId)
+        self:Notice(userId, experienceMessage)
+        log("[BaramCombat] kill kind=" .. tostring(kind) .. " exp=" .. tostring(r.state.exp))
+    end
+
+    -- 재생력. 가만히 있으면 10초마다 최대치의 3% 씩 조금 찬다.
+    --
+    -- 원본의 실제 속도는 알 수가 없다. 타이머 스크립트(script_timer.txt)를 다 뒤져도
+    -- 회복이 없어서, 서버 실행파일 안에 박혀 있는 것이다. 그러니 이 숫자는 우리가 정한 값이다.
+    -- 빨리 채우는 건 재생력이 아니라 소비 아이템(동동주)과 공력증강이 맡는다.
+    -- 바뀐 사람만 내보내므로 아무도 안 다치고 안 쓰면 아무것도 안 나간다.
+    @ExecSpace("ServerOnly")
+    method void Regenerate(number delta)
+        self._T.regen = (self._T.regen or 0) - delta
+        if self._T.regen > 0 then return end
+        self._T.regen = 10
+        for userId, r in pairs(self._T.users) do
+            if r.active and not r.tradeBusy then
+                local s = r.state
+                local hp = math.min(s.maxHp, s.hp + math.max(1, math.floor(s.maxHp * 3 / 100)))
+                local mp = math.min(s.maxMp, s.mp + math.max(1, math.floor(s.maxMp * 3 / 100)))
+                if hp ~= s.hp or mp ~= s.mp then
+                    s.hp = hp
+                    s.mp = mp
+                    self:Changed(userId)
+                    self:Snapshot(userId)
+                end
+            end
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void OnUpdate(number delta)
+        self.Clock = self.Clock + delta
+        self:DrainMoves()
+        self:Regenerate(delta)
+        self._T.flush = self._T.flush - delta
+        if self._T.flush <= 0 then
+            self._T.flush = 60
+            for userId, r in pairs(self._T.users) do
+                if r.dirty and not r.tradeBusy then self:Flush(userId) end
+                self:ReleaseInactive(userId, r)
+            end
+            for key, drop in pairs(self._T.drops) do if drop.expires <= self.Clock then
+                if isvalid(drop.entity) then drop.entity:Destroy() end
+                self._T.drops[key] = nil
+            end end
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    @EventSender("Service", "UserService")
+    handler HandleLeave(UserLeaveEvent event)
+        -- Retain uncertain trade/save records; do not discard recovery information.
+        self._T.loading[event.UserId] = nil
+        _BaramParty:LeaveFor(event.UserId)
+        local r = self._T.users[event.UserId]
+        if r ~= nil then r.active = false r.leaving = true end
+        self:SetPublicActive(event.UserId, false)
+        _BaramTrade:CancelFor(event.UserId, "상대방이 접속을 종료하여 교환이 취소되었습니다.")
+        self:Flush(event.UserId)
+        if r ~= nil then r.leaving = false self:ReleaseInactive(event.UserId, r) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ReleaseInactive(string userId, table record)
+        -- Re-check identity and dirty state after storage yielded to other events.
+        if self._T.users[userId] ~= record then return end
+        if not record.active and not record.dirty and not record.tradeBusy and not record.saving and not record.leaving and self._T.loading[userId] == nil then
+            self._T.users[userId] = nil
+        end
+    end
+
+    @ExecSpace("ServerOnly")
+    method void SetPublicActive(string userId, boolean active)
+        -- Public presence contains no private inventory, currency or storage data.
+        local player = _UserService:GetUserEntityByUserId(userId)
+        if not isvalid(player) then return end
+        ---@type BaramPlayerVisual
+        local visual = player:GetComponent("script.BaramPlayerVisual")
+        if isvalid(visual) then visual.Active = active end
+        log("[BaramMultiplayer] public active=" .. tostring(active))
+    end
+end

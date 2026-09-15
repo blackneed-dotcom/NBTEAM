@@ -18,6 +18,8 @@ script BaramTargetBox extends Logic
     property number BoxHeight = 0.48
     -- 그림 100픽셀이 월드 1이다. 몹은 그림마다 크기가 달라서 재서 쓴다.
     property number PixelsPerUnit = 100
+    property number TransitionSeconds = 0.06
+    property number Padding = 2
 
     -- 화면(원작 놀이판)에 실제로 보이는 자리인가. 그리는 쪽과 같은 테두리를 쓴다.
     @ExecSpace("ClientOnly")
@@ -36,20 +38,32 @@ script BaramTargetBox extends Logic
         if state == nil or state.map == nil then return out end
         local player = _UserService.LocalPlayer
         if not isvalid(player) or not isvalid(player.CurrentMap) then return out end
-        table.insert(out, {x = state.x, y = state.y, range = 0, isSelf = true})
+        table.insert(out, {x = state.x, y = state.y, range = 0, isSelf = true, key = tostring(player.Id), mapId = state.map})
         local others = {}
-        for _, child in pairs(player.CurrentMap.Children) do
+        for _, child in ipairs(player.CurrentMap.Children:ToTable()) do
             ---@type BaramCreature
             local creature = child:GetComponent("script.BaramCreature")
             if isvalid(creature) and creature.Hp > 0 and creature.MapId == state.map then
                 local item = {
                     x = creature.GridX, y = creature.GridY,
-                    creature = creature,
+                    creature = creature, mapId = state.map,
                     key = tostring(creature.Entity.Id),
                     range = math.max(math.abs(creature.GridX - state.x), math.abs(creature.GridY - state.y)),
                 }
                 -- 화면 밖 몹은 고를 수 없다. 원작도 보이는 것만 잡는다.
                 if self:OnScreen(item) then table.insert(others, item) end
+            end
+        end
+        for _, other in ipairs(_UserService.UserEntities.Values) do
+            if isvalid(other) and other ~= player and other.CurrentMap == player.CurrentMap then
+                ---@type BaramPlayerVisual
+                local visual = other:GetComponent("script.BaramPlayerVisual")
+                if isvalid(visual) and visual.Active and visual.MapId == state.map then
+                    local grid = visual.GridPosition
+                    local item = {x = grid.x, y = grid.y, player = other, key = tostring(other.Id), mapId = state.map,
+                        range = math.max(math.abs(grid.x - state.x), math.abs(grid.y - state.y))}
+                    if self:OnScreen(item) then table.insert(others, item) end
+                end
             end
         end
         table.sort(others, function(a, b)
@@ -63,6 +77,8 @@ script BaramTargetBox extends Logic
 
     @ExecSpace("ClientOnly")
     method boolean Begin()
+        -- Start from the remembered target and show the first rectangle immediately.
+        self._T.fromRect = nil
         local list = self:Candidates()
         if #list == 0 then return false end
         self._T.list = list
@@ -81,11 +97,40 @@ script BaramTargetBox extends Logic
 
     @ExecSpace("ClientOnly")
     method void Step(integer direction)
-        -- 방향키는 대상 사이를 옮긴다. 가까운 순서대로 돌린다(자기 자신 포함).
-        local list = self._T.list
-        if list == nil or #list == 0 then return end
-        local step = direction == 1 and 1 or -1
-        self._T.index = (self._T.index - 1 + step) % #list + 1
+        -- Pick a nearby target in the pressed screen direction; never wrap backwards.
+        local current = self:Current()
+        if current == nil then return end
+        local origin = self:SpotOf(current)
+        local list = self:Candidates()
+        self._T.list = list
+        self._T.index = 1
+        local best, bestScore = 0, math.huge
+        for i, item in ipairs(list) do
+            if item.key == current.key then
+                self._T.index = i
+            else
+                local spot = self:SpotOf(item)
+                local dx, dy = spot.x - origin.x, spot.y - origin.y
+                local forward, sideways = 0, 0
+                if direction == 0 then forward, sideways = dy, math.abs(dx)
+                elseif direction == 1 then forward, sideways = dx, math.abs(dy)
+                elseif direction == 2 then forward, sideways = -dy, math.abs(dx)
+                elseif direction == 3 then forward, sideways = -dx, math.abs(dy) end
+                if forward > 0.001 then
+                    local score = forward + sideways * 2 + sideways * sideways / forward
+                    if score < bestScore or (score == bestScore and best > 0 and item.key < list[best].key) then
+                        best, bestScore = i, score
+                    end
+                end
+            end
+        end
+        if best > 0 then
+            self._T.index = best
+            self._T.fromRect = self._T.drawRect
+            self._T.transitionAge = 0
+            self:Remember()
+            if _BaramInput.ShowTiming then log("[BaramTarget] direction=" .. tostring(direction) .. " target=" .. list[best].key) end
+        end
         self:Refresh()
     end
 
@@ -97,6 +142,9 @@ script BaramTargetBox extends Logic
         for index, item in ipairs(list) do
             if item.x == x and item.y == y then
                 self._T.index = index
+                self._T.fromRect = self._T.drawRect
+                self._T.transitionAge = 0
+                self:Remember()
                 self:Refresh()
                 return true
             end
@@ -121,8 +169,11 @@ script BaramTargetBox extends Logic
 
     @ExecSpace("ClientOnly")
     method void Finish()
+        -- Clear selection and interpolation state when leaving targeting.
         self._T.list = nil
         self._T.index = nil
+        self._T.fromRect = nil
+        self._T.drawRect = nil
         if isvalid(self._T.box) then self._T.box.Enable = false end
     end
 
@@ -151,14 +202,15 @@ script BaramTargetBox extends Logic
         end
         self._T.box = box
         self._T.lines = lines
+        self._T.pinnedColor = nil
     end
 
     -- 네모를 씌울 그림의 "발밑" 월드 위치. 격자가 아니라 부드럽게 따라가는 그림을 본다.
     -- 체력바가 쓰는 기준과 같다(BaramHealthBars.Position).
     @ExecSpace("ClientOnly")
     method Vector3 SpotOf(table item)
-        if item.isSelf then
-            local player = _UserService.LocalPlayer
+        if item.isSelf or isvalid(item.player) then
+            local player = item.isSelf and _UserService.LocalPlayer or item.player
             if isvalid(player) then
                 ---@type BaramPlayerVisual
                 local visual = player:GetComponent("script.BaramPlayerVisual")
@@ -174,62 +226,24 @@ script BaramTargetBox extends Logic
         return _BaramWorldData:Position(item.x, item.y)
     end
 
-    -- 그림의 실제 픽셀 크기. 메이플월드가 어떤 이름으로 알려주는지 확실치 않아서
-    -- 될 만한 걸 차례로 넣어보고, 되는 걸 찾으면 그걸로 굳힌다. 하나도 안 되면
-    -- 기본값(가로 한 칸, 세로 두 칸)을 쓴다. 어느 쪽이었는지는 한 번만 기록에 남긴다.
-    @ExecSpace("ClientOnly")
-    method Vector2 Measure(string ruid)
-        if ruid == nil or ruid == "" then return nil end
-        if self._T.sizes == nil then self._T.sizes = {} end
-        local cached = self._T.sizes[ruid]
-        if cached ~= nil then
-            if cached == false then return nil end
-            return cached
-        end
-        local ok, sprite = pcall(function() return _ResourceService:LoadSpriteAndWait(ruid) end)
-        if not ok or sprite == nil then
-            self._T.sizes[ruid] = false
-            return nil
-        end
-        local readers = {
-            function() return sprite.Width, sprite.Height end,
-            function() return sprite.width, sprite.height end,
-            function() return sprite.SpriteSize.x, sprite.SpriteSize.y end,
-            function() return sprite.Size.x, sprite.Size.y end,
-            function() return sprite.Rect.width, sprite.Rect.height end,
-        }
-        for index, reader in ipairs(readers) do
-            local fine, w, h = pcall(reader)
-            if fine and type(w) == "number" and type(h) == "number" and w > 0 and h > 0 then
-                if not self._T.told then
-                    self._T.told = true
-                    log("[BaramTargetBox] 그림 크기 읽는 법 " .. tostring(index) .. " 번이 통한다: "
-                        .. tostring(w) .. "x" .. tostring(h))
-                end
-                local size = Vector2(w, h)
-                self._T.sizes[ruid] = size
-                return size
-            end
-        end
-        if not self._T.told then
-            self._T.told = true
-            log("[BaramTargetBox] 그림 크기를 못 읽는다. 기본 크기를 쓴다.")
-        end
-        self._T.sizes[ruid] = false
-        return nil
-    end
-
     -- 네모가 감쌀 화면 자리. 몹은 제 그림 크기에 맞추고, 못 재면 기본 크기로 간다.
     @ExecSpace("ClientOnly")
     method table RectOf(table item)
+        -- Use precomputed opaque pixels, including renderer flip and world transform.
         if not item.isSelf and isvalid(item.creature) and isvalid(item.creature._T.sprite) then
             local ruid = item.creature._T.frame
-            local size = self:Measure(ruid)
-            if size ~= nil then
-                local center = item.creature._T.sprite.TransformComponent.WorldPosition
-                local hw = size.x / self.PixelsPerUnit / 2
-                local hh = size.y / self.PixelsPerUnit / 2
-                return self:Project(center.x - hw, center.y - hh, center.x + hw, center.y + hh)
+            local bounds = ruid ~= nil and _BaramTargetBounds.Frames[ruid] or nil
+            if bounds ~= nil then
+                local sprite = item.creature._T.sprite
+                local flipX = sprite.SpriteRendererComponent.FlipX and -1 or 1
+                local flipY = sprite.SpriteRendererComponent.FlipY and -1 or 1
+                local minX, minY, maxX, maxY = math.huge, math.huge, -math.huge, -math.huge
+                for _, corner in ipairs({{bounds[1], bounds[2]}, {bounds[1], bounds[4]}, {bounds[3], bounds[2]}, {bounds[3], bounds[4]}}) do
+                    local point = sprite.TransformComponent:ToWorldPoint(Vector3(corner[1] * flipX / self.PixelsPerUnit, corner[2] * flipY / self.PixelsPerUnit, 0))
+                    minX, minY = math.min(minX, point.x), math.min(minY, point.y)
+                    maxX, maxY = math.max(maxX, point.x), math.max(maxY, point.y)
+                end
+                return self:Project(minX, minY, maxX, maxY)
             end
         end
         local base = self:SpotOf(item)
@@ -245,11 +259,12 @@ script BaramTargetBox extends Logic
         local width = math.max(2, math.abs(b.x - a.x) * 640 / _UILogic.ScreenWidth)
         local top = (math.max(a.y, b.y) / _UILogic.ScreenHeight - 1) * 480
         local height = math.max(2, math.abs(b.y - a.y) * 480 / _UILogic.ScreenHeight)
-        return {left = left, top = top, width = width, height = height}
+        return {left = left - self.Padding, top = top + self.Padding, width = width + self.Padding * 2, height = height + self.Padding * 2}
     end
 
     @ExecSpace("ClientOnly")
     method void Refresh()
+        -- Follow subpixel presentation positions and finish target changes in 60 ms.
         local box = self._T.box
         local lines = self._T.lines
         local item = self:Current()
@@ -258,9 +273,27 @@ script BaramTargetBox extends Logic
             return
         end
         local r = self:RectOf(item)
+        local pinned = _BaramInput.TargetPinned
+        if self._T.pinnedColor ~= pinned then
+            local color = pinned and Color(1, 0, 0, 1) or Color(1, 1, 1, 1)
+            for _, line in ipairs(lines) do
+                local atlas = line:GetChildByName("Atlas")
+                if isvalid(atlas) then atlas.SpriteGUIRendererComponent.Color = color end
+            end
+            self._T.pinnedColor = pinned
+        end
+        local from = self._T.fromRect
+        if from ~= nil then
+            local progress = math.min(1, (self._T.transitionAge or 0) / math.max(0.001, self.TransitionSeconds))
+            local blend = 1 - (1 - progress) * (1 - progress)
+            r = {left = from.left + (r.left - from.left) * blend, top = from.top + (r.top - from.top) * blend,
+                width = from.width + (r.width - from.width) * blend, height = from.height + (r.height - from.height) * blend}
+            if progress >= 1 then self._T.fromRect = nil end
+        end
+        self._T.drawRect = r
         local width, height, left, top = r.width, r.height, r.left, r.top
         box.UITransformComponent.RectSize = Vector2(width, height)
-        box.UITransformComponent.anchoredPosition = Vector2(math.floor(left), math.floor(top))
+        box.UITransformComponent.anchoredPosition = Vector2(left, top)
         local t = math.max(1, self.Thickness)
         local edges = {
             {0, 0, width, t},                 -- 위
@@ -279,7 +312,16 @@ script BaramTargetBox extends Logic
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        -- Keep the current live target tracked without loading any sprite resources.
         if self._T.list == nil then return end
+        self._T.transitionAge = (self._T.transitionAge or 0) + math.max(0, delta)
+        local state = _BaramWorld.LocalState
+        local selected = self:Current()
+        if not _BaramEntryFlow.InWorld or state == nil or selected == nil or selected.mapId ~= state.map then
+            self._T.lastKey = nil
+            _BaramInput:CancelTarget()
+            return
+        end
         local item = self:Current()
         if item == nil then
             _BaramInput:CancelTarget()
@@ -288,11 +330,24 @@ script BaramTargetBox extends Logic
         if item.isSelf then
             local state = _BaramWorld.LocalState
             if state ~= nil then item.x = state.x item.y = state.y end
+        elseif isvalid(item.player) then
+            ---@type BaramPlayerVisual
+            local visual = item.player:GetComponent("script.BaramPlayerVisual")
+            if not isvalid(visual) or not visual.Active or visual.MapId ~= state.map then
+                self._T.lastKey = nil
+                _BaramInput:CancelTarget()
+                return
+            end
+            item.x = visual.GridPosition.x
+            item.y = visual.GridPosition.y
+            if not self:OnScreen(item) then _BaramInput:CancelTarget() return end
         else
             -- 고르는 중에 대상이 죽으면 자기 자신으로 돌아온다. 원작과 같다.
-            if not isvalid(item.creature) or item.creature.Hp <= 0 then
+            if not isvalid(item.creature) or item.creature.Hp <= 0 or item.creature.MapId ~= state.map then
+                if _BaramInput.TargetPinned then _BaramInput:CancelTarget() return end
                 self._T.lastKey = nil
                 self._T.index = 1
+                self._T.fromRect = nil
                 self:Refresh()
                 return
             end
@@ -300,10 +355,22 @@ script BaramTargetBox extends Logic
             item.y = item.creature.GridY
             -- 고른 몹이 화면 밖으로 걸어 나가면 네모가 사라지는 대신 자기 자신으로 돌아온다.
             if not self:OnScreen(item) then
+                if _BaramInput.TargetPinned then _BaramInput:CancelTarget() return end
                 self._T.lastKey = nil
                 self._T.index = 1
+                self._T.fromRect = nil
             end
         end
         self:Refresh()
+    end
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release the selection overlay and remembered entities across play sessions.
+        self:Finish()
+        if isvalid(self._T.box) then self._T.box:Destroy() end
+        self._T.box = nil
+        self._T.lastKey = nil
+        _BaramInput.TargetLocked = false
+        _BaramInput.TargetPinned = false
     end
 end

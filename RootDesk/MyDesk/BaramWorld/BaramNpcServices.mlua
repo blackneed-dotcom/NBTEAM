@@ -8,8 +8,8 @@ script BaramNpcServices extends Logic
     property integer Selected = 1
     property integer Offset = 0
     property table Rows = {}
-    property table Menu = {"물건 사기", "물건 팔기", "금전 맡기기", "금전 되찾기", "물건 맡기기", "물건 되찾기", "안쓰는 물건 교환"}
-    property table Actions = {"buy", "sell", "depositGold", "withdrawGold", "depositItem", "withdrawItem", "exchange"}
+    property table Menu = {"물건 사기", "물건 팔기", "금전 맡기기", "금전 되찾기", "물건 맡기기", "물건 되찾기", "안쓰는 물건 교환", "장비 수리", "장비 명명"}
+    property table Actions = {"buy", "sell", "depositGold", "withdrawGold", "depositItem", "withdrawItem", "exchange", "repair", "rename"}
 
     method table Npc(integer npcId)
         -- Only NPCs already placed by this world may provide services.
@@ -78,7 +78,7 @@ script BaramNpcServices extends Logic
                 local d = _BaramWorldData:Item(id)
                 table.insert(result, {slot=id, id=id, label=d.name, detail=tostring(d.price).."전"})
             end
-        elseif action == "sell" or action == "depositItem" or action == "withdrawItem" then
+        elseif action == "sell" or action == "depositItem" or action == "withdrawItem" or action == "repair" or action == "rename" then
             local items = action == "withdrawItem" and (r.state.bankItems or {}) or r.state.items
             local limit = action == "withdrawItem" and 60 or _BaramWorldData.InventoryCapacity
             for i = 1, limit do
@@ -88,7 +88,12 @@ script BaramNpcServices extends Logic
                     for _, id in ipairs(stock) do if id == item.id then allowed = true end end
                     if allowed then
                         local d = _BaramWorldData:Item(item.id)
-                        table.insert(result, {slot=i, id=item.id, label=d.name, detail=tostring(item.count)})
+                        local detail = tostring(item.count)
+                        if action == "repair" then
+                            local fee = _BaramItemRules:RepairFee(item)
+                            detail = fee < 0 and "수리 불가" or (tostring(fee) .. "전")
+                        elseif action == "rename" then detail = d.renameCost > 0 and (tostring(d.renameCost) .. "전") or "명명 불가" end
+                        table.insert(result, {slot=i, id=item.id, label=item.name or d.name, detail=detail})
                     end
                 end
             end
@@ -118,6 +123,7 @@ script BaramNpcServices extends Logic
     method string Apply(table s, integer npcId, string action, integer slot, integer amount)
         -- Pure non-yielding mutation: both sides of each transfer live in one saved state.
         if amount < 1 or amount > 4294967295 then return "수량을 확인해 주세요." end
+        if action == "repair" then return _BaramItemRules:Repair(s, slot) end
         if action == "depositGold" or action == "withdrawGold" then
             local bank = s.bankGold or 0
             local available = action == "depositGold" and s.gold or bank
@@ -205,6 +211,32 @@ script BaramNpcServices extends Logic
         else _BaramWorld:Notice(userId,result) end
         if action=="depositGold" or action=="withdrawGold" then self:Reply(userId,r,"menu","",{})
         else self:Reply(userId,r,"list",action,self:ServiceRows(r,action)) end
+    end
+
+    @ExecSpace("Server")
+    method void ConfirmRename(integer npcId, integer token, integer slot, string newName)
+        -- One-use NPC token protects name changes and their fee from repeated submissions.
+        local userId = senderUserId
+        local r = self:Record(userId, npcId)
+        if r == nil or r.dialog ~= npcId or r.npcToken ~= token or r.npcAction ~= "rename" then return end
+        r.npcToken = r.npcToken + 1
+        local result = _BaramItemRules:Rename(r.state, slot, newName)
+        if result == "" then
+            _BaramWorld:Changed(userId)
+            _BaramWorld:Snapshot(userId)
+            _BaramWorld:Notice(userId, "장비 이름을 변경했습니다.")
+            log("[BaramNPC] applied rename slot=" .. tostring(slot))
+        else _BaramWorld:Notice(userId, result) end
+        self:Reply(userId, r, "list", "rename", self:ServiceRows(r, "rename"))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SubmitName(string newName)
+        -- The chat input is reused locally and never broadcasts equipment names as messages.
+        local request = self._T.rename
+        self._T.rename = nil
+        if request == nil then return end
+        self:ConfirmRename(request.npcId, request.token, request.slot, newName)
     end
 
     @ExecSpace("ClientOnly")
@@ -331,7 +363,7 @@ script BaramNpcServices extends Logic
         if self._T.busy then return end
         local actual=self.Offset+index
         if self.View=="menu" then
-            if actual>(self.NpcId==8 and 7 or 2) then return end
+            if actual>(self.NpcId==8 and #self.Actions or 2) then return end
             self._T.busy=true
             self:Choose(self.NpcId,self.Token,self.Actions[actual])
         elseif self.View=="list" and self.Rows[actual]~=nil then self.Selected=actual self:Render() end
@@ -344,7 +376,7 @@ script BaramNpcServices extends Logic
         if self._T.busy then return end
         if control=="Top" then self._T.busy=true self:Choose(self.NpcId,self.Token,"menu") return end
         if control=="Up" or control=="Down" then
-            local count=self.View=="menu" and (self.NpcId==8 and 7 or 2) or #self.Rows
+            local count=self.View=="menu" and (self.NpcId==8 and #self.Actions or 2) or #self.Rows
             local visible=self.View=="list" and 5 or 8
             self.Offset=math.max(0,math.min(math.max(0,count-visible),self.Offset+(control=="Up" and -1 or 1)))
             self:Render() return
@@ -353,13 +385,23 @@ script BaramNpcServices extends Logic
         if self.View=="menu" then self:Select(self.Selected-self.Offset)
         elseif self.View=="list" then
             if self.Rows[self.Selected]==nil then return end
+            if self.Action == "rename" then
+                local row = self.Rows[self.Selected]
+                self._T.rename = {npcId=self.NpcId, token=self.Token, slot=row.slot}
+                self:Close()
+                local root = _EntityService:GetEntityByPath("/ui/BaramHUD/ChatWindow")
+                if not isvalid(root) then return end
+                local chat = root:GetComponent("script.BaramChatHistory")
+                if isvalid(chat) then chat:OpenItemName() end
+                return
+            end
             self.View="amount" self.Amount="1" self:Render()
         elseif self.View=="amount" then
             local amount=tonumber(self.Amount)
             if amount==nil or amount<1 then return end
             self._T.busy=true
             local row=self.Rows[self.Selected]
-            self:Confirm(self.NpcId,self.Token,row~=nil and row.slot or 0,amount)
+            self:Confirm(self.NpcId,self.Token,row~=nil and row.slot or 0,self.Action == "repair" and 1 or amount)
         end
     end
 
@@ -369,6 +411,7 @@ script BaramNpcServices extends Logic
         if key==KeyboardKey.Escape then self:Control("Quit") return end
         if key==KeyboardKey.Return or key==KeyboardKey.KeypadEnter then self:Control("Ok") return end
         if self.View=="amount" then
+            if self.Action == "repair" then return end
             if key==KeyboardKey.Backspace then self.Amount=string.sub(self.Amount,1,-2)
             else
                 for i=0,9 do if key==KeyboardKey.CastFrom("Alpha"..tostring(i)) or key==KeyboardKey.CastFrom("Keypad"..tostring(i)) then
@@ -378,7 +421,7 @@ script BaramNpcServices extends Logic
             end
             self:Render()
         elseif key==KeyboardKey.UpArrow or key==KeyboardKey.DownArrow then
-            local count=self.View=="menu" and (self.NpcId==8 and 7 or 2) or #self.Rows
+            local count=self.View=="menu" and (self.NpcId==8 and #self.Actions or 2) or #self.Rows
             self.Selected=math.max(1,math.min(count,self.Selected+(key==KeyboardKey.UpArrow and -1 or 1)))
             if self.Selected<=self.Offset then self.Offset=self.Selected-1 end
             local visible=self.View=="list" and 5 or 8
@@ -416,13 +459,18 @@ script BaramNpcServices extends Logic
         for i=1,3 do
             local h=w:GetChildByName("Heading"..tostring(i))
             h.UITransformComponent.anchoredPosition=Vector2(hx,-(35+(i-1)*16))
-            _BaramProfile:Draw(h,i==1 and heading or (i==2 and self.View=="menu" and "어떻게 오셨나요?" or ""),true)
+            local detail = i==1 and heading or (i==2 and self.View=="menu" and "어떻게 오셨나요?" or "")
+            if self.View == "amount" and self.Rows[self.Selected] ~= nil then
+                if i == 2 then detail = self.Rows[self.Selected].label
+                elseif i == 3 then detail = self.Action == "repair" and ("수리비 " .. self.Rows[self.Selected].detail) or "수량을 입력해 주세요." end
+            end
+            _BaramProfile:Draw(h,detail,true)
         end
         for i=1,8 do
             local row=w:GetChildByName("Row"..tostring(i))
             local actual=self.Offset+i
             local text="" local detail=""
-            if self.View=="menu" and actual<=(self.NpcId==8 and 7 or 2) then text=self.Menu[actual]
+            if self.View=="menu" and actual<=(self.NpcId==8 and #self.Actions or 2) then text=self.Menu[actual]
             elseif self.View=="list" and i<=5 and self.Rows[actual]~=nil then text=self.Rows[actual].label detail=self.Rows[actual].detail end
             row.Enable=text~=""
             local listing=self.View=="list"
@@ -456,7 +504,7 @@ script BaramNpcServices extends Logic
         end
         local amount=w:GetChildByName("Amount")
         amount.Enable=self.View=="amount"
-        if amount.Enable then _BaramProfile:Draw(amount,self.Amount,true) end
+        if amount.Enable then _BaramProfile:Draw(amount,self.Action == "repair" and "확인하면 수리합니다." or self.Amount,true) end
     end
 
     @ExecSpace("ClientOnly")

@@ -1,0 +1,767 @@
+@Component
+script BaramPlayerVisual extends Component
+    @Sync
+    property boolean Active = false
+    @Sync
+    property integer Gender = 0
+    @Sync
+    property integer Hair = 0
+    -- [단일 맵 구조] 모두 캔버스 한 장에 있으므로 어느 바람 맵에 선 사람인지 같이 보낸다.
+    @Sync
+    property integer MapId = 14
+    @Sync
+    property Vector3 GridPosition = Vector3(0, 0, 0)
+    @Sync
+    property integer Facing = 6
+    @Sync
+    property integer Step = 0
+    @Sync
+    property integer DisplayHp = 0
+    @Sync
+    property integer DisplayMaxHp = 0
+    @Sync
+    property integer DisplayLevel = 0
+    @Sync
+    property string DisplayName = ""
+    @Sync
+    property string ClanId = ""
+    @Sync
+    property integer WeaponItemId = 0
+
+    @ExecSpace("ServerOnly")
+    method void PlayAction(integer action, number frameSeconds)
+        -- Authoritative gameplay starts the motion on every observing client.
+        if action < 1 or action > 24 then return end
+        if not isvalid(self.Entity.CurrentMap) then return end
+        self:ReceiveAction(action, math.floor(self.Facing / 3), frameSeconds, self.Entity.CurrentMap.Id)
+    end
+
+    @ExecSpace("Client")
+    method void ReceiveAction(integer action, integer direction, number frameSeconds, string mapId)
+        -- Ignore delayed animation packets for a character that left gameplay.
+        if not self.Active then return end
+        if not isvalid(self.Entity.CurrentMap) or self.Entity.CurrentMap.Id ~= mapId then return end
+        self._T.action = action
+        self._T.actionDirection = math.max(0, math.min(3, direction))
+        self._T.actionAge = 0
+        self._T.actionInterval = math.max(0.03, math.min(2, frameSeconds))
+        self._T.actionMap = self.Entity.CurrentMap
+        log("[BaramMotion] begin action=" .. tostring(action) .. " direction=" .. tostring(direction))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void PredictMove(integer direction)
+        local s = _BaramWorld.LocalState
+        if s == nil or s.x == nil or s.hp <= 0 or self._T.map ~= self.Entity.CurrentMap then return end
+        local dx, dy = {0, 1, 0, -1}, {-1, 0, 1, 0}
+        local x, y = s.x + dx[direction + 1], s.y + dy[direction + 1]
+        if not _BaramWorldData:Walkable(s.map, x, y) then return end
+        for _, npc in ipairs(_BaramWorld.Npcs) do
+            if npc.map == s.map and npc.x == x and npc.y == y then return end
+        end
+        -- 포탈 칸도 예측한다. 서버(MoveChecked)는 그 칸으로 먼저 옮긴 다음에야
+        -- 목적지 맵으로 보내므로 이 한 걸음은 막힐 일이 없다. 레벨 제한은 맵 이동만
+        -- 막지 걸음 자체는 막지 않는다.
+        -- 예전엔 여기서 빠져나가 워프할 때 제자리에 굳은 채로 왕복을 통째로 기다렸다.
+        -- 맵이 바뀌면 OnUpdate 앞부분에서 예측과 경로가 모두 초기화되므로
+        -- 예측이 새 맵으로 이어져 미끄러질 염려는 없다.
+        local crossing = nil
+        for _, portal in ipairs(_BaramWorldData.Portals) do
+            if portal.from == s.map and portal.x == x and portal.y == y
+                and s.level >= portal.minLevel and s.level <= portal.maxLevel then crossing = portal break end
+        end
+        local map = self.Entity.CurrentMap
+        for _, creature in ipairs(map:GetChildComponentsByTypeName("script.BaramCreature", false)) do
+            if creature.Hp > 0 and creature.GridX == x and creature.GridY == y then return end
+        end
+        local target = _BaramWorldData:Position(x, y)
+        -- Do not restart a held-turn prediction when the turn acknowledgement arrives.
+        if self._T.predicted ~= nil and self._T.predicted.x == target.x and self._T.predicted.y == target.y then return end
+        local users = _UserService:GetUsersByMapComponent(map.MapComponent)
+        if users ~= nil then
+            for _, user in ipairs(users) do
+                if user ~= self.Entity then
+                    local other = user:GetComponent("script.BaramPlayerVisual")
+                    if isvalid(other) and other.Active and other.GridPosition.z == s.map
+                        and other.GridPosition.x == x and other.GridPosition.y == y then return end
+                end
+            end
+        end
+        if crossing ~= nil then
+            self._T.warpStart = _UtilLogic.ElapsedSeconds
+            -- 도착할 칸은 포탈 표에 이미 적혀 있다. 서버 대답을 기다릴 이유가 없다.
+            self._T.warpTo = crossing
+            -- [측정] 포탈을 밟은 순간부터 1.5초간 프레임을 지켜본다.
+            -- 진짜로 프레임이 멈추는지, 아니면 프레임은 멀쩡한데 순서가 어긋나 보이는지
+            -- 이 한 줄로 갈린다. 지금까지 이걸 안 재고 고쳤다.
+            self._T.mStart = _UtilLogic.ElapsedSeconds
+            self._T.mDraw = nil
+            self._T.mArrive = nil
+            self._T.mWorst = 0
+            self._T.mFrames = 0
+            self._T.mUntil = _UtilLogic.ElapsedSeconds + 1.5
+            -- 목적지 맵을 미리 그려둔다. 서버 좌표가 도착한 뒤에 32장을 그리기 시작하면
+            -- 그림이 올라오는 동안 카메라만 새 자리를 비춰서 엉뚱한 구역이 잠깐 보인다.
+            -- 포탈 표에 목적지가 이미 적혀 있으므로 기다릴 이유가 없다.
+            local canvas = self.Entity.CurrentMap
+            if isvalid(canvas) and canvas.Name == "baramcanvas" and self._T.drawnMap ~= crossing.to then
+                local t = _UtilLogic.ElapsedSeconds
+                if _BaramMapView:Draw(canvas, crossing.to) then
+                    self._T.mDraw = _UtilLogic.ElapsedSeconds - t
+                    self._T.drawnMap = crossing.to
+                    -- 그림만 미리 올린 것이다. 카메라와 분신은 서버 좌표가 와야 옮긴다.
+                    self._T.pendingSnap = true
+                end
+            end
+            self:AimCamera(crossing)
+        end
+        self._T.predictionOrigin = self:MovementTarget()
+        self._T.localFacing = direction * 3
+        self._T.localFacingUntil = _UtilLogic.ElapsedSeconds + 0.75
+        self._T.predicted = target
+        self._T.predictionAge = 0
+    end
+
+    @ExecSpace("ClientOnly")
+    method void CancelPrediction()
+        self._T.localFacing = nil
+        if self._T.predicted ~= nil then
+            self._T.predicted = nil
+            self._T.path = {}
+            -- 예측을 접으면 기준 좌표도 서버 좌표로 되돌린다.
+            -- 안 그러면 _T.target 이 예측했던 칸에 남아서, 서버가 같은 칸을 알려줘도
+            -- "안 바뀌었다"로 보고 웨이포인트를 안 만든다. 그림은 칸 중간에 멈춰 서고,
+            -- 다음 걸음에서 거기서부터 대각선으로 미끄러진다.
+            -- 걸음 도중에 방향을 꺾으면(서버가 결과 2를 준다) 바로 이 경로를 탄다.
+            local here = self:MovementTarget()
+            if isvalid(self._T.visual) then
+                local shown = self._T.visual.TransformComponent.WorldPosition
+                if math.abs(shown.x - here.x) > 0.001 or math.abs(shown.y - here.y) > 0.001 then
+                    -- 칸 중간에 서 있으니 제 칸까지 마저 걸어가게 한다.
+                    table.insert(self._T.path, here)
+                end
+            end
+            self._T.target = here
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method Vector3 MovementTarget()
+        -- Use one atomic grid sample instead of interpolated physics coordinates.
+        local p = self.Entity.TransformComponent.WorldPosition
+        if self.Entity == _UserService.LocalPlayer then
+            local s = _BaramWorld.LocalState
+            if s ~= nil and s.x ~= nil then
+                local cell = _BaramWorldData:Position(s.x, s.y)
+                return Vector3(cell.x, cell.y, p.z)
+            end
+        elseif self.GridPosition.z > 0 then
+            local cell = _BaramWorldData:Position(self.GridPosition.x, self.GridPosition.y)
+            return Vector3(cell.x, cell.y, p.z)
+        end
+        return p
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnMapEnter(Entity map)
+        -- Select the destination camera before display spawning or texture preparation.
+        self:PrepareCamera(map)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void PrepareCamera(Entity map)
+        -- Camera setup is map-scoped; following the bodyless visual stays per-frame.
+        if self.Entity ~= _UserService.LocalPlayer or not isvalid(map) then return end
+        if self._T.previousCameraBlend == nil then
+            self._T.previousCameraBlend = _CameraService.TransitionBlendTime
+            -- Keep cuts enabled during the engine's automatic map-camera switch too.
+            _CameraService.TransitionBlendTime = 0
+        end
+        local changedMap = self._T.cameraMap ~= map
+        if changedMap or not isvalid(self._T.camera) then
+            self._T.camera = map:GetChildByName("TestCamera")
+            self._T.cameraMap = map
+        end
+        local camera = self._T.camera
+        if not isvalid(camera) then return end
+        local current = _CameraService:GetCurrentCameraComponent()
+        if current == camera.CameraComponent and not changedMap then return end
+        camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera)
+        camera.CameraComponent.Damping = Vector2(0, 0)
+        camera.CameraComponent.DeadZone = Vector2(0, 0)
+        camera.CameraComponent.SoftZone = Vector2(0, 0)
+        _CameraService:SwitchCameraTo(camera.CameraComponent)
+        -- Apply the existing viewport policy before rendering the destination frame.
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD")
+        if isvalid(root) then
+            local hud = root:GetComponent("script.BaramHUDController")
+            if isvalid(hud) then hud:ApplyWorldPresentation() end
+        end
+        log("[BaramMap] camera ready map=" .. map.Name)
+    end
+
+    -- 포탈을 밟는 순간 목적지 맵의 카메라를 도착 칸으로 미리 돌려놓는다.
+    -- 전환 자체는 엔진이 맵을 바꾼 뒤에 일어나지만, 그때 카메라가 이미 제자리라
+    -- 엉뚱한 구역이 한 박자 비치는 일이 없어진다.
+    @ExecSpace("ClientOnly")
+    method void AimCamera(table portal)
+        local data = _BaramWorldData:Map(portal.to)
+        if data == nil then return end
+        local map = _EntityService:GetEntityByPath("/maps/" .. data.name)
+        if not isvalid(map) then return end
+        local camera = map:GetChildByName("TestCamera")
+        if not isvalid(camera) then return end
+        local p = _BaramWorldData:Position(portal.toX, portal.toY)
+        camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
+    end
+
+    -- 이 맵에서 내가 서 있을 자리. 카메라와 분신이 같은 값을 쓰게 한 군데로 모았다.
+    -- 텔레포트와 좌표 스냅샷이 서로 다른 메시지라 도착 순서가 매번 다르다. 엔티티
+    -- 트랜스폼을 그대로 믿으면 아직 이전 맵 좌표일 때가 있고, 그 자리에 분신을 만들면
+    -- 캐릭터가 화면 밖에 생겨서 한 박자 안 보인다. 도착 칸은 포탈 표에 이미 있으므로
+    -- 그걸 가장 먼저 쓴다.
+    @ExecSpace("ClientOnly")
+    method Vector3 GroundSpot(Entity map, number z)
+        if map.Name == "baramcanvas" then
+            local c = _BaramWorld.LocalState
+            if c ~= nil and c.x ~= nil then
+                local p = _BaramWorldData:Position(c.x, c.y)
+                return Vector3(p.x, p.y, z)
+            end
+        end
+        local warp = self._T.warpTo
+        if warp ~= nil then
+            local data = _BaramWorldData:Map(warp.to)
+            if data ~= nil and data.name == map.Name then
+                local p = _BaramWorldData:Position(warp.toX, warp.toY)
+                return Vector3(p.x, p.y, z)
+            end
+        end
+        local s = _BaramWorld.LocalState
+        if s ~= nil and s.map ~= nil and s.x ~= nil then
+            local data = _BaramWorldData:Map(s.map)
+            if data ~= nil and data.name == map.Name then
+                local p = _BaramWorldData:Position(s.x, s.y)
+                return Vector3(p.x, p.y, z)
+            end
+        end
+        local p = self.Entity.TransformComponent.WorldPosition
+        return Vector3(p.x, p.y, z)
+    end
+
+    -- 이웃 맵 청크 미리 받기.
+    -- 목적지 맵은 청크가 다 뜰 때까지 준비가 안 되고, 그 사이엔 TestCamera 도 못 잡아서
+    -- MSW 기본 카메라가 전체를 줌아웃으로 비춘다. 부여성이 32장이라 1초 가까이 걸린다.
+    -- 포탈 근처에 오면 목적지 청크를 지금 맵의 안 보이는 자리에서 한 틱에 두 장씩
+    -- 훑어 캐시에 올려둔다. 몸/머리 스프라이트 미리 받는 것과 같은 수법이다.
+    @ExecSpace("ClientOnly")
+    method void WarmNeighbors(Entity map, number delta)
+        if self.Entity ~= _UserService.LocalPlayer then return end
+        if self._T.warmed == nil then self._T.warmed = {} end
+        -- 받는 중이면 계속 훑는다.
+        if isvalid(self._T.chunkWarm) then
+            local list = self._T.chunkList
+            local i = self._T.chunkIndex or 1
+            for _ = 1, 2 do
+                if i > #list then
+                    self._T.chunkWarm:Destroy()
+                    self._T.chunkWarm = nil
+                    self._T.warmed[self._T.chunkMap] = true
+                    log("[BaramMapWarm] " .. tostring(self._T.chunkMap) .. " 청크 " .. tostring(#list) .. "장 준비됨")
+                    return
+                end
+                self._T.chunkWarm.SpriteRendererComponent.SpriteRUID = list[i]
+                i = i + 1
+            end
+            self._T.chunkIndex = i
+            return
+        end
+        -- 0.4 초에 한 번만 포탈 거리를 본다.
+        self._T.warmPoll = (self._T.warmPoll or 0) - delta
+        if self._T.warmPoll > 0 then return end
+        self._T.warmPoll = 0.4
+        local s = _BaramWorld.LocalState
+        if s == nil or s.x == nil or s.map == nil then return end
+        for _, portal in ipairs(_BaramWorldData.Portals) do
+            if portal.from == s.map and not self._T.warmed[portal.to]
+                and math.abs(portal.x - s.x) + math.abs(portal.y - s.y) <= 10 then
+                local list = _BaramMapWarm:Get(portal.to)
+                if list ~= nil and #list > 0 then
+                    self._T.chunkWarm = _SpawnService:SpawnByModelId("barammapchunk", "BaramChunkWarm_" .. self.Entity.Id, Vector3(0, 1000, 0), map)
+                    if not isvalid(self._T.chunkWarm) then return end
+                    self._T.chunkList = list
+                    self._T.chunkIndex = 1
+                    self._T.chunkMap = portal.to
+                    return
+                end
+                self._T.warmed[portal.to] = true
+            end
+        end
+    end
+
+    -- [단일 맵 구조] 캔버스 위에서는 서버가 알려준 바람 맵 번호가 바뀔 때마다
+    -- 청크 그림만 갈아끼운다. 씬 전환이 없으므로 이 교체에 드는 비용이 없다.
+    -- [측정] 워프 직후 프레임을 지켜보고 한 줄로 요약한다.
+    @ExecSpace("ClientOnly")
+    method void WarpWatch(number delta)
+        if self._T.mUntil == nil then return end
+        self._T.mFrames = (self._T.mFrames or 0) + 1
+        if delta > (self._T.mWorst or 0) then self._T.mWorst = delta end
+        if _UtilLogic.ElapsedSeconds < self._T.mUntil then return end
+        self._T.mUntil = nil
+        local function ms(v) return v == nil and "?" or tostring(math.floor(v * 1000)) end
+        _BaramInput:Notice("워프측정 그리기 " .. ms(self._T.mDraw)
+            .. "ms / 좌표도착 " .. ms(self._T.mArrive)
+            .. "ms / 최악프레임 " .. ms(self._T.mWorst)
+            .. "ms / " .. tostring(self._T.mFrames) .. "프레임")
+        log("[WarpMeasure] draw=" .. ms(self._T.mDraw) .. " arrive=" .. ms(self._T.mArrive)
+            .. " worstFrame=" .. ms(self._T.mWorst) .. " frames=" .. tostring(self._T.mFrames))
+        self._T.mStart = nil
+    end
+
+    @ExecSpace("ClientOnly")
+    method void DrawCanvas(Entity map)
+        if self.Entity ~= _UserService.LocalPlayer or map.Name ~= "baramcanvas" then return end
+        local s = _BaramWorld.LocalState
+        if s == nil or s.map == nil then
+            if self._T.drawWarned ~= true then
+                self._T.drawWarned = true
+                _BaramInput:Notice("캔버스인데 LocalState 가 비었다")
+            end
+            return
+        end
+        if self._T.drawnMap == s.map then
+            -- 미리 그려둔 맵에 좌표가 막 도착했다. 그리기는 건너뛰고 자리만 맞춘다.
+            if self._T.pendingSnap then
+                self._T.pendingSnap = nil
+                if self._T.mStart ~= nil and self._T.mArrive == nil then
+                    self._T.mArrive = _UtilLogic.ElapsedSeconds - self._T.mStart
+                end
+                self:SnapToCell(map)
+                local data = _BaramWorldData:Map(s.map)
+                if data ~= nil and data.label ~= nil and data.label ~= "" then _BaramInput:Notice(data.label) end
+            end
+            return
+        end
+        if not _BaramMapView:Draw(map, s.map) then
+            _BaramInput:Notice("맵" .. tostring(s.map) .. " 청크 자료가 없다")
+            return
+        end
+        self._T.drawnMap = s.map
+        -- 원작처럼 들어간 맵 이름을 알려준다. 이름은 BaramWorldData 의 label 에 있다.
+        local data = _BaramWorldData:Map(s.map)
+        if data ~= nil and data.label ~= nil and data.label ~= "" then _BaramInput:Notice(data.label) end
+        self._T.pendingSnap = nil
+        self:SnapToCell(map)
+    end
+
+    -- 캔버스에서는 MSW 맵이 끝까지 그대로라, OnUpdate 앞부분의 "맵이 바뀌었나" 블록이
+    -- 다시는 돌지 않는다. 거기서 하던 일 가운데 새 칸으로 옮기는 것들을 여기서 해준다.
+    -- 이걸 빼먹으면 그림은 새 맵인데 카메라와 분신은 이전 맵 좌표에 남아 검은 화면이 된다.
+    @ExecSpace("ClientOnly")
+    method void SnapToCell(Entity map)
+        -- 맵이 바뀐 직후 잠깐은 그림 자리를 서버 칸에 못박는다.
+        -- 예측 취소, 남은 웨이포인트, 늦게 도착한 좌표 같은 여러 경로가 이 순간에
+        -- 분신을 끌고 갈 수 있고, 캔버스는 항상 뭔가 그려져 있어서 그게 그대로
+        -- "엉뚱한 구역이 잠깐 보이는" 것이 된다. 옛 구조에선 씬이 내려가 검게 보였을 뿐
+        -- 어긋나는 것 자체는 같았다.
+        self._T.lockUntil = _UtilLogic.ElapsedSeconds + 0.3
+        local spot = self:GroundSpot(map, self.Entity.TransformComponent.WorldPosition.z)
+        if isvalid(self._T.visual) then self._T.visual.TransformComponent.WorldPosition = spot end
+        self._T.target = spot
+        self._T.path = {}
+        self._T.predicted = nil
+        self._T.walkTime = 0
+        local camera = self._T.camera
+        if isvalid(camera) then camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method Vector3 CameraSpot(Entity map, Entity camera)
+        return self:GroundSpot(map, camera.TransformComponent.WorldPosition.z)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- All observers release the display when this player returns to the title.
+        if not self.Active then
+            if self._T.map ~= nil then self:ClearDisplay() end
+            if isvalid(self.Entity.AvatarRendererComponent) then self.Entity.AvatarRendererComponent.Enable = false end
+            return
+        end
+        local map = self.Entity.CurrentMap
+        if not isvalid(map) then return end
+        self:PrepareCamera(map)
+        if not self.Entity.Visible then self.Entity.Visible = true end
+        if self.Entity.AvatarRendererComponent.Enable then self.Entity.AvatarRendererComponent.Enable = false end
+        if self.Entity == _UserService.LocalPlayer and self.Entity.PlayerControllerComponent.Enable then self.Entity.PlayerControllerComponent.Enable = false end
+        if self._T.map ~= map then
+            if isvalid(self._T.overhead) then self._T.overhead:Destroy() end
+            self._T.overhead = nil
+            self:ReleaseProfileTouch()
+            if isvalid(self._T.visual) then self._T.visual:Destroy() end
+            if isvalid(self._T.warm) then self._T.warm:Destroy() self._T.warm = nil end
+            -- 청크 미리 받기는 맵마다 새로 띄운다(엔티티가 맵에 매여 있다).
+            if isvalid(self._T.chunkWarm) then self._T.chunkWarm:Destroy() self._T.chunkWarm = nil end
+            self._T.map = map
+            local spot = self:GroundSpot(map, self.Entity.TransformComponent.WorldPosition.z)
+            self._T.visual = _SpawnService:SpawnByModelId("baramworldvisual", "BaramVisual_" .. self.Entity.Id, spot, map)
+            self:BindProfileTouch()
+            self._T.signature = ""
+            self._T.target = spot
+            self._T.path = {}
+            self._T.walkTime = 0
+            self._T.restTime = 0
+            self._T.predicted = nil
+            -- 방향마다 첫 걸음이 미끄러지는 건 그 방향 스프라이트를 그때 처음
+            -- 받아오기 때문이다(GetBody 는 RUID 만 준다. 실제 로딩은 SpriteRUID 대입 때).
+            -- 몸/머리가 Facing + step 으로 4방향 x 3스텝 = 12장이라, 각 방향 첫 걸음마다
+            -- 3장을 새로 받느라 그림이 안 바뀌고 선 자세로 미끄러졌다.
+            -- 안 보이는 자리에 같은 모델을 하나 띄워 한 틱에 한 장씩 훑어 캐시에 올린다.
+            local warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
+            if self.Entity == _UserService.LocalPlayer and self._T.warmKey ~= warmKey then
+                self._T.warm = _SpawnService:SpawnByModelId("baramworldvisual", "BaramWarm_" .. self.Entity.Id, Vector3(0, 1000, 0), map)
+                self._T.warmFrame = 0
+            end
+            if self.Entity == _UserService.LocalPlayer then
+                _BaramInput:ClearMoveWait()
+                -- 그림이 생기는 이 프레임에 카메라를 한 번 더 제자리로 박는다.
+                -- OnMapEnter 때 잘못 놓였더라도 여기서 같은 프레임에 바로잡힌다.
+                local camera = self._T.camera
+                if isvalid(camera) then camera.TransformComponent.WorldPosition = self:CameraSpot(map, camera) end
+            end
+            self._T.warpTo = nil
+            if self._T.warpStart ~= nil then
+                -- 포탈을 밟은 순간부터 새 맵 그림이 생길 때까지. 지연인지 맵 로딩인지 가른다.
+                local text = "워프 " .. tostring(math.floor((_UtilLogic.ElapsedSeconds - self._T.warpStart) * 1000)) .. "ms -> " .. map.Name
+                log("[BaramWarp] " .. text)
+                if self.Entity == _UserService.LocalPlayer and _BaramInput.ShowTiming then _BaramInput:Notice(text) end
+                self._T.warpStart = nil
+            end
+            log("[BaramPlayer] visual created on " .. map.Name)
+        end
+        self:WarpWatch(delta)
+        self:DrawCanvas(map)
+        self:WarmNeighbors(map, delta)
+        local visual = self._T.visual
+        if not isvalid(visual) then return end
+        -- 다른 바람 맵에 있는 사람은 같은 씬에 있어도 보이면 안 된다.
+        local mine = _BaramWorld.LocalState
+        if self.Entity ~= _UserService.LocalPlayer and mine ~= nil and mine.map ~= nil and mine.map ~= self.MapId then
+            if visual.Visible then visual.Visible = false end
+            if isvalid(self._T.overhead) and self._T.overhead.Enable then self._T.overhead.Enable = false end
+            return
+        end
+        if not visual.Visible then visual.Visible = true end
+        -- 스프라이트 미리 받아두기. 12장을 다 훑으면 지운다.
+        if isvalid(self._T.warm) then
+            local f = self._T.warmFrame or 0
+            if f < 12 then
+                self._T.warm:GetChildByName("Body").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetBody(self.Gender, f)
+                self._T.warm:GetChildByName("Head").SpriteRendererComponent.SpriteRUID = _BaramAppearance:GetHead(self.Hair, f)
+                self._T.warmFrame = f + 1
+            else
+                self._T.warm:Destroy()
+                self._T.warm = nil
+                self._T.warmKey = tostring(self.Gender) .. ":" .. tostring(self.Hair)
+            end
+        end
+        local target = self:MovementTarget()
+        -- A logical map change is a teleport even when both cells happen to be nearby.
+        if self.Entity ~= _UserService.LocalPlayer and self.GridPosition.z > 0
+            and self._T.gridMap ~= self.GridPosition.z then
+            self._T.gridMap = self.GridPosition.z
+            visual.TransformComponent.WorldPosition = target
+            self._T.target = target
+            self._T.path = {}
+            self._T.walkTime = 0
+        end
+        -- 잠금 중에는 예측도 경로도 무시하고 서버 칸에 붙어 있는다.
+        if self._T.lockUntil ~= nil then
+            if _UtilLogic.ElapsedSeconds < self._T.lockUntil then
+                self._T.predicted = nil
+                self._T.path = {}
+                self._T.target = target
+                if isvalid(visual) then visual.TransformComponent.WorldPosition = target end
+            else
+                self._T.lockUntil = nil
+            end
+        end
+        local predicted = self._T.predicted
+        if predicted ~= nil then
+            self._T.predictionAge = self._T.predictionAge + delta
+            local origin = self._T.predictionOrigin
+            if target.x == predicted.x and target.y == predicted.y then
+                self._T.predicted = nil
+            elseif target.x == origin.x and target.y == origin.y and self._T.predictionAge < 0.75 then
+                target = predicted
+            else
+                self:CancelPrediction()
+            end
+        end
+        local previous = self._T.target
+        if target.x ~= previous.x or target.y ~= previous.y then
+            local dx, dy = target.x - previous.x, target.y - previous.y
+            if dx * dx + dy * dy > 0.5184 or #self._T.path >= 4 then
+                visual.TransformComponent.WorldPosition = target
+                self._T.path = {}
+            else
+                table.insert(self._T.path, target)
+            end
+            self._T.target = target
+        end
+        -- Only the bodyless display moves between authoritative grid positions.
+        -- Keep waypoints so turns follow the grid instead of cutting corners.
+        local moving = #self._T.path > 0
+        local frameSeconds = _BaramWorldData.WalkFrameSeconds
+        local budget = math.max(0, delta) * (0.24 / (frameSeconds * 4))
+        local position = visual.TransformComponent.WorldPosition
+        while #self._T.path > 0 and budget > 0 do
+            local destination = self._T.path[1]
+            local dx, dy = destination.x - position.x, destination.y - position.y
+            local distance = math.sqrt(dx * dx + dy * dy)
+            if distance <= budget then
+                position = destination
+                budget = budget - distance
+                table.remove(self._T.path, 1)
+            else
+                position = Vector3(position.x + dx * budget / distance, position.y + dy * budget / distance, destination.z)
+                budget = 0
+            end
+        end
+        local oldPosition = visual.TransformComponent.WorldPosition
+        if oldPosition.x ~= position.x or oldPosition.y ~= position.y or oldPosition.z ~= position.z then
+            visual.TransformComponent.WorldPosition = position
+            if self._T.measureStart ~= nil then
+                log("[MoveTrace] firstVisualMs=" .. tostring(math.floor((_UtilLogic.ElapsedSeconds - self._T.measureStart) * 1000)))
+                self._T.measureStart = nil
+            end
+        end
+        -- 칸과 칸 사이에 한두 프레임 비는 건 걸음이 끊긴 게 아니다.
+        -- 여기서 walkTime 을 0 으로 되돌리면 다음 칸이 phase 0 부터 다시 시작하는데,
+        -- WalkFrames 의 0번이 서 있는 자세라서 걷는 자세가 씹히고 제자리걸음처럼 보인다.
+        -- 한 칸이 4프레임(320ms)뿐이라 한 프레임만 어긋나도 눈에 띈다.
+        local resting = self._T.restTime or 0
+        if moving then
+            self._T.walkTime = self._T.walkTime + delta
+            resting = 0
+        else
+            resting = resting + delta
+            if resting >= frameSeconds * 2 then self._T.walkTime = 0 end
+        end
+        self._T.restTime = resting
+        local walking = moving or resting < frameSeconds
+        local phase = math.floor(self._T.walkTime / frameSeconds) % 4
+        local step = walking and _BaramWorldData.WalkFrames[phase + 1] or 0
+        local facing = self.Facing
+        if self._T.localFacing ~= nil then
+            if self.Facing == self._T.localFacing or _UtilLogic.ElapsedSeconds >= self._T.localFacingUntil then self._T.localFacing = nil
+            else facing = self._T.localFacing end
+        end
+        local bodyFrame = facing + step
+        local headFrame = bodyFrame
+        local emotion = false
+        local action = self._T.action or 0
+        if action > 0 then
+            local count = (action == 1 or action == 2) and 2 or (action == 22 and 4 or 1)
+            if self._T.actionMap ~= map or self._T.actionAge >= self._T.actionInterval * count then
+                self._T.action = 0
+                log("[BaramMotion] end action=" .. tostring(action))
+            else
+                local frame = math.min(count - 1, math.floor(self._T.actionAge / self._T.actionInterval))
+                local direction = self._T.actionDirection
+                -- winbaram 0x4474CC action switch; 0x4843A0 frame counts.
+                if action == 1 or action == 2 then bodyFrame = 24 + direction * 2 + frame
+                elseif action == 3 then bodyFrame = 64 + direction * 2
+                elseif action == 4 or action == 5 then bodyFrame = 76 + direction
+                elseif action == 6 then bodyFrame = 72 + direction
+                elseif action == 7 or action == 8 then bodyFrame = 92
+                elseif action == 9 then bodyFrame = 96 + direction
+                elseif action == 10 then bodyFrame = 93
+                elseif action == 20 then bodyFrame = 95
+                elseif action == 22 then bodyFrame = 100 + frame
+                elseif action == 24 then bodyFrame = 96 + direction
+                else bodyFrame = direction * 3 end
+                headFrame = bodyFrame
+                if action >= 11 then
+                    emotion = true
+                    if action == 22 then headFrame = 11 + frame
+                    elseif action == 23 then headFrame = 15
+                    elseif action == 24 then headFrame = 16 + direction
+                    else headFrame = action - 11 end
+                end
+                self._T.actionAge = self._T.actionAge + delta
+            end
+        end
+        local weaponFrame = -1
+        if self.WeaponItemId ~= 0 then
+            if bodyFrame < 12 then
+                weaponFrame = bodyFrame
+                bodyFrame = bodyFrame + 12
+            elseif bodyFrame >= 24 and bodyFrame < 32 then weaponFrame = bodyFrame - 12 end
+        end
+        local signature = tostring(self.Gender) .. ":" .. tostring(self.Hair) .. ":" .. tostring(bodyFrame) .. ":" .. tostring(headFrame) .. ":" .. tostring(emotion) .. ":" .. tostring(self.WeaponItemId)
+        if signature ~= self._T.signature then
+            local body = visual:GetChildByName("Body").SpriteRendererComponent
+            local head = visual:GetChildByName("Head").SpriteRendererComponent
+            body.SpriteRUID = _BaramAppearance:GetBody(self.Gender, bodyFrame)
+            head.SpriteRUID = emotion and _BaramAppearance:GetEmotion(self.Hair, headFrame) or _BaramAppearance:GetHead(self.Hair, headFrame)
+            local lower = math.min(body.OrderInLayer, head.OrderInLayer)
+            if self._T.bodyOrder == nil then self._T.bodyOrder = lower end
+            lower = self._T.bodyOrder
+            local upper = math.max(lower + 1, math.max(body.OrderInLayer, head.OrderInLayer))
+            local order = _BaramAppearance:GetDrawOrder(bodyFrame)
+            local bodyAbove = (string.find(order, "b") or 1) > (string.find(order, "h") or 2)
+            body.OrderInLayer = bodyAbove and upper or lower
+            head.OrderInLayer = bodyAbove and lower or upper
+            local weapon = visual:GetChildByName("HeldWeapon")
+            local art = _BaramAppearance:GetWeapon(self.WeaponItemId, weaponFrame)
+            if art ~= "" and not isvalid(weapon) then
+                weapon = _SpawnService:SpawnByEntity(body.Entity, "HeldWeapon", Vector3.zero, visual)
+                weapon.TransformComponent.Position = body.Entity.TransformComponent.Position
+            end
+            if isvalid(weapon) then
+                weapon.Enable = art ~= ""
+                if art ~= "" then
+                    weapon.SpriteRendererComponent.SpriteRUID = art
+                    body.OrderInLayer = lower + (string.find(order, "b") or 1)
+                    head.OrderInLayer = lower + (string.find(order, "h") or 2)
+                    weapon.SpriteRendererComponent.OrderInLayer = lower + (string.find(order, "w") or 3)
+                end
+            end
+            self._T.signature = signature
+            if self._T.traceMotion and (self._T.action or 0) > 0 then log("[BaramMotion] frame body=" .. tostring(bodyFrame) .. " head=" .. tostring(headFrame) .. " emotion=" .. tostring(emotion)) end
+        end
+        if self.Entity == _UserService.LocalPlayer and _BaramEntryFlow.InWorld and _BaramInput.MapScroll then
+            local camera = self._T.camera
+            if isvalid(camera) then
+                local p = position
+                camera.TransformComponent.WorldPosition = Vector3(p.x, p.y, camera.TransformComponent.WorldPosition.z)
+            end
+        end
+        self:UpdateOverhead(position)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void UpdateOverhead(Vector3 position)
+        -- Character-underfoot name uses Galmuri11.
+        local localPlayer = _UserService.LocalPlayer
+        -- [단일 맵 구조] 이제 모두 같은 씬이라 CurrentMap 비교로는 못 가른다. 바람 맵 번호로 본다.
+        local mine = _BaramWorld.LocalState
+        local away = mine ~= nil and mine.map ~= nil and mine.map ~= self.MapId
+        if not isvalid(localPlayer) or away then
+            if isvalid(self._T.overhead) then self._T.overhead.Enable = false end
+            return
+        end
+        if not isvalid(self._T.overhead) then
+            local canvas = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ActorLabels")
+            if not isvalid(canvas) then return end
+            local template = canvas:GetChildByName("Template")
+            if not isvalid(template) then return end
+            self._T.overhead = _SpawnService:SpawnByEntity(template, "Actor_" .. self.Entity.Id, Vector3.zero, canvas, true)
+            if not isvalid(self._T.overhead) then return end
+            self._T.overheadName = self._T.overhead:GetChildByName("Name")
+            self._T.overheadName.UITransformComponent.UIScale = Vector3.one
+            self._T.overheadName.TextGUIRendererComponent.FontSize = 9
+            self._T.overheadRelation = nil
+            self._T.overheadText = nil
+            self._T.overheadX = nil
+            log("[BaramActorLabel] created")
+        end
+        local label = self._T.overhead
+        local relation = "normal"
+        local ownVisual = localPlayer:GetComponent("script.BaramPlayerVisual")
+        if isvalid(ownVisual) and ownVisual.ClanId ~= "" and ownVisual.ClanId == self.ClanId then
+            relation = "clan"
+        end
+        for _, partyMember in ipairs(_BaramParty.Members) do
+            if partyMember.userId == self.Entity.PlayerComponent.UserId then relation = "party" break end
+        end
+        if self._T.overheadRelation ~= relation then
+            local color = Color.white
+            if relation == "party" then color = Color(0.25, 0.55, 1, 1)
+            elseif relation == "clan" then color = Color(0.2, 1, 0.3, 1) end
+            self._T.overheadName.TextGUIRendererComponent.FontColor = color
+            self._T.overheadRelation = relation
+            log("[BaramActorLabel] relation=" .. relation .. " size=9")
+        end
+        local text = self.DisplayName
+        if text ~= self._T.overheadText then
+            self._T.overheadName.Enable = text ~= ""
+            local renderer = self._T.overheadName.TextGUIRendererComponent
+            renderer.Font = "Galmuri11"
+            renderer.IsRichText = false
+            renderer.Text = text
+            self._T.overheadText = text
+        end
+        local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y))
+        local x = screen.x * 640 / _UILogic.ScreenWidth
+        local y = (screen.y / _UILogic.ScreenHeight - 1) * 480
+        local visible = _BaramEntryFlow.InWorld and x >= 16 and x <= 422 and y <= -20 and y >= -372
+        if label.Enable ~= visible then label.Enable = visible end
+        if visible and (x ~= self._T.overheadX or y ~= self._T.overheadY) then
+            label.UITransformComponent.anchoredPosition = Vector2(x, y)
+            self._T.overheadX = x
+            self._T.overheadY = y
+        end
+    end
+
+
+    @ExecSpace("ClientOnly")
+    method void BindProfileTouch()
+        if not isvalid(self._T.visual) then return end
+        self._T.profileLinks = {}
+        for _, name in ipairs({"Body", "Head"}) do
+            local part = self._T.visual:GetChildByName(name)
+            if isvalid(part) then
+                ---@type TouchReceiveComponent
+                local receiver = part:AddComponent("TouchReceiveComponent")
+                receiver.AutoFitToSize = true
+                receiver.RelayEventToBehind = false
+                local handle = part:ConnectEvent(TouchEvent, function(event)
+                    if event.TouchId == 1 and not _InputService:IsPointerOverUI() then _BaramProfile:Select(self.Entity) end
+                end)
+                table.insert(self._T.profileLinks, {entity = part, handle = handle})
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ReleaseProfileTouch()
+        for _, link in ipairs(self._T.profileLinks or {}) do
+            if isvalid(link.entity) then link.entity:DisconnectEvent(TouchEvent, link.handle) end
+        end
+        self._T.profileLinks = nil
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ClearDisplay()
+        -- Disconnect touch handlers before destroying local display entities.
+        if self._T.previousCameraBlend ~= nil then
+            _CameraService.TransitionBlendTime = self._T.previousCameraBlend
+            self._T.previousCameraBlend = nil
+        end
+        self:ReleaseProfileTouch()
+        if isvalid(self._T.overhead) then self._T.overhead:Destroy() end
+        self._T.overhead = nil
+        if isvalid(self._T.visual) then self._T.visual:Destroy() end
+        if isvalid(self._T.warm) then self._T.warm:Destroy() end
+        if isvalid(self._T.chunkWarm) then self._T.chunkWarm:Destroy() end
+        self._T.visual = nil
+        self._T.warm = nil
+        self._T.chunkWarm = nil
+        self._T.map = nil
+        self._T.camera = nil
+        self._T.cameraMap = nil
+        self._T.path = {}
+        self._T.predicted = nil
+        self._T.action = 0
+        log("[BaramMultiplayer] observer display released")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- The same cleanup covers disconnect and map/component destruction.
+        self:ClearDisplay()
+    end
+end

@@ -1,0 +1,73 @@
+@Logic
+script BaramItemRules extends Logic
+    method string EquipError(table state, table item)
+        -- Validate every item2 equipment restriction on the authoritative character state.
+        if item == nil then return "그 칸은 비어 있습니다." end
+        local data = _BaramWorldData:Item(item.id)
+        if data == nil or data.type ~= 0 then return "이 물건은 장착할 수 없습니다." end
+        if (item.durability or 0) <= 0 then return "내구도가 없습니다." end
+        if (state.level or 1) < (data.levelRequired or 0) then return "레벨이 부족합니다." end
+        if (state.strength or 1) < (data.strengthRequired or 0) then return "힘이 부족합니다." end
+        if (state.dexterity or 1) < (data.dexterityRequired or 0) then return "민첩이 부족합니다." end
+        if (state.intelligence or 1) < (data.intelligenceRequired or 0) then return "지력이 부족합니다." end
+        if (data.genderRequired or 0) > 0 and data.genderRequired ~= (state.gender or 0) + 1 then return "성별 조건에 맞지 않습니다." end
+        if (data.jobRequired or 0) > 0 and data.jobRequired ~= (state.jobId or 0) then return "직업 조건에 맞지 않습니다." end
+        if (state.jobRank or 0) < (data.promotionRequired or 0) then return "승급 조건에 맞지 않습니다." end
+        return ""
+    end
+
+    method integer WeaponAttack(table state)
+        -- A usable weapon contributes its DB attack value; missing values add no invented bonus.
+        local item = state.items[tostring(state.equip)]
+        if item == nil or self:EquipError(state, item) ~= "" then return 0 end
+        local data = _BaramWorldData:Item(item.id)
+        return math.max(0, math.floor(data.attack or 0))
+    end
+
+    method integer RepairFee(table item)
+        -- Round the total missing-durability charge upward once, including fractional rates.
+        local data = item ~= nil and _BaramWorldData:Item(item.id) or nil
+        if data == nil or data.repairable ~= 1 then return -1 end
+        return math.ceil(math.max(0, data.durability - (item.durability or 0)) * math.max(0, data.repairCost or 0) - 0.0000001)
+    end
+
+    method string Repair(table state, integer slot)
+        -- Repair one owned item atomically after validating the flag, fee and funds.
+        local item = state.items[tostring(slot)]
+        if item == nil then return "그 칸은 비어 있습니다." end
+        local fee = self:RepairFee(item)
+        if fee < 0 then return "수리할 수 없는 물건입니다." end
+        local data = _BaramWorldData:Item(item.id)
+        if item.durability >= data.durability then return "이미 내구도가 가득 찼습니다." end
+        if fee > state.gold then return "수리비가 부족합니다." end
+        state.gold = state.gold - fee
+        item.durability = data.durability
+        return ""
+    end
+
+    method string Rename(table state, integer slot, string newName)
+        -- Preserve the item ID and appearance; only its per-instance display name changes.
+        local item = state.items[tostring(slot)]
+        local data = item ~= nil and _BaramWorldData:Item(item.id) or nil
+        if data == nil then return "그 칸은 비어 있습니다." end
+        if data.type ~= 0 or (data.renameCost or 0) <= 0 then return "명명할 수 없는 물건입니다." end
+        local length = utf8.len(newName)
+        if length == nil or length < 1 or length > 12 or string.find(newName, "[%c<>]") or string.match(newName, "^%s") or string.match(newName, "%s$") then return "이름은 공백 없이 시작·끝나는 1~12자로 입력해 주세요." end
+        if item.name == newName then return "이미 같은 이름입니다." end
+        if data.renameCost > state.gold then return "명명비가 부족합니다." end
+        state.gold = state.gold - data.renameCost
+        item.name = newName
+        return ""
+    end
+
+    @ExecSpace("ServerOnly")
+    method boolean Hook(string userId, table item, string field)
+        -- A dash is explicitly no script; named scripts run through the existing interpreter.
+        if item == nil then return true end
+        local data = _BaramWorldData:Item(item.id)
+        local block = data ~= nil and data[field] or nil
+        if block == nil or block == "" or block == "-" then return true end
+        if not _BaramScriptRuntime:Ensure() then return false end
+        return _BaramScriptRuntime:Run(block, userId)
+    end
+end
