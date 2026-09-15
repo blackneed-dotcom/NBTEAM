@@ -43,6 +43,21 @@ script BaramInput extends Logic
         self.MoveWait = 0
         self._T.inventory = _EntityService:GetEntityByPath("/ui/BaramInventory")
         self._T.inventoryLinks = {}
+        self._T.quitDialog = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ExitConfirm")
+        if isvalid(self._T.quitDialog) then self._T.quitDialog.Enable = false end
+        for _, action in ipairs({"ExitButton", "Yes", "No"}) do
+            local name = action
+            local path = name == "ExitButton" and "/ui/BaramHUD/Frame/ExitButton" or "/ui/BaramHUD/Frame/ExitConfirm/Window/" .. name
+            local button = _EntityService:GetEntityByPath(path)
+            if isvalid(button) then
+                local link = button:ConnectEvent(UITouchDownEvent, function(event)
+                    if event.TouchId ~= -1 and event.TouchId <= 0 then return end
+                    if name == "ExitButton" then self:BeginConfirmation("quit")
+                    else self:AnswerQuit(name == "Yes") end
+                end)
+                table.insert(self._T.inventoryLinks, {entity = button, link = link})
+            end
+        end
         self._T.inventoryRows = {}
         self.InventoryPage = 1
         self.ActivePane = "inventory"
@@ -122,6 +137,8 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void Close()
+        _BaramUserList:Close()
+        if isvalid(self._T.quitDialog) then self._T.quitDialog.Enable = false end
         -- Release both dialog layers and the shared gameplay input guard.
         local wasBlocked = self:Blocked()
         _BaramNpcServices:Close()
@@ -410,6 +427,7 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void EndCommand()
+        if isvalid(self._T.quitDialog) then self._T.quitDialog.Enable = false end
         -- Release command selection while keeping the inventory/status pane open.
         self.Mode = ""
         self.Pending = ""
@@ -455,11 +473,29 @@ script BaramInput extends Logic
 
     @ExecSpace("ClientOnly")
     method void BeginConfirmation(string mode)
+        if mode == "quit" then
+            if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing or _BaramTrade.SessionId ~= "" then return end
+            if not isvalid(self._T.quitDialog) then return end
+            self:Close()
+            _BaramProfile:Close()
+            self.Mode = "quit"
+            self._T.quitDialog.Enable = true
+            log("[BaramExit] confirmation opened")
+            return
+        end
         -- STR.RES lines 4 and 36: one-line Y/N questions for quit and save.
         self.Mode = mode
         self.Pending = ""
         if isvalid(self._T.window) then self._T.window.Enable = false end
         self:SetCommandPrompt(mode == "quit" and "정말 끝냅니까? (Y/N) " or "개인정보를 서버에 저장 할까요? (Y/N) ")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void AnswerQuit(boolean accepted)
+        if self.Mode ~= "quit" then return end
+        self:EndCommand()
+        log("[BaramExit] accepted=" .. tostring(accepted))
+        if accepted then _BaramWorld:LeaveToTitle() end
     end
 
     @ExecSpace("ClientOnly")
@@ -536,11 +572,17 @@ script BaramInput extends Logic
         local ctrl = _InputService:IsKeyPressed(KeyboardKey.LeftControl) or _InputService:IsKeyPressed(KeyboardKey.RightControl)
         local alt = _InputService:IsKeyPressed(KeyboardKey.LeftAlt) or _InputService:IsKeyPressed(KeyboardKey.RightAlt)
         if key == KeyboardKey.Escape then
-            if self.Mode == "command" or self.Mode == "quit" or self.Mode == "save" then self:EndCommand()
+            if self.Mode == "users" then self:Close()
+            elseif self.Mode == "command" or self.Mode == "quit" or self.Mode == "save" then self:EndCommand()
             else self:Close() _BaramProfile:Select(_UserService.LocalPlayer) end
             return
         end
         if self.Mode == "help" and (key == KeyboardKey.LeftArrow or key == KeyboardKey.RightArrow) then self.HelpPage = 3 - self.HelpPage self:Help() return end
+        if self.Mode == "quit" then
+            if key == KeyboardKey.Y then self:AnswerQuit(true)
+            elseif key == KeyboardKey.N then self:AnswerQuit(false) end
+            return
+        end
         if self.Mode == "quit" or self.Mode == "save" then
             if key == KeyboardKey.Y then
                 local action = self.Mode

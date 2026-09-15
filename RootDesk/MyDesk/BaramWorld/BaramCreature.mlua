@@ -206,6 +206,7 @@ script BaramCreature extends Component
         local r = _BaramWorld:GetRecord(player.UserId)
         if r == nil or r.state.map ~= 315 then return end
         self.Hp = math.max(0, self.Hp - event.TotalDamage)
+        _BaramHealthBars:ShowDamage(self.Entity, event.TotalDamage, self.MapId)
         local maximum = self.SourceId == 1 and 15 or 10
         _BaramHealthBars:ShowHit(self.Entity, self.Hp, maximum, self.Entity.CurrentMap.Id)
         self.AggroUser = player.UserId

@@ -805,16 +805,18 @@ script BaramWorld extends Logic
         for _, player in ipairs(_UserService.UserEntities.Values) do
             if isvalid(player) then
                 local record = self:GetRecord(player.PlayerComponent.UserId)
-                if record ~= nil and record.active then table.insert(names, player.PlayerComponent.Nickname) end
+                if record ~= nil and record.active then
+                    table.insert(names, {id=player.PlayerComponent.UserId, name=player.PlayerComponent.Nickname, level=record.state.level or 1, job=record.state.jobId or 0})
+                end
             end
         end
-        self:ShowUsers(table.concat(names, "\n"), senderUserId)
+        self:ShowUsers(_HttpService:JSONEncode(names), senderUserId)
     end
 
     @ExecSpace("Client")
     method void ShowUsers(string names)
-        _BaramInput.Mode = "users"
-        _BaramInput:Show("현재 사용자", names, "Esc: 닫기")
+        if not _BaramEntryFlow.InWorld then return end
+        _BaramUserList:Show(_HttpService:JSONDecode(names))
     end
 
     @ExecSpace("Server")
@@ -845,7 +847,8 @@ script BaramWorld extends Logic
         _BaramInput:Close()
         _BaramEntryFlow.InWorld = false
         _EntityService:GetEntityByPath("/ui/BaramEntry").Enable = true
-        _BaramEntryFlow:Show("title")
+        _BaramProfile:Close()
+        _BaramEntryFlow:Show("select")
     end
 
     @ExecSpace("Server")

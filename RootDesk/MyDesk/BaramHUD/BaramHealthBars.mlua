@@ -3,6 +3,99 @@ script BaramHealthBars extends Logic
     property number DisplayScale = 1.5
     property number HeadHeight = 0.48
     property number HeadGap = 4
+    property number DamageDuration = 0.4
+    property number DamageHeight = 12
+    property string DamageAtlas = "c3ff2eeb54f34d3c9a384ddb1c4d5217"
+    property table DamageGlyphs = {{32,253,175,218},{257,245,154,236},{455,249,175,232},{672,249,179,228},{884,244,182,231},{1106,250,176,225},{1322,250,179,227},{1537,254,177,226},{1756,249,178,229},{1970,249,176,228}}
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        local sprite = _ResourceService:LoadSpriteAndWait(self.DamageAtlas)
+        log("[BaramDamage] atlas ready=" .. tostring(sprite ~= nil))
+    end
+
+    @ExecSpace("Client")
+    method void ShowDamage(Entity actor, integer amount, integer logicalMap)
+        local player = _UserService.LocalPlayer
+        local state = _BaramWorld.LocalState
+        if amount <= 0 or not _BaramEntryFlow.InWorld or not isvalid(player) or not isvalid(actor) then return end
+        if state == nil or state.map ~= logicalMap or player.CurrentMap ~= actor.CurrentMap then return end
+        local creature = actor:GetComponent("script.BaramCreature")
+        if not isvalid(creature) or creature.MapId ~= logicalMap then return end
+        local canvas = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ActorLabels")
+        if not isvalid(canvas) then return end
+        local template = canvas:GetChildByName("DamageTemplate")
+        if not isvalid(template) then return end
+        self._T.damageSequence = (self._T.damageSequence or 0) + 1
+        local entity = _SpawnService:SpawnByEntity(template, "Damage_" .. tostring(self._T.damageSequence), Vector3.zero, canvas, true)
+        if not isvalid(entity) then return end
+        local digits = {}
+        local text = tostring(amount)
+        local width = 0
+        local digitTemplate = entity:GetChildByName("DigitTemplate")
+        for i = 1, #text do
+            local index = tonumber(string.sub(text, i, i))
+            if index ~= nil then
+                local glyph = self.DamageGlyphs[index + 1]
+                local scale = self.DamageHeight / glyph[4]
+                local digitWidth = glyph[3] * scale
+                local digit = _SpawnService:SpawnByEntity(digitTemplate, "Digit" .. tostring(i), Vector3.zero, entity, true)
+                digit.UITransformComponent.RectSize = Vector2(digitWidth, self.DamageHeight)
+                digit.UITransformComponent.anchoredPosition = Vector2(width, 0)
+                local atlas = digit:GetChildByName("Atlas")
+                atlas.UITransformComponent.RectSize = Vector2(2172 * scale, 724 * scale)
+                atlas.UITransformComponent.anchoredPosition = Vector2(-glyph[1] * scale, glyph[2] * scale)
+                digit.Enable = true
+                table.insert(digits, atlas.SpriteGUIRendererComponent)
+                width = width + digitWidth + 0.5
+            end
+        end
+        width = math.max(0, width - 0.5)
+        entity.UITransformComponent.RectSize = Vector2(width, self.DamageHeight)
+        local effect = {entity = entity, actor = actor, creature = creature, map = actor.CurrentMap, logicalMap = logicalMap, age = 0, duration = math.max(0.1, self.DamageDuration), width = width, digits = digits}
+        if self._T.damageNumbers == nil then self._T.damageNumbers = {} end
+        table.insert(self._T.damageNumbers, effect)
+        self:PositionDamage(effect)
+        log("[BaramDamage] created amount=" .. text .. " duration=" .. tostring(effect.duration))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void PositionDamage(table effect)
+        -- Use the interpolated monster image, rather than its network grid position.
+        local sprite = effect.creature._T.sprite
+        local position = effect.actor.TransformComponent.WorldPosition
+        if isvalid(sprite) then position = sprite.TransformComponent.WorldPosition
+        else
+            local source = effect.actor:GetChildByName("Sprite")
+            if isvalid(source) then position = source.TransformComponent.WorldPosition end
+        end
+        local screen = _UILogic:WorldToScreenPosition(Vector2(position.x, position.y))
+        local progress = math.min(1, effect.age / effect.duration)
+        local x = screen.x * 640 / _UILogic.ScreenWidth - effect.width / 2
+        local y = (screen.y / _UILogic.ScreenHeight - 1) * 480 + self.DamageHeight / 2 + 8 * progress
+        effect.entity.UITransformComponent.anchoredPosition = Vector2(x, y)
+        effect.entity.Enable = x >= 16 and x + effect.width <= 422 and y <= -20 and y - self.DamageHeight >= -372
+        local alpha = math.min(1, (1 - progress) / 0.4)
+        for _, renderer in ipairs(effect.digits) do renderer:SetAlpha(alpha) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void UpdateDamage(number delta)
+        local player = _UserService.LocalPlayer
+        local state = _BaramWorld.LocalState
+        local effects = self._T.damageNumbers or {}
+        for i = #effects, 1, -1 do
+            local effect = effects[i]
+            effect.age = effect.age + math.max(0, delta)
+            if effect.age >= effect.duration or not _BaramEntryFlow.InWorld or not isvalid(player) or not isvalid(effect.actor) or not isvalid(effect.entity) or player.CurrentMap ~= effect.map or state == nil or state.map ~= effect.logicalMap then
+                if isvalid(effect.entity) then effect.entity:Destroy() end
+                table.remove(effects, i)
+                log("[BaramDamage] removed age=" .. tostring(effect.age))
+            else
+                self:PositionDamage(effect)
+            end
+        end
+    end
     @ExecSpace("Client")
     method void ShowHit(Entity actor, integer hp, integer maximum, string mapId)
         -- winbaram.exe 484290: 24x6, 22 fill pixels; 4684E2: 500ms per hit.
@@ -89,6 +182,7 @@ script BaramHealthBars extends Logic
 
     @ExecSpace("ClientOnly")
     method void OnUpdate(number delta)
+        self:UpdateDamage(delta)
         -- Expire even when off screen; release on map changes and logout.
         local player = _UserService.LocalPlayer
         for id, bar in pairs(self._T.bars or {}) do
@@ -105,6 +199,8 @@ script BaramHealthBars extends Logic
 
     @ExecSpace("ClientOnly")
     method void OnEndPlay()
+        for _, effect in ipairs(self._T.damageNumbers or {}) do if isvalid(effect.entity) then effect.entity:Destroy() end end
+        self._T.damageNumbers = {}
         -- UI clones belong to this client session.
         for _, bar in pairs(self._T.bars or {}) do if isvalid(bar.entity) then bar.entity:Destroy() end end
         self._T.bars = {}

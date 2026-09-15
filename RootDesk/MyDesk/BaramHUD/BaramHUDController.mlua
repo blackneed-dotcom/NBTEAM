@@ -278,14 +278,10 @@ script BaramHUDController extends Component
 
     @ExecSpace("ClientOnly")
     method void ToggleInfo()
-        if _BaramProfile:IsOpen() then _BaramProfile:Close() return end
-        -- Select the status pane; repeated selection keeps it open.
-        if not isvalid(self._T.infoPanel) then return end
         if not _BaramEntryFlow.InWorld or _BaramChatRelay.IsEditing then return end
-        _BaramInput:Close()
-        self._T.infoPanel.Enable = true
-        self:RefreshInfo()
-        log("[BaramInfo] visible=" .. tostring(self._T.infoPanel.Enable))
+        if _BaramInput.Mode == "quit" then return end
+        _BaramProfile:Select(_UserService.LocalPlayer)
+        log("[BaramInfo] own profile selected by HUD icon")
     end
 
     @ExecSpace("ClientOnly")

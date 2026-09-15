@@ -1,0 +1,102 @@
+@Logic
+script BaramUserList extends Logic
+    property table Users = {}
+    property table Offsets = {0,0,0,0,0}
+    property boolean SortByLevel = true
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        self._T.window = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/UserList")
+        self._T.links = {}
+        local window = self._T.window
+        if not isvalid(window) then return end
+        window.Enable = false
+        for _, action in ipairs({"Quit","Previous","Next","Level","Name"}) do
+            local name = action
+            local button = window:GetChildByName(name)
+            local link = button:ConnectEvent(UITouchDownEvent, function(event)
+                if event.TouchId ~= -1 and event.TouchId < 1 then return end
+                if name == "Quit" then _BaramInput:Close()
+                elseif name == "Level" or name == "Name" then self.SortByLevel = name == "Level" self.Offsets = {0,0,0,0,0} self:Render()
+                else self:Scroll(0, name == "Next" and 12 or -12) end
+            end)
+            table.insert(self._T.links, {entity=button, event=UITouchDownEvent, link=link})
+        end
+        for column = 1,5 do
+            local index = column
+            for _, direction in ipairs({"Up","Down"}) do
+                local change = direction == "Up" and -1 or 1
+                local button = window:GetChildByName(direction .. tostring(index))
+                local link = button:ConnectEvent(UITouchDownEvent, function(event)
+                    if event.TouchId == -1 or event.TouchId > 0 then self:Scroll(index, change) end
+                end)
+                table.insert(self._T.links, {entity=button, event=UITouchDownEvent, link=link})
+            end
+        end
+        log("[BaramUserList] original USERLIST ready")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Show(table users)
+        if not _BaramEntryFlow.InWorld or _BaramTrade.SessionId ~= "" or not isvalid(self._T.window) then return end
+        _BaramInput:Close()
+        _BaramProfile:Close()
+        _BaramInput.Mode = "users"
+        self.Users = users
+        self.Offsets = {0,0,0,0,0}
+        self._T.window.Enable = true
+        self:Render()
+        log("[BaramUserList] users=" .. tostring(#users))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Close()
+        if isvalid(self._T.window) then self._T.window.Enable = false end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Scroll(integer column, integer amount)
+        for i=1,5 do
+            if column == 0 or column == i then self.Offsets[i] = math.max(0, self.Offsets[i] + amount) end
+        end
+        self:Render()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Render()
+        local columns = {{},{},{},{},{}}
+        for _, user in ipairs(self.Users) do
+            local column = user.job >= 1 and user.job <= 4 and user.job or 5
+            table.insert(columns[column], user)
+        end
+        for column=1,5 do
+            local rows = columns[column]
+            table.sort(rows, function(a,b)
+                if self.SortByLevel and a.level ~= b.level then return a.level > b.level end
+                if a.name ~= b.name then return a.name < b.name end
+                return a.id < b.id
+            end)
+            local offset = math.min(self.Offsets[column], math.max(0, #rows - 12))
+            self.Offsets[column] = offset
+            for i=1,12 do
+                local field = self._T.window:GetChildByName("Column" .. tostring(column)):GetChildByName("Row" .. tostring(i))
+                local user = rows[offset+i]
+                field.TextGUIRendererComponent.Text = user ~= nil and user.name or ""
+                local level = field:GetChildByName("Level")
+                level.TextGUIRendererComponent.Text = user ~= nil and tostring(user.level) or ""
+            end
+            self._T.window:GetChildByName("Count" .. tostring(column)).TextGUIRendererComponent.Text = tostring(#rows)
+        end
+        self._T.window:GetChildByName("Total").TextGUIRendererComponent.Text = tostring(#self.Users)
+        self._T.window:GetChildByName("LevelMark").Enable = self.SortByLevel
+        self._T.window:GetChildByName("NameMark").Enable = not self.SortByLevel
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        for _, binding in ipairs(self._T.links or {}) do
+            if isvalid(binding.entity) then binding.entity:DisconnectEvent(binding.event, binding.link) end
+        end
+        self:Close()
+    end
+end

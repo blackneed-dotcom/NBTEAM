@@ -263,3 +263,9 @@ If none of the above resolves the issue, tell the user:
 >
 > **https://discord.com/invite/maplestoryworlds**
 <!-- <<< managed by mswai <<< -->
+
+## Project UI preferences
+
+- Character information/profile and inventory/skill panes stay fixed; never add dragging to these panes.
+- Question, confirmation, and input popups must be draggable from their top strip. Reuse `script.BaramDialogDrag` on the popup window and add a raycast-enabled `DragArea` child with `UITouchReceiveComponent` through UIBuilder. Keep close/buttons outside this strip. Existing NPC dialogs already provide equivalent dragging.
+- Use original Baram client artwork for these windows and Galmuri11 for text.

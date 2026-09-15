@@ -1,0 +1,61 @@
+@Component
+script BaramDialogDrag extends Component
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        local area = self.Entity:GetChildByName("DragArea")
+        if not isvalid(area) then return end
+        self._T.area = area
+        self._T.down = area:ConnectEvent(UITouchDownEvent, self.BeginDrag)
+        self._T.move = area:ConnectEvent(UITouchDragEvent, self.Drag)
+        self._T.up = area:ConnectEvent(UITouchUpEvent, function(event) self:EndDrag(event.TouchId) end)
+        self._T.finish = area:ConnectEvent(UITouchEndDragEvent, function(event) self:EndDrag(event.TouchId) end)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginDrag(UITouchDownEvent event)
+        if event.TouchId ~= -1 and event.TouchId < 1 then return end
+        local parent = self.Entity.Parent
+        if not isvalid(parent) or not isvalid(parent.UITransformComponent) then return end
+        self._T.touch = event.TouchId
+        self._T.point = _UILogic:ScreenToLocalUIPosition(event.TouchPoint, parent.UITransformComponent)
+        self._T.position = self.Entity.UITransformComponent.anchoredPosition
+        local scale = Vector2(1, 1)
+        local ancestor = parent
+        while isvalid(ancestor) and isvalid(ancestor.UITransformComponent) do
+            local value = ancestor.UITransformComponent.UIScale
+            scale = Vector2(scale.x * value.x, scale.y * value.y)
+            ancestor = ancestor.Parent
+        end
+        self._T.scale = scale
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Drag(UITouchDragEvent event)
+        if self._T.touch ~= event.TouchId then return end
+        local parent = self.Entity.Parent
+        if not isvalid(parent) then return end
+        local pointer = Vector2(math.max(8, math.min(_UILogic.ScreenWidth - 8, event.TouchPoint.x)), math.max(8, math.min(_UILogic.ScreenHeight - 8, event.TouchPoint.y)))
+        local point = _UILogic:ScreenToLocalUIPosition(pointer, parent.UITransformComponent)
+        local delta = point - self._T.point
+        local scale = self._T.scale
+        self.Entity.UITransformComponent.anchoredPosition = self._T.position + Vector2(delta.x / math.max(0.001, scale.x), delta.y / math.max(0.001, scale.y))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void EndDrag(integer touchId)
+        if self._T.touch ~= touchId then return end
+        self._T.touch = nil
+        log("[BaramDialogDrag] moved " .. self.Entity.Name)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        local area = self._T.area
+        if not isvalid(area) then return end
+        area:DisconnectEvent(UITouchDownEvent, self._T.down)
+        area:DisconnectEvent(UITouchDragEvent, self._T.move)
+        area:DisconnectEvent(UITouchUpEvent, self._T.up)
+        area:DisconnectEvent(UITouchEndDragEvent, self._T.finish)
+        self._T.touch = nil
+    end
+end
