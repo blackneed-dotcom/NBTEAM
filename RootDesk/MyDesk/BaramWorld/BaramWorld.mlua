@@ -1046,19 +1046,22 @@ script BaramWorld extends Logic
         log("[BaramCombat] kill kind=" .. tostring(kind) .. " exp=" .. tostring(r.state.exp))
     end
 
-    -- 체력과 마력이 저절로 차오른다. 여태 아이템(2200) 말고는 회복할 길이 아예
-    -- 없어서, 마법을 한 번 쓰면 다시 못 쓰는 상태였다. 3초마다 최대치의 4% 씩.
+    -- 재생력. 가만히 있으면 10초마다 최대치의 3% 씩 조금 찬다.
+    --
+    -- 원본의 실제 속도는 알 수가 없다. 타이머 스크립트(script_timer.txt)를 다 뒤져도
+    -- 회복이 없어서, 서버 실행파일 안에 박혀 있는 것이다. 그러니 이 숫자는 우리가 정한 값이다.
+    -- 빨리 채우는 건 재생력이 아니라 소비 아이템(동동주)과 공력증강이 맡는다.
     -- 바뀐 사람만 내보내므로 아무도 안 다치고 안 쓰면 아무것도 안 나간다.
     @ExecSpace("ServerOnly")
     method void Regenerate(number delta)
         self._T.regen = (self._T.regen or 0) - delta
         if self._T.regen > 0 then return end
-        self._T.regen = 3
+        self._T.regen = 10
         for userId, r in pairs(self._T.users) do
             if r.active and not r.tradeBusy then
                 local s = r.state
-                local hp = math.min(s.maxHp, s.hp + math.max(1, math.floor(s.maxHp / 25)))
-                local mp = math.min(s.maxMp, s.mp + math.max(1, math.floor(s.maxMp / 25)))
+                local hp = math.min(s.maxHp, s.hp + math.max(1, math.floor(s.maxHp * 3 / 100)))
+                local mp = math.min(s.maxMp, s.mp + math.max(1, math.floor(s.maxMp * 3 / 100)))
                 if hp ~= s.hp or mp ~= s.mp then
                     s.hp = hp
                     s.mp = mp

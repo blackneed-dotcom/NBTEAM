@@ -74,7 +74,8 @@
             "Id": "0819476b-6465-4133-b8ca-67e3edd3d3ff",
             "Components": [
               "MOD.Core.TransformComponent",
-              "MOD.Core.SpriteRendererComponent"
+              "MOD.Core.SpriteRendererComponent",
+              "MOD.Core.TouchReceiveComponent"
             ],
             "Properties": [],
             "Values": [

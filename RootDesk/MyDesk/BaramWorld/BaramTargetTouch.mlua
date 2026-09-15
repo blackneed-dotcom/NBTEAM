@@ -16,6 +16,8 @@ script BaramTargetTouch extends Component
         if _InputService:IsPointerOverUI() then return end
         if _BaramInput:Blocked() then return end
         if self.MapId == 0 then return end
+        -- 대상 고르는 중이면 흰 네모만 옮긴다. 서버엔 엔터 누를 때 한 번만 간다.
+        if _BaramInput:PointTarget(self.GridX, self.GridY) then return end
         _BaramScriptRuntime:SelectTarget(self.MapId, self.GridX, self.GridY)
     end
 end

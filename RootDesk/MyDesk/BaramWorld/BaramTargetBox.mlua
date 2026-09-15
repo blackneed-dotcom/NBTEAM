@@ -1,0 +1,309 @@
+-- 대상 선택 흰 네모.
+--
+-- 원작 규칙:
+--   * 처음엔 네모가 자기 자신한테 뜬다.
+--   * 대상을 골라서 쏘고 그 대상이 살아있으면, 다음에 외울 때 그 대상에 그대로 떠 있다.
+--   * 대상이 죽거나 사라졌으면 다시 자기 자신으로 돌아온다.
+--
+-- 그리는 방식은 체력바(BaramHealthBars)와 같다. 월드 좌표를 화면 좌표로 옮겨서
+-- 640x480 UI 판 위에 얹는다. 네모는 체력바 템플릿의 채움칸을 네 번 복제해서
+-- 위/아래/왼/오른 줄로 쓴다 — 새 그림 없이 되는 방법이다.
+@Logic
+script BaramTargetBox extends Logic
+    -- 네모 선 굵기(640x480 UI 점 기준).
+    property number Thickness = 2
+    -- 네모 크기(월드 단위). 원작 배우는 48픽셀 판에 그려지고 발밑이 기준점이다.
+    -- 0.24 = 한 칸(24픽셀). 그래서 가로 한 칸, 세로 두 칸이 그림 한 장 크기다.
+    property number BoxWidth = 0.24
+    property number BoxHeight = 0.48
+    -- 그림 100픽셀이 월드 1이다. 몹은 그림마다 크기가 달라서 재서 쓴다.
+    property number PixelsPerUnit = 100
+
+    -- 화면(원작 놀이판)에 실제로 보이는 자리인가. 그리는 쪽과 같은 테두리를 쓴다.
+    @ExecSpace("ClientOnly")
+    method boolean OnScreen(table item)
+        local r = self:RectOf(item)
+        return r.left >= 16 and r.left + r.width <= 422
+            and r.top <= -20 and r.top - r.height >= -372
+    end
+
+    @ExecSpace("ClientOnly")
+    method table Candidates()
+        -- 내 바람 맵에 살아있는 것들. 클라이언트가 이미 다 알고 있어서 서버에 안 묻는다.
+        -- 자기 자신이 늘 첫째다(거리 0).
+        local out = {}
+        local state = _BaramWorld.LocalState
+        if state == nil or state.map == nil then return out end
+        local player = _UserService.LocalPlayer
+        if not isvalid(player) or not isvalid(player.CurrentMap) then return out end
+        table.insert(out, {x = state.x, y = state.y, range = 0, isSelf = true})
+        local others = {}
+        for _, child in pairs(player.CurrentMap.Children) do
+            ---@type BaramCreature
+            local creature = child:GetComponent("script.BaramCreature")
+            if isvalid(creature) and creature.Hp > 0 and creature.MapId == state.map then
+                local item = {
+                    x = creature.GridX, y = creature.GridY,
+                    creature = creature,
+                    key = tostring(creature.Entity.Id),
+                    range = math.max(math.abs(creature.GridX - state.x), math.abs(creature.GridY - state.y)),
+                }
+                -- 화면 밖 몹은 고를 수 없다. 원작도 보이는 것만 잡는다.
+                if self:OnScreen(item) then table.insert(others, item) end
+            end
+        end
+        table.sort(others, function(a, b)
+            if a.range ~= b.range then return a.range < b.range end
+            if a.y ~= b.y then return a.y < b.y end
+            return a.x < b.x
+        end)
+        for _, item in ipairs(others) do table.insert(out, item) end
+        return out
+    end
+
+    @ExecSpace("ClientOnly")
+    method boolean Begin()
+        local list = self:Candidates()
+        if #list == 0 then return false end
+        self._T.list = list
+        -- 지난번 대상이 아직 살아 있으면 거기서 시작한다. 없으면 자기 자신.
+        self._T.index = 1
+        local last = self._T.lastKey
+        if last ~= nil then
+            for index, item in ipairs(list) do
+                if item.key == last then self._T.index = index break end
+            end
+        end
+        self:Build()
+        self:Refresh()
+        return true
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Step(integer direction)
+        -- 방향키는 대상 사이를 옮긴다. 가까운 순서대로 돌린다(자기 자신 포함).
+        local list = self._T.list
+        if list == nil or #list == 0 then return end
+        local step = direction == 1 and 1 or -1
+        self._T.index = (self._T.index - 1 + step) % #list + 1
+        self:Refresh()
+    end
+
+    -- 마우스로 누른 칸이 후보에 있으면 거기로 옮긴다.
+    @ExecSpace("ClientOnly")
+    method boolean PointAt(integer x, integer y)
+        local list = self._T.list
+        if list == nil then return false end
+        for index, item in ipairs(list) do
+            if item.x == x and item.y == y then
+                self._T.index = index
+                self:Refresh()
+                return true
+            end
+        end
+        return false
+    end
+
+    @ExecSpace("ClientOnly")
+    method table Current()
+        local list = self._T.list
+        if list == nil or self._T.index == nil then return nil end
+        return list[self._T.index]
+    end
+
+    -- 외우고 나면 고른 대상을 기억해 둔다. 자기 자신이었으면 기억을 지운다.
+    @ExecSpace("ClientOnly")
+    method void Remember()
+        local item = self:Current()
+        if item == nil or item.isSelf then self._T.lastKey = nil
+        else self._T.lastKey = item.key end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Finish()
+        self._T.list = nil
+        self._T.index = nil
+        if isvalid(self._T.box) then self._T.box.Enable = false end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Build()
+        if isvalid(self._T.box) then return end
+        local canvas = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ActorLabels")
+        if not isvalid(canvas) then return end
+        local template = canvas:GetChildByName("HealthTemplate")
+        if not isvalid(template) then return end
+        local box = _SpawnService:SpawnByEntity(template, "TargetBox", Vector3.zero, canvas, true)
+        if not isvalid(box) then return end
+        local background = box:GetChildByName("Background")
+        if isvalid(background) then background.Enable = false end
+        local fill = box:GetChildByName("Fill")
+        if not isvalid(fill) then box:Destroy() return end
+        local lines = {fill}
+        for i = 2, 4 do
+            local line = _SpawnService:SpawnByEntity(fill, "Edge" .. tostring(i), Vector3.zero, box, true)
+            if isvalid(line) then table.insert(lines, line) end
+        end
+        for _, line in ipairs(lines) do
+            line.Enable = true
+            local atlas = line:GetChildByName("Atlas")
+            if isvalid(atlas) then atlas.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 1) end
+        end
+        self._T.box = box
+        self._T.lines = lines
+    end
+
+    -- 네모를 씌울 그림의 "발밑" 월드 위치. 격자가 아니라 부드럽게 따라가는 그림을 본다.
+    -- 체력바가 쓰는 기준과 같다(BaramHealthBars.Position).
+    @ExecSpace("ClientOnly")
+    method Vector3 SpotOf(table item)
+        if item.isSelf then
+            local player = _UserService.LocalPlayer
+            if isvalid(player) then
+                ---@type BaramPlayerVisual
+                local visual = player:GetComponent("script.BaramPlayerVisual")
+                if isvalid(visual) and isvalid(visual._T.visual) then
+                    return visual._T.visual.TransformComponent.WorldPosition
+                end
+            end
+        elseif isvalid(item.creature) and isvalid(item.creature._T.sprite) then
+            -- 몹 그림은 제 자리에서 한 칸 올려 그린다. 그 몫을 빼야 발밑이 나온다.
+            return item.creature._T.sprite.TransformComponent.WorldPosition
+                - (item.creature._T.spriteOffset or Vector3.zero)
+        end
+        return _BaramWorldData:Position(item.x, item.y)
+    end
+
+    -- 그림의 실제 픽셀 크기. 메이플월드가 어떤 이름으로 알려주는지 확실치 않아서
+    -- 될 만한 걸 차례로 넣어보고, 되는 걸 찾으면 그걸로 굳힌다. 하나도 안 되면
+    -- 기본값(가로 한 칸, 세로 두 칸)을 쓴다. 어느 쪽이었는지는 한 번만 기록에 남긴다.
+    @ExecSpace("ClientOnly")
+    method Vector2 Measure(string ruid)
+        if ruid == nil or ruid == "" then return nil end
+        if self._T.sizes == nil then self._T.sizes = {} end
+        local cached = self._T.sizes[ruid]
+        if cached ~= nil then
+            if cached == false then return nil end
+            return cached
+        end
+        local ok, sprite = pcall(function() return _ResourceService:LoadSpriteAndWait(ruid) end)
+        if not ok or sprite == nil then
+            self._T.sizes[ruid] = false
+            return nil
+        end
+        local readers = {
+            function() return sprite.Width, sprite.Height end,
+            function() return sprite.width, sprite.height end,
+            function() return sprite.SpriteSize.x, sprite.SpriteSize.y end,
+            function() return sprite.Size.x, sprite.Size.y end,
+            function() return sprite.Rect.width, sprite.Rect.height end,
+        }
+        for index, reader in ipairs(readers) do
+            local fine, w, h = pcall(reader)
+            if fine and type(w) == "number" and type(h) == "number" and w > 0 and h > 0 then
+                if not self._T.told then
+                    self._T.told = true
+                    log("[BaramTargetBox] 그림 크기 읽는 법 " .. tostring(index) .. " 번이 통한다: "
+                        .. tostring(w) .. "x" .. tostring(h))
+                end
+                local size = Vector2(w, h)
+                self._T.sizes[ruid] = size
+                return size
+            end
+        end
+        if not self._T.told then
+            self._T.told = true
+            log("[BaramTargetBox] 그림 크기를 못 읽는다. 기본 크기를 쓴다.")
+        end
+        self._T.sizes[ruid] = false
+        return nil
+    end
+
+    -- 네모가 감쌀 화면 자리. 몹은 제 그림 크기에 맞추고, 못 재면 기본 크기로 간다.
+    @ExecSpace("ClientOnly")
+    method table RectOf(table item)
+        if not item.isSelf and isvalid(item.creature) and isvalid(item.creature._T.sprite) then
+            local ruid = item.creature._T.frame
+            local size = self:Measure(ruid)
+            if size ~= nil then
+                local center = item.creature._T.sprite.TransformComponent.WorldPosition
+                local hw = size.x / self.PixelsPerUnit / 2
+                local hh = size.y / self.PixelsPerUnit / 2
+                return self:Project(center.x - hw, center.y - hh, center.x + hw, center.y + hh)
+            end
+        end
+        local base = self:SpotOf(item)
+        local half = self.BoxWidth / 2
+        return self:Project(base.x - half, base.y, base.x + half, base.y + self.BoxHeight)
+    end
+
+    @ExecSpace("ClientOnly")
+    method table Project(number x1, number y1, number x2, number y2)
+        local a = _UILogic:WorldToScreenPosition(Vector2(x1, y1))
+        local b = _UILogic:WorldToScreenPosition(Vector2(x2, y2))
+        local left = math.min(a.x, b.x) * 640 / _UILogic.ScreenWidth
+        local width = math.max(2, math.abs(b.x - a.x) * 640 / _UILogic.ScreenWidth)
+        local top = (math.max(a.y, b.y) / _UILogic.ScreenHeight - 1) * 480
+        local height = math.max(2, math.abs(b.y - a.y) * 480 / _UILogic.ScreenHeight)
+        return {left = left, top = top, width = width, height = height}
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Refresh()
+        local box = self._T.box
+        local lines = self._T.lines
+        local item = self:Current()
+        if not isvalid(box) or lines == nil or #lines < 4 or item == nil then
+            if isvalid(box) then box.Enable = false end
+            return
+        end
+        local r = self:RectOf(item)
+        local width, height, left, top = r.width, r.height, r.left, r.top
+        box.UITransformComponent.RectSize = Vector2(width, height)
+        box.UITransformComponent.anchoredPosition = Vector2(math.floor(left), math.floor(top))
+        local t = math.max(1, self.Thickness)
+        local edges = {
+            {0, 0, width, t},                 -- 위
+            {0, -(height - t), width, t},     -- 아래
+            {0, 0, t, height},                -- 왼
+            {width - t, 0, t, height},        -- 오른
+        }
+        for i, line in ipairs(lines) do
+            local e = edges[i]
+            line.UITransformComponent.anchoredPosition = Vector2(e[1], e[2])
+            line.UITransformComponent.UIScale = Vector3(e[3], e[4], 1)
+        end
+        -- 화면 밖으로 나가면 숨긴다. 체력바와 같은 테두리를 쓴다.
+        box.Enable = left >= 16 and left + width <= 422 and top <= -20 and top - height >= -372
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        if self._T.list == nil then return end
+        local item = self:Current()
+        if item == nil then
+            _BaramInput:CancelTarget()
+            return
+        end
+        if item.isSelf then
+            local state = _BaramWorld.LocalState
+            if state ~= nil then item.x = state.x item.y = state.y end
+        else
+            -- 고르는 중에 대상이 죽으면 자기 자신으로 돌아온다. 원작과 같다.
+            if not isvalid(item.creature) or item.creature.Hp <= 0 then
+                self._T.lastKey = nil
+                self._T.index = 1
+                self:Refresh()
+                return
+            end
+            item.x = item.creature.GridX
+            item.y = item.creature.GridY
+            -- 고른 몹이 화면 밖으로 걸어 나가면 네모가 사라지는 대신 자기 자신으로 돌아온다.
+            if not self:OnScreen(item) then
+                self._T.lastKey = nil
+                self._T.index = 1
+            end
+        end
+        self:Refresh()
+    end
+end
