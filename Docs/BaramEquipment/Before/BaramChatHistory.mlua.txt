@@ -1,0 +1,259 @@
+@Component
+script BaramChatHistory extends Component
+    -- Original CHATBACK rows with an independent Baram text entry field.
+    property Entity InputPanel = "d7a5a326-6213-4e9d-a5a9-ba7ccc3f4863"
+    property Entity InputHint = "7167aa09-90fe-429c-9c3b-18f984296d09"
+    property TextGUIRendererInputComponent InputField = "a1681a6c-9872-4bdd-a295-0eecab1cb7bd"
+    property string CommandPrompt = ""
+    property string InputPurpose = ""
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- Connect the custom input while preserving the five existing history rows.
+        self._T.messages = {}
+        self._T.rows = {}
+        self._T.focusPending = false
+        self._T.closePending = false
+        self._T.focusRequested = false
+        self._T.mapId = ""
+        local root = _EntityService:GetEntityByPath("/ui/BaramHUD/Frame/ChatHistory")
+        if not isvalid(root) or not isvalid(self.InputField) then
+            log_error("[BaramChat] missing history or input binding")
+            return
+        end
+        for i = 1, 5 do
+            self._T.rows[i] = root:GetChildByName("Line" .. tostring(i)):GetChildByName("Message")
+        end
+        self.InputPanel.Enable = false
+        self.InputHint.Enable = true
+        self.InputField.Text = ""
+        self.CommandPrompt = ""
+        self.InputPurpose = ""
+        self._T.defaultPlaceholder = self.InputField.PlaceHolder
+        self._T.defaultHint = self.InputHint.TextGUIRendererComponent.Text
+        self._T.defaultHintColor = self.InputHint.TextGUIRendererComponent.FontColor
+        self._T.defaultHintSize = self.InputHint.TextGUIRendererComponent.FontSize
+        _BaramChatRelay.IsEditing = false
+        self._T.keySubscription = _InputService:ConnectEvent(KeyDownEvent, function(evt)
+            if evt.key == KeyboardKey.Return or evt.key == KeyboardKey.KeypadEnter then
+                if not self._T.reopenBlocked and not _BaramChatRelay:IsInputBlocked() then self:OpenInput() end
+            elseif evt.key == KeyboardKey.Escape and _BaramChatRelay.IsEditing then
+                self:CloseInput()
+            end
+        end)
+        self._T.submitSubscription = self.InputField.Entity:ConnectEvent(TextInputSubmitEvent, function(evt)
+            self:SubmitMessage(evt.Text)
+        end)
+        self._T.endSubscription = self.InputField.Entity:ConnectEvent(TextInputEndEditEvent, function(evt)
+            -- EndEdit can precede Submit; defer cancellation to the next frame.
+            if _BaramChatRelay.IsEditing and not self._T.openingKey then self._T.closePending = true end
+        end)
+        log("[BaramChat] custom input ready: Enter=open/send, Escape=cancel")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SetCommandPrompt(string prompt)
+        -- Native command questions use the chat input line, without chat focus or network transmission.
+        self.CommandPrompt = prompt
+        if not isvalid(self.InputHint) then return end
+        local text = self.InputHint.TextGUIRendererComponent
+        text.Text = prompt ~= "" and prompt or (self._T.defaultHint or "Enter 키를 눌러 대화하세요")
+        if prompt ~= "" and isvalid(self.InputField) then
+            local speech = self.InputField.Entity.TextGUIRendererComponent
+            text.FontSize = speech.FontSize
+            text.FontColor = Color.white
+        else
+            text.FontSize = self._T.defaultHintSize or text.FontSize
+            text.FontColor = self._T.defaultHintColor or text.FontColor
+        end
+        self.InputHint.Enable = not _BaramChatRelay.IsEditing
+        if prompt ~= "" then log("[BaramCommand] prompt=" .. prompt) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OpenInput()
+        -- Focus immediately; ignore only the opening key's own submit event.
+        if not isvalid(self.InputField) or _BaramInput:Blocked() then return end
+        _BaramChatRelay.IsEditing = true
+        self._T.closePending = false
+        self._T.focusPending = true
+        self._T.focusRequested = false
+        self.InputPanel.Enable = true
+        self.InputHint.Enable = false
+        self.InputField.Text = ""
+        self._T.openingKey = true
+        self.InputField:ActivateInputField()
+        self._T.focusRequested = true
+        log("[BaramChat] input opened")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OpenGroupInput()
+        -- Original G command accepts a name; entering one's own name leaves the group.
+        if not _BaramEntryFlow.InWorld or _BaramChatRelay:IsInputBlocked() then return end
+        self:OpenInput()
+        if not _BaramChatRelay.IsEditing then return end
+        self.InputPurpose = "group"
+        self.InputField.PlaceHolder = "그룹할 사람 이름"
+        _BaramInput:Notice("그룹할 사람의 이름을 입력하세요. 자기 이름을 입력하면 탈퇴합니다.")
+        log("[BaramParty] name entry opened")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OpenChannel(string channel)
+        -- Original STR.RES: quote=ordinary, double quote=whisper, exclamation=shout.
+        self:OpenInput()
+        if not _BaramChatRelay.IsEditing then return end
+        self.InputPurpose = channel
+        if channel == "whisper" then self.InputField.PlaceHolder = "귓속말할 사람이름 > 내용"
+        elseif channel == "shout" then self.InputField.PlaceHolder = "외치기"
+        elseif channel == "clan" then self.InputField.PlaceHolder = "문파말" end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void CloseInput()
+        -- Disabling the input releases focus; suppress the closing key briefly.
+        self.InputPurpose = ""
+        if isvalid(self.InputField) then self.InputField.PlaceHolder = self._T.defaultPlaceholder or "" end
+        _BaramChatRelay.IsEditing = false
+        _BaramChatRelay.InputBlockSeconds = 0
+        self._T.reopenBlocked = true
+        self._T.openingKey = false
+        self._T.closePending = false
+        self._T.focusPending = false
+        self._T.focusRequested = false
+        if isvalid(self.InputPanel) then self.InputPanel.Enable = false end
+        if isvalid(self.InputHint) then self.InputHint.Enable = true end
+        if isvalid(self.InputField) then self.InputField.Text = "" end
+        self:SetCommandPrompt(self.CommandPrompt)
+        log("[BaramChat] input closed")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void SubmitMessage(string message)
+        -- Send once through the server, without a duplicate local echo.
+        if not _BaramChatRelay.IsEditing or self._T.openingKey then return end
+        local text = string.gsub(message or "", "%c", " ")
+        text = string.match(text, "^%s*(.-)%s*$") or ""
+        local purpose = self.InputPurpose
+        self:CloseInput()
+        if text == "" then return end
+        if purpose == "group" then
+            _BaramParty:RequestName(text)
+            log("[BaramParty] name entry submitted")
+            return
+        end
+        log("[BaramChat] submit bytes=" .. tostring(#text))
+        if purpose == "whisper" then text = "/귓속말 " .. text
+        elseif purpose == "shout" then text = "/외치기 " .. text
+        elseif purpose == "clan" then text = "/문파말 " .. text end
+        _BaramChatRelay:RequestMessage(text)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Release-key guards prevent duplicate open/send without a fixed delay.
+        if self._T.reopenBlocked or self._T.openingKey then
+            local openingHeld = _InputService:IsKeyPressed(KeyboardKey.Return) or _InputService:IsKeyPressed(KeyboardKey.KeypadEnter)
+            if not openingHeld then self._T.reopenBlocked = false end
+            if self._T.openingKey and not openingHeld then
+                local channelHeld = _InputService:IsKeyPressed(KeyboardKey.Quote) or _InputService:IsKeyPressed(KeyboardKey.DoubleQuote) or _InputService:IsKeyPressed(KeyboardKey.Exclaim) or _InputService:IsKeyPressed(KeyboardKey.Alpha1)
+                if not channelHeld then self._T.openingKey = false end
+            end
+        end
+        if self._T.dirty then self._T.dirty = false self:RefreshLines() end
+        -- Resolve delayed input focus and clear local history when changing maps.
+        local player = _UserService.LocalPlayer
+        if isvalid(player) and isvalid(player.CurrentMap) then
+            local mapId = player.CurrentMap.Id
+            if self._T.mapId ~= mapId then
+                if self._T.mapId ~= "" then
+                    self:CloseInput()
+                    self:ClearMessages()
+                end
+                self._T.mapId = mapId
+            end
+        end
+        if self._T.closePending then self:CloseInput() end
+        if self._T.focusPending and isvalid(self.InputField) then
+            if self.InputField.IsFocused then
+                self._T.focusPending = false
+                log("[BaramChat] input focused")
+            elseif not self._T.openingKey then
+                self.InputField:ActivateInputField()
+                self._T.focusRequested = true
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void AppendMessage(string senderName, string message)
+        self:AppendColored(senderName, message, false)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void AppendColored(string senderName, string message, boolean shout)
+        -- Wrap Unicode text to fit the original fixed-width rows.
+        if message == nil or message == "" then return end
+        if self._T.messages == nil then return end
+        local sender = senderName or ""
+        local text = message
+        if sender ~= "" then text = sender .. ": " .. message end
+        local first = self._T.rows[1]
+        if not isvalid(first) then return end
+        -- Binary-search full lines: preserve font kerning without measuring every growing prefix.
+        local chars = {}
+        for _, code in utf8.codes(text) do table.insert(chars, utf8.char(code)) end
+        local start = 1
+        while start <= #chars do
+            local low = start
+            local high = #chars
+            local finish = start
+            while low <= high do
+                local mid = math.floor((low + high) / 2)
+                local candidate = table.concat(chars, "", start, mid)
+                if first.TextGUIRendererComponent:GetPreferredWidth(candidate) <= 404 then
+                    finish = mid low = mid + 1
+                else high = mid - 1 end
+            end
+            table.insert(self._T.messages, {text = table.concat(chars, "", start, finish), shout = shout})
+            start = finish + 1
+        end
+        while #self._T.messages > 5 do table.remove(self._T.messages, 1) end
+        self:RefreshLines()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ClearMessages()
+        -- Reset session-only history.
+        self._T.messages = {}
+        self:RefreshLines()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void RefreshLines()
+        -- Reuse the five existing white text entities.
+        if self._T.rows == nil then return end
+        for i = 1, 5 do
+            local row = self._T.rows[i]
+            if isvalid(row) then
+                local entry = self._T.messages[i]
+                local text = entry ~= nil and entry.text or ""
+                local color = entry ~= nil and entry.shout and Color(1,1,0,1) or Color.black
+                local renderer = row.TextGUIRendererComponent
+                if renderer.Text ~= text then renderer.Text = text end
+                if renderer.FontColor ~= color then renderer.FontColor = color end
+            end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Release subscriptions and the gameplay input lock when the UI unloads.
+        if self._T.keySubscription ~= nil then _InputService:DisconnectEvent(KeyDownEvent, self._T.keySubscription) end
+        if isvalid(self.InputField) then
+            if self._T.submitSubscription ~= nil then self.InputField.Entity:DisconnectEvent(TextInputSubmitEvent, self._T.submitSubscription) end
+            if self._T.endSubscription ~= nil then self.InputField.Entity:DisconnectEvent(TextInputEndEditEvent, self._T.endSubscription) end
+        end
+        self:CloseInput()
+    end
+end

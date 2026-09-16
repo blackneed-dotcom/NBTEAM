@@ -1,0 +1,154 @@
+-- Source: efx.dat/EFFECT.TBL and Docs/BaramResourcePack/resource-map.json (group FqXhK).
+-- Each row preserves RUID, frame duration and EPF crop offset in world units.
+@Logic
+script BaramSpellEffect extends Logic
+    property table Sequences = {
+        [6] = {
+            {"54e1ba6adeb040378ba9fd6e3a65ee0e", 0.1, -0.09, 0.35},
+            {"7f40c8dea91247c5a4834febabd2c02c", 0.1, 0.005, 0.275},
+            {"de2af746072d4e4d9bff922ad0bde68c", 0.1, 0, 0.18},
+            {"94183ef99c49477c9076bac15f62e262", 0.1, 0.02, 0.125},
+            {"eeefbcfc85cf4cae9980ebe64825a45c", 0.1, 0.045, 0.09},
+            {"2b4b593f471c4fa9863c3d19d72947c3", 0.1, 0.085, 0.225},
+            {"2f66a9036a8e4b1285f8100bbef4833f", 0.1, 0.04, 0.215},
+        },
+        [9] = {
+            {"4f32dafd42624fb5aa2687dcdcefe192", 0.1, 0.17, 0.135},
+            {"b2967fd294ae4861bed7ec820f2dcfda", 0.1, 0.06, 0.06},
+            {"3ba9f0ca1c3b41c190d33577faa753b4", 0.1, -0.09, 0.15},
+            {"2e79e28c231d4ceea547b322a98b94cd", 0.1, 0.005, 0.25},
+            {"41fe07cd7ae848e18f2c715e2c95e663", 0.1, 0.005, 0.18},
+            {"bc83c593fa0647eb879389fe08803b1c", 0.1, 0.005, 0.205},
+            {"d5be749deaf1447cb4ec2ea7103bfb52", 0.2, 0.005, 0.205},
+            {"5f01eedfe4aa415794ae1ced65edcb9d", 0.1, 0.01, 0.205},
+        },
+        [11] = {
+            {"bb07c5d0fc9740728d02c2911d6f474b", 0.1, 0.115, 0.24},
+            {"68d23036a0d84d9491bd133518f46173", 0.1, 0.18, 0.205},
+            {"b6a83a7335384f80a576e1ae1ee3b65e", 0.1, 0.1, 0.205},
+            {"96502d4c8db14726a45a3f47de5259c1", 0.1, -0.045, 0.115},
+            {"4090f489473843ad9ab734fd5b239c57", 0.1, -0.015, 0.155},
+            {"46e30d8d6c054ffaa408e3ad802185c9", 0.1, -0.01, 0.165},
+            {"650e0c9bac404007a86e1f31c17dc970", 0.1, -0.03, 0.16},
+            {"6d4d6f1d210f4f4b9f487e2adba52f78", 0.1, -0.025, 0.155},
+            {"86dd41707d9843d0a1d7c59c7cd2f77d", 0.1, -0.025, 0.155},
+        },
+        [67] = {
+            {"c844dd85b6434cf3813c1ad3091ec2f6", 0.1, 0.215, 0.44},
+            {"995474dc246241ff86a00bbba5726a05", 0.1, 0.05, 0.33},
+            {"d61673ea970045c2baa879e01496982e", 0.1, -0.085, 0.225},
+            {"a73c59761bae41cc98c876a2e57e2b34", 0.1, 0.155, 0.31},
+            {"03c01b16db1f46b79e54d3b0b458ba31", 0.1, -0.01, 0.2},
+            {"f3e4a8d030c6453ba55c09e043f76241", 0.1, 0.135, 0.17},
+            {"d3c2a7bdd67440b089abbafcbf73d658", 0.1, 0.01, 0.11},
+            {"2058075b93b041b0a4513202c784ff3a", 0.1, -0.125, 0.005},
+            {"c4c618958a8b4bf98cd119778a6aacff", 0.15, 0.01, 0.185},
+            {"b5147ed9a7cd4b888e79b79e6c6fa5f0", 0.15, 0.015, 0.195},
+            {"a640f6d95938464aa636d2627694ca05", 0.15, 0.015, 0.195},
+        },
+        [86] = {
+            {"f9ead140f0f642f28a29a6348b944516", 0.12, 0.005, 0.175},
+            {"5c50e196a62d4682a103a06c243cc581", 0.12, 0.005, 0.18},
+            {"23b4a9a730c8498f8d614a5d08dce889", 0.12, 0.005, 0.18},
+            {"d6cfc616bbba4bce9e32c78fb70eacc4", 0.12, 0.005, 0.185},
+            {"8cf6e8ec594b44dd86bf37fd7c05ddf0", 0.12, 0.005, 0.185},
+            {"3b6b62b7ad0949f89ec4acf8311b2f0d", 0.12, 0.005, 0.185},
+            {"325c3c33247e469bba21dcdd31f837cc", 0.6, 0.005, 0.185},
+            {"a5bba7cb74bf467c801fd78c086d5aeb", 0.12, 0.005, 0.185},
+            {"5f47f7eb177341fbb1341e0aa85f3b10", 0.12, 0.005, 0.185},
+            {"6bf220f2315f497599775945413cb9c2", 0.12, 0.005, 0.185},
+            {"5a7582f97387463ab00d5009eaf2ee56", 0.12, 0.005, 0.185},
+            {"269af3a5af574ebf9d25c0628d3eb1ae", 0.12, 0.005, 0.185},
+            {"c83c87a56e004f259b653921af22d17a", 0.12, 0.005, 0.185},
+            {"01cbd4411967462e8e761fba7bc0bf68", 0.12, 0.005, 0.185},
+            {"288a15a702d347c5ab5318733e165b3c", 0.12, 0.005, 0.185},
+        },
+    }
+
+    @ExecSpace("Client")
+    method void Show(integer effectId, integer mapId, integer x, integer y, string entityId)
+        -- Spawn a local sprite using the existing map chunk template, without its children.
+        local state = _BaramWorld.LocalState
+        local player = _UserService.LocalPlayer
+        local frames = self.Sequences[effectId]
+        if frames == nil or state == nil or state.map ~= mapId or not isvalid(player) then return end
+        local map = player.CurrentMap
+        if not isvalid(map) then return end
+        local template = map:GetChildByName("Chunk00")
+        if not isvalid(template) then return end
+        if self._T.effects == nil then self._T.effects = {} end
+        if #self._T.effects >= 64 then return end
+        self._T.serial = (self._T.serial or 0) + 1
+        local entity = _SpawnService:SpawnByEntity(template, "BaramSpellFx_" .. tostring(self._T.serial), _BaramWorldData:Position(x, y), map, false)
+        if not isvalid(entity) then return end
+        local sprite = entity.SpriteRendererComponent
+        sprite.Enable = true
+        sprite.Color = Color.white
+        sprite.SortingLayer = "MapLayer0"
+        sprite.OrderInLayer = 20000
+        sprite.FlipX = false
+        sprite.FlipY = false
+        entity.TransformComponent.Scale = Vector3.one
+        entity.Enable = true
+        entity.Visible = true
+        local target = nil
+        for _, child in ipairs(map.Children:ToTable()) do
+            if tostring(child.Id) == entityId then target = child break end
+        end
+        local item = {entity = entity, target = target, mapId = mapId, effectId = effectId,
+            frames = frames, index = 1, remaining = frames[1][2], pos = _BaramWorldData:Position(x, y)}
+        table.insert(self._T.effects, item)
+        self:DrawFrame(item)
+        log("[BaramSpellEffect] start effect=" .. tostring(effectId) .. " frames=" .. tostring(#frames) .. " first=" .. frames[1][1])
+    end
+
+    @ExecSpace("ClientOnly")
+    method void DrawFrame(table item)
+        -- Follow the visible actor and apply the source crop offset relative to its feet.
+        if isvalid(item.target) then
+            ---@type BaramCreature
+            local creature = item.target:GetComponent("script.BaramCreature")
+            ---@type BaramPlayerVisual
+            local visual = item.target:GetComponent("script.BaramPlayerVisual")
+            if isvalid(creature) and isvalid(creature._T.sprite) then
+                item.pos = creature._T.sprite.TransformComponent.WorldPosition - (creature._T.spriteOffset or Vector3.zero)
+            elseif isvalid(visual) and isvalid(visual._T.visual) then
+                item.pos = visual._T.visual.TransformComponent.WorldPosition
+            end
+        end
+        local frame = item.frames[item.index]
+        item.entity.SpriteRendererComponent.SpriteRUID = frame[1]
+        item.entity.TransformComponent.Position = item.pos + Vector3(frame[3], frame[4], 0)
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Advance by recorded milliseconds, including the long hold in effect 86.
+        local effects = self._T.effects
+        if effects == nil then return end
+        local state = _BaramWorld.LocalState
+        for i = #effects, 1, -1 do
+            local item = effects[i]
+            item.remaining = item.remaining - delta
+            while item.remaining <= 0 and item.index <= #item.frames do
+                item.index = item.index + 1
+                if item.index <= #item.frames then item.remaining = item.remaining + item.frames[item.index][2] end
+            end
+            if not _BaramEntryFlow.InWorld or state == nil or state.map ~= item.mapId
+                or not isvalid(item.entity) or item.index > #item.frames then
+                if isvalid(item.entity) then item.entity:Destroy() end
+                table.remove(effects, i)
+                log("[BaramSpellEffect] end effect=" .. tostring(item.effectId))
+            else self:DrawFrame(item) end
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Dispose local effects before the next play session.
+        for _, item in ipairs(self._T.effects or {}) do
+            if isvalid(item.entity) then item.entity:Destroy() end
+        end
+        self._T.effects = nil
+    end
+end

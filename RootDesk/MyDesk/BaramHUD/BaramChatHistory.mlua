@@ -110,6 +110,16 @@ script BaramChatHistory extends Component
     end
 
     @ExecSpace("ClientOnly")
+    method void OpenItemName()
+        -- Accept Korean through the existing IME-capable text input for NPC naming only.
+        self:OpenInput()
+        if not _BaramChatRelay.IsEditing then return end
+        self.InputPurpose = "itemRename"
+        self.InputField.PlaceHolder = "장비 이름 (1~12자)"
+        _BaramInput:Notice("장비의 새 이름을 입력하세요. Enter 확정 / Escape 취소")
+    end
+
+    @ExecSpace("ClientOnly")
     method void CloseInput()
         -- Disabling the input releases focus; suppress the closing key briefly.
         self.InputPurpose = ""
@@ -137,6 +147,7 @@ script BaramChatHistory extends Component
         local purpose = self.InputPurpose
         self:CloseInput()
         if text == "" then return end
+        if purpose == "itemRename" then _BaramNpcServices:SubmitName(text) return end
         if purpose == "group" then
             _BaramParty:RequestName(text)
             log("[BaramParty] name entry submitted")

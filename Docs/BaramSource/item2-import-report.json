@@ -1,0 +1,39 @@
+{
+  "source": "item2_db.txt",
+  "records": 154,
+  "icons": 152,
+  "warnings": [
+    {
+      "id": "25",
+      "line": 14,
+      "reason": "Attack absent in source"
+    },
+    {
+      "id": 55,
+      "reason": "No resource for image/dye",
+      "imageId": 2581,
+      "dye": 0
+    },
+    {
+      "id": 56,
+      "reason": "No resource for image/dye",
+      "imageId": 2580,
+      "dye": 0
+    },
+    {
+      "id": "1438",
+      "line": 124,
+      "reason": "Extra empty description column normalized"
+    },
+    {
+      "id": "1639",
+      "line": 157,
+      "reason": "Extra empty description column normalized"
+    },
+    {
+      "id": "1640",
+      "line": 158,
+      "reason": "Extra empty description column normalized"
+    }
+  ]
+}

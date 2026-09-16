@@ -1,0 +1,1500 @@
+{
+  "jobs": [
+    {
+      "name": "BaramWeaponHead_1_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_15.png",
+      "contentLength": 298,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 115; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_16",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_16.png",
+      "contentLength": 287,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 116; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_21.png",
+      "contentLength": 312,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 121; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_44",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_44.png",
+      "contentLength": 207,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 144; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_47.png",
+      "contentLength": 298,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 147; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_48",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_48.png",
+      "contentLength": 316,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 148; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_49.png",
+      "contentLength": 316,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 149; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_1_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_1_51.png",
+      "contentLength": 311,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 151; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_2_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_2_15.png",
+      "contentLength": 326,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 215; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_2_16",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_2_16.png",
+      "contentLength": 312,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 216; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_2_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_2_21.png",
+      "contentLength": 327,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 221; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_2_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_2_47.png",
+      "contentLength": 327,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 247; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_2_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_2_49.png",
+      "contentLength": 362,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 249; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_2_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_2_51.png",
+      "contentLength": 325,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 251; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_3_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_3_15.png",
+      "contentLength": 304,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 315; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_3_16",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_3_16.png",
+      "contentLength": 289,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 316; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_3_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_3_21.png",
+      "contentLength": 299,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 321; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_3_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_3_47.png",
+      "contentLength": 302,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 347; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_3_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_3_49.png",
+      "contentLength": 328,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 349; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_3_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_3_51.png",
+      "contentLength": 301,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 351; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_15.png",
+      "contentLength": 330,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 415; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_16",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_16.png",
+      "contentLength": 331,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 416; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_21.png",
+      "contentLength": 326,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 421; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_22",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_22.png",
+      "contentLength": 330,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 422; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_23",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_23.png",
+      "contentLength": 326,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 423; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_42",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_42.png",
+      "contentLength": 324,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 442; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_46",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_46.png",
+      "contentLength": 307,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 446; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_47.png",
+      "contentLength": 305,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 447; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_48",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_48.png",
+      "contentLength": 312,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 448; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_49.png",
+      "contentLength": 305,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 449; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_50",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_50.png",
+      "contentLength": 327,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 450; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_4_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_4_51.png",
+      "contentLength": 336,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 451; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_15.png",
+      "contentLength": 327,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 515; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_21.png",
+      "contentLength": 335,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 521; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_46",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_46.png",
+      "contentLength": 325,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 546; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_47.png",
+      "contentLength": 326,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 547; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_48",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_48.png",
+      "contentLength": 365,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 548; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_49.png",
+      "contentLength": 363,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 549; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_50",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_50.png",
+      "contentLength": 321,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 550; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_5_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_5_51.png",
+      "contentLength": 330,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 551; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_15.png",
+      "contentLength": 344,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 615; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_18",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_18.png",
+      "contentLength": 354,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 618; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_19",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_19.png",
+      "contentLength": 353,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 619; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_21.png",
+      "contentLength": 343,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 621; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_40",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_40.png",
+      "contentLength": 351,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 640; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_46",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_46.png",
+      "contentLength": 344,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 646; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_47.png",
+      "contentLength": 345,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 647; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_49.png",
+      "contentLength": 348,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 649; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_50",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_50.png",
+      "contentLength": 344,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 650; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_6_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_6_51.png",
+      "contentLength": 341,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 651; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_15.png",
+      "contentLength": 405,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 715; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_16",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_16.png",
+      "contentLength": 415,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 716; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_19",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_19.png",
+      "contentLength": 355,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 719; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_21.png",
+      "contentLength": 411,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 721; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_22",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_22.png",
+      "contentLength": 425,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 722; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_46",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_46.png",
+      "contentLength": 333,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 746; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_47.png",
+      "contentLength": 337,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 747; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_49.png",
+      "contentLength": 354,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 749; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_50",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_50.png",
+      "contentLength": 406,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 750; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_7_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_7_51.png",
+      "contentLength": 422,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 751; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_15.png",
+      "contentLength": 342,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 815; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_18",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_18.png",
+      "contentLength": 355,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 818; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_21.png",
+      "contentLength": 350,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 821; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_22",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_22.png",
+      "contentLength": 348,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 822; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_38",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_38.png",
+      "contentLength": 367,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 838; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_46",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_46.png",
+      "contentLength": 342,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 846; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_47.png",
+      "contentLength": 342,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 847; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_48",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_48.png",
+      "contentLength": 367,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 848; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_49.png",
+      "contentLength": 363,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 849; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_50",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_50.png",
+      "contentLength": 318,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 850; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_8_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_8_51.png",
+      "contentLength": 328,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 851; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_15",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_15.png",
+      "contentLength": 462,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 915; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_17",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_17.png",
+      "contentLength": 459,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 917; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_18",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_18.png",
+      "contentLength": 515,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 918; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_21",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_21.png",
+      "contentLength": 471,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 921; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_44",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_44.png",
+      "contentLength": 480,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 944; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_45",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_45.png",
+      "contentLength": 481,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 945; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_46",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_46.png",
+      "contentLength": 510,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 946; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_47",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_47.png",
+      "contentLength": 507,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 947; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_48",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_48.png",
+      "contentLength": 509,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 948; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_49",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_49.png",
+      "contentLength": 509,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 949; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_50",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_50.png",
+      "contentLength": 411,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 950; 96x96 foot 48,72"
+    },
+    {
+      "name": "BaramWeaponHead_9_51",
+      "file": "C:/Users/black/UI/Docs/BaramEquipment/MotionHeads/Assets/BaramWeaponHead_9_51.png",
+      "contentLength": 409,
+      "category": "sprite",
+      "subcategory": "item",
+      "description": "Original Head.EPF 951; 96x96 foot 48,72"
+    }
+  ],
+  "refs": [
+    {
+      "style": 1,
+      "frame": 15,
+      "name": "BaramWeaponHead_1_15"
+    },
+    {
+      "style": 1,
+      "frame": 16,
+      "name": "BaramWeaponHead_1_16"
+    },
+    {
+      "style": 1,
+      "frame": 17,
+      "name": "BaramWeaponHead_1_15"
+    },
+    {
+      "style": 1,
+      "frame": 21,
+      "name": "BaramWeaponHead_1_21"
+    },
+    {
+      "style": 1,
+      "frame": 22,
+      "name": "BaramWeaponHead_1_21"
+    },
+    {
+      "style": 1,
+      "frame": 35,
+      "name": "BaramWeaponHead_1_15"
+    },
+    {
+      "style": 1,
+      "frame": 36,
+      "name": "BaramWeaponHead_1_16"
+    },
+    {
+      "style": 1,
+      "frame": 37,
+      "name": "BaramWeaponHead_1_15"
+    },
+    {
+      "style": 1,
+      "frame": 41,
+      "name": "BaramWeaponHead_1_21"
+    },
+    {
+      "style": 1,
+      "frame": 42,
+      "name": "BaramWeaponHead_1_21"
+    },
+    {
+      "style": 1,
+      "frame": 44,
+      "name": "BaramWeaponHead_1_44"
+    },
+    {
+      "style": 1,
+      "frame": 45,
+      "name": "BaramWeaponHead_1_44"
+    },
+    {
+      "style": 1,
+      "frame": 47,
+      "name": "BaramWeaponHead_1_47"
+    },
+    {
+      "style": 1,
+      "frame": 48,
+      "name": "BaramWeaponHead_1_48"
+    },
+    {
+      "style": 1,
+      "frame": 49,
+      "name": "BaramWeaponHead_1_49"
+    },
+    {
+      "style": 1,
+      "frame": 51,
+      "name": "BaramWeaponHead_1_51"
+    },
+    {
+      "style": 2,
+      "frame": 15,
+      "name": "BaramWeaponHead_2_15"
+    },
+    {
+      "style": 2,
+      "frame": 16,
+      "name": "BaramWeaponHead_2_16"
+    },
+    {
+      "style": 2,
+      "frame": 17,
+      "name": "BaramWeaponHead_2_15"
+    },
+    {
+      "style": 2,
+      "frame": 21,
+      "name": "BaramWeaponHead_2_21"
+    },
+    {
+      "style": 2,
+      "frame": 22,
+      "name": "BaramWeaponHead_2_21"
+    },
+    {
+      "style": 2,
+      "frame": 35,
+      "name": "BaramWeaponHead_2_15"
+    },
+    {
+      "style": 2,
+      "frame": 36,
+      "name": "BaramWeaponHead_2_16"
+    },
+    {
+      "style": 2,
+      "frame": 37,
+      "name": "BaramWeaponHead_2_15"
+    },
+    {
+      "style": 2,
+      "frame": 41,
+      "name": "BaramWeaponHead_2_21"
+    },
+    {
+      "style": 2,
+      "frame": 42,
+      "name": "BaramWeaponHead_2_21"
+    },
+    {
+      "style": 2,
+      "frame": 47,
+      "name": "BaramWeaponHead_2_47"
+    },
+    {
+      "style": 2,
+      "frame": 49,
+      "name": "BaramWeaponHead_2_49"
+    },
+    {
+      "style": 2,
+      "frame": 51,
+      "name": "BaramWeaponHead_2_51"
+    },
+    {
+      "style": 3,
+      "frame": 15,
+      "name": "BaramWeaponHead_3_15"
+    },
+    {
+      "style": 3,
+      "frame": 16,
+      "name": "BaramWeaponHead_3_16"
+    },
+    {
+      "style": 3,
+      "frame": 17,
+      "name": "BaramWeaponHead_3_15"
+    },
+    {
+      "style": 3,
+      "frame": 21,
+      "name": "BaramWeaponHead_3_21"
+    },
+    {
+      "style": 3,
+      "frame": 22,
+      "name": "BaramWeaponHead_3_21"
+    },
+    {
+      "style": 3,
+      "frame": 35,
+      "name": "BaramWeaponHead_3_15"
+    },
+    {
+      "style": 3,
+      "frame": 36,
+      "name": "BaramWeaponHead_3_16"
+    },
+    {
+      "style": 3,
+      "frame": 37,
+      "name": "BaramWeaponHead_3_15"
+    },
+    {
+      "style": 3,
+      "frame": 41,
+      "name": "BaramWeaponHead_3_21"
+    },
+    {
+      "style": 3,
+      "frame": 42,
+      "name": "BaramWeaponHead_3_21"
+    },
+    {
+      "style": 3,
+      "frame": 47,
+      "name": "BaramWeaponHead_3_47"
+    },
+    {
+      "style": 3,
+      "frame": 49,
+      "name": "BaramWeaponHead_3_49"
+    },
+    {
+      "style": 3,
+      "frame": 51,
+      "name": "BaramWeaponHead_3_51"
+    },
+    {
+      "style": 4,
+      "frame": 15,
+      "name": "BaramWeaponHead_4_15"
+    },
+    {
+      "style": 4,
+      "frame": 16,
+      "name": "BaramWeaponHead_4_16"
+    },
+    {
+      "style": 4,
+      "frame": 17,
+      "name": "BaramWeaponHead_4_15"
+    },
+    {
+      "style": 4,
+      "frame": 21,
+      "name": "BaramWeaponHead_4_21"
+    },
+    {
+      "style": 4,
+      "frame": 22,
+      "name": "BaramWeaponHead_4_22"
+    },
+    {
+      "style": 4,
+      "frame": 23,
+      "name": "BaramWeaponHead_4_23"
+    },
+    {
+      "style": 4,
+      "frame": 35,
+      "name": "BaramWeaponHead_4_15"
+    },
+    {
+      "style": 4,
+      "frame": 36,
+      "name": "BaramWeaponHead_4_16"
+    },
+    {
+      "style": 4,
+      "frame": 37,
+      "name": "BaramWeaponHead_4_15"
+    },
+    {
+      "style": 4,
+      "frame": 41,
+      "name": "BaramWeaponHead_4_21"
+    },
+    {
+      "style": 4,
+      "frame": 42,
+      "name": "BaramWeaponHead_4_42"
+    },
+    {
+      "style": 4,
+      "frame": 43,
+      "name": "BaramWeaponHead_4_21"
+    },
+    {
+      "style": 4,
+      "frame": 46,
+      "name": "BaramWeaponHead_4_46"
+    },
+    {
+      "style": 4,
+      "frame": 47,
+      "name": "BaramWeaponHead_4_47"
+    },
+    {
+      "style": 4,
+      "frame": 48,
+      "name": "BaramWeaponHead_4_48"
+    },
+    {
+      "style": 4,
+      "frame": 49,
+      "name": "BaramWeaponHead_4_49"
+    },
+    {
+      "style": 4,
+      "frame": 50,
+      "name": "BaramWeaponHead_4_50"
+    },
+    {
+      "style": 4,
+      "frame": 51,
+      "name": "BaramWeaponHead_4_51"
+    },
+    {
+      "style": 5,
+      "frame": 15,
+      "name": "BaramWeaponHead_5_15"
+    },
+    {
+      "style": 5,
+      "frame": 16,
+      "name": "BaramWeaponHead_5_15"
+    },
+    {
+      "style": 5,
+      "frame": 17,
+      "name": "BaramWeaponHead_5_15"
+    },
+    {
+      "style": 5,
+      "frame": 21,
+      "name": "BaramWeaponHead_5_21"
+    },
+    {
+      "style": 5,
+      "frame": 22,
+      "name": "BaramWeaponHead_5_21"
+    },
+    {
+      "style": 5,
+      "frame": 23,
+      "name": "BaramWeaponHead_5_21"
+    },
+    {
+      "style": 5,
+      "frame": 35,
+      "name": "BaramWeaponHead_5_15"
+    },
+    {
+      "style": 5,
+      "frame": 36,
+      "name": "BaramWeaponHead_5_15"
+    },
+    {
+      "style": 5,
+      "frame": 37,
+      "name": "BaramWeaponHead_5_15"
+    },
+    {
+      "style": 5,
+      "frame": 41,
+      "name": "BaramWeaponHead_5_21"
+    },
+    {
+      "style": 5,
+      "frame": 42,
+      "name": "BaramWeaponHead_5_21"
+    },
+    {
+      "style": 5,
+      "frame": 43,
+      "name": "BaramWeaponHead_5_21"
+    },
+    {
+      "style": 5,
+      "frame": 46,
+      "name": "BaramWeaponHead_5_46"
+    },
+    {
+      "style": 5,
+      "frame": 47,
+      "name": "BaramWeaponHead_5_47"
+    },
+    {
+      "style": 5,
+      "frame": 48,
+      "name": "BaramWeaponHead_5_48"
+    },
+    {
+      "style": 5,
+      "frame": 49,
+      "name": "BaramWeaponHead_5_49"
+    },
+    {
+      "style": 5,
+      "frame": 50,
+      "name": "BaramWeaponHead_5_50"
+    },
+    {
+      "style": 5,
+      "frame": 51,
+      "name": "BaramWeaponHead_5_51"
+    },
+    {
+      "style": 6,
+      "frame": 15,
+      "name": "BaramWeaponHead_6_15"
+    },
+    {
+      "style": 6,
+      "frame": 16,
+      "name": "BaramWeaponHead_6_15"
+    },
+    {
+      "style": 6,
+      "frame": 17,
+      "name": "BaramWeaponHead_6_15"
+    },
+    {
+      "style": 6,
+      "frame": 18,
+      "name": "BaramWeaponHead_6_18"
+    },
+    {
+      "style": 6,
+      "frame": 19,
+      "name": "BaramWeaponHead_6_19"
+    },
+    {
+      "style": 6,
+      "frame": 21,
+      "name": "BaramWeaponHead_6_21"
+    },
+    {
+      "style": 6,
+      "frame": 22,
+      "name": "BaramWeaponHead_6_21"
+    },
+    {
+      "style": 6,
+      "frame": 23,
+      "name": "BaramWeaponHead_6_21"
+    },
+    {
+      "style": 6,
+      "frame": 35,
+      "name": "BaramWeaponHead_6_15"
+    },
+    {
+      "style": 6,
+      "frame": 36,
+      "name": "BaramWeaponHead_6_15"
+    },
+    {
+      "style": 6,
+      "frame": 37,
+      "name": "BaramWeaponHead_6_15"
+    },
+    {
+      "style": 6,
+      "frame": 40,
+      "name": "BaramWeaponHead_6_40"
+    },
+    {
+      "style": 6,
+      "frame": 41,
+      "name": "BaramWeaponHead_6_21"
+    },
+    {
+      "style": 6,
+      "frame": 42,
+      "name": "BaramWeaponHead_6_21"
+    },
+    {
+      "style": 6,
+      "frame": 43,
+      "name": "BaramWeaponHead_6_21"
+    },
+    {
+      "style": 6,
+      "frame": 46,
+      "name": "BaramWeaponHead_6_46"
+    },
+    {
+      "style": 6,
+      "frame": 47,
+      "name": "BaramWeaponHead_6_47"
+    },
+    {
+      "style": 6,
+      "frame": 49,
+      "name": "BaramWeaponHead_6_49"
+    },
+    {
+      "style": 6,
+      "frame": 50,
+      "name": "BaramWeaponHead_6_50"
+    },
+    {
+      "style": 6,
+      "frame": 51,
+      "name": "BaramWeaponHead_6_51"
+    },
+    {
+      "style": 7,
+      "frame": 15,
+      "name": "BaramWeaponHead_7_15"
+    },
+    {
+      "style": 7,
+      "frame": 16,
+      "name": "BaramWeaponHead_7_16"
+    },
+    {
+      "style": 7,
+      "frame": 17,
+      "name": "BaramWeaponHead_7_16"
+    },
+    {
+      "style": 7,
+      "frame": 19,
+      "name": "BaramWeaponHead_7_19"
+    },
+    {
+      "style": 7,
+      "frame": 21,
+      "name": "BaramWeaponHead_7_21"
+    },
+    {
+      "style": 7,
+      "frame": 22,
+      "name": "BaramWeaponHead_7_22"
+    },
+    {
+      "style": 7,
+      "frame": 23,
+      "name": "BaramWeaponHead_7_22"
+    },
+    {
+      "style": 7,
+      "frame": 35,
+      "name": "BaramWeaponHead_7_15"
+    },
+    {
+      "style": 7,
+      "frame": 36,
+      "name": "BaramWeaponHead_7_16"
+    },
+    {
+      "style": 7,
+      "frame": 37,
+      "name": "BaramWeaponHead_7_16"
+    },
+    {
+      "style": 7,
+      "frame": 41,
+      "name": "BaramWeaponHead_7_21"
+    },
+    {
+      "style": 7,
+      "frame": 42,
+      "name": "BaramWeaponHead_7_22"
+    },
+    {
+      "style": 7,
+      "frame": 43,
+      "name": "BaramWeaponHead_7_22"
+    },
+    {
+      "style": 7,
+      "frame": 46,
+      "name": "BaramWeaponHead_7_46"
+    },
+    {
+      "style": 7,
+      "frame": 47,
+      "name": "BaramWeaponHead_7_47"
+    },
+    {
+      "style": 7,
+      "frame": 49,
+      "name": "BaramWeaponHead_7_49"
+    },
+    {
+      "style": 7,
+      "frame": 50,
+      "name": "BaramWeaponHead_7_50"
+    },
+    {
+      "style": 7,
+      "frame": 51,
+      "name": "BaramWeaponHead_7_51"
+    },
+    {
+      "style": 8,
+      "frame": 15,
+      "name": "BaramWeaponHead_8_15"
+    },
+    {
+      "style": 8,
+      "frame": 16,
+      "name": "BaramWeaponHead_8_15"
+    },
+    {
+      "style": 8,
+      "frame": 17,
+      "name": "BaramWeaponHead_8_15"
+    },
+    {
+      "style": 8,
+      "frame": 18,
+      "name": "BaramWeaponHead_8_18"
+    },
+    {
+      "style": 8,
+      "frame": 19,
+      "name": "BaramWeaponHead_8_18"
+    },
+    {
+      "style": 8,
+      "frame": 20,
+      "name": "BaramWeaponHead_8_18"
+    },
+    {
+      "style": 8,
+      "frame": 21,
+      "name": "BaramWeaponHead_8_21"
+    },
+    {
+      "style": 8,
+      "frame": 22,
+      "name": "BaramWeaponHead_8_22"
+    },
+    {
+      "style": 8,
+      "frame": 23,
+      "name": "BaramWeaponHead_8_22"
+    },
+    {
+      "style": 8,
+      "frame": 35,
+      "name": "BaramWeaponHead_8_15"
+    },
+    {
+      "style": 8,
+      "frame": 36,
+      "name": "BaramWeaponHead_8_15"
+    },
+    {
+      "style": 8,
+      "frame": 37,
+      "name": "BaramWeaponHead_8_15"
+    },
+    {
+      "style": 8,
+      "frame": 38,
+      "name": "BaramWeaponHead_8_38"
+    },
+    {
+      "style": 8,
+      "frame": 39,
+      "name": "BaramWeaponHead_8_38"
+    },
+    {
+      "style": 8,
+      "frame": 40,
+      "name": "BaramWeaponHead_8_18"
+    },
+    {
+      "style": 8,
+      "frame": 41,
+      "name": "BaramWeaponHead_8_21"
+    },
+    {
+      "style": 8,
+      "frame": 42,
+      "name": "BaramWeaponHead_8_22"
+    },
+    {
+      "style": 8,
+      "frame": 43,
+      "name": "BaramWeaponHead_8_22"
+    },
+    {
+      "style": 8,
+      "frame": 46,
+      "name": "BaramWeaponHead_8_46"
+    },
+    {
+      "style": 8,
+      "frame": 47,
+      "name": "BaramWeaponHead_8_47"
+    },
+    {
+      "style": 8,
+      "frame": 48,
+      "name": "BaramWeaponHead_8_48"
+    },
+    {
+      "style": 8,
+      "frame": 49,
+      "name": "BaramWeaponHead_8_49"
+    },
+    {
+      "style": 8,
+      "frame": 50,
+      "name": "BaramWeaponHead_8_50"
+    },
+    {
+      "style": 8,
+      "frame": 51,
+      "name": "BaramWeaponHead_8_51"
+    },
+    {
+      "style": 9,
+      "frame": 15,
+      "name": "BaramWeaponHead_9_15"
+    },
+    {
+      "style": 9,
+      "frame": 16,
+      "name": "BaramWeaponHead_9_15"
+    },
+    {
+      "style": 9,
+      "frame": 17,
+      "name": "BaramWeaponHead_9_17"
+    },
+    {
+      "style": 9,
+      "frame": 18,
+      "name": "BaramWeaponHead_9_18"
+    },
+    {
+      "style": 9,
+      "frame": 19,
+      "name": "BaramWeaponHead_9_18"
+    },
+    {
+      "style": 9,
+      "frame": 20,
+      "name": "BaramWeaponHead_9_18"
+    },
+    {
+      "style": 9,
+      "frame": 21,
+      "name": "BaramWeaponHead_9_21"
+    },
+    {
+      "style": 9,
+      "frame": 22,
+      "name": "BaramWeaponHead_9_21"
+    },
+    {
+      "style": 9,
+      "frame": 23,
+      "name": "BaramWeaponHead_9_21"
+    },
+    {
+      "style": 9,
+      "frame": 35,
+      "name": "BaramWeaponHead_9_15"
+    },
+    {
+      "style": 9,
+      "frame": 36,
+      "name": "BaramWeaponHead_9_15"
+    },
+    {
+      "style": 9,
+      "frame": 37,
+      "name": "BaramWeaponHead_9_17"
+    },
+    {
+      "style": 9,
+      "frame": 38,
+      "name": "BaramWeaponHead_9_18"
+    },
+    {
+      "style": 9,
+      "frame": 39,
+      "name": "BaramWeaponHead_9_18"
+    },
+    {
+      "style": 9,
+      "frame": 40,
+      "name": "BaramWeaponHead_9_18"
+    },
+    {
+      "style": 9,
+      "frame": 41,
+      "name": "BaramWeaponHead_9_21"
+    },
+    {
+      "style": 9,
+      "frame": 42,
+      "name": "BaramWeaponHead_9_21"
+    },
+    {
+      "style": 9,
+      "frame": 43,
+      "name": "BaramWeaponHead_9_21"
+    },
+    {
+      "style": 9,
+      "frame": 44,
+      "name": "BaramWeaponHead_9_44"
+    },
+    {
+      "style": 9,
+      "frame": 45,
+      "name": "BaramWeaponHead_9_45"
+    },
+    {
+      "style": 9,
+      "frame": 46,
+      "name": "BaramWeaponHead_9_46"
+    },
+    {
+      "style": 9,
+      "frame": 47,
+      "name": "BaramWeaponHead_9_47"
+    },
+    {
+      "style": 9,
+      "frame": 48,
+      "name": "BaramWeaponHead_9_48"
+    },
+    {
+      "style": 9,
+      "frame": 49,
+      "name": "BaramWeaponHead_9_49"
+    },
+    {
+      "style": 9,
+      "frame": 50,
+      "name": "BaramWeaponHead_9_50"
+    },
+    {
+      "style": 9,
+      "frame": 51,
+      "name": "BaramWeaponHead_9_51"
+    }
+  ]
+}

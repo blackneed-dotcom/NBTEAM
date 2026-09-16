@@ -328,6 +328,7 @@ script BaramProfile extends Logic
 
     @ExecSpace("Server")
     method void Request(string userId, integer serial)
+        -- Show per-instance equipment names and the same weapon bonus used by combat.
         local caller = senderUserId
         local viewer = _UserService:GetUserEntityByUserId(caller)
         -- A queued request may arrive after the requesting player disconnected.
@@ -343,11 +344,11 @@ script BaramProfile extends Logic
         ---@type BaramPlayerVisual
         local visual = target:GetComponent("script.BaramPlayerVisual")
         if visual == nil then self:Receive(userId, serial, "", caller) return end
-        local equipped = b.state.items[tostring(b.state.equip)]
+        local equipped = _BaramItemRules:Equipped(b.state)
         local weaponData = equipped ~= nil and _BaramWorldData:Item(equipped.id) or nil
         -- Only fields drawn by winbaram 0x4D72A0. No private HP/currency/inventory.
         -- Clan/title/history remain empty; class uses the shared saved job metadata.
-        local data = {name = target.PlayerComponent.Nickname, gender = visual.Gender, hair = visual.Hair, item = equipped ~= nil and equipped.id or 0, weaponName = weaponData ~= nil and weaponData.name or "", exchange = b.allowExchange ~= false, group = b.allowGroup ~= false}
+        local data = {name = target.PlayerComponent.Nickname, gender = visual.Gender, hair = visual.Hair, item = equipped ~= nil and equipped.id or 0, weaponName = equipped ~= nil and (equipped.name or weaponData.name) or "", exchange = b.allowExchange ~= false, group = b.allowGroup ~= false}
         data.jobId = b.state.jobId or 0
         for i = 1, 2 do
             local accessory = b.state.items[tostring(b.state["aux" .. tostring(i)] or 0)]
@@ -356,7 +357,7 @@ script BaramProfile extends Logic
         data.jobRank = b.state.jobRank or 0
         -- The same permanent attack bonus is added by BaramWorld.Attack.
         local bonuses = _BaramItemCodex:TotalStats(b.state)
-        data.attack = bonuses.attack or 0
+        data.attack = (bonuses.attack or 0) + _BaramItemRules:WeaponAttack(b.state)
         data.defense = bonuses.defense or 0
         data.accuracy = bonuses.accuracy or 0
         data.evasion = bonuses.evasion or 0
@@ -392,14 +393,18 @@ script BaramProfile extends Logic
             self:Text("ClanTitle", "")
             local content = self.Window:GetChildByName("Information")
             local weaponArt = _BaramAppearance:GetWeapon(data.item, 6)
-            local pose = weaponArt ~= "" and 18 or 6
+            local weaponPose = _BaramAppearance:WeaponMotion(data.item, false, 6)
+            local pose = weaponPose.body
             local body = content:GetChildByName("Body")
             -- Motion frames are 96x96 (foot 48,72); idle frames are 48x72 (foot 24,60).
             -- Both align to the preview's fixed foot position (96,172).
             body.UITransformComponent.RectSize = weaponArt ~= "" and Vector2(96, 96) or Vector2(48, 72)
             body.UITransformComponent.anchoredPosition = weaponArt ~= "" and Vector2(48, -100) or Vector2(72, -112)
             body.SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetBody(data.gender, pose))
-            content:GetChildByName("Head").SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetHead(data.hair, 6))
+            local head = content:GetChildByName("Head")
+            head.UITransformComponent.RectSize = body.UITransformComponent.RectSize
+            head.UITransformComponent.anchoredPosition = body.UITransformComponent.anchoredPosition
+            head.SpriteGUIRendererComponent.ImageRUID = DataRef(_BaramAppearance:GetHead(data.hair, weaponPose.head))
             local weapon = content:GetChildByName("HeldWeapon")
             weapon.Enable = weaponArt ~= ""
             if weapon.Enable then weapon.SpriteGUIRendererComponent.ImageRUID = DataRef(weaponArt) end

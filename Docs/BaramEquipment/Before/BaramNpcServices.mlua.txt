@@ -1,0 +1,475 @@
+@Logic
+script BaramNpcServices extends Logic
+    property integer NpcId = 0
+    property integer Token = 0
+    property string View = "menu"
+    property string Action = ""
+    property string Amount = ""
+    property integer Selected = 1
+    property integer Offset = 0
+    property table Rows = {}
+    property table Menu = {"물건 사기", "물건 팔기", "금전 맡기기", "금전 되찾기", "물건 맡기기", "물건 되찾기", "안쓰는 물건 교환"}
+    property table Actions = {"buy", "sell", "depositGold", "withdrawGold", "depositItem", "withdrawItem", "exchange"}
+
+    method table Npc(integer npcId)
+        -- Only NPCs already placed by this world may provide services.
+        for _, npc in ipairs(_BaramWorld.Npcs) do if npc.id == npcId then return npc end end
+        return nil
+    end
+
+    @ExecSpace("ServerOnly")
+    method table Record(string userId, integer npcId)
+        -- Clicked NPCs are usable anywhere on the same map; retain transaction locks.
+        local r = _BaramWorld:GetRecord(userId)
+        local npc = self:Npc(npcId)
+        if r == nil or npc == nil or not r.active or r.leaving or r.tradeBusy or r.trade ~= nil or r.state.hp <= 0 then return nil end
+        if npc.map ~= r.state.map then return nil end
+        return r
+    end
+
+    @ExecSpace("Server")
+    method void Open(integer npcId)
+        -- Resolve the clicked NPC rather than the first nearby NPC.
+        self:OpenFor(senderUserId, npcId)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void OpenFor(string userId, integer npcId)
+        -- Shared entry for keyboard interaction and world clicks.
+        local r = self:Record(userId, npcId)
+        if r == nil then return end
+        r.dialog = npcId
+        self:Reply(userId, r, "menu", "", {})
+        log("[BaramNPC] open npc=" .. tostring(npcId))
+    end
+
+    @ExecSpace("ServerOnly")
+    method void Reply(string userId, table r, string view, string action, table rows)
+        -- Each server-issued page invalidates previous confirmations.
+        r.npcToken = (r.npcToken or 0) + 1
+        r.npcAction = action
+        self:Receive(r.dialog, r.npcToken, view, action, rows, userId)
+    end
+
+    method boolean ValidBank(table s)
+        -- Optional fields preserve all pre-bank saves. Original map.exe: 60 slots / uint32.
+        if s.bankGold ~= nil and (type(s.bankGold) ~= "number" or s.bankGold ~= math.floor(s.bankGold) or s.bankGold < 0 or s.bankGold > 4294967295) then return false end
+        if s.bankItems == nil then return true end
+        if type(s.bankItems) ~= "table" then return false end
+        for key, item in pairs(s.bankItems) do
+            if key ~= "kind" then
+                local slot = tonumber(key)
+                if slot == nil or slot < 1 or slot > 60 or slot ~= math.floor(slot) or tostring(slot) ~= key or type(item) ~= "table" then return false end
+                local data = _BaramWorldData:Item(item.id or -1)
+                if data == nil or type(item.count) ~= "number" or item.count < 1 or item.count > 4294967295 or item.count ~= math.floor(item.count) then return false end
+                if (data.type < 7 or data.type == 10) and item.count ~= 1 then return false end
+            end
+        end
+        return true
+    end
+
+    @ExecSpace("ServerOnly")
+    method table ServiceRows(table r, string action)
+        -- Lists use the preserved source snapshot, never the replaced root item_db.
+        local result = {}
+        local stock = _BaramWorldData.NpcShops[tostring(r.dialog == 8 and 0 or (action == "buy" and 20 or 21))]
+        if action == "buy" then
+            for _, id in ipairs(stock) do
+                local d = _BaramWorldData:Item(id)
+                table.insert(result, {slot=id, id=id, label=d.name, detail=tostring(d.price).."전"})
+            end
+        elseif action == "sell" or action == "depositItem" or action == "withdrawItem" then
+            local items = action == "withdrawItem" and (r.state.bankItems or {}) or r.state.items
+            local limit = action == "withdrawItem" and 60 or _BaramWorldData.InventoryCapacity
+            for i = 1, limit do
+                local item = items[tostring(i)]
+                if item ~= nil then
+                    local allowed = action ~= "sell"
+                    for _, id in ipairs(stock) do if id == item.id then allowed = true end end
+                    if allowed then
+                        local d = _BaramWorldData:Item(item.id)
+                        table.insert(result, {slot=i, id=item.id, label=d.name, detail=tostring(item.count)})
+                    end
+                end
+            end
+        end
+        return result
+    end
+
+    @ExecSpace("Server")
+    method void Choose(integer npcId, integer token, string action)
+        -- Service allow-list remains server-owned, including NPC-specific restrictions.
+        local r = self:Record(senderUserId, npcId)
+        if r == nil or r.dialog ~= npcId or r.npcToken ~= token then return end
+        if action == "menu" then self:Reply(senderUserId,r,"menu","",{}) return end
+        local allowed = action == "buy" or action == "sell"
+        if npcId == 8 then for _, a in ipairs(self.Actions) do if a == action then allowed = true end end end
+        if not allowed then return end
+        if action == "exchange" then
+            _BaramWorld:Notice(senderUserId,"원본 교환 함수의 안내·지급 불일치 확인 중입니다.")
+            self:Reply(senderUserId,r,"menu","",{})
+            return
+        end
+        if action == "depositGold" or action == "withdrawGold" then self:Reply(senderUserId,r,"amount",action,{})
+        else self:Reply(senderUserId,r,"list",action,self:ServiceRows(r,action)) end
+    end
+
+    @ExecSpace("ServerOnly")
+    method string Apply(table s, integer npcId, string action, integer slot, integer amount)
+        -- Pure non-yielding mutation: both sides of each transfer live in one saved state.
+        if amount < 1 or amount > 4294967295 then return "수량을 확인해 주세요." end
+        if action == "depositGold" or action == "withdrawGold" then
+            local bank = s.bankGold or 0
+            local available = action == "depositGold" and s.gold or bank
+            local destination = action == "depositGold" and bank or s.gold
+            if amount > available then return "금전이 부족합니다." end
+            if amount > 4294967295-destination then return "더 이상 돈을 가질 수 없습니다." end
+            if action == "depositGold" then s.gold=s.gold-amount s.bankGold=bank+amount
+            else s.gold=s.gold+amount s.bankGold=bank-amount end
+            return ""
+        end
+        local stock = _BaramWorldData.NpcShops[tostring(npcId == 8 and 0 or (action == "buy" and 20 or 21))]
+        if action == "buy" then
+            local allowed = false
+            for _, id in ipairs(stock) do if id == slot then allowed = true end end
+            if not allowed then return "판매하는 물건이 아닙니다." end
+            local d = _BaramWorldData:Item(slot)
+            if d.price > 0 and amount > math.floor(s.gold/d.price) then return "금전이 부족합니다." end
+            if not _BaramWorld:AddItem(s,slot,amount,-1) then return "소지품이 가득 찼습니다." end
+            s.gold=s.gold-d.price*amount
+            return ""
+        end
+        local items = action == "withdrawItem" and (s.bankItems or {}) or s.items
+        local item = items[tostring(slot)]
+        if item == nil or item.count < amount then return "물건 수량을 확인해 주세요." end
+        if action ~= "withdrawItem" and s.equip == slot then return "착용한 물건은 먼저 벗어 주세요." end
+        local d = _BaramWorldData:Item(item.id)
+        if d == nil then return "원본 물건 데이터가 없습니다." end
+        if action == "sell" then
+            local allowed=false
+            for _, id in ipairs(stock) do if id==item.id then allowed=true end end
+            if not allowed then return "이 상점에서는 사지 않는 물건입니다." end
+            local total=math.floor(d.price/2)*amount
+            if total>4294967295-s.gold then return "더 이상 돈을 가질 수 없습니다." end
+            _BaramWorld:RemoveItem(s,slot,amount)
+            s.gold=s.gold+total
+        elseif action == "depositItem" then
+            -- map.exe 0x427D80: full durability, no custom name; stack types >=7 except 10.
+            if (item.durability or 0) ~= d.durability or item.name ~= nil then return "원래 상태의 물건만 맡길 수 있습니다." end
+            local fee=d.depositCost*amount
+            if fee>s.gold then return "보관료가 부족합니다." end
+            local bank=s.bankItems or {kind="bank"}
+            local target=0
+            local stackable=d.type>=7 and d.type~=10
+            for i=1,60 do
+                local b=bank[tostring(i)]
+                if stackable and b~=nil and b.id==item.id then target=i break end
+                if b==nil and target==0 then target=i end
+            end
+            if target==0 then return "보관함이 가득 찼습니다." end
+            if not stackable and amount~=1 then return "이 물건은 한 개씩 맡겨 주세요." end
+            local old=bank[tostring(target)]
+            if old~=nil and amount>4294967295-old.count then return "더 이상 맡길 수 없습니다." end
+            bank[tostring(target)]={id=item.id,count=(old~=nil and old.count or 0)+amount}
+            bank.kind="bank"
+            s.bankItems=bank
+            _BaramWorld:RemoveItem(s,slot,amount)
+            s.gold=s.gold-fee
+        elseif action == "withdrawItem" then
+            -- map.exe 0x4255AC: floor(depositCost/2) per item, restore original durability.
+            local fee=math.floor(d.depositCost/2)*amount
+            if fee>s.gold then return "보관료가 부족합니다." end
+            if not _BaramWorld:AddItem(s,item.id,amount,d.durability) then return "소지품이 가득 찼습니다." end
+            item.count=item.count-amount
+            if item.count==0 then s.bankItems[tostring(slot)]=nil end
+            -- Match the existing inventory sentinel so an empty table remains JSON-serializable.
+            s.bankItems.kind="bank"
+            s.gold=s.gold-fee
+        else return "지원하지 않는 서비스입니다." end
+        return ""
+    end
+
+    @ExecSpace("Server")
+    method void Confirm(integer npcId, integer token, integer slot, integer amount)
+        -- Consume the one-use confirmation before mutating to reject duplicate RPCs.
+        local userId=senderUserId
+        local r=self:Record(userId,npcId)
+        if r==nil or r.dialog~=npcId or r.npcToken~=token or r.npcAction==nil or r.npcAction=="" then return end
+        local action=r.npcAction
+        r.npcToken=r.npcToken+1
+        local result=self:Apply(r.state,npcId,action,slot,amount)
+        if result=="" then
+            _BaramWorld:Changed(userId)
+            _BaramWorld:Snapshot(userId)
+            log("[BaramNPC] applied action="..action.." npc="..tostring(npcId).." amount="..tostring(amount))
+        else _BaramWorld:Notice(userId,result) end
+        if action=="depositGold" or action=="withdrawGold" then self:Reply(userId,r,"menu","",{})
+        else self:Reply(userId,r,"list",action,self:ServiceRows(r,action)) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnBeginPlay()
+        -- UI controller lives outside the hidden group; connections are made once.
+        self._T.root=_EntityService:GetEntityByPath("/ui/BaramNpc")
+        self._T.links={}
+        if not isvalid(self._T.root) then return end
+        self._T.root.Enable=false
+        self._T.window=self._T.root:GetChildByName("Window",true)
+        self._T.canvas=self._T.root:GetChildByName("Canvas")
+        self._T.dragArea=self._T.window:GetChildByName("DragArea")
+        self._T.dragDown=self._T.dragArea:ConnectEvent(UITouchDownEvent,self.BeginDrag)
+        self._T.dragMove=self._T.dragArea:ConnectEvent(UITouchDragEvent,self.Drag)
+        self._T.dragUp=self._T.dragArea:ConnectEvent(UITouchUpEvent,function(e) self:EndDrag(e.TouchId) end)
+        self._T.dragEnd=self._T.dragArea:ConnectEvent(UITouchEndDragEvent,function(e) self:EndDrag(e.TouchId) end)
+        -- Prepare text once while hidden, before the first NPC interaction.
+        for i=1,3 do _BaramProfile:Draw(self._T.window:GetChildByName("Heading"..tostring(i)),"",true) end
+        _BaramProfile:Draw(self._T.window:GetChildByName("Amount"),"",true)
+        for _, name in ipairs({"Ok","Top","Quit","Up","Down"}) do
+            local key=name
+            local e=self._T.window:GetChildByName(key)
+            local link=e:ConnectEvent(ButtonClickEvent,function() self:Control(key) end)
+            table.insert(self._T.links,{entity=e,link=link})
+        end
+        for i=1,8 do
+            local index=i
+            local e=self._T.window:GetChildByName("Row"..tostring(i))
+            _BaramProfile:Draw(e:GetChildByName("Label"),"",true)
+            _BaramProfile:Draw(e:GetChildByName("Detail"),"",false)
+            local link=e:ConnectEvent(ButtonClickEvent,function() self:Select(index) end)
+            table.insert(self._T.links,{entity=e,link=link})
+        end
+        log("[BaramNPC] original UI ready")
+    end
+
+    @ExecSpace("ClientOnly")
+    method void FitScreen()
+        -- Convert actual viewport pixels to parent UI units; preserve original pixel aspect.
+        local sw=_UILogic.ScreenWidth
+        local sh=_UILogic.ScreenHeight
+        if sw<=0 or sh<=0 or not isvalid(self._T.canvas) then return end
+        if self._T.screenWidth~=sw or self._T.screenHeight~=sh then
+            local root=self._T.root.UITransformComponent
+            local a=_UILogic:ScreenToLocalUIPosition(Vector2(0,0),root)
+            local b=_UILogic:ScreenToLocalUIPosition(Vector2(sw,sh),root)
+            local scale=math.min(sw/640,sh/480)
+            self._T.canvas.UITransformComponent.UIScale=Vector3(scale*math.abs(b.x-a.x)/sw,scale*math.abs(b.y-a.y)/sh,1)
+            self._T.screenWidth=sw self._T.screenHeight=sh
+            self._T.dragId=nil
+            log("[BaramNPC] viewport fit="..tostring(sw).."x"..tostring(sh))
+        end
+        self:ClampWindow()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void ClampWindow()
+        -- Window is top-left anchored inside the aspect-fitted 640x480 canvas.
+        if not isvalid(self._T.window) then return end
+        local t=self._T.window.UITransformComponent
+        local p=t.anchoredPosition
+        local size=t.RectSize
+        t.anchoredPosition=Vector2(math.max(0,math.min(640-size.x,p.x)),math.min(0,math.max(size.y-480,p.y)))
+    end
+
+    @ExecSpace("ClientOnly")
+    method void BeginDrag(UITouchDownEvent event)
+        -- Capture only the left mouse button or one touch on the empty top strip.
+        if not isvalid(self._T.root) or not self._T.root.Enable or self._T.dragId~=nil then return end
+        if event.TouchId~=-1 and event.TouchId<1 then return end
+        self:FitScreen()
+        self._T.dragId=event.TouchId
+        self._T.dragPoint=_UILogic:ScreenToLocalUIPosition(event.TouchPoint,self._T.canvas.UITransformComponent)
+        self._T.dragPosition=self._T.window.UITransformComponent.anchoredPosition
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Drag(UITouchDragEvent event)
+        -- Parent-local conversion keeps the window under the pointer at every scale.
+        if self._T.dragId~=event.TouchId or not isvalid(self._T.window) then return end
+        local p=_UILogic:ScreenToLocalUIPosition(event.TouchPoint,self._T.canvas.UITransformComponent)
+        self._T.window.UITransformComponent.anchoredPosition=self._T.dragPosition+p-self._T.dragPoint
+        self:ClampWindow()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void EndDrag(integer touchId)
+        -- Release also when the pointer finishes outside the title strip.
+        if self._T.dragId~=touchId then return end
+        self._T.dragId=nil
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- Hidden windows do no layout work; only viewport changes require refitting.
+        if not isvalid(self._T.root) or not self._T.root.Enable then return end
+        if self._T.screenWidth~=_UILogic.ScreenWidth or self._T.screenHeight~=_UILogic.ScreenHeight then self:FitScreen() end
+    end
+
+    @ExecSpace("Client")
+    method void Receive(integer npcId, integer token, string view, string action, table rows)
+        -- Only the addressed player's client receives its private shop/bank page.
+        if not isvalid(self._T.root) or not _BaramEntryFlow.InWorld then return end
+        _BaramInput:Close()
+        self.NpcId=npcId self.Token=token self.View=view self.Action=action self.Rows=rows
+        self.Amount="" self.Selected=1 self.Offset=0 self._T.busy=false
+        _BaramInput.Mode="npc"
+        self._T.root.Enable=true
+        self:Render()
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Close()
+        -- Shared input close and map transitions release this modal without touching saves.
+        if isvalid(self._T.root) then self._T.root.Enable=false end
+        self._T.busy=false
+        self._T.dragId=nil
+        if _BaramInput.Mode=="npc" then _BaramInput.Mode="" end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Select(integer index)
+        -- Menu choices activate immediately; item lists select before OK/quantity.
+        if self._T.busy then return end
+        local actual=self.Offset+index
+        if self.View=="menu" then
+            if actual>(self.NpcId==8 and 7 or 2) then return end
+            self._T.busy=true
+            self:Choose(self.NpcId,self.Token,self.Actions[actual])
+        elseif self.View=="list" and self.Rows[actual]~=nil then self.Selected=actual self:Render() end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Control(string control)
+        -- Original OK/TOP/QUIT and scrollbar hit rectangles.
+        if control=="Quit" then _BaramInput:Close() return end
+        if self._T.busy then return end
+        if control=="Top" then self._T.busy=true self:Choose(self.NpcId,self.Token,"menu") return end
+        if control=="Up" or control=="Down" then
+            local count=self.View=="menu" and (self.NpcId==8 and 7 or 2) or #self.Rows
+            local visible=self.View=="list" and 5 or 8
+            self.Offset=math.max(0,math.min(math.max(0,count-visible),self.Offset+(control=="Up" and -1 or 1)))
+            self:Render() return
+        end
+        if control~="Ok" then return end
+        if self.View=="menu" then self:Select(self.Selected-self.Offset)
+        elseif self.View=="list" then
+            if self.Rows[self.Selected]==nil then return end
+            self.View="amount" self.Amount="1" self:Render()
+        elseif self.View=="amount" then
+            local amount=tonumber(self.Amount)
+            if amount==nil or amount<1 then return end
+            self._T.busy=true
+            local row=self.Rows[self.Selected]
+            self:Confirm(self.NpcId,self.Token,row~=nil and row.slot or 0,amount)
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Key(KeyboardKey key)
+        -- Preserve the common key dispatcher and prevent NPC typing from moving the player.
+        if key==KeyboardKey.Escape then self:Control("Quit") return end
+        if key==KeyboardKey.Return or key==KeyboardKey.KeypadEnter then self:Control("Ok") return end
+        if self.View=="amount" then
+            if key==KeyboardKey.Backspace then self.Amount=string.sub(self.Amount,1,-2)
+            else
+                for i=0,9 do if key==KeyboardKey.CastFrom("Alpha"..tostring(i)) or key==KeyboardKey.CastFrom("Keypad"..tostring(i)) then
+                    if #self.Amount<10 then self.Amount=self.Amount..tostring(i) end
+                    break
+                end end
+            end
+            self:Render()
+        elseif key==KeyboardKey.UpArrow or key==KeyboardKey.DownArrow then
+            local count=self.View=="menu" and (self.NpcId==8 and 7 or 2) or #self.Rows
+            self.Selected=math.max(1,math.min(count,self.Selected+(key==KeyboardKey.UpArrow and -1 or 1)))
+            if self.Selected<=self.Offset then self.Offset=self.Selected-1 end
+            local visible=self.View=="list" and 5 or 8
+            if self.Selected>self.Offset+visible then self.Offset=self.Selected-visible end
+            self:Render()
+        end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void Render()
+        -- Original client layouts: MERC1 menu, MERC2 input, MERC3 list; no default fonts.
+        local w=self._T.window
+        if not isvalid(w) then return end
+        local small=self.View=="menu" and self.NpcId~=8
+        local width=small and 332 or (self.View=="list" and 434 or 314)
+        local height=small and 278 or (self.View=="list" and 371 or (self.View=="amount" and 197 or 356))
+        local ruid=small and "57b622d026fd46978747c8abcd0c1064" or (self.View=="list" and "46be29c6e0ef4a749be76cc5d4ec923b" or (self.View=="amount" and "82325be045d349e08285b2b3da80f0cb" or "b1e981f249ef45e7ac1d966c0a3b4a6e"))
+        w.UITransformComponent.RectSize=Vector2(width,height)
+        self._T.dragArea.UITransformComponent.RectSize=Vector2(width,24)
+        self:FitScreen()
+        w.SpriteGUIRendererComponent.ImageRUID=DataRef(ruid)
+        local buttonY=small and 228 or (self.View=="list" and 281 or (self.View=="amount" and 147 or 306))
+        local left=self.View=="list" and 104 or 44
+        for i,name in ipairs({"Ok","Top","Quit"}) do
+            local b=w:GetChildByName(name)
+            b.Enable=not (small and name=="Ok")
+            b.UITransformComponent.anchoredPosition=Vector2(small and (name=="Top" and 92 or 169) or left+(i-1)*77,-buttonY)
+        end
+        local portrait=w:GetChildByName("Portrait")
+        portrait.UITransformComponent.anchoredPosition=Vector2(small and 60 or 35,-(small and 38 or 37))
+        portrait:GetChildByName("Image").SpriteGUIRendererComponent.ImageRUID=DataRef(self.NpcId==8 and "06d58c403b874ff8942bed69bf954e34" or "d92eb362714247cea4e5e53cddef2ab8")
+        local heading=self.View=="menu" and "안녕하세요." or ""
+        for i,a in ipairs(self.Actions) do if a==self.Action then heading=self.Menu[i] end end
+        local hx=small and 129 or (self.View=="menu" and 122 or 83)
+        for i=1,3 do
+            local h=w:GetChildByName("Heading"..tostring(i))
+            h.UITransformComponent.anchoredPosition=Vector2(hx,-(35+(i-1)*16))
+            _BaramProfile:Draw(h,i==1 and heading or (i==2 and self.View=="menu" and "어떻게 오셨나요?" or ""),true)
+        end
+        for i=1,8 do
+            local row=w:GetChildByName("Row"..tostring(i))
+            local actual=self.Offset+i
+            local text="" local detail=""
+            if self.View=="menu" and actual<=(self.NpcId==8 and 7 or 2) then text=self.Menu[actual]
+            elseif self.View=="list" and i<=5 and self.Rows[actual]~=nil then text=self.Rows[actual].label detail=self.Rows[actual].detail end
+            row.Enable=text~=""
+            local listing=self.View=="list"
+            row.UITransformComponent.RectSize=Vector2(listing and 348 or (small and 169 or 222),listing and 24 or 18)
+            row.UITransformComponent.anchoredPosition=Vector2(small and 86 or (listing and 36 or 38),-((small and 154 or (listing and 140 or 142))+(i-1)*(listing and 24 or 18)))
+            local label=row:GetChildByName("Label")
+            local details=row:GetChildByName("Detail")
+            label.UITransformComponent.anchoredPosition=Vector2(listing and 50 or 0,listing and -6 or 0)
+            details.UITransformComponent.anchoredPosition=Vector2(246,listing and -6 or 0)
+            local chosen=listing and actual==self.Selected
+            row:GetChildByName("Selection").Enable=chosen
+            local color=listing and (chosen and Color(169/255,105/255,40/255,1) or Color(234/255,200/255,142/255,1)) or Color(1,1,1,1)
+            _BaramProfile:Draw(label,text,true)
+            _BaramProfile:Draw(details,detail,false)
+            label.TextGUIRendererComponent.FontColor=color
+            details.TextGUIRendererComponent.FontColor=color
+            local icon=row:GetChildByName("Icon")
+            local item=listing and self.Rows[actual] or nil
+            local art=item~=nil and _BaramInput.InventoryImages[tostring(item.id)] or nil
+            icon.Enable=listing and art~=nil
+            if icon.Enable then
+                icon.SpriteGUIRendererComponent.ImageRUID=DataRef(art.ruid)
+                icon.UITransformComponent.RectSize=Vector2(art.width,art.height)
+                icon.UITransformComponent.anchoredPosition=Vector2(12-math.floor(art.width/2),-12+math.floor(art.height/2))
+            end
+        end
+        for _,name in ipairs({"Up","Down"}) do
+            local b=w:GetChildByName(name)
+            b.Enable=not small and self.View~="amount"
+            b.UITransformComponent.anchoredPosition=Vector2(self.View=="list" and 386 or 265,-(name=="Up" and 141 or (self.View=="list" and 248 or 273)))
+        end
+        local amount=w:GetChildByName("Amount")
+        amount.Enable=self.View=="amount"
+        if amount.Enable then _BaramProfile:Draw(amount,self.Amount,true) end
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnEndPlay()
+        -- Avoid duplicate button subscriptions after Maker reloads.
+        self:Close()
+        for _, link in ipairs(self._T.links or {}) do if isvalid(link.entity) then link.entity:DisconnectEvent(ButtonClickEvent,link.link) end end
+        self._T.links={}
+        if isvalid(self._T.dragArea) then
+            self._T.dragArea:DisconnectEvent(UITouchDownEvent,self._T.dragDown)
+            self._T.dragArea:DisconnectEvent(UITouchDragEvent,self._T.dragMove)
+            self._T.dragArea:DisconnectEvent(UITouchUpEvent,self._T.dragUp)
+            self._T.dragArea:DisconnectEvent(UITouchEndDragEvent,self._T.dragEnd)
+        end
+    end
+end

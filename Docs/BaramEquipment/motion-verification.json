@@ -1,0 +1,125 @@
+{
+  "runtime": [
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:41:57",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] wear baseline slot=4 durability=19981 enabled=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:42:00",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] inventory list/icon hide, restore, empty and pagination PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 24,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:42:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] attacks dispatched=4",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 5,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:42:46",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] durability unchanged after 4 accepted attacks PASS 19981",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:45:33",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] rendered idle/attack/other actions/restore PASS attacks=32",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 33,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:45:33",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] render result=true nil",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 36,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:45:39",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipMotionVerify] alive true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 0,
+          "codeBlockFileId": null
+        }
+      ]
+    }
+  ],
+  "buildErrors": [],
+  "runtimeErrors": []
+}

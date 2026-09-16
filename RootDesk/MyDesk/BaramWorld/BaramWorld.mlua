@@ -1,5 +1,6 @@
 @Logic
 script BaramWorld extends Logic
+    property boolean DurabilityLossEnabled = false
     property string StorageKey = "BaramWorldV1"
     property table LocalState = {}
     property number Clock = 0
@@ -108,12 +109,14 @@ script BaramWorld extends Logic
             record = {state = state, storage = storage, slot = slot, key = key, savedRaw = raw or "", dirty = raw == nil or raw == "", revision = 0, nextMove = 0, nextAction = 0}
             self._T.users[userId] = record
         end
+        if _BaramItemRules:MigrateEquipment(record.state) then self:Changed(userId) end
         _BaramJobs:InitializeState(record.state)
         local selected = _BaramEntryFlow:DecodeRecord(appearance)
         if selected.nickname == "" then return false end
         -- Character creation owns these choices, including existing saved slots.
         record.state.nation = selected.nation
         record.state.totem = selected.totem
+        record.state.gender = selected.gender
         player.PlayerComponent.Nickname = selected.nickname
         record.player = player
         record.active = false
@@ -142,6 +145,7 @@ script BaramWorld extends Logic
     end
 
     method boolean ValidState(table s)
+        -- Validate both legacy bag equipment and separately saved weapon instances.
         if s == nil or s.version ~= 1 or type(s.items) ~= "table" then return false end
         if not _BaramNpcServices:ValidBank(s) then return false end
         if not _BaramJobs:ValidState(s) then return false end
@@ -159,18 +163,29 @@ script BaramWorld extends Logic
             if data == nil or type(item.count) ~= "number" or item.count ~= math.floor(item.count) or item.count < 1 or item.count > math.max(1, data.maxCount) then return false end
             end
         end
+        if s.equipment ~= nil then
+            if type(s.equipment) ~= "table" or s.equip ~= 0 then return false end
+            local item = s.equipment.weapon
+            if item ~= nil then
+                if type(item) ~= "table" then return false end
+                local data = _BaramWorldData:Item(item.id or -1)
+                if data == nil or data.type ~= 0 or item.count ~= 1 or type(item.durability) ~= "number" or item.durability < 0 then return false end
+            end
+            return true
+        end
         return s.equip == 0 or s.items[tostring(s.equip)] ~= nil
     end
 
     @ExecSpace("ServerOnly")
     method void Place(string userId, integer mapId, integer x, integer y)
+        -- Resolve the shared canvas before updating the logical map and position.
         local r = self._T.users[userId]
         local mapData = _BaramWorldData:Map(mapId)
         local player = _UserService:GetUserEntityByUserId(userId)
         if r == nil or mapData == nil or not isvalid(player) then return end
         if r.tradeBusy then return end
         if r.trade ~= nil then _BaramTrade:CancelFor(userId, "이동하여 교환이 취소되었습니다.") end
-        local map = _EntityService:GetEntityByPath("/maps/" .. mapData.name)
+        local map = self:Stage(mapId)
         if not isvalid(map) then log_error("[BaramWorld] missing map " .. mapData.name) return end
         local p = _BaramWorldData:Position(x, y)
         r.state.map = mapId
@@ -185,8 +200,6 @@ script BaramWorld extends Logic
         -- [단일 맵 구조] 바람 맵마다 MSW 씬을 따로 두지 않는다. 모두 캔버스 한 장 위에 있고,
         -- 바람 맵이 바뀌면 클라이언트가 그림만 갈아끼운다(BaramMapView). 씬 전환도 텔레포트도
         -- 없으므로 워프에 드는 비용이 사라진다. 텔레포트는 로그인 때 캔버스로 한 번뿐이다.
-        local canvas = _EntityService:GetEntityByPath("/maps/baramcanvas")
-        if isvalid(canvas) then map = canvas end
         local crossed = player.CurrentMap ~= map
         r.nextMove = crossed and self.Clock or math.max(self.Clock, r.nextMove or 0)
         r.dialog = nil
@@ -195,7 +208,7 @@ script BaramWorld extends Logic
         if crossed then _TeleportService:TeleportToMapPosition(player, p, map.Name)
         else player.PlayerComponent:SetPosition(p) end
         self:Changed(userId)
-        log("[BaramWorld] map=" .. tostring(mapId) .. " cell=" .. tostring(x) .. "," .. tostring(y))
+        log("[BaramWorld] scene=" .. map.Name .. " map=" .. tostring(mapId) .. " cell=" .. tostring(x) .. "," .. tostring(y))
     end
 
     -- [단일 맵 구조 확인용] 캔버스 맵으로 들어갔다 나온다.
@@ -344,12 +357,19 @@ script BaramWorld extends Logic
         -- Publish only display values through the existing player replication path.
         local r = self._T.users[userId]
         if r ~= nil then
+            local current = _BaramItemRules:Equipped(r.state)
+            if current ~= nil and _BaramItemRules:EquipError(r.state, current) ~= "" then
+                if _BaramItemRules:UnequipToBag(r.state) == "" then
+                    _BaramItemRules:Hook(userId, current, "unequipScript")
+                    self:Changed(userId)
+                end
+            end
             local player = _UserService:GetUserEntityByUserId(userId)
             if isvalid(player) then
                 local visual = player:GetComponent("script.BaramPlayerVisual")
                 if isvalid(visual) then
                     visual.DisplayHp = r.state.hp
-                    local equipped = r.state.items[tostring(r.state.equip)]
+                    local equipped = _BaramItemRules:Equipped(r.state)
                     visual.WeaponItemId = equipped ~= nil and equipped.id or 0
                     visual.DisplayMaxHp = r.state.maxHp
                     visual.DisplayLevel = r.state.level
@@ -437,6 +457,20 @@ script BaramWorld extends Logic
     end
 
     @ExecSpace("ServerOnly")
+    method boolean AddItemCopy(table state, table source, integer count)
+        -- Named equipment keeps its identity through giving, dropping and picking up.
+        if source.name == nil then return self:AddItem(state, source.id, count, source.durability) end
+        if count ~= 1 then return false end
+        for i = 1, _BaramWorldData.InventoryCapacity do
+            if state.items[tostring(i)] == nil then
+                state.items[tostring(i)] = {id = source.id, count = 1, durability = source.durability, name = source.name}
+                return true
+            end
+        end
+        return false
+    end
+
+    @ExecSpace("ServerOnly")
     method void RemoveItem(table s, integer slot, integer count)
         local key = tostring(slot)
         local item = s.items[key]
@@ -503,23 +537,35 @@ script BaramWorld extends Logic
 
     @ExecSpace("Server")
     method void ItemAction(string action, integer slot, integer other)
+        -- Resolve item2 conditions, transfer permissions and script hooks on the server.
         local userId = senderUserId
         local r = self._T.users[userId]
-        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or slot < 1 or slot > _BaramWorldData.InventoryCapacity then return end
+        if r == nil or not r.active or r.state.hp <= 0 or self.Clock < r.nextAction or (action ~= "unequip" and (slot < 1 or slot > _BaramWorldData.InventoryCapacity)) then return end
         if r.trade ~= nil or r.tradeBusy then self:Notice(userId, "교환 중에는 소지품을 변경할 수 없습니다.") return end
         r.nextAction = self.Clock + 0.15
         local s = r.state
+        if action == "unequip" then
+            local previous = _BaramItemRules:Equipped(s)
+            local reason = _BaramItemRules:UnequipToBag(s)
+            if reason ~= "" then self:Notice(userId, reason) return end
+            _BaramItemRules:Hook(userId, previous, "unequipScript")
+            self:Changed(userId)
+            self:Snapshot(userId)
+            self:Notice(userId, "장비를 벗었습니다.")
+            return
+        end
         local item = s.items[tostring(slot)]
         if item == nil then self:Notice(userId, "그 칸은 비어 있습니다.") return end
         local data = _BaramWorldData:Item(item.id)
         if action == "give" or action == "giveall" then
+            if data.dropAllowed ~= 1 then self:Notice(userId, "교환할 수 없는 아이템입니다.") return end
             local targetId = self:FrontUser(userId)
             local target = self._T.users[targetId]
             if target == nil or target.allowExchange == false or r.allowExchange == false then self:Notice(userId, "앞에 물건을 받을 사람이 없습니다.") return end
             if target.trade ~= nil or target.tradeBusy then self:Notice(userId, "상대방이 교환 중입니다.") return end
             if s.equip == slot then self:Notice(userId, "장비를 먼저 벗어 주세요.") return end
             local count = action == "giveall" and item.count or 1
-            if not self:AddItem(target.state, item.id, count, item.durability) then self:Notice(userId, "상대방의 소지품이 가득 찼습니다.") return end
+            if not self:AddItemCopy(target.state, item, count) then self:Notice(userId, "상대방의 소지품이 가득 찼습니다.") return end
             self:RemoveItem(s, slot, count)
             self:Changed(userId)
             self:Changed(targetId)
@@ -532,19 +578,25 @@ script BaramWorld extends Logic
             s.items[tostring(other)] = item
             if s.equip == slot then s.equip = other elseif s.equip == other then s.equip = slot end
         elseif action == "equip" or action == "armor" then
-            if data.type ~= 0 then self:Notice(userId, "이 물건은 장착할 수 없습니다.") return end
-            if item.durability <= 0 then self:Notice(userId, "내구도가 없습니다.") return end
-            s.equip = slot
+            local reason = _BaramItemRules:EquipError(s, item)
+            if reason ~= "" then self:Notice(userId, reason) return end
+            local previous = _BaramItemRules:Equipped(s)
+            reason = _BaramItemRules:EquipFromBag(s, slot)
+            if reason ~= "" then self:Notice(userId, reason) return end
+            _BaramItemRules:Hook(userId, previous, "unequipScript")
+            _BaramItemRules:Hook(userId, item, "equipScript")
             self:Notice(userId, data.name .. " 장착")
-        elseif action == "unequip" then
-            if s.equip == slot then s.equip = 0 self:Notice(userId, "장비를 벗었습니다.") end
         elseif action == "use" or action == "eat" then
             if s.hp <= 0 then return end
             if item.id == 3014 then s.hp = math.min(s.maxHp, s.hp + 8)
             elseif item.id == 3018 then s.hp = math.min(s.maxHp, s.hp + 48)
             elseif item.id == 2200 then s.hp = math.max(1, s.hp - 1) s.mp = math.min(s.maxMp, s.mp + 30)
             else self:Notice(userId, "사용할 수 없는 물건입니다.") return end
-            if data.type == 6 and item.durability > 1 then item.durability = item.durability - 1 else self:RemoveItem(s, slot, 1) end
+            if data.type == 6 then
+                if self.DurabilityLossEnabled then
+                    if item.durability > 1 then item.durability = item.durability - 1 else self:RemoveItem(s, slot, 1) end
+                end
+            else self:RemoveItem(s, slot, 1) end
             self:Notice(userId, data.name .. " 사용")
         elseif action == "drop" or action == "dropall" or action == "throw" then
             if data.dropAllowed ~= 1 then self:Notice(userId, "버릴 수 없는 아이템입니다.") return end
@@ -565,7 +617,7 @@ script BaramWorld extends Logic
                 end
             end
             self._T.nextDrop = self._T.nextDrop + 1
-            self._T.drops[self._T.nextDrop] = {map = s.map, x = x, y = y, id = item.id, count = count, durability = item.durability, expires = self.Clock + 300}
+            self._T.drops[self._T.nextDrop] = {map = s.map, x = x, y = y, id = item.id, count = count, durability = item.durability, name = item.name, expires = self.Clock + 300}
             local dropped = self._T.drops[self._T.nextDrop]
             self:RemoveItem(s, slot, count)
             self:Changed(userId)
@@ -710,7 +762,7 @@ script BaramWorld extends Logic
             log("[BaramMoney] picked key=" .. tostring(key) .. " amount=" .. tostring(amount) .. " remaining=" .. tostring(drop.gold) .. " balance=" .. tostring(state.gold))
             return 1
         end
-        if not self:AddItem(state, drop.id, drop.count, drop.durability) then
+        if not self:AddItemCopy(state, drop, drop.count) then
             drops[key] = drop
             return -1
         end
@@ -919,6 +971,7 @@ script BaramWorld extends Logic
     -- Attack() 은 senderUserId 를 쓰므로 서버끼리는 못 부른다.
     @ExecSpace("ServerOnly")
     method void AttackFor(string userId)
+        -- All usable weapons contribute DB attack; durability loss is currently disabled.
         local r = self._T.users[userId]
         local player = _UserService:GetUserEntityByUserId(userId)
         if r == nil or not r.active or not isvalid(player) or r.state.hp <= 0 or self.Clock < (r.nextAttack or 0) then return end
@@ -933,11 +986,20 @@ script BaramWorld extends Logic
         local dx = {0, 1, 0, -1}
         local dy = {-1, 0, 1, 0}
         local damage = _UtilLogic:RandomIntegerRange(1, 2)
-        local equipped = r.state.items[tostring(r.state.equip)]
-        if equipped ~= nil and equipped.id == 17 and equipped.durability > 0 then
-            damage = _UtilLogic:RandomIntegerRange(5, 10)
-            equipped.durability = equipped.durability - 1
-            self:Changed(userId)
+        local equipped = _BaramItemRules:Equipped(r.state)
+        if equipped ~= nil and _BaramItemRules:EquipError(r.state, equipped) == "" then
+            damage = damage + _BaramItemRules:WeaponAttack(r.state)
+            _BaramItemRules:Hook(userId, equipped, "useScript")
+            if self.DurabilityLossEnabled then
+                equipped.durability = math.max(0, equipped.durability - 1)
+                if equipped.durability == 0 then
+                    if _BaramItemRules:UnequipToBag(r.state) == "" then
+                        _BaramItemRules:Hook(userId, equipped, "unequipScript")
+                        self:Notice(userId, "무기의 내구도가 다 닳아 장착이 해제되었습니다.")
+                    end
+                end
+                self:Changed(userId)
+            end
         end
         visual:PlayAction(1, 0.15)
         damage = damage + _BaramItemCodex:AttackBonus(r.state)

@@ -1,25 +1,9 @@
 {
   "total": 22433,
-  "uploaded": 12151,
-  "queued": 10279,
+  "uploaded": 22433,
+  "queued": 0,
   "active": 0,
-  "errors": [
-    {
-      "name": "BaramClient_NPCMonster_MON_MONSTER_F05426_P12_D5.png",
-      "stage": "finalize",
-      "error": "MCP tool error An unexpected error occurred while processing the tool call."
-    },
-    {
-      "name": "BaramClient_NPCMonster_MON_MONSTER_F05449_P12_D5.png",
-      "stage": "finalize",
-      "error": "MCP tool error An unexpected error occurred while processing the tool call."
-    },
-    {
-      "name": "BaramClient_NPCMonster_MON_MONSTER_F05425_P12_D5.png",
-      "stage": "finalize",
-      "error": "MCP tool error An unexpected error occurred while processing the tool call."
-    }
-  ],
-  "elapsedSeconds": 445,
+  "errors": [],
+  "elapsedSeconds": 1206,
   "finished": true
 }

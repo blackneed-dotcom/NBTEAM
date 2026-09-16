@@ -55,6 +55,7 @@ script BaramChatRelay extends Logic
 
     @ExecSpace("ServerOnly")
     method boolean TryCreateItem(string userId, string message)
+        -- Resolve command names from the same merged database used by inventory.
         local command = string.match(message, "^%s*(%S+)")
         if command ~= "/아이템생성" then return false end
         local player = _UserService:GetUserEntityByUserId(userId)
@@ -72,7 +73,7 @@ script BaramChatRelay extends Logic
         end
         name = string.match(name, "^%s*(.-)%s*$")
         local item = nil
-        for _, data in pairs(_BaramWorldData.Items) do
+        for _, data in pairs(_BaramWorldData:AllItems()) do
             if data.name == name then
                 if item ~= nil then
                     self:ReceiveNotice("같은 이름의 아이템이 여러 개 있어 생성할 수 없습니다.", userId)

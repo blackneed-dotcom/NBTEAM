@@ -271,7 +271,7 @@ script BaramScriptRuntime extends Logic
         local ok, err = pcall(fn, context)
         if ok then return true end
         -- end; 는 오류가 아니라 "여기서 그만"이다.
-        if type(err) == "table" and err.stop == true then return true end
+        if type(err) == "string" and string.find(err, "__BARAM_SCRIPT_STOP__", 1, true) ~= nil then return true end
         log_error("[BaramScript] " .. blockName .. " 실행 중 오류: " .. tostring(err))
         return false
     end
@@ -336,6 +336,72 @@ script BaramScriptRuntime extends Logic
         end
         r.target = id
         self:Cast(userId, spell.name)
+    end
+
+    @ExecSpace("Server")
+    method void CastSlotOn(integer slot, string entityId, integer mapId)
+        -- Resolve the selected identity on the server; never retarget an occupied old cell.
+        local userId = senderUserId
+        local r = _BaramWorld:GetRecord(userId)
+        if r == nil or not r.active or r.state.hp <= 0 or r.state.map ~= mapId then return end
+        if not self:Ensure() then return end
+        local spell = self:SpellSlots()[tostring(slot)]
+        if spell == nil or (spell.kind ~= 2 and spell.kind ~= 9) then return end
+        local id = 0
+        for _, player in ipairs(_UserService.UserEntities.Values) do
+            if isvalid(player) and tostring(player.Id) == entityId then
+                local otherId = player.PlayerComponent.UserId
+                local other = _BaramWorld:GetRecord(otherId)
+                if other ~= nil and other.active and other.state.map == mapId and other.state.hp > 0 then
+                    id = self:PlayerObjId(otherId)
+                end
+                break
+            end
+        end
+        local map = _BaramWorld:Stage(mapId)
+        if id == 0 and isvalid(map) then
+            for _, child in ipairs(map.Children:ToTable()) do
+                if tostring(child.Id) == entityId then
+                    ---@type BaramCreature
+                    local creature = child:GetComponent("script.BaramCreature")
+                    if isvalid(creature) and creature.Hp > 0 and creature.MapId == mapId then id = self:CreatureObjId(creature) end
+                    break
+                end
+            end
+        end
+        if id == 0 then
+            r.target = nil
+            _BaramWorld:Notice(userId, "대상이 사라졌습니다. 다시 선택해 주세요.")
+            return
+        end
+        r.target = id
+        log("[BaramSpellTarget] slot=" .. tostring(slot) .. " entity=" .. entityId .. " map=" .. tostring(mapId))
+        self:Cast(userId, spell.name)
+    end
+
+    @ExecSpace("ServerOnly")
+    method void ShowOriginalEffect(integer objectId, integer effectId)
+        -- Forward the original effect number only to observers of the same logical map.
+        local object = self:Object(objectId)
+        if object == nil then return end
+        local mapId, x, y, entityId = 0, 0, 0, ""
+        if object.kind == 2 then
+            mapId, x, y = object.creature.MapId, object.creature.GridX, object.creature.GridY
+            entityId = tostring(object.creature.Entity.Id)
+        else
+            local record = _BaramWorld:GetRecord(object.userId)
+            local player = _UserService:GetUserEntityByUserId(object.userId)
+            if record == nil or not isvalid(player) then return end
+            mapId, x, y = record.state.map, record.state.x, record.state.y
+            entityId = tostring(player.Id)
+        end
+        for _, player in ipairs(_UserService.UserEntities.Values) do
+            local viewerId = player.PlayerComponent.UserId
+            local viewer = _BaramWorld:GetRecord(viewerId)
+            if viewer ~= nil and viewer.active and viewer.state.map == mapId then
+                _BaramSpellEffect:Show(effectId, mapId, x, y, entityId, viewerId)
+            end
+        end
     end
 
     @ExecSpace("Server")
@@ -476,7 +542,7 @@ script BaramScriptRuntime extends Logic
 
         -- end; 는 스크립트 전체를 끝낸다. callfunc 로 들어간 안쪽에서도 마찬가지라
         -- 오류로 던져서 Run 까지 한 번에 빠져나온다.
-        R.stop = function() error({stop = true}) end
+        R.stop = function() error("__BARAM_SCRIPT_STOP__") end
 
         R.callfunc = function(context, name, args)
             local fn = self._T.S["FUNC_" .. name]
@@ -690,16 +756,8 @@ script BaramScriptRuntime extends Logic
             _BaramWorld:PlayUserAction(o.userId, 1, 0.15)
             return 0
         end
-        -- 효과 그림. 대상이 선 칸에 원본 efx 순서대로 띄운다.
-        B["effect"] = function(C, id, number)
-            local o = this:Object(id)
-            if o == nil then return 0 end
-            local n = math.floor(this._T.R.num(number))
-            if n <= 0 then return 0 end
-            _BaramEffects:Play(n, B["get_mapid"](C, id), B["get_x"](C, id), B["get_y"](C, id))
-            return 0
-        end
-        -- 소리는 아직 안 뽑았다.
+        -- EFFECT.TBL sequences use the sprites already uploaded to the group pack.
+        B["effect"] = function(C, id, effectId) this:ShowOriginalEffect(id, effectId) return 0 end
         B["sound"] = function(C, id, number) return 0 end
 
         -- --- 주문 상태 ---
@@ -739,7 +797,7 @@ script BaramScriptRuntime extends Logic
             local s = state(sd)
             if s == nil then return 0 end
             if slot ~= 0 then return 0 end
-            local equipped = s.items[tostring(s.equip)]
+            local equipped = _BaramItemRules:Equipped(s)
             if equipped == nil then return 0 end
             return 1
         end
@@ -747,7 +805,7 @@ script BaramScriptRuntime extends Logic
             local s = state(sd)
             if s == nil then return "" end
             if slot ~= 0 then return "" end
-            local equipped = s.items[tostring(s.equip)]
+            local equipped = _BaramItemRules:Equipped(s)
             if equipped == nil then return "" end
             local data = _BaramWorldData:Item(equipped.id)
             if data == nil then return "" end

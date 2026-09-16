@@ -1,0 +1,109 @@
+{
+  "push": "401829f134d6f84c9a2481e8c686454657802008",
+  "runtimePassed": [
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T05:02:19",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BagEquipmentVerify] migration/idempotence/full-bag/swap/unequip/save-roundtrip/stats PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 17,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T05:02:19",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BagEquipmentVerify] server=true nil",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 19,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T05:04:13",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BagEquipmentVerify] list/icon physical removal/return, parchment8 loaded, right-click close/reopen PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 24,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T05:04:13",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BagEquipmentVerify] client final=true nil",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 27,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T05:04:51",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BagEquipmentVerify] migrated character valid PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 4,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T05:05:18",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[BagEquipmentVerify] actual server RPC equip clears bag slot + unequip restores exact item PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 11,
+          "codeBlockFileId": null
+        }
+      ]
+    }
+  ],
+  "buildErrors": [],
+  "notes": "Initial test used tostring(DataRef), corrected to DataId; character initially unequipped, actual equip/unequip RPC verified using bag slot 5."
+}

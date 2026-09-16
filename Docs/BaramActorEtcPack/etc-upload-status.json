@@ -1,16 +1,9 @@
 {
   "total": 60575,
-  "uploaded": 6822,
-  "queued": 53732,
+  "uploaded": 60575,
+  "queued": 0,
   "active": 0,
   "errors": [],
-  "elapsedSeconds": 311,
-  "finished": false,
-  "pausedForGitSync": true,
-  "pendingProperties": [
-    "BaramClient_ETC_TILE_TILE_F06823_P11.png",
-    "BaramClient_ETC_TILE_TILE_F06781_P11.png",
-    "BaramClient_ETC_TILE_TILE_F06966_P12.png",
-    "BaramClient_ETC_TILE_TILE_F06965_P12.png"
-  ]
+  "elapsedSeconds": 2550,
+  "finished": true
 }

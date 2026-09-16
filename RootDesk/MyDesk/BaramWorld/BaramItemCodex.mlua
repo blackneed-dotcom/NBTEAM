@@ -31,7 +31,7 @@ script BaramItemCodex extends Logic
         {id=10048, name="연녹호박", monster="연녹달걀귀신 · 연녹충", region="흉가"},
         {id=10046, name="자호박", monster="자달걀귀신 · 자충", region="흉가"},
         {id=10050, name="연청호박", monster="연청달걀귀신", region="흉가"},
-        {id=17, name="목도", monster="무기 상점", region="구매", kind=1, required=1, rewardKey="attack"}
+        {id=1, name="목도", monster="무기 상점", region="구매", kind=1, required=1, rewardKey="attack"}
     }
 
     method integer Required(table entry)
@@ -43,8 +43,10 @@ script BaramItemCodex extends Logic
         if s.codex == nil then return true end
         if type(s.codex) ~= "table" then return false end
         for key, value in pairs(s.codex) do
+            -- Before item2 import, the wooden-sword codex used ID 17.
+            local entryKey = key == "17" and "1" or key
             local maximum = 0
-            for _, entry in ipairs(self.Entries) do if key == tostring(entry.id) then maximum = self:Required(entry) break end end
+            for _, entry in ipairs(self.Entries) do if entryKey == tostring(entry.id) then maximum = self:Required(entry) break end end
             if maximum==0 or type(value) ~= "number" or value ~= math.floor(value) or value < 0 or value > maximum then return false end
         end
         return true
@@ -53,6 +55,8 @@ script BaramItemCodex extends Logic
     method integer Progress(table s, integer itemId)
         -- Progress is stored per character alongside inventory in the existing save record.
         if s == nil or s.codex == nil then return 0 end
+        -- Read the legacy completion without deleting data or awarding it twice.
+        if itemId == 1 then return math.max(s.codex["1"] or 0, s.codex["17"] or 0) end
         return s.codex[tostring(itemId)] or 0
     end
 

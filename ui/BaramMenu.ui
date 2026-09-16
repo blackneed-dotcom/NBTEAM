@@ -1556,7 +1556,7 @@
               "EndFrameIndex": 2147483647,
               "IgnoreMapLayerCheck": false,
               "ImageRUID": {
-                "DataId": "934837314e7b4505a6c2ba9a817edc9f"
+                "DataId": "19fde9464dc1456fa6cb5e9517ffd066"
               },
               "LocalPosition": {
                 "x": 0.0,
@@ -1570,7 +1570,7 @@
               "OrderInLayer": 0,
               "OverrideSorting": false,
               "PlayRate": 1.0,
-              "PreserveSprite": 0,
+              "PreserveSprite": 1,
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {

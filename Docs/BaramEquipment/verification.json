@@ -1,0 +1,403 @@
+{
+  "logs": [
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:20:04",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] rules=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 0,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:20:06",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] items=154 art=152",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 1,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:21:10",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] pointer=(300443.600, 189040.000) row=0",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 11,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:21:10",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] tooltip false [string \"MakerScript\"]:15: open",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 25,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:21:11",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] PASS items=154 wornFrames=3040 restrictions/attack/repair/name/copy",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 23,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:21:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] tooltip list/icon toggle+dedup+refresh false [string \"MakerScript\"]:15: open",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 25,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:06",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] NPC repair rows/fees and deposit/withdraw PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 6,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:20",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] guards world=true blocked=false mode= pending= edit=false secs=0.0 allowed=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 1,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:20",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] tip fields=0.0 state=true",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:43",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] toggle ready allowed=true right=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 10,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:43",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] after down enabled=true timer=10.0",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 13,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] toggle ready allowed=true right=false",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 10,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:44",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] after down enabled=true timer=10.0",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 13,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:23:45",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] tooltip list/icon toggle+dedup+refresh true nil",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 25,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:24:23",
+      "isGeneratedFromServer": true,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] record active=true itemCount=1",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 2,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:24:49",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] resource loading unique idle=118 failures=",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 10,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:25:21",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] held renderer item=1 ruid=9e70876ec25148d691fc6ec9486bea1e",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 8,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:25:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] held renderer item=7 ruid=22bada550bfa411eb32c793d30c2a64a",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 8,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:25:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] held renderer item=1008 ruid=922e557657f34404a8078e2bf54f6b43",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 8,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:25:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] held renderer item=1404 ruid=494ffe0e916e48a5926bf980e34d35f7",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 8,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:25:22",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] held rendering true nil",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 12,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:25:25",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] NPC ninth menu and Korean naming input PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 24,
+          "codeBlockFileId": null
+        }
+      ]
+    },
+    {
+      "logType": "Info",
+      "dateTime": "2026-09-16T04:28:13",
+      "isGeneratedFromServer": false,
+      "isLogByMaker": true,
+      "owner": null,
+      "subOwner": null,
+      "ownerId": null,
+      "message": "[EquipVerify] final repair confirmation cost and fixed quantity PASS",
+      "stackTrace": [
+        {
+          "methodName": "MakerScript",
+          "methodLineNum": 9,
+          "codeBlockFileId": null
+        }
+      ]
+    }
+  ],
+  "buildErrors": [],
+  "excluded": {
+    "deathType": true,
+    "wornItemIds": [
+      55,
+      56
+    ]
+  }
+}
