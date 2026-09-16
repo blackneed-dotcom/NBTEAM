@@ -27,6 +27,11 @@ BIN_HELPER = {
 
 UN_HELPER = {"!": "R.lnot", "-": "R.neg", "+": "R.pos", "~": "R.bnot"}
 
+
+def flagname(label):
+    safe = "".join(c if c.isalnum() or c == "_" else "_" for c in label)
+    return "jump_" + safe
+
 # @  임시(캐릭터 1회 실행 동안). .  .@ 도 같은 칸에 둔다.
 # $  $@ 서버 전역.  #  계정.
 SCOPE = {"@": "V", ".": "V", "$": "G", "#": "A"}
@@ -47,6 +52,7 @@ class Emitter:
         self.used_funcs = set()
         self.called = set()
         self.goto_ok = []
+        self.flags = set()
 
     # --- 식 ---------------------------------------------------------
     def expr(self, e):
@@ -194,11 +200,31 @@ class Emitter:
             self.line(ind, "do return end")
             return
         if kind == "goto":
+            if s[1] in self.flags:
+                # if 안으로 뛰는 뜀: 깃발을 세우고 고리에서 빠져나온다.
+                self.line(ind, "%s = true" % flagname(s[1]))
+                self.line(ind, "break  -- goto %s" % s[1])
+                return
             if s[1] not in self.goto_ok:
                 raise Unsupported("갈 곳 없는 goto %s" % s[1])
             self.line(ind, "break  -- goto %s" % s[1])
             return
         if kind == "label":
+            return
+        if kind == "flag":
+            self.flags.add(s[1])
+            self.line(ind, "local %s = false" % flagname(s[1]))
+            return
+        if kind == "if_jump":
+            name, cond, head, tail = s[1], s[2], s[3], s[4]
+            flag = flagname(name)
+            self.line(ind, "if %s or R.t(%s) then" % (flag, self.expr(cond)))
+            if head:
+                self.line(ind + "    ", "if not %s then" % flag)
+                self.stmts(head, ind + "        ")
+                self.line(ind + "    ", "end")
+            self.stmts(tail, ind + "    ")
+            self.line(ind, "end")
             return
         if kind == "repeat_once":
             self.goto_ok.append(s[2])
@@ -276,12 +302,85 @@ def has_bare_break(stmts):
     return False
 
 
+def block_body(node):
+    """if 의 몸통이 블록이면 그 문 목록을 돌려준다."""
+    if isinstance(node, list) and node and node[0] == "block":
+        return node[1]
+    return None
+
+
+def jump_into_if(stmts):
+    """뒤쪽 if 몸통 안으로 뛰어드는 goto 를 깃발로 편다.
+
+    원본에 이런 꼴이 있다(FUNC_MAGICIANCHOM, FUNC_TARGETMAGICIANCHOM):
+
+        for(...) { ... goto NEXT2; ... }
+        if(@notarget != 4) { action ...; NEXT2: message ...; }
+
+    goto 가 조건을 건너뛰고 if 안쪽으로 들어간다. 루아엔 그런 뜀이 없으니
+    깃발 하나를 두고, if 조건에 "깃발이 서 있으면 무조건"을 얹고,
+    라벨 앞 문들은 "깃발이 안 섰을 때만"으로 감싼다.
+    """
+    for index, s in enumerate(stmts):
+        if not (isinstance(s, list) and s and s[0] == "if" and s[3] is None):
+            continue
+        body = block_body(s[2])
+        if body is None:
+            continue
+        marks = [k for k, x in enumerate(body)
+                 if isinstance(x, list) and x and x[0] == "label"]
+        if not marks:
+            continue
+        k = marks[0]
+        name = body[k][1]
+        before = stmts[:index]
+        if count_goto(before, name) == 0:
+            continue
+        # 뛰는 자리가 고리 안이어야 break 로 빠져나올 수 있다.
+        for earlier in before:
+            if count_goto([earlier], name) and not loop_wraps_goto(earlier, name):
+                raise Unsupported("고리 밖에서 if 안으로 뛰는 goto %s" % name)
+        head = body[:k]
+        tail = body[k + 1:]
+        if count_goto(tail, name) or count_goto(head, name):
+            raise Unsupported("if 안으로 뛰는 goto %s 가 얽혀 있다" % name)
+        rest = stmts[index + 1:]
+        if count_goto(rest, name):
+            raise Unsupported("뒤로 뛰는 goto %s" % name)
+        return (name, before, s[1], head, tail, rest)
+    return None
+
+
+def loop_wraps_goto(node, label):
+    """그 문 안에서 goto 가 고리(while/for) 안에 들어 있나."""
+    if not isinstance(node, list) or not node:
+        return False
+    if node[0] in ("while", "for"):
+        return count_goto([node], label) > 0
+    for x in node:
+        if isinstance(x, list):
+            if loop_wraps_goto(x, label):
+                return True
+            for y in x:
+                if isinstance(y, list) and loop_wraps_goto(y, label):
+                    return True
+    return False
+
+
 def transform(stmts):
     """goto/label 을 repeat ... until true + break 로 바꾼다.
 
     원본에서 goto 는 거의 다 "여기까지 건너뛰고 마무리 줄로 가라"다.
     라벨 앞을 repeat 로 감싸면 goto 는 그냥 break 가 된다.
     """
+    # 자식을 먼저 손보면 안쪽 transform 이 라벨을 먹어버려서 못 찾는다.
+    # 그래서 "if 안으로 뛰는 뜀"은 원문 그대로일 때 먼저 본다.
+    found = jump_into_if(stmts)
+    if found is not None:
+        name, before, cond, head, tail, rest = found
+        node = ["if_jump", name, cond, transform(head), transform(tail)]
+        return ([["flag", name]] + transform(before)
+                + [node] + transform(rest))
     out = []
     for s in stmts:
         out.append(rewrite(s))

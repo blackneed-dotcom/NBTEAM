@@ -1,0 +1,120 @@
+-- 마법 효과 그림 재생.
+--
+-- 원본 스크립트의 `effect @id, 86` 을 화면에 띄운다. 그림과 순서·시간은
+-- BaramEffectData 에 있고(동업자가 올린 efx.dat + EFFECT.TBL), 여기서는 그걸
+-- 한 장씩 갈아 끼우기만 한다.
+--
+-- 자리: 원본 EPF 는 잘린 그림의 왼쪽 위 모서리를 발밑 기준으로 적어둔다.
+-- 원본 y 는 아래로 자라고 우리 월드 y 는 위로 자라서 부호가 뒤집힌다.
+@Logic
+script BaramEffects extends Logic
+    property number PixelsPerUnit = 100
+    -- 바닥 0, 물건 10, 사람 100, 이름표 500. 효과는 사람 위, 이름표 아래.
+    property integer Layer = 200
+    -- 접속하고 미리 받아둘 효과 번호(스크립트가 부르는 번호).
+    -- 처음 쓸 때 받으면 그 한 번이 늦게 뜬다. 지금 옮긴 주문들이 쓰는 것만 담았다.
+    -- 6 건곤대나이, 7 필살검무, 11 공력증강, 17 지진, 26 극진자천무주.
+    property table Warm = {6, 7, 11, 17, 26}
+
+    @ExecSpace("Client")
+    method void Play(integer effectId, integer mapId, integer x, integer y)
+        local state = _BaramWorld.LocalState
+        if state == nil or state.map ~= mapId then return end
+        if not _BaramEntryFlow.InWorld then return end
+        local frames = _BaramEffectData:Get(effectId)
+        if frames == nil or #frames == 0 then return end
+        self:Preload(effectId, frames)
+        local player = _UserService.LocalPlayer
+        if not isvalid(player) or not isvalid(player.CurrentMap) then return end
+        local base = _BaramWorldData:Position(x, y)
+        self._T.sequence = (self._T.sequence or 0) + 1
+        local entity = _SpawnService:SpawnByModelId("baramgroundmoney",
+            "Effect_" .. tostring(self._T.sequence), Vector3(base.x, base.y, 0), player.CurrentMap)
+        if not isvalid(entity) then return end
+        entity.SpriteRendererComponent.OrderInLayer = self.Layer
+        if self._T.playing == nil then self._T.playing = {} end
+        local shot = {entity = entity, frames = frames, index = 0, wait = 0,
+                      base = base, map = player.CurrentMap}
+        table.insert(self._T.playing, shot)
+        self:Advance(shot)
+    end
+
+    -- 그림을 먼저 받아둔다. 안 받아둔 RUID 를 그냥 넣으면 조용히 안 바뀌고
+    -- 모델의 기본 그림(엽전)이 그대로 남는다. 이 프로젝트의 다른 곳도 다 이렇게 한다
+    -- (BaramHealthBars, BaramEntryFlow 가 LoadSpriteAndWait 로 먼저 받는다).
+    @ExecSpace("ClientOnly")
+    method void Preload(integer effectId, table frames)
+        if self._T.loaded == nil then self._T.loaded = {} end
+        if self._T.loaded[effectId] then return end
+        self._T.loaded[effectId] = true
+        local failed = 0
+        for _, frame in ipairs(frames) do
+            local ok, sprite = pcall(function() return _ResourceService:LoadSpriteAndWait(frame.r) end)
+            if not ok or sprite == nil then failed = failed + 1 end
+        end
+        if failed > 0 then
+            log_error("[BaramEffects] 효과 " .. tostring(effectId) .. " 그림 "
+                .. tostring(failed) .. "/" .. tostring(#frames) .. " 장을 못 받았다.")
+        else
+            log("[BaramEffects] 효과 " .. tostring(effectId) .. " 그림 "
+                .. tostring(#frames) .. "장 준비됨")
+        end
+    end
+
+    -- 다음 장으로 넘긴다. 마지막을 넘기면 false.
+    @ExecSpace("ClientOnly")
+    method boolean Advance(table shot)
+        shot.index = shot.index + 1
+        local frame = shot.frames[shot.index]
+        if frame == nil then return false end
+        shot.wait = math.max(0.01, frame.d / 1000)
+        local renderer = shot.entity.SpriteRendererComponent
+        renderer.SpriteRUID = frame.r
+        -- 그림이 실제로 바뀌었는지 한 번만 확인한다. 안 바뀌면 그 RUID 를 이 프로젝트가
+        -- 못 읽는 것이고(예: 리소스 묶음이 안 붙어 있음), 화면엔 엉뚱한 기본 그림이 뜬다.
+        if not self._T.checked then
+            self._T.checked = true
+            if renderer.SpriteRUID ~= frame.r then
+                log_error("[BaramEffects] 그림을 못 바꾼다. 넣은 값 " .. tostring(frame.r)
+                    .. " 인데 읽으면 " .. tostring(renderer.SpriteRUID) .. " 다.")
+            else
+                log("[BaramEffects] 그림 연결 확인됨: " .. tostring(frame.r))
+            end
+        end
+        -- 잘린 그림의 가운데를 제자리에 놓는다.
+        local cx = shot.base.x + (frame.x + frame.w / 2) / self.PixelsPerUnit
+        local cy = shot.base.y - (frame.y + frame.h / 2) / self.PixelsPerUnit
+        shot.entity.TransformComponent.WorldPosition = Vector3(cx, cy, 0)
+        return true
+    end
+
+    @ExecSpace("ClientOnly")
+    method void OnUpdate(number delta)
+        -- 접속하고 한 번, 쓸 효과를 미리 받아둔다.
+        if _BaramEntryFlow.InWorld and not self._T.warmed then
+            self._T.warmed = true
+            for _, number in ipairs(self.Warm) do
+                local frames = _BaramEffectData:Get(number)
+                if frames ~= nil then self:Preload(number, frames) end
+            end
+        end
+        local playing = self._T.playing
+        if playing == nil then return end
+        local player = _UserService.LocalPlayer
+        for i = #playing, 1, -1 do
+            local shot = playing[i]
+            local done = false
+            if not isvalid(shot.entity) or not isvalid(player) or player.CurrentMap ~= shot.map
+                or not _BaramEntryFlow.InWorld then
+                done = true
+            else
+                shot.wait = shot.wait - delta
+                if shot.wait <= 0 and not self:Advance(shot) then done = true end
+            end
+            if done then
+                if isvalid(shot.entity) then shot.entity:Destroy() end
+                table.remove(playing, i)
+            end
+        end
+    end
+end

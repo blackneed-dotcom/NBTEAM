@@ -38,6 +38,13 @@ script BaramChatRelay extends Logic
         -- string.sub 는 글자가 아니라 바이트를 센다. "/마법 " 은 UTF-8 로 8바이트다.
         if message == "/마법" then _BaramScriptRuntime:Status(senderUserId) return end
         if message == "/대상" then _BaramScriptRuntime:TargetNearest(senderUserId) return end
+        -- 자동사냥: /자동 으로 켜고 끈다. 뒤에 주문 글자를 붙이면 그 주문도 쓴다(/자동 a).
+        if message == "/자동" then _BaramAutoHunt:Toggle("") return end
+        local auto = "/자동 "
+        if string.sub(message, 1, #auto) == auto then
+            _BaramAutoHunt:Toggle(string.sub(message, #auto + 1))
+            return
+        end
         local head = "/마법 "
         if string.sub(message, 1, #head) == head then
             _BaramScriptRuntime:Cast(senderUserId, string.sub(message, #head + 1))

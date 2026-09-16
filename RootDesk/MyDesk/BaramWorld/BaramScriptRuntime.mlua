@@ -690,8 +690,16 @@ script BaramScriptRuntime extends Logic
             _BaramWorld:PlayUserAction(o.userId, 1, 0.15)
             return 0
         end
-        -- 효과 그림과 소리는 아직 efx.dat / snd 를 안 뽑아서 자리만 잡아둔다.
-        B["effect"] = function(C, id, number) return 0 end
+        -- 효과 그림. 대상이 선 칸에 원본 efx 순서대로 띄운다.
+        B["effect"] = function(C, id, number)
+            local o = this:Object(id)
+            if o == nil then return 0 end
+            local n = math.floor(this._T.R.num(number))
+            if n <= 0 then return 0 end
+            _BaramEffects:Play(n, B["get_mapid"](C, id), B["get_x"](C, id), B["get_y"](C, id))
+            return 0
+        end
+        -- 소리는 아직 안 뽑았다.
         B["sound"] = function(C, id, number) return 0 end
 
         -- --- 주문 상태 ---

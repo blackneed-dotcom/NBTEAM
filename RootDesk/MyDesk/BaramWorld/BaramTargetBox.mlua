@@ -16,8 +16,15 @@ script BaramTargetBox extends Logic
     -- 0.24 = 한 칸(24픽셀). 그래서 가로 한 칸, 세로 두 칸이 그림 한 장 크기다.
     property number BoxWidth = 0.24
     property number BoxHeight = 0.48
+    -- 몹 기본 네모(월드 단위). 다람쥐·토끼가 24x24 라 한 칸이다.
+    property number MobWidth = 0.24
+    property number MobHeight = 0.24
     -- 그림 100픽셀이 월드 1이다. 몹은 그림마다 크기가 달라서 재서 쓴다.
     property number PixelsPerUnit = 100
+    -- 잰 값이 이 범위(픽셀)를 벗어나면 잘못 읽은 걸로 보고 기본 크기를 쓴다.
+    -- 한 칸이 24픽셀이라 4~96 이면 0.17칸 ~ 4칸이다.
+    property number MeasureMin = 4
+    property number MeasureMax = 96
 
     -- 화면(원작 놀이판)에 실제로 보이는 자리인가. 그리는 쪽과 같은 테두리를 쓴다.
     @ExecSpace("ClientOnly")
@@ -201,6 +208,18 @@ script BaramTargetBox extends Logic
         for index, reader in ipairs(readers) do
             local fine, w, h = pcall(reader)
             if fine and type(w) == "number" and type(h) == "number" and w > 0 and h > 0 then
+                -- 읽히긴 하는데 엉뚱한 값일 수 있다(다람쥐 네모가 여섯 칸만큼 커졌던 적이 있다).
+                -- 몹 그림이 나올 수 없는 크기면 잘못 읽은 것으로 보고 안 쓴다.
+                if w < self.MeasureMin or w > self.MeasureMax
+                    or h < self.MeasureMin or h > self.MeasureMax then
+                    if not self._T.told then
+                        self._T.told = true
+                        log("[BaramTargetBox] " .. tostring(index) .. "번으로 읽으면 "
+                            .. tostring(w) .. "x" .. tostring(h) .. " 가 나온다. 크기가 말이 안 돼서 안 쓴다.")
+                    end
+                    self._T.sizes[ruid] = false
+                    return nil
+                end
                 if not self._T.told then
                     self._T.told = true
                     log("[BaramTargetBox] 그림 크기 읽는 법 " .. tostring(index) .. " 번이 통한다: "
@@ -233,8 +252,9 @@ script BaramTargetBox extends Logic
             end
         end
         local base = self:SpotOf(item)
-        local half = self.BoxWidth / 2
-        return self:Project(base.x - half, base.y, base.x + half, base.y + self.BoxHeight)
+        local w = item.isSelf and self.BoxWidth or self.MobWidth
+        local h = item.isSelf and self.BoxHeight or self.MobHeight
+        return self:Project(base.x - w / 2, base.y, base.x + w / 2, base.y + h)
     end
 
     @ExecSpace("ClientOnly")

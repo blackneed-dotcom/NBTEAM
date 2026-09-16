@@ -912,7 +912,13 @@ script BaramWorld extends Logic
 
     @ExecSpace("Server")
     method void Attack()
-        local userId = senderUserId
+        self:AttackFor(senderUserId)
+    end
+
+    -- 자동사냥처럼 서버 안에서 남의 손을 빌려 때려야 하는 곳이 있다.
+    -- Attack() 은 senderUserId 를 쓰므로 서버끼리는 못 부른다.
+    @ExecSpace("ServerOnly")
+    method void AttackFor(string userId)
         local r = self._T.users[userId]
         local player = _UserService:GetUserEntityByUserId(userId)
         if r == nil or not r.active or not isvalid(player) or r.state.hp <= 0 or self.Clock < (r.nextAttack or 0) then return end
